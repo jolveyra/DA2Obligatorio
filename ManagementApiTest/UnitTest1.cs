@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace ManagementApiTests
+namespace ManagementApiTest
 {
     [TestClass]
     public class UnitTest1
