@@ -27,14 +27,14 @@ namespace ManagementApiTest
             List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
 
             buildingLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First ().Name.Equals(objectResult.First().Name));
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Name.Equals(objectResult.First().Name));
         }
 
         [TestMethod]
         public void CreateBuildingTestOk()
         {
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
-            Building expected = new Building() { Id = Guid.NewGuid(),  Name = "Mirador" };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
@@ -49,13 +49,11 @@ namespace ManagementApiTest
             CreatedAtActionResult resultObject = result as CreatedAtActionResult;
             BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
 
-            //TODO: VerifyAll and Behavior Strict
+            buildingLogicMock.VerifyAll();
 
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
             //TODO: Override BuildingResponseModel Equals
             Assert.AreEqual(resultValue.Name, expectedResult.Name);
-
-
         }
     }
 }
