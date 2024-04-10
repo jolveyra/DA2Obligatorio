@@ -15,6 +15,14 @@ namespace ManagementApi.Controllers
             this._iBuildingLogic = iBuildingLogic;
         }
 
+        [HttpPost]
+        public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
+        {
+            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
+
+            return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
+        }
+
         [HttpGet]
         public IActionResult GetAllBuildings()
         {

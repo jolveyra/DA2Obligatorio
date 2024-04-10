@@ -1,9 +1,9 @@
-using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using WebModels;
 using Moq;
+using Domain;
 
 namespace ManagementApiTest
 {
@@ -28,6 +28,34 @@ namespace ManagementApiTest
 
             buildingLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First ().Name.Equals(objectResult.First().Name));
+        }
+
+        [TestMethod]
+        public void CreateBuildingTestOk()
+        {
+            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
+            Building expected = new Building() { Id = Guid.NewGuid(),  Name = "Mirador" };
+
+            BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
+
+            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
+
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
+
+            IActionResult result = buildingController.CreateBuilding(buildingRequest);
+
+            CreatedAtActionResult resultObject = result as CreatedAtActionResult;
+            BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
+
+            //TODO: VerifyAll and Behavior Strict
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            //TODO: Override BuildingResponseModel Equals
+            Assert.AreEqual(resultValue.Name, expectedResult.Name);
+
+
         }
     }
 }
