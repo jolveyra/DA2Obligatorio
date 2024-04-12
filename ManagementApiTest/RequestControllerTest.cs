@@ -31,7 +31,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
 
-            OkObjectResult result = requestController.GetAllManagerRequests() as OkObjectResult;
+            OkObjectResult result = requestController.GetAllManagerRequests(null) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();

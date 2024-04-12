@@ -16,11 +16,16 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllManagerRequests()
+        public IActionResult GetAllManagerRequests([FromQuery] string? category)
         {
-            return Ok(_requestLogic.GetAllRequests().Select(req => new RequestResponseModel(req)).ToList());
+            var requests = _requestLogic.GetAllRequests();
+            
+            if (category is not null)
+            {
+                requests = requests.Where(req => req.Category.Name == category);
+            }
+            
+            return Ok(requests.Select(req => new RequestResponseModel(req)).ToList());
         }
-
-         
     }
 }
