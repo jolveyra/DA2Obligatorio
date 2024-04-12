@@ -54,8 +54,16 @@ namespace ManagementApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteInvitationById([FromRoute] Guid id)
         {
-            _invitationLogic.DeleteInvitation(id);
-            return NoContent();
+            try
+            {
+                _invitationLogic.DeleteInvitation(id);
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
+                // TODO: Cuando tratamos de eliminar algo que no estaba era No content o cual otro? Gone?
+                return NoContent();
+            }
         }
     }
 }
