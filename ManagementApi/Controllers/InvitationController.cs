@@ -50,5 +50,12 @@ namespace ManagementApi.Controllers
             InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
             return CreatedAtAction("UpdateInvitation", new { Id = response.Id }, response);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteInvitationById([FromRoute] Guid id)
+        {
+            _invitationLogic.DeleteInvitation(id);
+            return NoContent();
+        }
     }
 }

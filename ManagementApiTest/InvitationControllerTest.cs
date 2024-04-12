@@ -115,5 +115,18 @@ namespace ManagementApiTest
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Accepted.Equals(resultObject.Accepted));
         }
+
+        [TestMethod]
+        public void DeleteInvitationByIdTestOk()
+        {
+            invitationLogicMock.Setup(i => i.DeleteInvitation(It.IsAny<Guid>()));
+
+            NoContentResult expected = new NoContentResult();
+
+            NoContentResult result = invitationController.DeleteInvitationById(It.IsAny<Guid>()) as NoContentResult;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
+        }
     }
 }
