@@ -33,5 +33,13 @@ namespace ManagementApi.Controllers
                 return NotFound("There is no invitation with that specific id");
             }
         }
+
+        [HttpPost]
+        public IActionResult CreateInvitation([FromBody] InvitationRequestModel invitationRequestModel)
+        {
+            // TODO: Validar que el email que se esta invitando no exista en la base de datos
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(invitationRequestModel.ToEntity()));
+            return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
+        }
     }
 }
