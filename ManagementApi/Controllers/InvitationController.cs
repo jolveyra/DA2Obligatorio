@@ -1,5 +1,4 @@
 ﻿using LogicInterfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebModels;
 
@@ -25,7 +24,14 @@ namespace ManagementApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)
         {
-            return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
+            try
+            {
+                return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
+            }
+            catch (ArgumentException)
+            {
+                return NotFound("There is no invitation with that specific id");
+            }
         }
     }
 }

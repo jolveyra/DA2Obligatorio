@@ -59,11 +59,24 @@ namespace ManagementApiTest
             OkObjectResult expected = new OkObjectResult(new InvitationResponseModel(invitations.First()));
             InvitationResponseModel expectedObject = expected.Value as InvitationResponseModel;
 
-            OkObjectResult? result = invitationController.GetInvitationById(It.IsAny<Guid>()) as OkObjectResult;
+            OkObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as OkObjectResult;
             InvitationResponseModel objectResult = result.Value as InvitationResponseModel;
 
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
+        }
+
+        [TestMethod]
+        public void GetInvitationByIdNotFound()
+        {
+            invitationLogicMock.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Throws(new ArgumentException());
+
+            NotFoundObjectResult expected = new NotFoundObjectResult("There is no invitation with that specific id");
+
+            NotFoundObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as NotFoundObjectResult;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
         }
     }
 }
