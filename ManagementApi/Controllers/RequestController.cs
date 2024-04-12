@@ -27,5 +27,13 @@ namespace ManagementApi.Controllers
             
             return Ok(requests.Select(req => new RequestResponseModel(req)).ToList());
         }
+
+        // TODO: employee requests, report requests
+
+        [HttpGet("{id}")]
+        public IActionResult GetRequestById([FromRoute] Guid id)
+        {
+            return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
+        }
     }
 }

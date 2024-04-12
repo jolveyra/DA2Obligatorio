@@ -3,6 +3,7 @@ using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModels.InvitationModels;
 using WebModels.RequestsModels;
 
 namespace ManagementApiTest
@@ -68,6 +69,27 @@ namespace ManagementApiTest
 
             requestLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
+        }
+
+        [TestMethod]
+        public void GetRequestByIdTestOk()
+        {
+            IEnumerable<Request> requests = new List<Request>
+            {
+                new Request { Id = Guid.NewGuid(), Category = new Category { Name = "Electricity" } },
+                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" } }
+            };
+
+            requestLogicMock.Setup(i => i.GetRequestById(It.IsAny<Guid>())).Returns(requests.First());
+
+            OkObjectResult expected = new OkObjectResult(new RequestResponseModel(requests.First()));
+            RequestResponseModel expectedObject = expected.Value as RequestResponseModel;
+
+            OkObjectResult result = requestController.GetRequestById(requests.First().Id) as OkObjectResult;
+            RequestResponseModel objectResult = result.Value as RequestResponseModel;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
         }
     }
 }

@@ -59,7 +59,7 @@ namespace ManagementApiTest
             OkObjectResult expected = new OkObjectResult(new InvitationResponseModel(invitations.First()));
             InvitationResponseModel expectedObject = expected.Value as InvitationResponseModel;
 
-            OkObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as OkObjectResult;
+            OkObjectResult result = invitationController.GetInvitationById(invitations.First().Id) as OkObjectResult;
             InvitationResponseModel objectResult = result.Value as InvitationResponseModel;
 
             invitationLogicMock.VerifyAll();
