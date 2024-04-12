@@ -57,7 +57,7 @@ namespace ManagementApi.Controllers
             try
             {
                 _invitationLogic.DeleteInvitation(id);
-                return NoContent();
+                return Ok(""); // Esto esta bieN??
             }
             catch (ArgumentException)
             {
