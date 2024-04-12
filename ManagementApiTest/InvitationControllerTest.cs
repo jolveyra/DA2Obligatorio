@@ -42,13 +42,7 @@ namespace ManagementApiTest
             List<InvitationResponseModel> objectResult = result.Value as List<InvitationResponseModel>;
 
             invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) 
-                          && expectedObject.First().Name.Equals(objectResult.First().Name)
-                          && expectedObject.First().Email.Equals(objectResult.First().Email)
-                          && expectedObject.First().Name.Equals(objectResult.Last().Name)
-                          && expectedObject.First().Email.Equals(objectResult.Last().Email)
-            );
-            // TODO: Override Equals in InvitationResponseModel
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
         }
     }
 }
