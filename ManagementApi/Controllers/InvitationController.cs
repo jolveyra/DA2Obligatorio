@@ -21,5 +21,11 @@ namespace ManagementApi.Controllers
         {
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponseModel(invitation)).ToList());
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetInvitationById([FromRoute] Guid id)
+        {
+            return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace ManagementApiTest
             IEnumerable<Invitation> invitations = new List<Invitation>
             {
                 new Invitation() { Name = "Juan", Email = "juan@gmail.com" },
-                new Invitation() { Name = "Juan", Email = "juan@gmail.com" }
+                new Invitation() { Name = "Jose", Email = "jose@gmail.com" }
             };
 
             invitationLogicMock.Setup(x => x.GetAllInvitations()).Returns(invitations);
@@ -43,6 +43,27 @@ namespace ManagementApiTest
 
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
+        }
+
+        [TestMethod]
+        public void GetInvitationByIdTestOk()
+        {
+            IEnumerable<Invitation> invitations = new List<Invitation>
+            {
+                new Invitation() { Name = "Juan", Email = "juan@gmail.com" },
+                new Invitation() { Name = "Jose", Email = "jose@gmail.com" }
+            };
+
+            invitationLogicMock.Setup(x => x.GetInvitationById(It.IsAny<Guid>())).Returns(invitations.First());
+
+            OkObjectResult expected = new OkObjectResult(new InvitationResponseModel(invitations.First()));
+            InvitationResponseModel expectedObject = expected.Value as InvitationResponseModel;
+
+            OkObjectResult? result = invitationController.GetInvitationById(It.IsAny<Guid>()) as OkObjectResult;
+            InvitationResponseModel objectResult = result.Value as InvitationResponseModel;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
         }
     }
 }
