@@ -27,7 +27,8 @@ namespace ManagementApiTest
             List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
 
             buildingLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Name.Equals(objectResult.First().Name));
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
+            Assert.AreEqual(expectedObject.First(), objectResult.First());
         }
 
         [TestMethod]
@@ -52,8 +53,7 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
-            //TODO: Override BuildingResponseModel Equals
-            Assert.AreEqual(resultValue.Name, expectedResult.Name);
+            Assert.AreEqual(resultValue, expectedResult);
         }
     }
 }

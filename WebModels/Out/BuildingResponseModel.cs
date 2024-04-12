@@ -14,5 +14,10 @@ namespace WebModels
             Name = building.Name;
         }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is BuildingResponseModel buildingResponseModel && Id == buildingResponseModel.Id;
+        }
+
     }
 }
