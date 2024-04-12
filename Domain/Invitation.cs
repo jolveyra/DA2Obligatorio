@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime ExpirationDate { get; private set; }
-        public bool Accepted { get; set; }
+        public bool IsAccepted { get; set; }
 
         public Invitation(string name, string email, int daysToExpiration)
         {
@@ -14,7 +14,7 @@
             Name = name;
             Email = email;
             ExpirationDate = DateTime.Now.AddDays(daysToExpiration);
-            Accepted = false;
+            IsAccepted = false;
         }
     }
 }

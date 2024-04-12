@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace WebModels
+namespace WebModels.BuildingModels
 {
     public class BuildingRequestModel
     {

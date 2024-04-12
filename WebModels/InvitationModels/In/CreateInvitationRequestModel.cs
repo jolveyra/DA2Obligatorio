@@ -1,17 +1,16 @@
 ﻿using Domain;
 
-namespace WebModels
+namespace WebModels.InvitationModels
 {
-    public class InvitationRequestModel
+    public class CreateInvitationRequestModel
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public bool Accepted { get; set; }
         public int DaysToExpiration { get; set; }
 
         public Invitation ToEntity()
         {
-            return new Invitation { Name = Name, Email = Email, Accepted = Accepted };
+            return new Invitation(Name, Email, DaysToExpiration);
         }
     }
 }

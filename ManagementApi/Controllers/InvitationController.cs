@@ -1,6 +1,7 @@
 ﻿using LogicInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using WebModels;
+using WebModels.InvitationModels;
 
 namespace ManagementApi.Controllers
 {
@@ -35,18 +36,18 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateInvitation([FromBody] InvitationRequestModel invitationRequestModel)
+        public IActionResult CreateInvitation([FromBody] CreateInvitationRequestModel createInvitationRequestModel)
         {
             // TODO: Validar que el email que se esta invitando no exista en la base de datos
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(invitationRequestModel.ToEntity()));
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
             return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] InvitationRequestModel invitationRequestModel)
+        public IActionResult UpdateInvitationById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
         {
             // TODO: Preguntar si esta bien retornar CreatedAtAction, MDN dice que es estandar para PUT
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, invitationRequestModel.ToEntity()));
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
             return CreatedAtAction("UpdateInvitation", new { Id = response.Id }, response);
         }
     }

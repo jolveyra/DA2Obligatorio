@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LogicInterfaces;
-using WebModels;
+using WebModels.BuildingModels;
 
 namespace ManagementApi.Controllers
 {

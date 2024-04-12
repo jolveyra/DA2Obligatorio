@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace WebModels
+namespace WebModels.InvitationModels
 {
     public class InvitationResponseModel
     {
@@ -16,7 +16,7 @@ namespace WebModels
             Name = invitation.Name;
             Email = invitation.Email;
             ExpirationDate = invitation.ExpirationDate.ToString("d/M/yyyy");
-            Accepted = invitation.Accepted;
+            Accepted = invitation.IsAccepted;
         }
 
         public override bool Equals(object? obj)
