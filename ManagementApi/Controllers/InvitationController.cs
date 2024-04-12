@@ -43,12 +43,20 @@ namespace ManagementApi.Controllers
             return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
         }
 
+        // TODO: Crear try catch
         [HttpPut("{id}")]
         public IActionResult UpdateInvitationById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
         {
-            // TODO: Preguntar si esta bien retornar CreatedAtAction, MDN dice que es estandar para PUT
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
-            return CreatedAtAction("UpdateInvitation", new { Id = response.Id }, response);
+            try
+            {
+                // TODO: Preguntar si esta bien retornar CreatedAtAction, MDN dice que es estandar para PUT
+                InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
+                return Ok(response);
+            }
+            catch (ArgumentException)
+            {
+                return NotFound("There is no invitation with that specific id");
+            }
         }
 
         [HttpDelete("{id}")]
@@ -57,11 +65,10 @@ namespace ManagementApi.Controllers
             try
             {
                 _invitationLogic.DeleteInvitation(id);
-                return Ok(""); // Esto esta bieN??
+                return Ok();
             }
             catch (ArgumentException)
             {
-                // TODO: Cuando tratamos de eliminar algo que no estaba era No content o cual otro? Gone?
                 return NoContent();
             }
         }
