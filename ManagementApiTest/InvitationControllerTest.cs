@@ -80,7 +80,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void CreateInvitationTestOk()
+        public void CreateInvitationTestCreated()
         {
             InvitationRequestModel invitationRequest = new InvitationRequestModel() { Name = "Juan", Email = "juan@gmail.com" };
             Invitation expected = new Invitation() { Name = "Juan", Email = "juan@gmail.com" };
@@ -88,13 +88,32 @@ namespace ManagementApiTest
             invitationLogicMock.Setup(i => i.CreateInvitation(It.IsAny<Invitation>())).Returns(expected);
 
             InvitationResponseModel expectedResult = new InvitationResponseModel(expected);
-            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateInvitation", "CreateInvitation", new { Id = 1 }, expectedResult);
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateInvitation", "CreateInvitation", new { Id = expected.Id }, expectedResult);
 
             CreatedAtActionResult result = invitationController.CreateInvitation(invitationRequest) as CreatedAtActionResult;
             InvitationResponseModel resultObject = result.Value as InvitationResponseModel;
 
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(resultObject));
+        }
+
+        [TestMethod]
+        public void UpdateInvitationTestCreated()
+        {
+            InvitationRequestModel invitationRequest = new InvitationRequestModel() { Accepted = true };
+            Invitation expected = new Invitation() { Name = "Jose", Email = "jose@gmail.com" };
+            expected.Accepted = true;
+
+            invitationLogicMock.Setup(i => i.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>())).Returns(expected);
+
+            InvitationResponseModel expectedResult = new InvitationResponseModel(expected);
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("UpdateInvitation", "UpdateInvitation", new { Id = expected.Id }, expectedResult);
+
+            CreatedAtActionResult result = invitationController.UpdateInvitation(It.IsAny<Guid>(), invitationRequest) as CreatedAtActionResult;
+            InvitationResponseModel resultObject = result.Value as InvitationResponseModel;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Accepted.Equals(resultObject.Accepted));
         }
     }
 }

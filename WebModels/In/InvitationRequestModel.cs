@@ -6,10 +6,11 @@ namespace WebModels
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public bool Accepted { get; set; }
 
         public Invitation ToEntity()
         {
-            return new Invitation { Name = Name, Email = Email };
+            return new Invitation { Name = Name, Email = Email, Accepted = Accepted };
         }
     }
 }

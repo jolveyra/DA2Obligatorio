@@ -41,5 +41,13 @@ namespace ManagementApi.Controllers
             InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(invitationRequestModel.ToEntity()));
             return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] InvitationRequestModel invitationRequestModel)
+        {
+            // TODO: Preguntar si esta bien retornar CreatedAtAction, MDN dice que es estandar para PUT
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, invitationRequestModel.ToEntity()));
+            return CreatedAtAction("UpdateInvitation", new { Id = response.Id }, response);
+        }
     }
 }

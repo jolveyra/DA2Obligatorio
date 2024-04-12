@@ -7,5 +7,6 @@ namespace LogicInterfaces
         Invitation CreateInvitation(Invitation invitation);
         IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid id);
+        Invitation UpdateInvitation(Guid id, Invitation invitation);
     }
 }
