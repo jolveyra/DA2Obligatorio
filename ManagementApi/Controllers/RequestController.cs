@@ -33,7 +33,14 @@ namespace ManagementApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
-            return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
+            try
+            {
+                return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
+            }
+            catch (ArgumentException)
+            {
+                return NotFound("There is no request with that specific id");
+            }
         }
     }
 }
