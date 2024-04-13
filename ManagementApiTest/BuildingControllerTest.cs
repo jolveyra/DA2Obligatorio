@@ -52,8 +52,7 @@ namespace ManagementApiTest
 
             buildingLogicMock.VerifyAll();
 
-            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
-            Assert.AreEqual(resultValue, expectedResult);
+            Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
         }
 
         [TestMethod]
