@@ -11,15 +11,23 @@ namespace ManagementApiTest
     [TestClass]
     public class BuildingControllerTest
     {
+
+        private Mock<IBuildingLogic> buildingLogicMock;
+        private BuildingController buildingController;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
+            buildingController = new BuildingController(buildingLogicMock.Object);
+        }
+
         [TestMethod]
         public void GetAllBuildingsTestOk()
         {
             IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };
 
-            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
             buildingLogicMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
-
-            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
 
             OkObjectResult expected = new OkObjectResult(new List<BuildingResponseModel> { new BuildingResponseModel(buildings.First()) });
             List<BuildingResponseModel> expectedObject = expected.Value as List<BuildingResponseModel>;
@@ -38,10 +46,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
             buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
-
-            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 
@@ -62,10 +67,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Returns(expected);
-
-            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
@@ -82,10 +84,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void DeleteBuildingTestOk()
         {
-            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
             buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
-
-            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
 
             OkResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as OkResult;
             OkResult expectedResult = new OkResult();
