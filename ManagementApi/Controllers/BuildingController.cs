@@ -21,10 +21,14 @@ namespace ManagementApi.Controllers
         {
             try
             {
-
                 BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
 
                 return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
+            }
+            catch (ArgumentException)
+            {
+                StatusCodeResult statusCodeResult = new StatusCodeResult(StatusCodes.Status400BadRequest);
+                return statusCodeResult;
             }
             catch(Exception e)
             {

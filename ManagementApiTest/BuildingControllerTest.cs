@@ -5,6 +5,7 @@ using WebModels;
 using Moq;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ManagementApiTest
 {
@@ -75,6 +76,24 @@ namespace ManagementApiTest
             StatusCodeResult resultStatusCode = result as StatusCodeResult;
 
             buildingLogicMock.VerifyAll();
+            Assert.IsTrue(resultStatusCode.StatusCode.Equals(expectedStatusCodeResult.StatusCode));
+        }
+
+        [TestMethod]
+        public void CreateBuildingTestArgumentError()
+        {
+            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
+
+            ArgumentException exception = new ArgumentException("Building already exists.");
+
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(exception);
+
+            StatusCodeResult expectedStatusCodeResult = new BadRequestResult();
+
+            StatusCodeResult resultStatusCode = buildingController.CreateBuilding(buildingRequest) as StatusCodeResult;
+
+            buildingLogicMock.VerifyAll();
+
             Assert.IsTrue(resultStatusCode.StatusCode.Equals(expectedStatusCodeResult.StatusCode));
         }
 
