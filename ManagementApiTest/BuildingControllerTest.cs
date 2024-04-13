@@ -82,19 +82,17 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateBuildingTestArgumentError()
         {
-            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
-
             ArgumentException exception = new ArgumentException("Building already exists.");
 
             buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(exception);
 
-            StatusCodeResult expectedStatusCodeResult = new BadRequestResult();
+            BadRequestObjectResult expectedObjectResult = new BadRequestObjectResult("Building already exists.");
 
-            StatusCodeResult resultStatusCode = buildingController.CreateBuilding(buildingRequest) as StatusCodeResult;
+            BadRequestObjectResult result = buildingController.CreateBuilding(new BuildingRequestModel()) as BadRequestObjectResult;
 
             buildingLogicMock.VerifyAll();
 
-            Assert.IsTrue(resultStatusCode.StatusCode.Equals(expectedStatusCodeResult.StatusCode));
+            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
         }
 
         [TestMethod]

@@ -27,8 +27,8 @@ namespace ManagementApi.Controllers
             }
             catch (ArgumentException)
             {
-                StatusCodeResult statusCodeResult = new StatusCodeResult(StatusCodes.Status400BadRequest);
-                return statusCodeResult;
+                BadRequestObjectResult badRequestResult = new BadRequestObjectResult("Building already exists.");
+                return badRequestResult;
             }
             catch(Exception e)
             {
