@@ -6,5 +6,6 @@ namespace LogicInterfaces
     {
         Building CreateBuilding(Building building);
         IEnumerable<Building> GetAllBuildings();
+        Building UpdateBuilding(Guid guid, float v);
     }
 }

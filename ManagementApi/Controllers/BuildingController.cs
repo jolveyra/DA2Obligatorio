@@ -28,5 +28,11 @@ namespace ManagementApi.Controllers
         {
             return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
+        {
+            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
+        }
     }
 }

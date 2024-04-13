@@ -7,11 +7,14 @@ namespace WebModels
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string Name { get; set; }
+        public float SharedExpenses { get; set; }
 
         public BuildingResponseModel(Building building)
         {
             Id = building.Id;
             Name = building.Name;
+            SharedExpenses = building.SharedExpenses;
+
         }
 
         public override bool Equals(object? obj)

@@ -55,5 +55,29 @@ namespace ManagementApiTest
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
             Assert.AreEqual(resultValue, expectedResult);
         }
+
+        [TestMethod]
+        public void UpdateBuildingTestOk()
+        {
+            UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000 };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
+
+            BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Returns(expected);
+
+            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
+
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            IActionResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), updateBuildingRequest);
+
+            OkObjectResult resultObject = result as OkObjectResult;
+            BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
+        }
     }
 }
