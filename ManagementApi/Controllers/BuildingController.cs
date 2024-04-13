@@ -2,6 +2,7 @@
 using LogicInterfaces;
 using WebModels;
 using System.Security.Cryptography;
+using ManagementApiTest;
 
 namespace ManagementApi.Controllers
 {
@@ -69,6 +70,12 @@ namespace ManagementApi.Controllers
             {
                 return NotFound("There is no building with that specific id.");
             }
+        }
+
+        [HttpPut("{buildingId}/{flatId}")]
+        public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
+        {
+            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
         }
     }
 }

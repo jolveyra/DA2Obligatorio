@@ -62,6 +62,29 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void CreateBuildingWithFlatsTestOk()
+        {
+            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", Flats = 1 };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", Flats = new List<Flat> { new Flat() } };
+
+            BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
+
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
+
+            IActionResult result = buildingController.CreateBuilding(buildingRequest);
+
+            CreatedAtActionResult resultObject = result as CreatedAtActionResult;
+            BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue, expectedResult);
+
+        }
+
+        [TestMethod]
         public void CreateBuildingTestInternalError()
         {
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
@@ -158,6 +181,48 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
+        }
+
+        [TestMethod]
+        public void UpdateFlatByBuildingAndFlatIdTestOk()
+        {
+            UpdateFlatRequestModel updateFlatRequest = new UpdateFlatRequestModel()
+            {
+                Floor = 2,
+                Number = 201,
+                OwnerName = "Gonzalo",
+                OwnerSurname = "Bergessio",
+                OwnerEmail = "gonzabergessiobolso@gmail.com",
+                Bathrooms = 3,
+                HasBalcony = true
+            };
+
+            Flat expected = new Flat()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 2,
+                Number = 201,
+                OwnerName = "Gonzalo",
+                OwnerSurname = "Bergessio",
+                OwnerEmail = "gonzabergessiobolso@gmail.com",
+                Bathrooms = 3,
+                HasBalcony = true
+            };
+
+            FlatResponseModel expectedResult = new FlatResponseModel(expected);
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Returns(expected);
+
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            IActionResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), updateFlatRequest);
+
+            OkObjectResult resultObject = result as OkObjectResult;
+            FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue, expectedResult);
         }
     }
 }

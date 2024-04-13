@@ -8,5 +8,6 @@ namespace LogicInterfaces
         void DeleteBuilding(Guid guid);
         IEnumerable<Building> GetAllBuildings();
         Building UpdateBuilding(Guid guid, float v);
+        Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat);
     }
 }
