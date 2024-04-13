@@ -47,7 +47,14 @@ namespace ManagementApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
-            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
+            try
+            {
+                return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
+            }
+            catch(ArgumentException e)
+            {
+                return NotFound("There is no building with that specific id.");
+            }
         }
 
         [HttpDelete("{id}")]

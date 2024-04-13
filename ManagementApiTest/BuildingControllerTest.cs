@@ -118,6 +118,22 @@ namespace ManagementApiTest
             Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
         }
 
+
+        [TestMethod]
+        public void UpdateBuildingTestOkNotFound()
+        {
+            ArgumentException expectedException = new ArgumentException("Building not found.");
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(expectedException);
+
+            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id.");
+
+            NotFoundObjectResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), new UpdateBuildingRequestModel()) as NotFoundObjectResult;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
+        }
+
         [TestMethod]
         public void DeleteBuildingTestOk()
         {
