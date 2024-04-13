@@ -34,5 +34,12 @@ namespace ManagementApi.Controllers
         {
             return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBuilding([FromRoute] Guid id)
+        {
+            _iBuildingLogic.DeleteBuilding(id);
+            return Ok();
+        }
     }
 }

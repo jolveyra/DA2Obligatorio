@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebModels;
 using Moq;
 using Domain;
+using Microsoft.AspNetCore.Http;
 
 namespace ManagementApiTest
 {
@@ -76,6 +77,22 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
+        }
+
+        [TestMethod]
+        public void DeleteBuildingTestOk()
+        {
+            Mock<IBuildingLogic> buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
+            buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
+
+            BuildingController buildingController = new BuildingController(buildingLogicMock.Object);
+
+            OkResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as OkResult;
+            OkResult expectedResult = new OkResult();
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(result.StatusCode.Equals(expectedResult.StatusCode));
         }
     }
 }
