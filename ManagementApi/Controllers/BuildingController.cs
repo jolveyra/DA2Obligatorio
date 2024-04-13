@@ -60,8 +60,15 @@ namespace ManagementApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBuilding([FromRoute] Guid id)
         {
-            _iBuildingLogic.DeleteBuilding(id);
-            return Ok();
+            try
+            {
+                _iBuildingLogic.DeleteBuilding(id);
+                return Ok();
+            }
+            catch(ArgumentException e)
+            {
+                return NotFound("There is no building with that specific id.");
+            }
         }
     }
 }

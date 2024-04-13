@@ -118,7 +118,7 @@ namespace ManagementApiTest
 
 
         [TestMethod]
-        public void UpdateBuildingTestOkNotFound()
+        public void UpdateBuildingTestNotFound()
         {
             ArgumentException expectedException = new ArgumentException("Building not found.");
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(expectedException);
@@ -143,6 +143,21 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.IsTrue(result.StatusCode.Equals(expectedResult.StatusCode));
+        }
+
+        [TestMethod]
+        public void DeleteBuildingTestNotFound()
+        {
+            ArgumentException expectedException = new ArgumentException("Building not found.");
+            buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>())).Throws(expectedException);
+
+            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id.");
+
+            NotFoundObjectResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as NotFoundObjectResult;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
         }
     }
 }
