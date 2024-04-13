@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LogicInterfaces;
 using WebModels;
+using System.Security.Cryptography;
 
 namespace ManagementApi.Controllers
 {
@@ -18,9 +19,19 @@ namespace ManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
-            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
+            try
+            {
 
-            return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
+                BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
+
+                return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
+            }
+            catch(Exception e)
+            {
+                StatusCodeResult statusCodeResult = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+                return statusCodeResult;
+            }
         }
 
         [HttpGet]

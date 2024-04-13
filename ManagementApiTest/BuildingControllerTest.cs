@@ -61,6 +61,24 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void CreateBuildingTestInternalError()
+        {
+            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
+
+            Exception exception = new Exception("Internal server error.");
+
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(exception);
+
+            StatusCodeResult expectedStatusCodeResult = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            IActionResult result = buildingController.CreateBuilding(buildingRequest);
+
+            StatusCodeResult resultStatusCode = result as StatusCodeResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.IsTrue(resultStatusCode.StatusCode.Equals(expectedStatusCodeResult.StatusCode));
+        }
+
+        [TestMethod]
         public void UpdateBuildingTestOk()
         {
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000 };
