@@ -27,8 +27,7 @@ namespace ManagementApiTest
             List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
 
             buildingLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
-            Assert.AreEqual(expectedObject.First(), objectResult.First());
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
         }
 
         [TestMethod]
