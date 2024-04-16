@@ -49,9 +49,16 @@ namespace ManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequestModel createInvitationRequestModel)
         {
-            // TODO: Validar que el email que se esta invitando no exista en la base de datos
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
-            return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
+            try
+            {
+                InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
+                return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
+            }
+            // TODO: Falta el caso en el que ya exista una invitación con el mismo email, o el email en la bd
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while creating the invitation");
+            }
         }
 
         [HttpPut("{id}")]

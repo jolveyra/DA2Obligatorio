@@ -124,6 +124,19 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void CreateInvitationTestInternalError()
+        {
+            invitationLogicMock.Setup(i => i.CreateInvitation(It.IsAny<Invitation>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while creating the invitation") { StatusCode = 500 };
+
+            ObjectResult result = invitationController.CreateInvitation(new CreateInvitationRequestModel()) as ObjectResult;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
+        }
+
+        [TestMethod]
         public void UpdateInvitationByIdTestOk()
         {
             UpdateInvitationRequestModel createInvitationRequest = new UpdateInvitationRequestModel() { IsAccepted = true };
