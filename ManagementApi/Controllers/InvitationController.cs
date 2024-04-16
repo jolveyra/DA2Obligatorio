@@ -40,6 +40,10 @@ namespace ManagementApi.Controllers
             {
                 return NotFound("There is no invitation with that specific id");
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving the invitation");
+            }
         }
 
         [HttpPost]
