@@ -193,5 +193,18 @@ namespace ManagementApiTest
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
         }
+
+        [TestMethod]
+        public void DeleteInvitationByIdTestInternalError()
+        {
+            invitationLogicMock.Setup(i => i.DeleteInvitation(It.IsAny<Guid>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while deleting the invitation") { StatusCode = 500 };
+
+            ObjectResult result = invitationController.DeleteInvitationById(It.IsAny<Guid>()) as ObjectResult;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
+        }
     }
 }

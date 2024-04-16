@@ -84,6 +84,10 @@ namespace ManagementApi.Controllers
             {
                 return NoContent();
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while deleting the invitation");
+            }
         }
     }
 }
