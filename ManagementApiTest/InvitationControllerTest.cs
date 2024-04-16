@@ -46,6 +46,19 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void GetAllInvitationsTestInternalError()
+        {
+            invitationLogicMock.Setup(i => i.GetAllInvitations()).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while retrieving all the invitations") { StatusCode = 500 };
+
+            ObjectResult result = invitationController.GetAllInvitations() as ObjectResult;
+
+            invitationLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
+        }
+
+        [TestMethod]
         public void GetInvitationByIdTestOk()
         {
             IEnumerable<Invitation> invitations = new List<Invitation>

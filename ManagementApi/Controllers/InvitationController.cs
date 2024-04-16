@@ -19,7 +19,14 @@ namespace ManagementApi.Controllers
         [HttpGet]
         public IActionResult GetAllInvitations()
         {
-            return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponseModel(invitation)).ToList());
+            try
+            {
+                return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponseModel(invitation)).ToList());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving all the invitations");
+            }
         }
 
         [HttpGet("{id}")]
