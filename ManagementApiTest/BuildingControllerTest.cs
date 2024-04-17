@@ -299,6 +299,21 @@ namespace ManagementApiTest
             Assert.AreEqual(resultValue, expectedResult);
         }
 
+
+        [TestMethod]
+        public void GetFlatByBuildingAndFlatIdTestNotFound()
+        {
+            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new ArgumentException());
+
+            NotFoundObjectResult expected = new NotFoundObjectResult("There is no flat with that specific id");
+
+            NotFoundObjectResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>()) as NotFoundObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
+
         [TestMethod]
         public void UpdateFlatByBuildingAndFlatIdTestOk()
         {

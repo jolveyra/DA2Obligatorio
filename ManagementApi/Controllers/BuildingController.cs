@@ -109,7 +109,13 @@ namespace ManagementApi.Controllers
         [HttpGet("{buildingId}/{flatId}")]
         public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
-            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
+            try
+            {
+                return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
+            }catch(ArgumentException)
+            {
+                return NotFound("There is no flat with that specific id");
+            }
         }
     }
 }
