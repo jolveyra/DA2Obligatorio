@@ -103,7 +103,13 @@ namespace ManagementApi.Controllers
         [HttpPut("{buildingId}/{flatId}")]
         public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
-            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
+            try
+            {
+                return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
+            }catch(ArgumentException)
+            {
+                return NotFound("There is no flat with that specific id");
+            }
         }
 
         [HttpGet("{buildingId}/{flatId}")]

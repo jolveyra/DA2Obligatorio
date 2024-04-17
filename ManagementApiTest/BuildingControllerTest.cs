@@ -299,7 +299,6 @@ namespace ManagementApiTest
             Assert.AreEqual(resultValue, expectedResult);
         }
 
-
         [TestMethod]
         public void GetFlatByBuildingAndFlatIdTestNotFound()
         {
@@ -368,6 +367,20 @@ namespace ManagementApiTest
 
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
             Assert.AreEqual(resultValue, expectedResult);
+        }
+
+        [TestMethod]
+        public void UpdateFlatByBuildingAndFlatIdTestNotFound()
+        {
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Throws(new ArgumentException());
+
+            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no flat with that specific id");
+
+            NotFoundObjectResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), new UpdateFlatRequestModel()) as NotFoundObjectResult;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
         }
     }
 }
