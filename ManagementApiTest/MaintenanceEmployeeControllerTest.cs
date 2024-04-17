@@ -10,6 +10,15 @@ namespace ManagementApiTest
     [TestClass]
     public class MaintenanceEmployeeControllerTest
     {
+        private Mock<IMaintenanceEmployeeLogic> maintenanceEmployeeLogicMock;
+        private MaintenanceEmployeeController maintenanceEmployeeController;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            maintenanceEmployeeLogicMock = new Mock<IMaintenanceEmployeeLogic>(MockBehavior.Strict);
+            maintenanceEmployeeController = new MaintenanceEmployeeController(maintenanceEmployeeLogicMock.Object);
+        }
 
         [TestMethod]
         public void GetAllMaintenanceEmployeeTestOk()
@@ -20,9 +29,6 @@ namespace ManagementApiTest
                 new User() { Id = Guid.NewGuid(), Role = Role.Administrator },
                 new User() { Id = Guid.NewGuid(), Role = Role.Manager }
             };
-
-            Mock<IMaintenanceEmployeeLogic> maintenanceEmployeeLogicMock = new Mock<IMaintenanceEmployeeLogic>(MockBehavior.Strict);
-            MaintenanceEmployeeController maintenanceEmployeeController = new MaintenanceEmployeeController(maintenanceEmployeeLogicMock.Object);
 
             maintenanceEmployeeLogicMock.Setup(m => m.GetAllMaintenanceEmployees()).Returns(maintenanceEmployees.Where(u => u.Role == Role.Manager));
 
@@ -40,6 +46,5 @@ namespace ManagementApiTest
             maintenanceEmployeeLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
         }
-
     }
 }
