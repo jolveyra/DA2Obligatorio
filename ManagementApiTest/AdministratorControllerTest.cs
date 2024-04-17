@@ -10,6 +10,16 @@ namespace ManagementApiTest
     [TestClass]
     public class AdministratorControllerTest
     {
+        private Mock<IAdministratorLogic> administratorLogicMock;
+        private AdministratorController administratorController;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            administratorLogicMock = new Mock<IAdministratorLogic>(MockBehavior.Strict);
+            administratorController = new AdministratorController(administratorLogicMock.Object);
+        }
+
         [TestMethod]
         public void GetAllAdministratorsTestOk()
         {
@@ -20,13 +30,7 @@ namespace ManagementApiTest
                 new User() { Id = Guid.NewGuid(), Role = Role.Administrator }
             };
 
-            Mock<IAdministratorLogic> administratorLogicMock = new Mock<IAdministratorLogic>(MockBehavior.Strict);
-            AdministratorController administratorController =
-                new AdministratorController(administratorLogicMock.Object);
-
-
-            administratorLogicMock.Setup(a => a.GetAllAdministrators())
-                .Returns(administrators.Where(u => u.Role == Role.Administrator));
+            administratorLogicMock.Setup(a => a.GetAllAdministrators()).Returns(administrators.Where(u => u.Role == Role.Administrator));
 
             OkObjectResult expected = new OkObjectResult(new List<AdministratorResponseModel>
             {
@@ -40,9 +44,7 @@ namespace ManagementApiTest
             List<AdministratorResponseModel> objectResult = result.Value as List<AdministratorResponseModel>;
 
             administratorLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) &&
-                          expectedObject.First().Equals(objectResult.First()) &&
-                          expectedObject.Last().Equals(objectResult.Last()));
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
         }
 
         [TestMethod]
@@ -57,9 +59,6 @@ namespace ManagementApiTest
             };
             User expected = administratorCreateModel.ToEntity();
             expected.Id = Guid.NewGuid();
-
-            Mock<IAdministratorLogic> administratorLogicMock = new Mock<IAdministratorLogic>(MockBehavior.Strict);
-            AdministratorController administratorController = new AdministratorController(administratorLogicMock.Object);
 
             administratorLogicMock.Setup(a => a.CreateAdministrator(It.IsAny<User>())).Returns(expected);
 
