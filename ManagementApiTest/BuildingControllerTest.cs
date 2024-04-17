@@ -40,8 +40,6 @@ namespace ManagementApiTest
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
         }
 
-
-
         [TestMethod]
         public void GetBuildingByIdTestOk()
         {
@@ -60,6 +58,19 @@ namespace ManagementApiTest
             Assert.AreEqual(expectedObject, objectResult);
         }
 
+        [TestMethod]
+        public void GetBuildingByIdNotFoundTest()
+        {
+            buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException());
+
+            NotFoundObjectResult expected = new NotFoundObjectResult("There is no building with that specific id.");
+
+            NotFoundObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as NotFoundObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
 
         [TestMethod]
         public void CreateBuildingTestOk()

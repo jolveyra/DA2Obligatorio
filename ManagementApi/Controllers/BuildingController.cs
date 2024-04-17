@@ -47,9 +47,15 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}")]
-        public OkObjectResult GetBuildingById([FromRoute] Guid buildingId)
+        public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
-            return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
+            try
+            {
+                return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
+            }catch(ArgumentException)
+            {
+                return NotFound("There is no building with that specific id.");
+            }
         }
 
         [HttpPut("{id}")]
