@@ -80,32 +80,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetInvitationByIdTestNotFound()
-        {
-            invitationLogicMock.Setup(i => i.GetInvitationById(It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no invitation with that specific id");
-
-            NotFoundObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
-        public void GetInvitationByIdTestInternalError()
-        {
-            invitationLogicMock.Setup(i => i.GetInvitationById(It.IsAny<Guid>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while retrieving the invitation") { StatusCode = 500 };
-
-            ObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as ObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
         public void CreateInvitationTestCreated()
         {
             CreateInvitationRequestModel createInvitationRequest = new CreateInvitationRequestModel() { Name = "Juan", Email = "juan@gmail.com", DaysToExpiration = 7 };

@@ -1,11 +1,12 @@
 ﻿using LogicInterfaces;
+using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels;
 using WebModels.InvitationModels;
 
 namespace ManagementApi.Controllers
 {
     [Route("api/v1/invitations")]
+    [ExceptionFilter]
     [ApiController]
     public class InvitationController : ControllerBase
     {
@@ -32,18 +33,7 @@ namespace ManagementApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)
         {
-            try
-            {
-                return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("There is no invitation with that specific id");
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while retrieving the invitation");
-            }
+            return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
         }
 
         [HttpPost]
