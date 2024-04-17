@@ -73,6 +73,20 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void GetBuildingByIdInternalErrorTest()
+        {
+            buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while retrieving the building") { StatusCode = 500 };
+
+            ObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as ObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
+
+        [TestMethod]
         public void CreateBuildingTestOk()
         {
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
