@@ -106,9 +106,14 @@ namespace ManagementApi.Controllers
             try
             {
                 return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
-            }catch(ArgumentException)
+            }
+            catch(ArgumentException)
             {
                 return NotFound("There is no flat with that specific id");
+            }
+            catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while updating the flat");
             }
         }
 

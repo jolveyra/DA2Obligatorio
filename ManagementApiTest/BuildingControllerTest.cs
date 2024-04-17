@@ -195,7 +195,6 @@ namespace ManagementApiTest
             Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
         }
 
-
         [TestMethod]
         public void UpdateBuildingTestNotFound()
         {
@@ -252,7 +251,6 @@ namespace ManagementApiTest
             Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
         }
 
-
         [TestMethod]
         public void DeleteBuildingTestInternalError()
         {
@@ -266,7 +264,6 @@ namespace ManagementApiTest
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
             Assert.AreEqual(expected.Value, result.Value);
         }
-
 
         [TestMethod]
         public void GetFlatByBuildingAndFlatIdTestOk()
@@ -381,6 +378,20 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
+        }
+
+        [TestMethod]
+        public void UpdateFlatByBuildingAndFlatIdTestInternalError()
+        {
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while updating the flat") { StatusCode = 500 };
+
+            ObjectResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), new UpdateFlatRequestModel()) as ObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
         }
     }
 }
