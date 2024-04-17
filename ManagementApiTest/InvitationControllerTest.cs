@@ -117,32 +117,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateInvitationByIdTestNotFound()
-        {
-            invitationLogicMock.Setup(i => i.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no invitation with that specific id");
-
-            NotFoundObjectResult result = invitationController.UpdateInvitationById(It.IsAny<Guid>(), new UpdateInvitationRequestModel()) as NotFoundObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
-        public void UpdateInvitationByIdTestInternalError()
-        {
-            invitationLogicMock.Setup(i => i.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while updating the invitation") { StatusCode = 500 };
-
-            ObjectResult result = invitationController.UpdateInvitationById(It.IsAny<Guid>(), new UpdateInvitationRequestModel()) as ObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
         public void DeleteInvitationByIdTestOk()
         {
             invitationLogicMock.Setup(i => i.DeleteInvitation(It.IsAny<Guid>()));

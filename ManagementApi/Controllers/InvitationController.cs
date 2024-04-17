@@ -46,19 +46,8 @@ namespace ManagementApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateInvitationById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
         {
-            try
-            {
-                InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
-                return Ok(response);
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("There is no invitation with that specific id");
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while updating the invitation");
-            }
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
