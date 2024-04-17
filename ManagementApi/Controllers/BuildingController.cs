@@ -41,7 +41,13 @@ namespace ManagementApi.Controllers
         [HttpGet]
         public IActionResult GetAllBuildings()
         {
-            return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
+            try
+            {
+                return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
+            }catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving the buildings");
+            }
         }
 
         [HttpGet("{buildingId}")]
