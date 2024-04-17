@@ -63,7 +63,7 @@ namespace ManagementApiTest
         {
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException());
 
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no building with that specific id.");
+            NotFoundObjectResult expected = new NotFoundObjectResult("There is no building with that specific id");
 
             NotFoundObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as NotFoundObjectResult;
 
@@ -133,19 +133,15 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateBuildingTestInternalError()
         {
-            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(new Exception());
 
-            Exception exception = new Exception("Internal server error.");
+            ObjectResult expected = new ObjectResult("An error occurred while creating the building") { StatusCode = 500 };
 
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(exception);
-
-            StatusCodeResult expectedStatusCodeResult = new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            IActionResult result = buildingController.CreateBuilding(buildingRequest);
-
-            StatusCodeResult resultStatusCode = result as StatusCodeResult;
+            ObjectResult result = buildingController.CreateBuilding(new BuildingRequestModel()) as ObjectResult;
 
             buildingLogicMock.VerifyAll();
-            Assert.IsTrue(resultStatusCode.StatusCode.Equals(expectedStatusCodeResult.StatusCode));
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
         }
 
         [TestMethod]

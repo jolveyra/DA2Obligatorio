@@ -32,11 +32,9 @@ namespace ManagementApi.Controllers
                 BadRequestObjectResult badRequestResult = new BadRequestObjectResult("Building already exists.");
                 return badRequestResult;
             }
-            catch(Exception e)
+            catch (Exception)
             {
-                StatusCodeResult statusCodeResult = new StatusCodeResult(StatusCodes.Status500InternalServerError);
-
-                return statusCodeResult;
+                return StatusCode(500, "An error occurred while creating the building");
             }
         }
 
@@ -54,7 +52,7 @@ namespace ManagementApi.Controllers
                 return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
             }catch(ArgumentException)
             {
-                return NotFound("There is no building with that specific id.");
+                return NotFound("There is no building with that specific id");
             }
             catch (Exception)
             {
