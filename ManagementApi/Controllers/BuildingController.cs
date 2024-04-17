@@ -69,7 +69,7 @@ namespace ManagementApi.Controllers
             }
             catch(ArgumentException)
             {
-                return NotFound("There is no building with that specific id.");
+                return NotFound("There is no building with that specific id");
             }catch(Exception)
             {
                 return StatusCode(500, "An error occurred while updating the building");

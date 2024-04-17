@@ -59,7 +59,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetBuildingByIdNotFoundTest()
+        public void GetBuildingByIdTestNotFound()
         {
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException());
 
@@ -73,7 +73,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetBuildingByIdInternalErrorTest()
+        public void GetBuildingByIdTestInternalError()
         {
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
 
@@ -185,10 +185,9 @@ namespace ManagementApiTest
         [TestMethod]
         public void UpdateBuildingTestNotFound()
         {
-            ArgumentException expectedException = new ArgumentException("Building not found.");
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(expectedException);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(new ArgumentException());
 
-            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id.");
+            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id");
 
             NotFoundObjectResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), new UpdateBuildingRequestModel()) as NotFoundObjectResult;
 
