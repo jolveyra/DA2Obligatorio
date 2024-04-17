@@ -177,6 +177,20 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void UpdateBuildingTestInternalError()
+        {
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while updating the building") { StatusCode = 500 };
+
+            ObjectResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), new UpdateBuildingRequestModel()) as ObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
+
+        [TestMethod]
         public void DeleteBuildingTestOk()
         {
             buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));

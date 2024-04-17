@@ -3,6 +3,7 @@ using LogicInterfaces;
 using WebModels;
 using System.Security.Cryptography;
 using ManagementApiTest;
+using System.Reflection.Metadata;
 
 namespace ManagementApi.Controllers
 {
@@ -58,9 +59,12 @@ namespace ManagementApi.Controllers
             {
                 return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
             }
-            catch(ArgumentException e)
+            catch(ArgumentException)
             {
                 return NotFound("There is no building with that specific id.");
+            }catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while updating the building");
             }
         }
 
