@@ -64,19 +64,8 @@ namespace ManagementApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteInvitationById([FromRoute] Guid id)
         {
-            try
-            {
-                _invitationLogic.DeleteInvitation(id);
-                return Ok();
-            }
-            catch (ArgumentException)
-            {
-                return NoContent();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while deleting the invitation");
-            }
+            _invitationLogic.DeleteInvitation(id);
+            return Ok();
         }
     }
 }
