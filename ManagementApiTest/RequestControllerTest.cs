@@ -98,14 +98,14 @@ namespace ManagementApiTest
             {
                 Description = "Broken pipe",
                 BuildingId = Guid.NewGuid(),
-                flatId = Guid.NewGuid(),
+                FlatId = Guid.NewGuid(),
                 CategoryName = "Plumbing"
             };
             Request expected = new Request
             {
                 Description = requestCreateModel.Description,
                 BuildingId = requestCreateModel.BuildingId,
-                FlatId = requestCreateModel.flatId,
+                FlatId = requestCreateModel.FlatId,
                 Category = new Category { Name = requestCreateModel.CategoryName }
             };
             requestLogicMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(expected);
@@ -114,6 +114,36 @@ namespace ManagementApiTest
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateRequest", "CreateRequest", new { Id = expected.Id }, expectedResult);
 
             CreatedAtActionResult result = requestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
+            RequestResponseModel resultObject = result.Value as RequestResponseModel;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(resultObject));
+        }
+
+        [TestMethod]
+        public void UpdateRequestByIdTestOk()
+        {
+            RequestUpdateModel requestUpdateModel = new RequestUpdateModel
+            {
+                Description = "Broken pipe",
+                CategoryName = "Plumbing",
+                AssignedEmployeeId = Guid.NewGuid()
+            };
+            Request expected = new Request
+            {
+                Id = Guid.NewGuid(),
+                Description = requestUpdateModel.Description,
+                BuildingId = Guid.NewGuid(),
+                FlatId = Guid.NewGuid(),
+                Category = new Category { Name = requestUpdateModel.CategoryName },
+                AssignedEmployeeId = requestUpdateModel.AssignedEmployeeId
+            };
+            requestLogicMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
+
+            RequestResponseModel expectedResult = new RequestResponseModel(expected);
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            OkObjectResult result = requestController.UpdateRequestById(expected.Id, requestUpdateModel) as OkObjectResult;
             RequestResponseModel resultObject = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();

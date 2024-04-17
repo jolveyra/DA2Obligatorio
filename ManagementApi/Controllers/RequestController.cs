@@ -44,5 +44,12 @@ namespace ManagementApi.Controllers
             var request = _requestLogic.CreateRequest(requestCreateModel.ToEntity());
             return CreatedAtAction(nameof(GetRequestById), new { id = request.Id }, new RequestResponseModel(request));
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateRequestById([FromRoute] Guid id, [FromBody] RequestUpdateModel requestUpdateModel)
+        {
+            var request = _requestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));
+            return Ok(new RequestResponseModel(request));
+        }
     }
 }

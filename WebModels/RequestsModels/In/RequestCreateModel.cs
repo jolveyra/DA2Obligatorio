@@ -6,12 +6,12 @@ namespace WebModels.RequestsModels
     {
         public string Description { get; set; }
         public Guid BuildingId { get; set; }
-        public Guid flatId { get; set; }
+        public Guid FlatId { get; set; }
         public string CategoryName { get; set; }
 
         public Request ToEntity()
         {
-            if (String.IsNullOrEmpty(Description) || BuildingId == null || flatId == null || String.IsNullOrEmpty(CategoryName))
+            if (String.IsNullOrEmpty(Description) || BuildingId == null || FlatId == null || String.IsNullOrEmpty(CategoryName))
             {
                 throw new MissingFieldException("One of the parameters of the body is missing");
             }
@@ -20,7 +20,7 @@ namespace WebModels.RequestsModels
             {
                 Description = Description,
                 BuildingId = BuildingId,
-                FlatId = flatId,
+                FlatId = FlatId,
                 Category = new Category { Name = CategoryName }
             };
         }
