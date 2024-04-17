@@ -204,6 +204,38 @@ namespace ManagementApiTest
             Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
         }
 
+
+        [TestMethod]
+        public void GetFlatByBuildingAndFlatIdTestOk()
+        {
+            Flat expected = new Flat()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 2,
+                Number = 201,
+                OwnerName = "Gonzalo",
+                OwnerSurname = "Bergessio",
+                OwnerEmail = "gonzabergessiobolso@gmail.com",
+                Bathrooms = 3,
+                HasBalcony = true
+            };
+
+            FlatResponseModel expectedResult = new FlatResponseModel(expected);
+            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(expected);
+
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            IActionResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
+
+            OkObjectResult resultObject = result as OkObjectResult;
+            FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue, expectedResult);
+        }
+
         [TestMethod]
         public void UpdateFlatByBuildingAndFlatIdTestOk()
         {

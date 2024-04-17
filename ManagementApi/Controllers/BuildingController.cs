@@ -83,5 +83,11 @@ namespace ManagementApi.Controllers
         {
             return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
         }
+
+        [HttpGet("{buildingId}/{flatId}")]
+        public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
+        {
+            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
+        }
     }
 }
