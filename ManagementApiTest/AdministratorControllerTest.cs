@@ -21,10 +21,12 @@ namespace ManagementApiTest
             };
 
             Mock<IAdministratorLogic> administratorLogicMock = new Mock<IAdministratorLogic>(MockBehavior.Strict);
-            AdministratorController administratorController = new AdministratorController(administratorLogicMock.Object);
+            AdministratorController administratorController =
+                new AdministratorController(administratorLogicMock.Object);
 
 
-            administratorLogicMock.Setup(a => a.GetAllAdministrators()).Returns(administrators.Where(u => u.Role == Role.Administrator));
+            administratorLogicMock.Setup(a => a.GetAllAdministrators())
+                .Returns(administrators.Where(u => u.Role == Role.Administrator));
 
             OkObjectResult expected = new OkObjectResult(new List<AdministratorResponseModel>
             {
@@ -38,8 +40,37 @@ namespace ManagementApiTest
             List<AdministratorResponseModel> objectResult = result.Value as List<AdministratorResponseModel>;
 
             administratorLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) &&
+                          expectedObject.First().Equals(objectResult.First()) &&
+                          expectedObject.Last().Equals(objectResult.Last()));
         }
 
+        [TestMethod]
+        public void CreateAdministratorTestCreated()
+        {
+            CreateAdministratorRequestModel administratorCreateModel = new CreateAdministratorRequestModel()
+            {
+                Email = "juan123@gmail.com",
+                Name = "Juan",
+                Surname = "Perez",
+                Password = "123456"
+            };
+            User expected = administratorCreateModel.ToEntity();
+            expected.Id = Guid.NewGuid();
+
+            Mock<IAdministratorLogic> administratorLogicMock = new Mock<IAdministratorLogic>(MockBehavior.Strict);
+            AdministratorController administratorController = new AdministratorController(administratorLogicMock.Object);
+
+            administratorLogicMock.Setup(a => a.CreateAdministrator(It.IsAny<User>())).Returns(expected);
+
+            AdministratorResponseModel expectedResult = new AdministratorResponseModel(expected);
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateAdministrator", "CreateAdministrator", new { Id = expected.Id }, expectedResult);
+
+            CreatedAtActionResult result = administratorController.CreateAdministrator(administratorCreateModel) as CreatedAtActionResult;
+            AdministratorResponseModel objectResult = result.Value as AdministratorResponseModel;
+
+            administratorLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(objectResult));
+        }
     }
 }
