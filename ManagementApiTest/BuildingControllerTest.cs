@@ -40,6 +40,27 @@ namespace ManagementApiTest
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
         }
 
+
+
+        [TestMethod]
+        public void GetBuildingByIdTestOk()
+        {
+            Building building =  new Building() { Name = "Mirador" } ;
+
+            buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+            OkObjectResult expected = new OkObjectResult(new BuildingResponseModel(building));
+            BuildingResponseModel expectedObject = expected.Value as BuildingResponseModel;
+
+            OkObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as OkObjectResult;
+            BuildingResponseModel objectResult = result.Value as BuildingResponseModel;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObject, objectResult);
+        }
+
+
         [TestMethod]
         public void CreateBuildingTestOk()
         {

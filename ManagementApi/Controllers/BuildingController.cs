@@ -45,6 +45,12 @@ namespace ManagementApi.Controllers
             return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
         }
 
+        [HttpGet("{buildingId}")]
+        public OkObjectResult GetBuildingById([FromRoute] Guid buildingId)
+        {
+            return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
+        }
+
         [HttpPut("{id}")]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
