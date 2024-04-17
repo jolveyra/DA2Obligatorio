@@ -1,10 +1,12 @@
 ﻿using LogicInterfaces;
+using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 using WebModels.RequestsModels;
 
 namespace ManagementApi.Controllers
 {
     [Route("api/v1/requests")]
+    [ExceptionFilter]
     [ApiController]
     public class RequestController : ControllerBase
     {
@@ -33,14 +35,7 @@ namespace ManagementApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
-            try
-            {
-                return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("There is no request with that specific id");
-            }
+            return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
         }
     }
 }

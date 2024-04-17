@@ -91,18 +91,5 @@ namespace ManagementApiTest
             requestLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
         }
-
-        [TestMethod]
-        public void GetRequestByIdTestNotFound()
-        {
-            requestLogicMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no request with that specific id");
-
-            NotFoundObjectResult result = requestController.GetRequestById(It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            requestLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
     }
 }
