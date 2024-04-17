@@ -115,6 +115,9 @@ namespace ManagementApi.Controllers
             }catch(ArgumentException)
             {
                 return NotFound("There is no flat with that specific id");
+            }catch(Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving the flat");
             }
         }
     }

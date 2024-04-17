@@ -315,6 +315,20 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
+        public void GetFlatByBuildingAndFlatIdTestInternalError()
+        {
+            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while retrieving the flat") { StatusCode = 500 };
+
+            ObjectResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>()) as ObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
+
+        [TestMethod]
         public void UpdateFlatByBuildingAndFlatIdTestOk()
         {
             UpdateFlatRequestModel updateFlatRequest = new UpdateFlatRequestModel()
