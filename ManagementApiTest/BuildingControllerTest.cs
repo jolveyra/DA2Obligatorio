@@ -206,6 +206,21 @@ namespace ManagementApiTest
 
 
         [TestMethod]
+        public void DeleteBuildingTestInternalError()
+        {
+            buildingLogicMock.Setup(i => i.DeleteBuilding(It.IsAny<Guid>())).Throws(new Exception());
+
+            ObjectResult expected = new ObjectResult("An error occurred while deleting the building") { StatusCode = 500 };
+
+            ObjectResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as ObjectResult;
+
+            buildingLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expected.Value, result.Value);
+        }
+
+
+        [TestMethod]
         public void GetFlatByBuildingAndFlatIdTestOk()
         {
             Flat expected = new Flat()

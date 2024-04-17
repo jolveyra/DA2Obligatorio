@@ -76,6 +76,10 @@ namespace ManagementApi.Controllers
             {
                 return NotFound("There is no building with that specific id.");
             }
+            catch(Exception e)
+            {
+                return StatusCode(500, "An error occurred while deleting the building");
+            }
         }
 
         [HttpPut("{buildingId}/{flatId}")]
