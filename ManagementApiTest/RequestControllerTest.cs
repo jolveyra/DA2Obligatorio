@@ -3,7 +3,6 @@ using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModels.InvitationModels;
 using WebModels.RequestsModels;
 
 namespace ManagementApiTest
@@ -90,6 +89,35 @@ namespace ManagementApiTest
 
             requestLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
+        }
+
+        [TestMethod]
+        public void CreateRequestTestCreated()
+        {
+            RequestCreateModel requestCreateModel = new RequestCreateModel
+            {
+                Description = "Broken pipe",
+                BuildingId = Guid.NewGuid(),
+                flatId = Guid.NewGuid(),
+                CategoryName = "Plumbing"
+            };
+            Request expected = new Request
+            {
+                Description = requestCreateModel.Description,
+                BuildingId = requestCreateModel.BuildingId,
+                FlatId = requestCreateModel.flatId,
+                Category = new Category { Name = requestCreateModel.CategoryName }
+            };
+            requestLogicMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(expected);
+
+            RequestResponseModel expectedResult = new RequestResponseModel(expected); 
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateRequest", "CreateRequest", new { Id = expected.Id }, expectedResult);
+
+            CreatedAtActionResult result = requestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
+            RequestResponseModel resultObject = result.Value as RequestResponseModel;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(resultObject));
         }
     }
 }

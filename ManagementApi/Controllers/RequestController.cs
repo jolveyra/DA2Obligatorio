@@ -37,5 +37,12 @@ namespace ManagementApi.Controllers
         {
             return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
         }
+
+        [HttpPost]
+        public IActionResult CreateRequest([FromBody] RequestCreateModel requestCreateModel)
+        {
+            var request = _requestLogic.CreateRequest(requestCreateModel.ToEntity());
+            return CreatedAtAction(nameof(GetRequestById), new { id = request.Id }, new RequestResponseModel(request));
+        }
     }
 }
