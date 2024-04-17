@@ -67,19 +67,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetInvitationByIdNotFound()
-        {
-            invitationLogicMock.Setup(i => i.GetInvitationById(It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no invitation with that specific id");
-
-            NotFoundObjectResult result = invitationController.GetInvitationById(It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
         public void CreateInvitationTestCreated()
         {
             CreateInvitationRequestModel createInvitationRequest = new CreateInvitationRequestModel() { Name = "Juan", Email = "juan@gmail.com", DaysToExpiration = 7 };
@@ -117,19 +104,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateInvitationByIdNotFound()
-        {
-            invitationLogicMock.Setup(i => i.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no invitation with that specific id");
-
-            NotFoundObjectResult result = invitationController.UpdateInvitationById(It.IsAny<Guid>(), new UpdateInvitationRequestModel()) as NotFoundObjectResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expected.Value.Equals(result.Value));
-        }
-
-        [TestMethod]
         public void DeleteInvitationByIdTestOk()
         {
             invitationLogicMock.Setup(i => i.DeleteInvitation(It.IsAny<Guid>()));
@@ -137,19 +111,6 @@ namespace ManagementApiTest
             OkResult expected = new OkResult();
 
             OkResult result = invitationController.DeleteInvitationById(It.IsAny<Guid>()) as OkResult;
-
-            invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
-        }
-
-        [TestMethod]
-        public void DeleteInvitationByIdNoContent()
-        {
-            invitationLogicMock.Setup(i => i.DeleteInvitation(It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NoContentResult expected = new NoContentResult();
-
-            NoContentResult result = invitationController.DeleteInvitationById(It.IsAny<Guid>()) as NoContentResult;
 
             invitationLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));

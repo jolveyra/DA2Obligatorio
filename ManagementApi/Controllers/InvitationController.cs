@@ -1,11 +1,12 @@
 ﻿using LogicInterfaces;
+using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels;
 using WebModels.InvitationModels;
 
 namespace ManagementApi.Controllers
 {
     [Route("api/v1/invitations")]
+    [ExceptionFilter]
     [ApiController]
     public class InvitationController : ControllerBase
     {
@@ -25,52 +26,28 @@ namespace ManagementApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)
         {
-            try
-            {
-                return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("There is no invitation with that specific id");
-            }
+            return Ok(new InvitationResponseModel(_invitationLogic.GetInvitationById(id)));
         }
 
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequestModel createInvitationRequestModel)
         {
-            // TODO: Validar que el email que se esta invitando no exista en la base de datos
             InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
             return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
         }
 
-        // TODO: Crear try catch
         [HttpPut("{id}")]
         public IActionResult UpdateInvitationById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
         {
-            try
-            {
-                // TODO: Preguntar si esta bien retornar CreatedAtAction, MDN dice que es estandar para PUT
-                InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
-                return Ok(response);
-            }
-            catch (ArgumentException)
-            {
-                return NotFound("There is no invitation with that specific id");
-            }
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteInvitationById([FromRoute] Guid id)
         {
-            try
-            {
-                _invitationLogic.DeleteInvitation(id);
-                return Ok();
-            }
-            catch (ArgumentException)
-            {
-                return NoContent();
-            }
+            _invitationLogic.DeleteInvitation(id);
+            return Ok();
         }
     }
 }
