@@ -30,8 +30,6 @@ namespace ManagementApi.Controllers
             return Ok(requests.Select(req => new RequestResponseModel(req)).ToList());
         }
 
-        // TODO: employee requests, report requests
-
         [HttpGet("{id}")]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
