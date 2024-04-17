@@ -22,5 +22,12 @@ namespace ManagementApi.Controllers
         {
             return Ok(_maintenanceEmployeeLogic.GetAllMaintenanceEmployees().Select(employee => new MaintenanceEmployeeResponseModel(employee)).ToList());
         }
+
+        [HttpPost]
+        public IActionResult CreateMaintenanceEmployee([FromBody] CreateMaintenanceEmployeeRequestModel createMaintenanceEmployeeRequestModel)
+        {
+            MaintenanceEmployeeResponseModel response = new MaintenanceEmployeeResponseModel(_maintenanceEmployeeLogic.CreateMaintenanceEmployee(createMaintenanceEmployeeRequestModel.ToEntity()));
+            return CreatedAtAction("CreateMaintenanceEmployee", new { response.Id }, response);
+        }
     }
 }
