@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain;
 
-namespace WebModels
+namespace WebModels.BuildingModels
 {
     public class FlatResponseModel
     {

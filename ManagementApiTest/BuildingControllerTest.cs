@@ -41,20 +41,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetAllBuildingsIdTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.GetAllBuildings()).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while retrieving the buildings") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.GetAllBuildings() as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
-
-        [TestMethod]
         public void GetBuildingByIdTestOk()
         {
             Building building =  new Building() { Name = "Mirador" } ;
@@ -70,34 +56,6 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
             Assert.AreEqual(expectedObject, objectResult);
-        }
-
-        [TestMethod]
-        public void GetBuildingByIdTestNotFound()
-        {
-            buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no building with that specific id");
-
-            NotFoundObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
-
-        [TestMethod]
-        public void GetBuildingByIdTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while retrieving the building") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
         }
 
         [TestMethod]
@@ -145,36 +103,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void CreateBuildingTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while creating the building") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.CreateBuilding(new BuildingRequestModel()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
-
-        [TestMethod]
-        public void CreateBuildingTestArgumentError()
-        {
-            ArgumentException exception = new ArgumentException("Building already exists.");
-
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Throws(exception);
-
-            BadRequestObjectResult expectedObjectResult = new BadRequestObjectResult("Building already exists.");
-
-            BadRequestObjectResult result = buildingController.CreateBuilding(new BuildingRequestModel()) as BadRequestObjectResult;
-
-            buildingLogicMock.VerifyAll();
-
-            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
-        }
-
-        [TestMethod]
         public void UpdateBuildingTestOk()
         {
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000 };
@@ -196,34 +124,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateBuildingTestNotFound()
-        {
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id");
-
-            NotFoundObjectResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), new UpdateBuildingRequestModel()) as NotFoundObjectResult;
-
-            buildingLogicMock.VerifyAll();
-
-            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
-        }
-
-        [TestMethod]
-        public void UpdateBuildingTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while updating the building") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), new UpdateBuildingRequestModel()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
-
-        [TestMethod]
         public void DeleteBuildingTestOk()
         {
             buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
@@ -234,35 +134,6 @@ namespace ManagementApiTest
             buildingLogicMock.VerifyAll();
 
             Assert.IsTrue(result.StatusCode.Equals(expectedResult.StatusCode));
-        }
-
-        [TestMethod]
-        public void DeleteBuildingTestNotFound()
-        {
-            ArgumentException expectedException = new ArgumentException("Building not found.");
-            buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>())).Throws(expectedException);
-
-            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no building with that specific id.");
-
-            NotFoundObjectResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            buildingLogicMock.VerifyAll();
-
-            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
-        }
-
-        [TestMethod]
-        public void DeleteBuildingTestInternalError()
-        {
-            buildingLogicMock.Setup(i => i.DeleteBuilding(It.IsAny<Guid>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while deleting the building") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
         }
 
         [TestMethod]
@@ -294,34 +165,6 @@ namespace ManagementApiTest
 
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
             Assert.AreEqual(resultValue, expectedResult);
-        }
-
-        [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestNotFound()
-        {
-            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expected = new NotFoundObjectResult("There is no flat with that specific id");
-
-            NotFoundObjectResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>()) as NotFoundObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
-
-        [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while retrieving the flat") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
         }
 
         [TestMethod]
@@ -366,32 +209,5 @@ namespace ManagementApiTest
             Assert.AreEqual(resultValue, expectedResult);
         }
 
-        [TestMethod]
-        public void UpdateFlatByBuildingAndFlatIdTestNotFound()
-        {
-            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Throws(new ArgumentException());
-
-            NotFoundObjectResult expectedObjectResult = new NotFoundObjectResult("There is no flat with that specific id");
-
-            NotFoundObjectResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), new UpdateFlatRequestModel()) as NotFoundObjectResult;
-
-            buildingLogicMock.VerifyAll();
-
-            Assert.IsTrue(result.StatusCode.Equals(expectedObjectResult.StatusCode) && result.Value.Equals(expectedObjectResult.Value));
-        }
-
-        [TestMethod]
-        public void UpdateFlatByBuildingAndFlatIdTestInternalError()
-        {
-            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Throws(new Exception());
-
-            ObjectResult expected = new ObjectResult("An error occurred while updating the flat") { StatusCode = 500 };
-
-            ObjectResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), new UpdateFlatRequestModel()) as ObjectResult;
-
-            buildingLogicMock.VerifyAll();
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, result.Value);
-        }
     }
 }

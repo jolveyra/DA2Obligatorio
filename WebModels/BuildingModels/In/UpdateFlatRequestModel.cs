@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ManagementApiTest
+namespace WebModels.BuildingModels
 {
     public class UpdateFlatRequestModel
     {

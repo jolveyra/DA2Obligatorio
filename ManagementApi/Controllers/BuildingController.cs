@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LogicInterfaces;
-using WebModels;
+using WebModels.BuildingModels;
+using ManagementApi.Filters;
 using System.Security.Cryptography;
-using ManagementApiTest;
 using System.Reflection.Metadata;
 
 namespace ManagementApi.Controllers
 {
     [Route("api/v1/buildings")]
     [ApiController]
+    [ExceptionFilter]
     public class BuildingController : ControllerBase
     {
         private IBuildingLogic _iBuildingLogic;
@@ -21,115 +22,54 @@ namespace ManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
-            try
-            {
-                BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
+            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
 
-                return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
-            }
-            catch (ArgumentException)
-            {
-                BadRequestObjectResult badRequestResult = new BadRequestObjectResult("Building already exists.");
-                return badRequestResult;
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while creating the building");
-            }
+            return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
         }
 
         [HttpGet]
         public IActionResult GetAllBuildings()
         {
-            try
-            {
-                return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
-            }catch(Exception)
-            {
-                return StatusCode(500, "An error occurred while retrieving the buildings");
-            }
+            return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
+        
         }
 
         [HttpGet("{buildingId}")]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
-            try
-            {
-                return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
-            }catch(ArgumentException)
-            {
-                return NotFound("There is no building with that specific id");
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An error occurred while retrieving the building");
-            }
+            
+            return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
+            
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
-            try
-            {
-                return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
-            }
-            catch(ArgumentException)
-            {
-                return NotFound("There is no building with that specific id");
-            }catch(Exception)
-            {
-                return StatusCode(500, "An error occurred while updating the building");
-            }
+            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
+            
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteBuilding([FromRoute] Guid id)
         {
-            try
-            {
-                _iBuildingLogic.DeleteBuilding(id);
-                return Ok();
-            }
-            catch(ArgumentException e)
-            {
-                return NotFound("There is no building with that specific id.");
-            }
-            catch(Exception e)
-            {
-                return StatusCode(500, "An error occurred while deleting the building");
-            }
+            _iBuildingLogic.DeleteBuilding(id);
+            return Ok();
+         
         }
 
         [HttpPut("{buildingId}/{flatId}")]
         public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
-            try
-            {
-                return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
-            }
-            catch(ArgumentException)
-            {
-                return NotFound("There is no flat with that specific id");
-            }
-            catch(Exception)
-            {
-                return StatusCode(500, "An error occurred while updating the flat");
-            }
+            
+            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
+        
         }
 
         [HttpGet("{buildingId}/{flatId}")]
         public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
-            try
-            {
-                return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
-            }catch(ArgumentException)
-            {
-                return NotFound("There is no flat with that specific id");
-            }catch(Exception)
-            {
-                return StatusCode(500, "An error occurred while retrieving the flat");
-            }
+            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
+    
         }
     }
 }
