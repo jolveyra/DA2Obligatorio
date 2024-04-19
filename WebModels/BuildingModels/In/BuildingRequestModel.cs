@@ -1,7 +1,7 @@
 ﻿using Domain;
 using System.Collections.Generic;
 
-namespace WebModels
+namespace WebModels.BuildingModels
 {
     public class BuildingRequestModel
     {

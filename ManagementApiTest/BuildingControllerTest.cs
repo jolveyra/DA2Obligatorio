@@ -1,7 +1,7 @@
 using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using WebModels;
+using WebModels.BuildingModels;
 using Moq;
 using Domain;
 using Microsoft.AspNetCore.Http;
