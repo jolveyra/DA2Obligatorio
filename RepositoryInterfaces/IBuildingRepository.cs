@@ -11,4 +11,5 @@ public interface IBuildingRepository
     Building GetBuildingById(Guid guid);
     Flat GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2);
     Building UpdateBuilding(Guid guid, float v);
+    Flat UpdateFlat(Guid guid1, Guid guid2, Flat flat);
 }

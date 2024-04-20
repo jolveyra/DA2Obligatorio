@@ -108,4 +108,19 @@ public class BuildingLogicTest
 
         Assert.AreEqual(flat, result);
     }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestOk()
+    {
+        Flat flat = new Flat();
+        Flat expected = new Flat();
+
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(expected);
+
+        Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(expected, result);
+    }   
 }

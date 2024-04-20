@@ -45,6 +45,6 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
-        throw new NotImplementedException();
+        return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
     }
 }
