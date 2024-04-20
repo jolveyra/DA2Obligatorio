@@ -49,4 +49,18 @@ public class BuildingLogicTest
         Assert.AreEqual(buildings, result);
 
     }
+
+    [TestMethod]
+    public void GetBuildingByIdTestOk()
+    {
+        Building building = new Building() { Name = "Mirador" };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        Building result = buildingLogic.GetBuildingById(It.IsAny<Guid>());
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(building, result);
+    }   
 }
