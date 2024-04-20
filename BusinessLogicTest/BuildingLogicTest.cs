@@ -62,5 +62,36 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(building, result);
-    }   
+    }
+
+    [TestMethod]
+    public void UpdateBuildingTestOk()
+    {
+        Building building = new Building() { Name = "Mirador" };
+        Building expected = new Building() { Name = "Mirador" };
+
+        buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Returns(expected);
+
+        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>());
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void DeleteBuildingTestOk()
+    {
+        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
+
+        buildingLogic.DeleteBuilding(It.IsAny<Guid>());
+
+        IEnumerable<Building> repositoryBuildings = buildingLogic.GetAllBuildings();
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsTrue(buildingLogic.GetAllBuildings().FirstOrDefault(x => x.Id == It.IsAny<Guid>()) is null);
+    }
 }

@@ -20,7 +20,7 @@ public class BuildingLogic: IBuildingLogic
 
     public void DeleteBuilding(Guid guid)
     {
-        throw new NotImplementedException();
+        _iBuildingRepository.DeleteBuilding(guid);
     }
 
     public IEnumerable<Building> GetAllBuildings()
@@ -40,7 +40,7 @@ public class BuildingLogic: IBuildingLogic
 
     public Building UpdateBuilding(Guid guid, float v)
     {
-        throw new NotImplementedException();
+        return _iBuildingRepository.UpdateBuilding(guid, v);
     }
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
