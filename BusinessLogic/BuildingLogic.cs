@@ -35,7 +35,7 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)
     {
-        throw new NotImplementedException();
+        return _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
     }
 
     public Building UpdateBuilding(Guid guid, float v)

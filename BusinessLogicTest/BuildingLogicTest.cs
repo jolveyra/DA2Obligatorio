@@ -94,4 +94,18 @@ public class BuildingLogicTest
 
         Assert.IsTrue(buildingLogic.GetAllBuildings().FirstOrDefault(x => x.Id == It.IsAny<Guid>()) is null);
     }
+
+    [TestMethod]
+    public void GetFlatByBuildingAndFlatIdTestOk()
+    {
+        Flat flat = new Flat();
+
+        buildingRepositoryMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(flat);
+
+        Flat result = buildingLogic.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(flat, result);
+    }
 }
