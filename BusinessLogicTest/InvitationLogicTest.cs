@@ -8,6 +8,16 @@ namespace BusinessLogicTest
     [TestClass]
     public class InvitationLogicTest
     {
+        private Mock<IInvitationRepository> invitationRepositoryMock;
+        private InvitationLogic invitationLogic;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
+            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object);
+        }
+
         [TestMethod]
         public void GetAllInvitationsTest()
         {
@@ -17,11 +27,9 @@ namespace BusinessLogicTest
                 new Invitation() { Id = Guid.NewGuid(), Name = "Jose", Email = "jose456@gmail.com" }
             };
 
-            Mock<IInvitationRepository> invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
             invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(invitations);
-            InvitationLogic logic = new InvitationLogic(invitationRepositoryMock.Object);
 
-            IEnumerable<Invitation> result = logic.GetAllInvitations();
+            IEnumerable<Invitation> result = invitationLogic.GetAllInvitations();
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(invitations));
@@ -32,14 +40,11 @@ namespace BusinessLogicTest
         {
             Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com" };
 
-            Mock<IInvitationRepository> invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
-            InvitationLogic logic = new InvitationLogic(invitationRepositoryMock.Object);
 
             invitation.Id = Guid.NewGuid();
-
             Invitation expected = invitation;
-            Invitation result = logic.CreateInvitation(invitation);
+            Invitation result = invitationLogic.CreateInvitation(invitation);
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(invitation.Equals(invitation));
