@@ -7,6 +7,7 @@ namespace ManagementApi.Controllers
 {
     [Route("api/v1/administrators")]
     [ExceptionFilter]
+    [AuthenticationFilter]
     [ApiController]
     public class AdministratorController : ControllerBase
     {

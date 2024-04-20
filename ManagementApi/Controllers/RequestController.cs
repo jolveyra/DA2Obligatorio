@@ -18,6 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter]
         public IActionResult GetAllManagerRequests([FromQuery] string? category)
         {
             var requests = _requestLogic.GetAllRequests();
@@ -31,12 +32,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AuthenticationFilter]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
             return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
         }
 
         [HttpPost]
+        [AuthenticationFilter]
         public IActionResult CreateRequest([FromBody] RequestCreateModel requestCreateModel)
         {
             var request = _requestLogic.CreateRequest(requestCreateModel.ToEntity());
@@ -44,6 +47,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [AuthenticationFilter]
         public IActionResult UpdateRequestById([FromRoute] Guid id, [FromBody] RequestUpdateModel requestUpdateModel)
         {
             var request = _requestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));
