@@ -30,6 +30,23 @@ public class BuildingLogicTest
 
         Building result = buildingLogic.CreateBuilding(building);
 
+        buildingRepositoryMock.VerifyAll();
+
         Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void GetAllBuildingsTestOk()
+    { 
+        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
+
+        IEnumerable<Building> result = buildingLogic.GetAllBuildings();
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(buildings, result);
+
     }
 }

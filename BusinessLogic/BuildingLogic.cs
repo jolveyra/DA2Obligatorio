@@ -25,7 +25,7 @@ public class BuildingLogic: IBuildingLogic
 
     public IEnumerable<Building> GetAllBuildings()
     {
-        throw new NotImplementedException();
+        return _iBuildingRepository.GetAllBuildings();
     }
 
     public Building GetBuildingById(Guid id)
