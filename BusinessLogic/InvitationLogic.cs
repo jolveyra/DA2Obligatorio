@@ -7,6 +7,7 @@ namespace BusinessLogic
     public class InvitationLogic : IInvitationLogic
     {
         private readonly IInvitationRepository _invitationRepository;
+        private readonly IUserRepository _userRepository;
 
         public InvitationLogic(IInvitationRepository invitationRepository)
         {
@@ -15,7 +16,7 @@ namespace BusinessLogic
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.CreateInvitation(invitation);
         }
 
         public void DeleteInvitation(Guid id)
@@ -33,7 +34,7 @@ namespace BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Invitation UpdateInvitation(Guid id, bool isAccepted)
+        public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
             throw new NotImplementedException();
         }

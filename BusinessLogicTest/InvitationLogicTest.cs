@@ -13,8 +13,8 @@ namespace BusinessLogicTest
         {
             List<Invitation> invitations = new List<Invitation>()
             {
-                new Invitation("Juan", "juan123@gmail.com", 7), 
-                new Invitation("Jose", "jose456@gmail.com", 7)
+                new Invitation() { Id = Guid.NewGuid(), Name = "Juan", Email = "juan123@gmail.com" }, 
+                new Invitation() { Id = Guid.NewGuid(), Name = "Jose", Email = "jose456@gmail.com" }
             };
 
             Mock<IInvitationRepository> invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
@@ -25,6 +25,24 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(invitations));
+        }
+
+        [TestMethod]
+        public void CreateInvitationTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com" };
+
+            Mock<IInvitationRepository> invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
+            invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
+            InvitationLogic logic = new InvitationLogic(invitationRepositoryMock.Object);
+
+            invitation.Id = Guid.NewGuid();
+
+            Invitation expected = invitation;
+            Invitation result = logic.CreateInvitation(invitation);
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsTrue(invitation.Equals(invitation));
         }
     }
 }
