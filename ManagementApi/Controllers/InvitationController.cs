@@ -18,6 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter]
         public IActionResult GetAllInvitations()
         {
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponseModel(invitation)).ToList());
@@ -30,6 +31,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequestModel createInvitationRequestModel)
         {
             InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
@@ -44,6 +46,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AuthenticationFilter]
         public IActionResult DeleteInvitationById([FromRoute] Guid id)
         {
             _invitationLogic.DeleteInvitation(id);

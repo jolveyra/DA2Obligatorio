@@ -20,6 +20,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
             BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
@@ -28,6 +29,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter]
         public IActionResult GetAllBuildings()
         {
             return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
@@ -35,6 +37,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}")]
+        [AuthenticationFilter]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             
@@ -43,6 +46,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [AuthenticationFilter]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
             return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
@@ -50,6 +54,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [AuthenticationFilter]
         public IActionResult DeleteBuilding([FromRoute] Guid id)
         {
             _iBuildingLogic.DeleteBuilding(id);
@@ -58,6 +63,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{buildingId}/{flatId}")]
+        [AuthenticationFilter]
         public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
             
@@ -66,6 +72,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}/{flatId}")]
+        [AuthenticationFilter]
         public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
             return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
