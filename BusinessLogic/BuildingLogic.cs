@@ -15,14 +15,14 @@ public class BuildingLogic: IBuildingLogic
 
     public Building CreateBuilding(Building building)
     {
-        try
+        List<Building> buildings = _iBuildingRepository.GetAllBuildings().ToList();
+
+        if(buildings.FirstOrDefault(x => x.Name == building.Name) != null)
         {
-            return _iBuildingRepository.CreateBuilding(building);
+            throw new ArgumentException("Building with same name already exists");
         }
-        catch (ArgumentException e)
-        {
-            throw new ArgumentException(e.Message);
-        }
+
+        return _iBuildingRepository.CreateBuilding(building);
     }
 
     public void DeleteBuilding(Guid guid)
