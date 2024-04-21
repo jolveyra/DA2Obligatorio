@@ -30,7 +30,7 @@ namespace BusinessLogic
 
         public IEnumerable<User> GetAllMaintenanceEmployees()
         {
-            throw new NotImplementedException();
+            return _userRepository.GetAllUsers().Where(u => u.Role == Role.MaintenanceEmployee);
         }
     }
 }

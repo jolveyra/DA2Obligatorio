@@ -24,5 +24,22 @@ namespace BusinessLogicTest
 
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
         }
+
+        [TestMethod]
+        public void GetAllMaintenanceEmployeesTest()
+        {
+            var users = new List<User>
+            {
+                new User { Role = Role.Administrator },
+                new User { Role = Role.MaintenanceEmployee }
+            };
+            var userRepositoryMock = new Mock<IUserRepository>();
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            var userLogic = new UserLogic(userRepositoryMock.Object);
+
+            var result = userLogic.GetAllMaintenanceEmployees();
+
+            Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.Last()));
+        }
     }
 }
