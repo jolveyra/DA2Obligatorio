@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
     <ProjectReference Include="..\LogicInterfaces\LogicInterfaces.csproj" />
     <ProjectReference Include="..\WebModels\WebModels.csproj" />
   </ItemGroup>

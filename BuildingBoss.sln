@@ -5,13 +5,19 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementApi", "ManagementApi\ManagementApi.csproj", "{CFE6B0BC-4E52-4126-BEC7-FAA64CF66861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagementApiTest", "ManagementApiTest\ManagementApiTest.csproj", "{79B43D30-5BA5-4F66-A8D6-B441105754ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementApiTest", "ManagementApiTest\ManagementApiTest.csproj", "{79B43D30-5BA5-4F66-A8D6-B441105754ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{8B161642-B0EF-4435-BB13-24F2136D2F3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{8B161642-B0EF-4435-BB13-24F2136D2F3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicInterfaces", "LogicInterfaces\LogicInterfaces.csproj", "{35D7608C-18ED-4ABF-A6FC-B3D81134935A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicInterfaces", "LogicInterfaces\LogicInterfaces.csproj", "{35D7608C-18ED-4ABF-A6FC-B3D81134935A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModels", "WebModels\WebModels.csproj", "{E065C560-EB60-4033-9FB6-3716217BE3C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebModels", "WebModels\WebModels.csproj", "{E065C560-EB60-4033-9FB6-3716217BE3C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{BB9A01F5-C8F7-4770-B921-4DC2AFBBE3F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{8EBE634C-9202-4FEF-89B7-C34D42AE1DC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryInterfaces", "RepositoryInterfaces\RepositoryInterfaces.csproj", "{1CBDDA6B-2553-4527-BF87-F44ADADD52ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9A01F5-C8F7-4770-B921-4DC2AFBBE3F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9A01F5-C8F7-4770-B921-4DC2AFBBE3F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9A01F5-C8F7-4770-B921-4DC2AFBBE3F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9A01F5-C8F7-4770-B921-4DC2AFBBE3F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBE634C-9202-4FEF-89B7-C34D42AE1DC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBE634C-9202-4FEF-89B7-C34D42AE1DC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBE634C-9202-4FEF-89B7-C34D42AE1DC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBE634C-9202-4FEF-89B7-C34D42AE1DC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CBDDA6B-2553-4527-BF87-F44ADADD52ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CBDDA6B-2553-4527-BF87-F44ADADD52ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CBDDA6B-2553-4527-BF87-F44ADADD52ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CBDDA6B-2553-4527-BF87-F44ADADD52ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
