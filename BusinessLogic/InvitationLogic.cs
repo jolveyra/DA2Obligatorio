@@ -41,7 +41,14 @@ namespace BusinessLogic
 
         public Invitation GetInvitationById(Guid id)
         {
-            return _invitationRepository.GetInvitationById(id);
+            try
+            {
+                return _invitationRepository.GetInvitationById(id);
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException("There is no invitation with that id.");
+            }
         }
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)

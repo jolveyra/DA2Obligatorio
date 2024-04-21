@@ -60,7 +60,7 @@ namespace BusinessLogicTest
             User user = new User() { Name = "Juan", Email = "juan@gmail.com" };
             Invitation invitation = new Invitation() { Name = "Juan", Email = "juan@gmail.com"};
 
-            invitationRepositoryMock.Setup(repository => repository.CreateInvitation(It.IsAny<Invitation>())).Throws(new ArgumentException("There is already a user with the same email"));
+            invitationRepositoryMock.Setup(repository => repository.CreateInvitation(It.IsAny<Invitation>())).Throws(new ArgumentException());
             userRepositoryMock.Setup(repository => repository.GetUserByEmail(It.IsAny<string>())).Returns(user);
 
             invitationLogic.CreateInvitation(invitation);
@@ -79,6 +79,19 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "There is no invitation with that id")]
+        public void GetNonExistingInvitationByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(id)).Throws(new ArgumentException());
+            
+            invitationLogic.GetInvitationById(id);
+
+            invitationRepositoryMock.VerifyAll();
         }
     }
 }
