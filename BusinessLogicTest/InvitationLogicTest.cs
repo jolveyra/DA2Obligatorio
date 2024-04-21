@@ -121,5 +121,17 @@ namespace BusinessLogicTest
             invitationRepositoryMock.VerifyAll();
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        public void DeleteInvitationTest()
+        {
+            Guid idToDelete = Guid.NewGuid();
+
+            invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(It.IsAny<Guid>()));
+
+            invitationLogic.DeleteInvitation(idToDelete);
+
+            invitationRepositoryMock.Verify();
+        }
     }
 }

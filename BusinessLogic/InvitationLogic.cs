@@ -31,7 +31,7 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            throw new NotImplementedException();
+            _invitationRepository.DeleteInvitation(id);
         }
 
         public IEnumerable<Invitation> GetAllInvitations()
