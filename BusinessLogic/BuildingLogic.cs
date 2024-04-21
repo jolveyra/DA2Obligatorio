@@ -38,6 +38,7 @@ public class BuildingLogic: IBuildingLogic
     public Building GetBuildingById(Guid id)
     {
         return _iBuildingRepository.GetBuildingById(id);
+        
     }
 
     public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)

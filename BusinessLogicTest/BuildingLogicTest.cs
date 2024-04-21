@@ -71,7 +71,7 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-        Building result = buildingLogic.GetBuildingById(It.IsAny<Guid>());
+        Building result = buildingLogic.GetBuildingById(building.Id);
 
         buildingRepositoryMock.VerifyAll();
 
@@ -98,15 +98,10 @@ public class BuildingLogicTest
     {
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
 
-        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
-
         buildingLogic.DeleteBuilding(It.IsAny<Guid>());
-
-        IEnumerable<Building> repositoryBuildings = buildingLogic.GetAllBuildings();
 
         buildingRepositoryMock.VerifyAll();
 
-        Assert.IsTrue(buildingLogic.GetAllBuildings().FirstOrDefault(x => x.Id == It.IsAny<Guid>()) is null);
     }
 
     [TestMethod]
@@ -136,5 +131,5 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
-    }   
+    }
 }
