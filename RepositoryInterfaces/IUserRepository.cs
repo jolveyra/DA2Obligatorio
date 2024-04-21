@@ -2,8 +2,8 @@
 
 namespace RepositoryInterfaces
 {
-    public  interface IUserRepository
+    public interface IUserRepository
     {
-        User GetUserByEmail(string email);
+        User? GetUserByEmail(string email);
     }
 }

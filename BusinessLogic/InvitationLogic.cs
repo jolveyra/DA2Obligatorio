@@ -9,14 +9,24 @@ namespace BusinessLogic
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
 
-        public InvitationLogic(IInvitationRepository invitationRepository)
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository)
         {
             _invitationRepository = invitationRepository;
+            _userRepository = userRepository;
         }
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            return _invitationRepository.CreateInvitation(invitation);
+            try
+            {
+                _userRepository.GetUserByEmail(invitation.Email);
+            }
+            catch (ArgumentException)
+            {
+                return _invitationRepository.CreateInvitation(invitation);
+            }
+
+            throw new ArgumentException("There is already a user with the same email");
         }
 
         public void DeleteInvitation(Guid id)

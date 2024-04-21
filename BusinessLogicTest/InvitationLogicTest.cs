@@ -9,13 +9,15 @@ namespace BusinessLogicTest
     public class InvitationLogicTest
     {
         private Mock<IInvitationRepository> invitationRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
         private InvitationLogic invitationLogic;
 
         [TestInitialize]
         public void Initialize()
         {
             invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
-            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -41,13 +43,28 @@ namespace BusinessLogicTest
             Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com" };
 
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
+            userRepositoryMock.Setup(repository => repository.GetUserByEmail(It.IsAny<string>())).Throws(new ArgumentException("There is no user with that email."));
 
             invitation.Id = Guid.NewGuid();
             Invitation expected = invitation;
             Invitation result = invitationLogic.CreateInvitation(invitation);
 
             invitationRepositoryMock.VerifyAll();
-            Assert.IsTrue(invitation.Equals(invitation));
+            Assert.IsTrue(expected.Equals(result));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "There is already a user with the same email")]
+        public void GivenExistingEmail_WhenCreateInvitation_ThenThrowArgumentException()
+        {
+            User user = new User() { Name = "Juan", Email = "juan@gmail.com" };
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan@gmail.com"};
+
+            invitationRepositoryMock.Setup(repository => repository.CreateInvitation(It.IsAny<Invitation>())).Throws(new ArgumentException("There is already a user with the same email"));
+            userRepositoryMock.Setup(repository => repository.GetUserByEmail(It.IsAny<string>())).Returns(user);
+
+            invitationLogic.CreateInvitation(invitation);
+            invitationRepositoryMock.VerifyAll();
         }
     }
 }
