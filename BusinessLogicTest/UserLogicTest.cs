@@ -8,6 +8,16 @@ namespace BusinessLogicTest
     [TestClass]
     public class UserLogicTest
     {
+        private Mock<IUserRepository> userRepositoryMock;
+        private UserLogic userLogic;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            userRepositoryMock = new Mock<IUserRepository>();
+            userLogic = new UserLogic(userRepositoryMock.Object);
+        }
+
         [TestMethod]
         public void GetAllAdministratorsTest()
         {
@@ -16,10 +26,9 @@ namespace BusinessLogicTest
                 new User { Role = Role.Administrator },
                 new User { Role = Role.MaintenanceEmployee }
             };
-            var userRepositoryMock = new Mock<IUserRepository>();
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
-            var userLogic = new UserLogic(userRepositoryMock.Object);
 
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            
             var result = userLogic.GetAllAdministrators();
 
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
@@ -33,10 +42,9 @@ namespace BusinessLogicTest
                 new User { Role = Role.Administrator },
                 new User { Role = Role.MaintenanceEmployee }
             };
-            var userRepositoryMock = new Mock<IUserRepository>();
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
-            var userLogic = new UserLogic(userRepositoryMock.Object);
 
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            
             var result = userLogic.GetAllMaintenanceEmployees();
 
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.Last()));
