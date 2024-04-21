@@ -4,6 +4,7 @@ namespace RepositoryInterfaces
 {
     public interface IUserRepository
     {
-        User? GetUserByEmail(string email);
+        IEnumerable<User> GetAllUsers();
+        User GetUserByEmail(string email);
     }
 }
