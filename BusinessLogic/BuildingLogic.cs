@@ -46,9 +46,20 @@ public class BuildingLogic: IBuildingLogic
         return _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
     }
 
-    public Building UpdateBuilding(Guid guid, float v)
+    public Building UpdateBuilding(Guid buildingId, float sharedExpenses)
     {
-        return _iBuildingRepository.UpdateBuilding(guid, v);
+        CheckSharedExpenses(sharedExpenses);
+
+        return _iBuildingRepository.UpdateBuilding(buildingId, sharedExpenses);
+
+    }
+
+    private static void CheckSharedExpenses(float sharedExpenses)
+    {
+        if (sharedExpenses < 0)
+        {
+            throw new ArgumentException("Shared expenses cannot be negative");
+        }
     }
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)

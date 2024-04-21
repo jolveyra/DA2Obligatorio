@@ -93,6 +93,17 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "Shared expenses cannot be negative")]
+
+    public void UpdateBuildingTestNegativeSharedExpenses()
+    {
+        Building building = new Building() { Name = "Mirador" };
+        Building expected = new Building() { Name = "Mirador" };
+
+        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), -50);
+    }
+
+    [TestMethod]
     public void DeleteBuildingTestOk()
     {
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
