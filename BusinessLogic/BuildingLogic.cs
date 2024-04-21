@@ -15,14 +15,19 @@ public class BuildingLogic: IBuildingLogic
 
     public Building CreateBuilding(Building building)
     {
+        CheckUniqueBuildingName(building);
+
+        return _iBuildingRepository.CreateBuilding(building);
+    }
+
+    private void CheckUniqueBuildingName(Building building)
+    {
         List<Building> buildings = _iBuildingRepository.GetAllBuildings().ToList();
 
-        if(buildings.FirstOrDefault(x => x.Name == building.Name) != null)
+        if (buildings.FirstOrDefault(x => x.Name == building.Name) != null)
         {
             throw new ArgumentException("Building with same name already exists");
         }
-
-        return _iBuildingRepository.CreateBuilding(building);
     }
 
     public void DeleteBuilding(Guid guid)
