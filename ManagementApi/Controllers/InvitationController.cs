@@ -39,9 +39,9 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateInvitationById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
+        public IActionResult UpdateInvitationStatusById([FromRoute] Guid id, [FromBody] UpdateInvitationRequestModel updateInvitationRequestModel)
         {
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitation(id, updateInvitationRequestModel.IsAccepted));
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.UpdateInvitationStatus(id, updateInvitationRequestModel.IsAccepted));
             return Ok(response);
         }
 

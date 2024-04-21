@@ -5,13 +5,21 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementApi", "ManagementApi\ManagementApi.csproj", "{CFE6B0BC-4E52-4126-BEC7-FAA64CF66861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagementApiTest", "ManagementApiTest\ManagementApiTest.csproj", "{79B43D30-5BA5-4F66-A8D6-B441105754ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementApiTest", "ManagementApiTest\ManagementApiTest.csproj", "{79B43D30-5BA5-4F66-A8D6-B441105754ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{8B161642-B0EF-4435-BB13-24F2136D2F3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{8B161642-B0EF-4435-BB13-24F2136D2F3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicInterfaces", "LogicInterfaces\LogicInterfaces.csproj", "{35D7608C-18ED-4ABF-A6FC-B3D81134935A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicInterfaces", "LogicInterfaces\LogicInterfaces.csproj", "{35D7608C-18ED-4ABF-A6FC-B3D81134935A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModels", "WebModels\WebModels.csproj", "{E065C560-EB60-4033-9FB6-3716217BE3C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebModels", "WebModels\WebModels.csproj", "{E065C560-EB60-4033-9FB6-3716217BE3C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{1773CDFA-A40B-40F2-B9C6-8385A49F1F29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{F99E12DA-7486-40C3-BB42-9B5BEEDF46B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryInterfaces", "RepositoryInterfaces\RepositoryInterfaces.csproj", "{0424FF3A-F9F8-4B50-98AE-4CA648164115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceFactory", "ServiceFactory\ServiceFactory.csproj", "{5183930F-024E-4E58-AF7D-61061609968B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +47,22 @@ Global
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E065C560-EB60-4033-9FB6-3716217BE3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1773CDFA-A40B-40F2-B9C6-8385A49F1F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1773CDFA-A40B-40F2-B9C6-8385A49F1F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1773CDFA-A40B-40F2-B9C6-8385A49F1F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1773CDFA-A40B-40F2-B9C6-8385A49F1F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F99E12DA-7486-40C3-BB42-9B5BEEDF46B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F99E12DA-7486-40C3-BB42-9B5BEEDF46B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F99E12DA-7486-40C3-BB42-9B5BEEDF46B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F99E12DA-7486-40C3-BB42-9B5BEEDF46B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0424FF3A-F9F8-4B50-98AE-4CA648164115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0424FF3A-F9F8-4B50-98AE-4CA648164115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0424FF3A-F9F8-4B50-98AE-4CA648164115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0424FF3A-F9F8-4B50-98AE-4CA648164115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5183930F-024E-4E58-AF7D-61061609968B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5183930F-024E-4E58-AF7D-61061609968B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5183930F-024E-4E58-AF7D-61061609968B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5183930F-024E-4E58-AF7D-61061609968B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
