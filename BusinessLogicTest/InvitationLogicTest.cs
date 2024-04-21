@@ -55,7 +55,7 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "There is already a user with the same email")]
-        public void GivenExistingEmail_WhenCreateInvitation_ThenThrowArgumentException()
+        public void CreateInvitationWithExistingEmailTest()
         {
             User user = new User() { Name = "Juan", Email = "juan@gmail.com" };
             Invitation invitation = new Invitation() { Name = "Juan", Email = "juan@gmail.com"};
