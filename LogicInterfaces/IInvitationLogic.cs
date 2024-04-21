@@ -8,6 +8,6 @@ namespace LogicInterfaces
         void DeleteInvitation(Guid id);
         IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid id);
-        Invitation UpdateInvitation(Guid id, bool isAccepted);
+        Invitation UpdateInvitationStatus(Guid id, bool isAccepted);
     }
 }
