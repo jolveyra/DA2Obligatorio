@@ -73,7 +73,7 @@ namespace BusinessLogicTest
             Guid id = Guid.NewGuid();
             Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
 
-            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(id)).Returns(expected);
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(expected);
             
             Invitation result = invitationLogic.GetInvitationById(id);
 
@@ -87,11 +87,25 @@ namespace BusinessLogicTest
         {
             Guid id = Guid.NewGuid();
 
-            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(id)).Throws(new ArgumentException());
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Throws(new ArgumentException());
             
             invitationLogic.GetInvitationById(id);
 
             invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateInvitationStatusTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
+
+            invitationRepositoryMock.Setup(repository => repository.UpdateInvitationStatus(It.IsAny<Guid>(), It.IsAny<bool>())).Returns(expected);
+
+            Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
         }
     }
 }

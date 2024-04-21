@@ -53,7 +53,8 @@ namespace BusinessLogic
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.UpdateInvitationStatus(id, isAccepted);
+            
         }
     }
 }
