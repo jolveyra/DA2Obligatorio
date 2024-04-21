@@ -1,12 +1,12 @@
 ﻿using Domain;
 
-namespace LogicInterfaces
+namespace RepositoryInterfaces
 {
-    public interface IInvitationLogic
+    public interface IInvitationRepository
     {
         Invitation CreateInvitation(Invitation invitation);
         void DeleteInvitation(Guid id);
-        IEnumerable<Invitation> GetAllInvitations();
+        public IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid id);
         Invitation UpdateInvitationStatus(Guid id, bool isAccepted);
     }

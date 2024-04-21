@@ -12,7 +12,7 @@ namespace WebModels.RequestsModels
         {
             if (String.IsNullOrEmpty(Description) || String.IsNullOrEmpty(CategoryName) || AssignedEmployeeId == null)
             { 
-                throw new MissingFieldException("There is a missing field in the request's body");
+                throw new ArgumentException("There is a missing field in the request's body");
             }
 
             return new Request

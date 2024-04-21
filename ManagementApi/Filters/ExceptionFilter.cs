@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ManagementApi.CustomExceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ManagementApi.Filters
@@ -7,13 +8,10 @@ namespace ManagementApi.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            if (context.Exception is MissingFieldException)
+            if (context.Exception is ArgumentException) 
             {
                 context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = 400 };
-            } else if (context.Exception is InvalidOperationException) 
-            {
-                context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = 400 };
-            } else if (context.Exception is ArgumentException)
+            } else if (context.Exception is ResourceNotFoundException)
             {
                 context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = 404 };
             } else if (context.Exception is Exception)

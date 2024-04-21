@@ -25,6 +25,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(["Administrator"])]
         public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequestModel administratorCreateModel)
         {
             AdministratorResponseModel response = new AdministratorResponseModel(_administratorLogic.CreateAdministrator(administratorCreateModel.ToEntity()));

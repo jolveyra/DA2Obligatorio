@@ -7,7 +7,7 @@
             get
             {
                 if (IsAccepted == null)
-                    throw new MissingFieldException("There is a missing field in the request's body");
+                    throw new ArgumentException("There is a missing field in the request's body");
 
                 return IsAccepted;
             }

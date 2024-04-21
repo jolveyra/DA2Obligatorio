@@ -13,7 +13,7 @@ namespace WebModels.MaintenanceEmployeeModels
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Surname) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
             {
-                throw new MissingFieldException("There is a missing field in the request's body");
+                throw new ArgumentException("There is a missing field in the request's body");
             }
 
             return new User()
