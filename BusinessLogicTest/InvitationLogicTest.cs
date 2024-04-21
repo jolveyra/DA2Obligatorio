@@ -107,5 +107,19 @@ namespace BusinessLogicTest
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "There is no invitation with that id")]
+        public void UpdateNonExistingInvitationStatusTest()
+        {
+            Guid id = Guid.NewGuid();
+
+            invitationRepositoryMock.Setup(repository => repository.UpdateInvitationStatus(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new ArgumentException());
+
+            Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsNull(result);
+        }
     }
 }
