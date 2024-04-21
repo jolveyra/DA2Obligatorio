@@ -36,6 +36,20 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "Building with same name already exists")]
+    public void CreateBuildingTestBuildingWithAlreadyExistingName()
+    {
+        Building building = new Building();
+        Building expected = new Building();
+        buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Throws(new ArgumentException("Building with same name already exists"));
+        BuildingLogic buildingLogic = new BuildingLogic(buildingRepositoryMock.Object);
+
+        Building result = buildingLogic.CreateBuilding(building);
+
+        buildingRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
     public void GetAllBuildingsTestOk()
     { 
         IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };

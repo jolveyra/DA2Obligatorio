@@ -15,7 +15,14 @@ public class BuildingLogic: IBuildingLogic
 
     public Building CreateBuilding(Building building)
     {
-        return _iBuildingRepository.CreateBuilding(building);
+        try
+        {
+            return _iBuildingRepository.CreateBuilding(building);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message);
+        }
     }
 
     public void DeleteBuilding(Guid guid)
