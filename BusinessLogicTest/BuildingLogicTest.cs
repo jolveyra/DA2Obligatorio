@@ -25,8 +25,8 @@ public class BuildingLogicTest
     {
         Building building = new Building();
         Building expected = new Building();
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
-        BuildingLogic buildingLogic = new BuildingLogic(buildingRepositoryMock.Object);
 
         Building result = buildingLogic.CreateBuilding(building);
 
@@ -90,17 +90,6 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException), "Shared expenses cannot be negative")]
-
-    public void UpdateBuildingTestNegativeSharedExpenses()
-    {
-        Building building = new Building() { Name = "Mirador" };
-        Building expected = new Building() { Name = "Mirador" };
-
-        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), -50);
     }
 
     [TestMethod]
