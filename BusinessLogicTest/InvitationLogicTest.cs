@@ -66,5 +66,19 @@ namespace BusinessLogicTest
             invitationLogic.CreateInvitation(invitation);
             invitationRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetInvitationByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
+
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(id)).Returns(expected);
+            
+            Invitation result = invitationLogic.GetInvitationById(id);
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
+        }
     }
 }

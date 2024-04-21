@@ -41,7 +41,7 @@ namespace BusinessLogic
 
         public Invitation GetInvitationById(Guid id)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.GetInvitationById(id);
         }
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)

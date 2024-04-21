@@ -6,5 +6,6 @@ namespace RepositoryInterfaces
     {
         Invitation CreateInvitation(Invitation invitation);
         public IEnumerable<Invitation> GetAllInvitations();
+        Invitation GetInvitationById(Guid id);
     }
 }
