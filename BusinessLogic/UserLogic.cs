@@ -70,7 +70,7 @@ namespace BusinessLogic
 
             if (string.IsNullOrEmpty(user.Surname))
             {
-                throw new UserException("The Surname is required.");
+                throw new UserException("The Surname field cannot be empty");
             }
         }
 

@@ -268,5 +268,24 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("The Name field cannot be empty"));
         }
+
+        [TestMethod]
+        public void ValidateUserWithNoSurnameTest()
+        {
+            User user = new User { Name = "Juan", Surname = "", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException))C;
+            Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty"));
+        }
     }
 }
