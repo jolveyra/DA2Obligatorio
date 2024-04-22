@@ -37,9 +37,7 @@ namespace BusinessLogic
             user.Role = Role.MaintenanceEmployee;
             ValidateUser(user);
 
-            List<User> users = _userRepository.GetAllUsers().ToList();
-
-            if (users.Exists(u => u.Email == user.Email))
+            if (ExistsUserEmail(user.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
@@ -96,6 +94,11 @@ namespace BusinessLogic
         private static bool isValidEmail(string email)
         {
             return email.Contains("@") && email.Contains(".") && email.Length > 5;
+        }
+
+        private bool ExistsUserEmail(string email)
+        {
+            return _userRepository.GetAllUsers().Any(u => u.Email == email);
         }
     }
 }
