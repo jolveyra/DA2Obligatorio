@@ -158,7 +158,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void ValidateUserWithShortEmailTest()
         {
-            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmailcom", Password = "Juan1234", Role = Role.Administrator }; 
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "@.", Password = "Juan1234", Role = Role.Administrator }; 
             Exception exception = null;
 
             try

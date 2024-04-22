@@ -1,6 +1,7 @@
 ﻿using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
+using CustomExceptions.BusinessLogic;
 
 namespace BusinessLogic
 {
@@ -17,16 +18,14 @@ namespace BusinessLogic
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            try
+            ValidateInvitation(invitation);
+
+            if (_userRepository.GetAllUsers().Any(u => u.Email == invitation.Email))
             {
-                _userRepository.GetUserByEmail(invitation.Email);
-            }
-            catch (ArgumentException)
-            {
-                return _invitationRepository.CreateInvitation(invitation);
+                throw new InvitationException("There is already a user with the same email");
             }
 
-            throw new ArgumentException("There is already a user with the same email");
+            return _invitationRepository.CreateInvitation(invitation);
         }
 
         public void DeleteInvitation(Guid id)
@@ -47,6 +46,24 @@ namespace BusinessLogic
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
             return _invitationRepository.UpdateInvitationStatus(id, isAccepted);
+        }
+
+        private static void ValidateInvitation(Invitation invitation)
+        {
+            if (!UserLogic.isValidEmail(invitation.Email))
+            {
+                throw new InvitationException("An Email must contain '@', '.' and be longer than 4 characters long");
+            }
+
+            if (string.IsNullOrEmpty(invitation.Name))
+            {
+                throw new InvitationException("The Name field cannot be empty");
+            }
+
+            if (invitation.ExpirationDate <= DateTime.Today)
+            {
+                throw new InvitationException("The date of expiration must be from tomorrow onwards");
+            }
         }
     }
 }

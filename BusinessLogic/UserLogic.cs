@@ -87,7 +87,7 @@ namespace BusinessLogic
                    password.Length >= 8;
         }
 
-        private static bool isValidEmail(string email)
+        public static bool isValidEmail(string email)
         {
             return email.Contains("@") && email.Contains(".") && email.Length > 5;
         }
