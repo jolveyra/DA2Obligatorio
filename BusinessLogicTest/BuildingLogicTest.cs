@@ -57,6 +57,26 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void CreateBuildingTestBuildingWithNegativeSharedExpenses()
+    {
+        Building building = new Building() { SharedExpenses = -1 };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Shared expenses cannot be negative");
+    }
+
+    [TestMethod]
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
         Building building = new Building() { Name = "Mirador" };

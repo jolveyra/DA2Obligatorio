@@ -28,6 +28,20 @@ public class BuildingLogic: IBuildingLogic
 
     private void ValidateBuilding(Building building)
     {
+        CheckNotEmptyBuildingName(building);
+        CheckNotNegativeSharedExpenses(building);
+    }
+
+    private static void CheckNotNegativeSharedExpenses(Building building)
+    {
+        if (building.SharedExpenses < 0)
+        {
+            throw new BuildingException("Shared expenses cannot be negative");
+        }
+    }
+
+    private static void CheckNotEmptyBuildingName(Building building)
+    {
         if (building.Name == "")
         {
             throw new BuildingException("Building name cannot be empty");
