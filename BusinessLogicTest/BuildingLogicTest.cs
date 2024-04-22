@@ -97,7 +97,28 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Building with same name already exists");
+    }
 
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithEmptyDirection()
+    {
+        Building building = new Building() { Direction = "" };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building direction cannot be empty");
     }
 
     [TestMethod]

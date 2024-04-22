@@ -8,6 +8,7 @@ namespace WebModels.BuildingModels
         public string Name { get; set; }
 
         public int Flats { get; set; }
+        public string Direction { get; set; }
 
         public Building ToEntity()
         {
