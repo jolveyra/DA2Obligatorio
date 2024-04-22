@@ -20,11 +20,9 @@ namespace BusinessLogic
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
-            ValidateUser(user);
+            ValidateUser(user); 
 
-            List<User> users = _userRepository.GetAllUsers().ToList();
-
-            if (users.Exists(u => u.Email == user.Email))
+            if (ExistsUserEmail(user.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
