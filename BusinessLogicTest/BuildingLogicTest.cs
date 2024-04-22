@@ -1,5 +1,6 @@
 using BusinessLogic;
 using RepositoryInterfaces;
+using CustomExceptions.BusinessLogic;
 using Domain;
 using Moq;
 
@@ -36,11 +37,10 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException), "Building with same name already exists")]
+    [ExpectedException(typeof(BuildingException), "Building with same name already exists")]
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
         Building building = new Building() { Name = "Mirador" };
-        Building expected = new Building();
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador" } });
 
         Building result = buildingLogic.CreateBuilding(building);
@@ -130,5 +130,26 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(BuildingException), "Flat with same number already exists")]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
+    {
+        Flat flat = new Flat() { Number = 303 };
+
+        Flat toChangeFlat = new Flat();
+
+        Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Number = 303 };
+
+        Building building = new Building() { Flats = new List<Flat>() { toChangeFlat, anotherFlat } };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(flat);
+
+        Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+
+        buildingRepositoryMock.VerifyAll();
     }
 }

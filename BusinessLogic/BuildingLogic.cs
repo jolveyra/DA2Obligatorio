@@ -1,5 +1,6 @@
 ﻿using RepositoryInterfaces;
 using LogicInterfaces;
+using CustomExceptions.BusinessLogic;
 using Domain;
 
 namespace BusinessLogic;
@@ -22,11 +23,9 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingName(Building building)
     {
-        List<Building> buildings = _iBuildingRepository.GetAllBuildings().ToList();
-
-        if (buildings.FirstOrDefault(x => x.Name == building.Name) != null)
+        if (GetAllBuildings().ToList().Exists(x => x.Name == building.Name))
         {
-            throw new ArgumentException("Building with same name already exists");
+            throw new BuildingException("Building with same name already exists");
         }
     }
 
@@ -58,6 +57,11 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
+        if(GetBuildingById(buildingId).Flats.Exists(x => x.Id != flatId && x.Number == flat.Number))
+        {
+            throw new BuildingException("Flat with same number already exists");
+        }
+
         return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
     }
 }
