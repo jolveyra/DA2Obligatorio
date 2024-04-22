@@ -2,6 +2,7 @@
 using LogicInterfaces;
 using WebModels.BuildingModels;
 using ManagementApi.Filters;
+using Domain;
 using System.Security.Cryptography;
 using System.Reflection.Metadata;
 
@@ -20,7 +21,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
             BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
@@ -29,7 +30,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
         {
             return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
@@ -37,7 +38,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}")]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             
@@ -46,7 +47,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
             return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.SharedExpenses)));
@@ -54,7 +55,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult DeleteBuilding([FromRoute] Guid id)
         {
             _iBuildingLogic.DeleteBuilding(id);
@@ -63,7 +64,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{buildingId}/{flatId}")]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
             
@@ -72,7 +73,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}/{flatId}")]
-        [AuthenticationFilter]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
             return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
