@@ -24,8 +24,16 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestOk()
     {
-        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
-        Building expected = new Building() { Id = building.Id, Name = "Mirador" };
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
+            ConstructorCompany = "A Company",
+            Direction = "A direction",
+            SharedExpenses = 100
+        };
+        Building expected = new Building() { Id = building.Id, Name = "Mirador",
+            ConstructorCompany = "A Company",
+            Direction = "A direction",
+            SharedExpenses = 100
+        };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
@@ -40,7 +48,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyName()
     {
-        Building building = new Building() { Name = "" };
+        Building building = new Building() { Name = "", 
+            ConstructorCompany = "A Company",
+            Direction = "A direction",
+            SharedExpenses = 100
+        };
 
         Exception exception = null;
 
@@ -60,7 +72,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithNegativeSharedExpenses()
     {
-        Building building = new Building() { SharedExpenses = -1 };
+        Building building = new Building() { Name = "Mirador",
+            SharedExpenses = -1,
+            ConstructorCompany = "A Company",
+            Direction = "A direction"
+        };
 
         Exception exception = null;
 
@@ -80,7 +96,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
-        Building building = new Building() { Name = "Mirador" };
+        Building building = new Building() { Name = "Mirador",
+            ConstructorCompany = "A Company",
+            Direction = "A direction",
+            SharedExpenses = 100
+        };
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador" } });
 
         Exception exception = null;
@@ -103,7 +123,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyDirection()
     {
-        Building building = new Building() { Direction = "" };
+        Building building = new Building() { Direction = "",
+            ConstructorCompany = "A Company",
+            Name = "A name",
+            SharedExpenses = 100
+        };
 
         Exception exception = null;
 
@@ -125,7 +149,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyConstructorCompany()
     {
-        Building building = new Building() { ConstructorCompany = "" };
+        Building building = new Building() { ConstructorCompany = "",
+            Name = "A Name",
+            Direction = "A direction",
+            SharedExpenses = 100
+        };
 
         Exception exception = null;
 
@@ -259,9 +287,32 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestOk()
     {
-        Flat toUpdateFlat = new Flat() { Floor = 3, Number = 303 };
-        Flat flat = new Flat() { Floor = 3, Number = 304 };
-        Flat expected = new Flat() { Floor = 3, Number = 304 };
+        Flat toUpdateFlat = new Flat() {
+            Floor = 3, 
+            Number = 303, 
+            Bathrooms = 3, 
+            HasBalcony = true, 
+            OwnerEmail = "pedro@mail.com", 
+            OwnerName = "Pedro", 
+            OwnerSurname = "De Los Naranjos" 
+        };
+        Flat flat = new Flat() { 
+            Floor = 3, 
+            Number = 304,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
+        Flat expected = new Flat() { 
+            Floor = 3, 
+            Number = 304,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
 
         buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(expected);
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat> { toUpdateFlat } });
@@ -276,7 +327,7 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
     {
-        Flat flat = new Flat() { Floor = 3, Number = 303 };
+        Flat flat = new Flat() {Floor = 3, Number = 303, Bathrooms = 3, HasBalcony = true, OwnerEmail = "pedro@mail.com", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos" };
 
         Flat toChangeFlat = new Flat();
 
@@ -306,7 +357,13 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithInvalidFloorNumber()
     {
-        Flat flat = new Flat() { Number = 303, Floor = 4 };
+        Flat flat = new Flat() { Number = 303, Floor = 4,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
 
         Flat toChangeFlat = new Flat();
 
@@ -332,7 +389,14 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyOwnerName()
     {
-        Flat flat = new Flat() { Number = 303, Floor = 3, OwnerName = "" };
+        Flat flat = new Flat() { Number = 303, 
+            Floor = 3, 
+            OwnerName = "",
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerSurname = "De Los Naranjos"
+        };
 
         Flat toChangeFlat = new Flat();
 
@@ -353,6 +417,183 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Owner name cannot be empty");
+    }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyEmail()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            OwnerName = "Pedro",
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Owner email cannot be empty");
+    }
+
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyOwnerSurname()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            OwnerName = "Pedro Sin Naranjos",
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerSurname = ""
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Owner surname cannot be empty");
+    }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithNegativeNumberOfBathrooms()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            OwnerName = "Pedro",
+            Bathrooms = 0,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Number of bathrooms cannot be negative or zero");
+    }
+
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestOwnerEmailWithNoAt()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            OwnerName = "Pedro",
+            Bathrooms = 1,
+            HasBalcony = true,
+            OwnerEmail = "pedromail.com",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid email, must contain @");
+    }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestOwnerEmailWithNoDot()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            OwnerName = "Pedro",
+            Bathrooms = 1,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mailcom",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid email, must contain .");
     }
 
 }

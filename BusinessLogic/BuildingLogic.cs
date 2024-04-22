@@ -62,7 +62,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckNotEmptyConstructorCompany(Building building)
     {
-        if (building.ConstructorCompany == "")
+        if (string.IsNullOrEmpty(building.ConstructorCompany))
         {
             throw new BuildingException("Building constructor company cannot be empty");
         }
@@ -70,7 +70,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckNotEmptyBuildingDirection(Building building)
     {
-        if (building.Direction == "")
+        if (string.IsNullOrEmpty(building.Direction))
         {
             throw new BuildingException("Building direction cannot be empty");
         }
@@ -86,7 +86,7 @@ public class BuildingLogic: IBuildingLogic
 
     private static void CheckNotEmptyBuildingName(Building building)
     {
-        if (building.Name == "")
+        if (string.IsNullOrEmpty(building.Name))
         {
             throw new BuildingException("Building name cannot be empty");
         }
@@ -130,7 +130,6 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
-
         ValidateFlat(flat);
 
         CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
@@ -142,6 +141,56 @@ public class BuildingLogic: IBuildingLogic
     {
         CheckFlatDigit(flat);
         CheckNotEmptyFLatOwnerName(flat);
+        CheckFlatOwnerEmail(flat.OwnerEmail);
+        CheckNotEmptyFLatOwnerSurname(flat);
+        CheckNotNegativeBathrooms(flat.Bathrooms);
+    }
+
+    private void CheckNotNegativeBathrooms(int bathrooms)
+    {
+        if (bathrooms <= 0)
+        {
+            throw new BuildingException("Number of bathrooms cannot be negative or zero");
+        }
+    }
+
+    private void CheckNotEmptyFLatOwnerSurname(Flat flat)
+    {
+        if (string.IsNullOrEmpty(flat.OwnerSurname))
+        {
+            throw new BuildingException("Owner surname cannot be empty");
+        }
+    }
+
+    private void CheckFlatOwnerEmail(string email)
+    {
+        CheckNotEmptyEmail(email);
+        CheckEmailWithAt(email);
+        CheckEmailWithDot(email);
+    }
+
+    private void CheckEmailWithDot(string email)
+    {
+        if (!email.Contains("."))
+        {
+            throw new BuildingException("Invalid email, must contain .");
+        }
+    }
+
+    private void CheckEmailWithAt(string email)
+    {
+        if (!email.Contains("@"))
+        {
+            throw new BuildingException("Invalid email, must contain @");
+        }
+    }
+
+    private static void CheckNotEmptyEmail(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            throw new BuildingException("Owner email cannot be empty");
+        }
     }
 
     private static void CheckNotEmptyFLatOwnerName(Flat flat)
