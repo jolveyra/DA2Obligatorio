@@ -53,7 +53,7 @@ namespace BusinessLogic
 
         public void ValidateUser(User user)
         {
-            if ((!user.Email.Contains("@") || !user.Email.Contains(".")) && user.Email.Length < 5)
+            if (!user.Email.Contains("@") || !user.Email.Contains(".") || user.Email.Length < 5)
             {
                 throw new UserException("Email must contain '@', '.' and be longer than 5 characters.");
             }

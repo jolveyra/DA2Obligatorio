@@ -116,5 +116,66 @@ namespace BusinessLogicTest
 
             _userLogic.ValidateUser(user);
         }
+        
+        [TestMethod]
+        public void ValidateUserWithNoAtInEmailTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juangmail.com", Password = "Juan1234", Role = Role.Administrator }; 
+            
+
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoDotInEmailTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmailcom", Password = "Juan1234", Role = Role.Administrator }; 
+            
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithShortEmailTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmailcom", Password = "Juan1234", Role = Role.Administrator }; 
+
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+        }
     }
 }
