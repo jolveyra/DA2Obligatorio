@@ -89,14 +89,14 @@ namespace ManagementApiTest
         {
             UpdateInvitationRequestModel createInvitationRequest = new UpdateInvitationRequestModel() { IsAccepted = true };
             Invitation expected = new Invitation() { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com" };
-            expected.IsAccepted = true;
 
             invitationLogicMock.Setup(i => i.UpdateInvitationStatus(It.IsAny<Guid>(), It.IsAny<bool>())).Returns(expected);
 
+            expected.IsAccepted = true;
             InvitationResponseModel expectedResult = new InvitationResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            OkObjectResult result = invitationController.UpdateInvitationStatusById(It.IsAny<Guid>(), createInvitationRequest) as OkObjectResult;
+            OkObjectResult result = invitationController.UpdateInvitationStatusById(expected.Id, createInvitationRequest) as OkObjectResult;
             InvitationResponseModel resultObject = result.Value as InvitationResponseModel;
 
             invitationLogicMock.VerifyAll();

@@ -21,8 +21,7 @@ namespace WebModels.AdministratorModels
                 Name = Name,
                 Surname = Surname,
                 Email = Email,
-                Password = Password,
-                Role = Role.Administrator
+                Password = Password
             };
         }
     }

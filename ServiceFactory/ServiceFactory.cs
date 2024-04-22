@@ -10,6 +10,10 @@ namespace ServiceFactory
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IInvitationLogic, InvitationLogic>();
+            services.AddScoped<IAuthorizationLogic, UserLogic>();
+            services.AddScoped<IAdministratorLogic, UserLogic>();
+            services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
+
             //services.AddScoped<IInvitationRepository, InvitationRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
         }

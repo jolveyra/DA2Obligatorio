@@ -1,4 +1,5 @@
 using BusinessLogic;
+using CustomExceptions.BusinessLogic;
 using Domain;
 using Moq;
 using RepositoryInterfaces;
@@ -40,10 +41,10 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateInvitationTest()
         {
-            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com" };
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
 
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
-            userRepositoryMock.Setup(repository => repository.GetUserByEmail(It.IsAny<string>())).Throws(new ArgumentException("There is no user with that email."));
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
 
             invitation.Id = Guid.NewGuid();
             Invitation expected = invitation;
@@ -54,24 +55,90 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "There is already a user with the same email")]
         public void CreateInvitationWithExistingEmailTest()
         {
-            User user = new User() { Name = "Juan", Email = "juan@gmail.com" };
-            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan@gmail.com"};
+            User user = new User() { Name = "Juan", Email = "juan123@gmail.com" };
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
 
-            invitationRepositoryMock.Setup(repository => repository.CreateInvitation(It.IsAny<Invitation>())).Throws(new ArgumentException());
-            userRepositoryMock.Setup(repository => repository.GetUserByEmail(It.IsAny<string>())).Returns(user);
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>() { user });
+            Exception exception = null;
 
-            invitationLogic.CreateInvitation(invitation);
-            invitationRepositoryMock.VerifyAll();
+            try
+            {
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            userRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("There is already a user with the same email"));
+        }
+
+        [TestMethod]
+        public void CreateInvitationWithInvalidEmailTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("An Email must contain '@', '.' and be longer than 4 characters long"));
+        }
+
+        [TestMethod]
+        public void CreateInvitationWithNoNameTest()
+        {
+            Invitation invitation = new Invitation() { Name = "", Email = "juan@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The Name field cannot be empty"));
+        }
+
+        [TestMethod]
+        public void CreateInvitationWithInvalidExpirationDateTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan@gmail.com", ExpirationDate = DateTime.Now.AddDays(-6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The date of expiration must be from tomorrow onwards"));
         }
 
         [TestMethod]
         public void GetInvitationByIdTest()
         {
             Guid id = Guid.NewGuid();
-            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
+            Invitation expected = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
 
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(expected);
             

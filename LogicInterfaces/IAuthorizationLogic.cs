@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicInterfaces
 {
-    public interface IUserLogic
+    public interface IAuthorizationLogic
     {
         public string GetUserRoleByToken(Guid guid);
     }
