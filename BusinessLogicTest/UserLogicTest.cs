@@ -2,7 +2,7 @@
 using BusinessLogic;
 using RepositoryInterfaces;
 using Moq;
-using RepositoryInterfaces;
+using CustomExceptions.BusinessLogic;
 
 namespace BusinessLogicTest
 {
@@ -85,6 +85,36 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
+        public void CreateUserWithExistingEmailTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
+            
+            // CAMBIAR
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Throws(new UserException("A user with the same email already exists"));
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.CreateAdministrator(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
+        }
+
+        [TestMethod]
+        public void ValidateUserTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
+
+            _userLogic.ValidateUser(user);
         }
     }
 }

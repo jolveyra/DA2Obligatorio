@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using CustomExceptions.BusinessLogic;
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
@@ -24,7 +25,7 @@ namespace BusinessLogic
 
             if (users.Exists(u => u.Email == user.Email))
             {
-                throw new Exception("User with this email already exists.");
+                throw new UserException("A user with the same email already exists");
             }
 
             return _userRepository.CreateUser(user);
@@ -48,6 +49,37 @@ namespace BusinessLogic
         public IEnumerable<User> GetAllMaintenanceEmployees()
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.MaintenanceEmployee);
+        }
+
+        public void ValidateUser(User user)
+        {
+            if ((!user.Email.Contains("@") || !user.Email.Contains(".")) && user.Email.Length < 5)
+            {
+                throw new UserException("Email must contain '@', '.' and be longer than 5 characters.");
+            }
+
+            if (!isValidPassword(user.Password))
+            {
+                throw new Exception("Password is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Name))
+            {
+                throw new Exception("First name is required.");
+            }
+
+            if (string.IsNullOrEmpty(user.Surname))
+            {
+                throw new Exception("Last name is required.");
+            }
+        }
+
+        private static bool isValidPassword(string password)
+        {
+            return Regex.IsMatch(password, "[A-Z]") && 
+                   Regex.IsMatch(password, "[a-z]") &&
+                   Regex.IsMatch(password, "[0-9]") &&
+                   password.Length >= 8;
         }
     }
 }
