@@ -7,19 +7,19 @@ using RepositoryInterfaces;
 namespace BusinessLogicTest
 {
     [TestClass]
-    public class AuthorizationLogicTest
+    public class UserLogicTest
     {
 
         private Mock<ITokenRepository> tokenRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
-        private AuthorizationLogic _authorizationLogic;
+        private UserLogic _userLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             userRepositoryMock = new Mock<IUserRepository>();
             tokenRepositoryMock = new Mock<ITokenRepository>();
-            _authorizationLogic = new AuthorizationLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
+            _userLogic = new UserLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
             
-            IEnumerable<User> result = _authorizationLogic.GetAllAdministrators();
+            IEnumerable<User> result = _userLogic.GetAllAdministrators();
 
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
@@ -49,7 +49,7 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
 
             string expected = user.Role.ToString();
-            string result = _authorizationLogic.GetUserRoleByToken(It.IsAny<Guid>());
+            string result = _userLogic.GetUserRoleByToken(It.IsAny<Guid>());
 
             tokenRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
@@ -67,10 +67,24 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
 
-            IEnumerable<User> result = _authorizationLogic.GetAllMaintenanceEmployees();
+            IEnumerable<User> result = _userLogic.GetAllMaintenanceEmployees();
             
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.Last()));
+        }
+
+        [TestMethod]
+        public void CreateUserTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
+            
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+
+            user.Id = Guid.NewGuid();
+            User result = _userLogic.CreateAdministrator(user);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(user, result);
         }
     }
 }
