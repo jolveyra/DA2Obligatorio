@@ -55,7 +55,7 @@ public class BuildingLogic: IBuildingLogic
     private void ValidateBuilding(Building building)
     {
         CheckNotEmptyBuildingName(building);
-        CheckNotNegativeSharedExpenses(building);
+        CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
         CheckNotEmptyConstructorCompany(building);
     }
@@ -76,9 +76,9 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private static void CheckNotNegativeSharedExpenses(Building building)
+    private void CheckNotNegativeSharedExpenses(float sharedExpenses)
     {
-        if (building.SharedExpenses < 0)
+        if (sharedExpenses < 0)
         {
             throw new BuildingException("Shared expenses cannot be negative");
         }
@@ -123,6 +123,8 @@ public class BuildingLogic: IBuildingLogic
 
     public Building UpdateBuilding(Guid buildingId, float sharedExpenses)
     {
+        CheckNotNegativeSharedExpenses(sharedExpenses);
+
         return _iBuildingRepository.UpdateBuilding(buildingId, sharedExpenses);
     }
 

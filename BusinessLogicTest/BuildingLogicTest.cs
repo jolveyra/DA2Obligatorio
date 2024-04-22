@@ -211,6 +211,27 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void UpdateBuildingTestNegativeSharedExpenses()
+    {
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.UpdateBuilding(building.Id, sharedExpenses: -1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Shared expenses cannot be negative");
+    }
+
+    [TestMethod]
     public void DeleteBuildingTestOk()
     {
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
