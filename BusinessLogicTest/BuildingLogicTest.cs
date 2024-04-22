@@ -133,7 +133,6 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(BuildingException), "Flat with same number already exists")]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
     {
         Flat flat = new Flat() { Number = 303 };
@@ -146,10 +145,22 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(flat);
+        Exception exception = null;
 
-        Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch(Exception e)
+        {
+            exception = e;
+        }
 
         buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Flat with same number already exists");
+
+
     }
 }
