@@ -20,6 +20,7 @@ namespace BusinessLogic
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
+            ValidateUser(user);
 
             List<User> users = _userRepository.GetAllUsers().ToList();
 

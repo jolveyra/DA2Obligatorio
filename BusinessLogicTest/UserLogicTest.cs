@@ -284,7 +284,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
-            Assert.IsInstanceOfType(exception, typeof(UserException))C;
+            Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty"));
         }
     }
