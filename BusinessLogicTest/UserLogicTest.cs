@@ -74,7 +74,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void CreateUserTest()
+        public void CreateAdministratorTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
             
@@ -88,7 +88,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void CreateUserWithExistingEmailTest()
+        public void CreateAdministratorWithExistingEmailTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
             IEnumerable<User> users = new List<User> { user };
@@ -286,6 +286,42 @@ namespace BusinessLogicTest
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty"));
+        }
+        
+        [TestMethod]
+        public void CreateMaintenanceEmployeeTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.MaintenanceEmployee };
+            
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+
+            user.Id = Guid.NewGuid();
+            User result = _userLogic.CreateAdministrator(user);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
+        public void CreateMaintenanceEmployeeWithExistingEmailTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.MaintenanceEmployee };
+            IEnumerable<User> users = new List<User> { user };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.CreateAdministrator(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
     }
 }

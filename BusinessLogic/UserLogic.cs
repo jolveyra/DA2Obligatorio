@@ -34,7 +34,17 @@ namespace BusinessLogic
 
         public User CreateMaintenanceEmployee(User user)
         {
-            throw new NotImplementedException();
+            user.Role = Role.MaintenanceEmployee;
+            ValidateUser(user);
+
+            List<User> users = _userRepository.GetAllUsers().ToList();
+
+            if (users.Exists(u => u.Email == user.Email))
+            {
+                throw new UserException("A user with the same email already exists");
+            }
+
+            return _userRepository.CreateUser(user);
         }
 
         public IEnumerable<User> GetAllAdministrators()
@@ -54,7 +64,7 @@ namespace BusinessLogic
 
         public void ValidateUser(User user)
         {
-            if (!user.Email.Contains("@") || !user.Email.Contains(".") || user.Email.Length < 5)
+            if (!isValidEmail(user.Email))
             {
                 throw new UserException("An Email must contain '@', '.' and be longer than 4 characters long");
             }
@@ -81,6 +91,11 @@ namespace BusinessLogic
                    Regex.IsMatch(password, "[a-z]") &&
                    Regex.IsMatch(password, "[0-9]") &&
                    password.Length >= 8;
+        }
+
+        private static bool isValidEmail(string email)
+        {
+            return email.Contains("@") && email.Contains(".") && email.Length > 5;
         }
     }
 }
