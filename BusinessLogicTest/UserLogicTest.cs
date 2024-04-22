@@ -121,8 +121,6 @@ namespace BusinessLogicTest
         public void ValidateUserWithNoAtInEmailTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juangmail.com", Password = "Juan1234", Role = Role.Administrator }; 
-            
-
             Exception exception = null;
 
             try
@@ -135,14 +133,13 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
         }
 
         [TestMethod]
         public void ValidateUserWithNoDotInEmailTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmailcom", Password = "Juan1234", Role = Role.Administrator }; 
-            
             Exception exception = null;
 
             try
@@ -155,14 +152,13 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
         }
 
         [TestMethod]
         public void ValidateUserWithShortEmailTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmailcom", Password = "Juan1234", Role = Role.Administrator }; 
-
             Exception exception = null;
 
             try
@@ -175,7 +171,83 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 5 characters."));
+            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoPasswordTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoUpperCaseCharacterInPasswordTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "juan1234", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoLowerCaseCharacterInPasswordTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "JUAN1234", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoNumberInPasswordTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "juanJUAN", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
         }
     }
 }

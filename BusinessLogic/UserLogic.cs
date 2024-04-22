@@ -55,12 +55,12 @@ namespace BusinessLogic
         {
             if (!user.Email.Contains("@") || !user.Email.Contains(".") || user.Email.Length < 5)
             {
-                throw new UserException("Email must contain '@', '.' and be longer than 5 characters.");
+                throw new UserException("Email must contain '@', '.' and be longer than 4 characters long");
             }
 
             if (!isValidPassword(user.Password))
             {
-                throw new Exception("Password is required.");
+                throw new UserException("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long");
             }
 
             if (string.IsNullOrEmpty(user.Name))
