@@ -57,11 +57,16 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
-        if(GetBuildingById(buildingId).Flats.Exists(x => x.Id != flatId && x.Number == flat.Number))
+        CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
+
+        return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
+    }
+
+    private void CheckUniqueFlatNumberInBuilding(Guid buildingId, Guid flatId, Flat flat)
+    {
+        if (GetBuildingById(buildingId).Flats.Exists(x => x.Id != flatId && x.Number == flat.Number))
         {
             throw new BuildingException("Flat with same number already exists");
         }
-
-        return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
     }
 }

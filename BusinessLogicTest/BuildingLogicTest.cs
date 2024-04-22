@@ -172,7 +172,6 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Flat with same number already exists");
-
-
     }
+
 }
