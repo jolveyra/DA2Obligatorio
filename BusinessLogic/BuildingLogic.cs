@@ -19,9 +19,19 @@ public class BuildingLogic: IBuildingLogic
 
     public Building CreateBuilding(Building building)
     {
+        ValidateBuilding(building);
+
         CheckUniqueBuildingName(building);
 
         return _iBuildingRepository.CreateBuilding(building);
+    }
+
+    private void ValidateBuilding(Building building)
+    {
+        if (building.Name == "")
+        {
+            throw new BuildingException("Building name cannot be empty");
+        }
     }
 
     private void CheckUniqueBuildingName(Building building)

@@ -37,6 +37,26 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void CreateBuildingTestBuildingWithEmptyName()
+    {
+        Building building = new Building() { Name = "" };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+        
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building name cannot be empty");
+    }
+
+    [TestMethod]
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
         Building building = new Building() { Name = "Mirador" };
