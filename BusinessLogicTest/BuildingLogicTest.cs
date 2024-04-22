@@ -174,4 +174,30 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Flat with same number already exists");
     }
 
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithInvalidFloorNumber()
+    {
+        Flat flat = new Flat() { Number = 303, Floor = 4 };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid flat number, first digit must be floor number");
+    }
+
 }

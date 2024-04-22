@@ -2,6 +2,9 @@
 using LogicInterfaces;
 using CustomExceptions.BusinessLogic;
 using Domain;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace BusinessLogic;
 
@@ -57,9 +60,19 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
+        CheckFlatDigit(flat);
+
         CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
 
         return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
+    }
+
+    private void CheckFlatDigit(Flat flat)
+    {
+        if (!flat.Number.ToString().StartsWith(flat.Floor.ToString()))
+        {
+            throw new BuildingException("Invalid flat number, first digit must be floor number");
+        }
     }
 
     private void CheckUniqueFlatNumberInBuilding(Guid buildingId, Guid flatId, Flat flat)
