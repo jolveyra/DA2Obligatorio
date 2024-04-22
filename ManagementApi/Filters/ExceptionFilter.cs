@@ -16,7 +16,8 @@ namespace ManagementApi.Filters
                 context.Result = new ObjectResult(new { ErrorMessage = context.Exception.Message }) { StatusCode = 404 };
             } else if (context.Exception is Exception)
             {
-                context.Result = new ObjectResult(new { ErrorMessage = $"Something went wrong. See: {context.Exception.Message}" }) { StatusCode = 500 };
+                // TODO: ELIMINAR EL TIPO DE EXCEPTION
+                context.Result = new ObjectResult(new { ErrorMessage = $"Something went wrong. See: {context.Exception.GetType()} {context.Exception.Message}" }) { StatusCode = 500 };
             }
         }
     }

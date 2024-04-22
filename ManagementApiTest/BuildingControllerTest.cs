@@ -170,6 +170,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void UpdateFlatByBuildingAndFlatIdTestOk()
         {
+            Guid buildingId = Guid.NewGuid();
             UpdateFlatRequestModel updateFlatRequest = new UpdateFlatRequestModel()
             {
                 Floor = 2,
@@ -193,14 +194,12 @@ namespace ManagementApiTest
                 HasBalcony = true
             };
 
-            FlatResponseModel expectedResult = new FlatResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Returns(expected);
 
+            FlatResponseModel expectedResult = new FlatResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            IActionResult result = buildingController.UpdateFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>(), updateFlatRequest);
-
-            OkObjectResult resultObject = result as OkObjectResult;
+            OkObjectResult resultObject = buildingController.UpdateFlatByBuildingAndFlatId(buildingId, expected.Id, updateFlatRequest) as OkObjectResult;
             FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
 
             buildingLogicMock.VerifyAll();
