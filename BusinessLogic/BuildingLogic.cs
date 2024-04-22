@@ -31,6 +31,15 @@ public class BuildingLogic: IBuildingLogic
         CheckNotEmptyBuildingName(building);
         CheckNotNegativeSharedExpenses(building);
         CheckNotEmptyBuildingDirection(building);
+        CheckNotEmptyConstructorCompany(building);
+    }
+
+    private void CheckNotEmptyConstructorCompany(Building building)
+    {
+        if (building.ConstructorCompany == "")
+        {
+            throw new BuildingException("Building constructor company cannot be empty");
+        }
     }
 
     private void CheckNotEmptyBuildingDirection(Building building)

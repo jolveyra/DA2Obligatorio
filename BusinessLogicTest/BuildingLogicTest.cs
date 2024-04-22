@@ -122,6 +122,28 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void CreateBuildingTestBuildingWithEmptyConstructorCompany()
+    {
+        Building building = new Building() { ConstructorCompany = "" };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building constructor company cannot be empty");
+    }
+
+    [TestMethod]
     public void GetAllBuildingsTestOk()
     { 
         IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };

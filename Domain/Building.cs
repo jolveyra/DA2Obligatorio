@@ -7,5 +7,6 @@
         public float SharedExpenses { get; set; }
         public List<Flat> Flats { get; set; }
         public string Direction { get; set; }
+        public string ConstructorCompany { get; set; }
     }
 }
