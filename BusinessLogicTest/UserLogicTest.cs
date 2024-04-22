@@ -133,7 +133,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
+            Assert.IsTrue(exception.Message.Equals("An Email must contain '@', '.' and be longer than 4 characters long"));
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
+            Assert.IsTrue(exception.Message.Equals("An Email must contain '@', '.' and be longer than 4 characters long"));
         }
 
         [TestMethod]
@@ -171,7 +171,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Email must contain '@', '.' and be longer than 4 characters long"));
+            Assert.IsTrue(exception.Message.Equals("An Email must contain '@', '.' and be longer than 4 characters long"));
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
         }
 
         [TestMethod]
@@ -228,7 +228,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
         }
 
         [TestMethod]
@@ -247,7 +247,26 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
+        }
+
+        [TestMethod]
+        public void ValidateUserWithNoNameTest()
+        {
+            User user = new User { Name = "", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
+            Exception exception = null;
+
+            try
+            {
+                _userLogic.ValidateUser(user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("The Name field cannot be empty"));
         }
     }
 }

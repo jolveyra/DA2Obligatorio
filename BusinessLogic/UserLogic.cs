@@ -55,22 +55,22 @@ namespace BusinessLogic
         {
             if (!user.Email.Contains("@") || !user.Email.Contains(".") || user.Email.Length < 5)
             {
-                throw new UserException("Email must contain '@', '.' and be longer than 4 characters long");
+                throw new UserException("An Email must contain '@', '.' and be longer than 4 characters long");
             }
 
             if (!isValidPassword(user.Password))
             {
-                throw new UserException("Password must an uppercase and lowercase letter, a number and must be longer than 8 characters long");
+                throw new UserException("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long");
             }
 
             if (string.IsNullOrEmpty(user.Name))
             {
-                throw new Exception("First name is required.");
+                throw new UserException("The Name field cannot be empty");
             }
 
             if (string.IsNullOrEmpty(user.Surname))
             {
-                throw new Exception("Last name is required.");
+                throw new UserException("The Surname is required.");
             }
         }
 
