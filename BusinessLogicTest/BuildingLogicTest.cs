@@ -329,4 +329,30 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Invalid flat number, first digit must be floor number");
     }
 
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyOwnerName()
+    {
+        Flat flat = new Flat() { Number = 303, Floor = 3, OwnerName = "" };
+
+        Flat toChangeFlat = new Flat();
+
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Owner name cannot be empty");
+    }
+
 }

@@ -130,11 +130,26 @@ public class BuildingLogic: IBuildingLogic
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
     {
-        CheckFlatDigit(flat);
+
+        ValidateFlat(flat);
 
         CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
 
         return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
+    }
+
+    private void ValidateFlat(Flat flat)
+    {
+        CheckFlatDigit(flat);
+        CheckNotEmptyFLatOwnerName(flat);
+    }
+
+    private static void CheckNotEmptyFLatOwnerName(Flat flat)
+    {
+        if (string.IsNullOrEmpty(flat.OwnerName))
+        {
+            throw new BuildingException("Owner name cannot be empty");
+        }
     }
 
     private void CheckFlatDigit(Flat flat)
