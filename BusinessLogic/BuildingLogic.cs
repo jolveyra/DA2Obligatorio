@@ -17,13 +17,39 @@ public class BuildingLogic: IBuildingLogic
         this._iBuildingRepository = iBuildingRepository;
     }
 
-    public Building CreateBuilding(Building building)
+    public Building CreateBuilding(Building building, int amountOfFlats)
     {
+        ValidateFlatAmount(amountOfFlats);
+
         ValidateBuilding(building);
 
         CheckUniqueBuildingName(building);
 
+        CreateBuildingFlats(building, amountOfFlats);
+
         return _iBuildingRepository.CreateBuilding(building);
+    }
+
+    private void ValidateFlatAmount(int amountOfFlats)
+    {
+        if (amountOfFlats <= 0)
+        {
+            throw new BuildingException("It is not possible to create a building with no flats");
+        }
+    }
+
+    private void CreateBuildingFlats(Building building, int amountOfFlats)
+    {
+        building.Flats = new List<Flat>();
+        for (int i = 0; i < amountOfFlats; i++)
+        {
+            Flat flat = new Flat
+            {
+                Id = Guid.NewGuid()
+            };
+
+            building.Flats.Add(flat);
+        }
     }
 
     private void ValidateBuilding(Building building)

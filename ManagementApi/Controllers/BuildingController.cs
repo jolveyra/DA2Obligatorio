@@ -24,7 +24,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
-            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity()));
+            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), buildingRequest.Flats));
 
             return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
         }

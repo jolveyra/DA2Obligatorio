@@ -65,7 +65,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 
@@ -86,7 +86,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", Flats = new List<Flat> { new Flat() } };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 

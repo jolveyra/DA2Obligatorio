@@ -4,7 +4,7 @@ namespace LogicInterfaces
 {
     public interface IBuildingLogic
     {
-        Building CreateBuilding(Building building);
+        Building CreateBuilding(Building building, int amountOfFlats);
         void DeleteBuilding(Guid guid);
         IEnumerable<Building> GetAllBuildings();
         Building GetBuildingById(Guid id);

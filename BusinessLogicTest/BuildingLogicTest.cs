@@ -24,12 +24,13 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestOk()
     {
-        Building building = new Building();
-        Building expected = new Building();
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
+        Building expected = new Building() { Id = building.Id, Name = "Mirador" };
+
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
 
-        Building result = buildingLogic.CreateBuilding(building);
+        Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
 
         buildingRepositoryMock.VerifyAll();
 
@@ -45,7 +46,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
         }
         catch (Exception e)
         {
@@ -65,7 +66,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
         }
         catch (Exception e)
         {
@@ -86,7 +87,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
         }
         catch (Exception e)
         {
@@ -108,7 +109,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
         }
         catch (Exception e)
         {
@@ -130,7 +131,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
         }
         catch (Exception e)
         {
@@ -141,6 +142,28 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Building constructor company cannot be empty");
+    }
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithNoFlats()
+    {
+        Building building = new Building();
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 0);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "It is not possible to create a building with no flats");
     }
 
     [TestMethod]
@@ -215,10 +238,12 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestOk()
     {
-        Flat flat = new Flat();
-        Flat expected = new Flat();
+        Flat toUpdateFlat = new Flat() { Floor = 3, Number = 303 };
+        Flat flat = new Flat() { Floor = 3, Number = 304 };
+        Flat expected = new Flat() { Floor = 3, Number = 304 };
 
         buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(expected);
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat> { toUpdateFlat } });
 
         Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
 
@@ -230,11 +255,11 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
     {
-        Flat flat = new Flat() { Number = 303 };
+        Flat flat = new Flat() { Floor = 3, Number = 303 };
 
         Flat toChangeFlat = new Flat();
 
-        Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Number = 303 };
+        Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 303 };
 
         Building building = new Building() { Flats = new List<Flat>() { toChangeFlat, anotherFlat } };
 
