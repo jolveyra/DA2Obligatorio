@@ -7,19 +7,19 @@ using RepositoryInterfaces;
 namespace BusinessLogicTest
 {
     [TestClass]
-    public class UserLogicTest
+    public class AuthorizationLogicTest
     {
 
         private Mock<ITokenRepository> tokenRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
-        private UserLogic userLogic;
+        private AuthorizationLogic _authorizationLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             userRepositoryMock = new Mock<IUserRepository>();
             tokenRepositoryMock = new Mock<ITokenRepository>();
-            userLogic = new UserLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
+            _authorizationLogic = new AuthorizationLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
             
-            IEnumerable<User> result = userLogic.GetAllAdministrators();
+            IEnumerable<User> result = _authorizationLogic.GetAllAdministrators();
 
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
@@ -49,7 +49,7 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
 
             string expected = user.Role.ToString();
-            string result = userLogic.GetUserRoleByToken(It.IsAny<Guid>());
+            string result = _authorizationLogic.GetUserRoleByToken(It.IsAny<Guid>());
 
             tokenRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
@@ -67,7 +67,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
 
-            IEnumerable<User> result = userLogic.GetAllMaintenanceEmployees();
+            IEnumerable<User> result = _authorizationLogic.GetAllMaintenanceEmployees();
             
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.Last()));

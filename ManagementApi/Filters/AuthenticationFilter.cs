@@ -30,7 +30,7 @@ namespace ManagementApi.Filters
             {
                 if (Roles.Count > 0)
                 {
-                    var authenticationService = (IUserLogic)context.HttpContext.RequestServices.GetService(typeof(IUserLogic));
+                    var authenticationService = (IAuthorizationLogic)context.HttpContext.RequestServices.GetService(typeof(IAuthorizationLogic));
                     string userRole = authenticationService.GetUserRoleByToken(token);
 
                     if (!Roles.Contains(userRole))

@@ -4,12 +4,12 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic
+    public class AuthorizationLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic
     {
         private readonly ITokenRepository _tokenRepository;
         private readonly IUserRepository _userRepository;
 
-        public UserLogic(IUserRepository userRepository, ITokenRepository tokenRepository) 
+        public AuthorizationLogic(IUserRepository userRepository, ITokenRepository tokenRepository) 
         { 
             _userRepository = userRepository;
             _tokenRepository = tokenRepository;
