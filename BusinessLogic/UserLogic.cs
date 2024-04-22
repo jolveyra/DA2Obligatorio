@@ -20,19 +20,17 @@ namespace BusinessLogic
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
-            ValidateUser(user); 
-
-            if (ExistsUserEmail(user.Email))
-            {
-                throw new UserException("A user with the same email already exists");
-            }
-
-            return _userRepository.CreateUser(user);
+            return CreateUser(user);
         }
 
         public User CreateMaintenanceEmployee(User user)
         {
             user.Role = Role.MaintenanceEmployee;
+            return CreateUser(user);
+        }
+
+        private User CreateUser(User user)
+        {
             ValidateUser(user);
 
             if (ExistsUserEmail(user.Email))
