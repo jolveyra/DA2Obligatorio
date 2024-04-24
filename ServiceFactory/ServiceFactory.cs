@@ -24,7 +24,7 @@ namespace ServiceFactory
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)
         {
-            serviceCollection.AddDbContext<DbContext, BuildingsContext>(options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<DbContext, BuildingBossContext>(options => options.UseSqlServer(connectionString));
         }
     }
 }

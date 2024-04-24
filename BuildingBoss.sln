@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceFactory", "ServiceFa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomExceptions", "CustomExceptions\CustomExceptions.csproj", "{CF4E24AB-ECB1-4FD2-927B-57BBEA513709}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{11131886-A80B-47DE-A91B-74E59694AFA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{11131886-A80B-47DE-A91B-74E59694AFA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTest", "DataAccessTest\DataAccessTest.csproj", "{65894262-BC2B-4170-95DF-108ED8F6E215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{11131886-A80B-47DE-A91B-74E59694AFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11131886-A80B-47DE-A91B-74E59694AFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11131886-A80B-47DE-A91B-74E59694AFA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65894262-BC2B-4170-95DF-108ED8F6E215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65894262-BC2B-4170-95DF-108ED8F6E215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65894262-BC2B-4170-95DF-108ED8F6E215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65894262-BC2B-4170-95DF-108ED8F6E215}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

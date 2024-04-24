@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Context
 {
-    public class BuildingsContext: DbContext
+    public class BuildingBossContext: DbContext
     {
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Flat> Flats { get; set; }
@@ -17,9 +17,9 @@ namespace DataAccess.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Invitation> Invations { get; set; }
 
-        public BuildingsContext() { }
+        public BuildingBossContext() { }
 
-        public BuildingsContext(DbContextOptions options) : base(options) { }
+        public BuildingBossContext(DbContextOptions options) : base(options) { }
 
     }
 }
