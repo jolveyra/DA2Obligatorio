@@ -30,7 +30,12 @@ namespace DataAccess.Repositories
 
         public Invitation GetInvitationById(Guid id)
         {
-            Invitation invitation = _context.Invitations.FirstOrDefault(i => i.Id == id);
+            Invitation? invitation = _context.Invitations.FirstOrDefault(i => i.Id == id);
+
+            if (invitation == null)
+            {
+                throw new ArgumentException("Invitation not found");
+            }
 
             return invitation;
         }

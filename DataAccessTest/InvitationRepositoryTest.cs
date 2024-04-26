@@ -44,5 +44,32 @@ namespace DataAccessTest
             contextMock.Verify(context => context.Invitations, Times.Once());
             Assert.AreEqual(invitation, result);
         }
+
+        
+
+        [TestMethod]
+        public void GetNonExistingInvitationByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+
+            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
+            contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>());
+            InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
+
+            Exception exception = null;
+
+            try
+            {
+                invitationRepository.GetInvitationById(id);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            contextMock.Verify(context => context.Invitations, Times.Once());
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Invitation not found", exception.Message);
+        }
     }
 }
