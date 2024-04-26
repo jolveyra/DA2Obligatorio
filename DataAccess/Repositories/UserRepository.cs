@@ -23,14 +23,16 @@ namespace DataAccess.Repositories
             return _context.Users;
         }
 
-        public User GetUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
         public User GetUserById(Guid id)
         {
-            throw new NotImplementedException();
+            User? user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                throw new ArgumentException("User not found");
+            }
+
+            return user;
         }
     }
 }

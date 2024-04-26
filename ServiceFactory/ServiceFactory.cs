@@ -18,7 +18,7 @@ namespace ServiceFactory
             services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
-            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
         }
 
