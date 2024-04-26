@@ -10,7 +10,7 @@ namespace BusinessLogicTest
     public class UserLogicTest
     {
 
-        private Mock<ITokenRepository> tokenRepositoryMock;
+        private Mock<ISessionRepository> tokenRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private UserLogic _userLogic;
 
@@ -18,7 +18,7 @@ namespace BusinessLogicTest
         public void TestInitialize()
         {
             userRepositoryMock = new Mock<IUserRepository>();
-            tokenRepositoryMock = new Mock<ITokenRepository>();
+            tokenRepositoryMock = new Mock<ISessionRepository>();
             _userLogic = new UserLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
         }
 

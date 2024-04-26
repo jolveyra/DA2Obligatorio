@@ -1,7 +1,7 @@
 ﻿
 namespace RepositoryInterfaces
 {
-    public interface ITokenRepository
+    public interface ISessionRepository
     {
         public Guid GetUserIdByToken(Guid guid);
     }

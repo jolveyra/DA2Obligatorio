@@ -16,6 +16,7 @@ namespace DataAccess.Context
         public DbSet<Request> Requests { get; set; }
         public DbSet<Category> Categories { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
 
         public BuildingBossContext() { }
 

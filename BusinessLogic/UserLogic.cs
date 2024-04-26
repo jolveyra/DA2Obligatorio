@@ -8,13 +8,13 @@ namespace BusinessLogic
 {
     public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic
     {
-        private readonly ITokenRepository _tokenRepository;
+        private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
 
-        public UserLogic(IUserRepository userRepository, ITokenRepository tokenRepository)
+        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _userRepository = userRepository;
-            _tokenRepository = tokenRepository;
+            _sessionRepository = sessionRepository;
         }
 
         public User CreateAdministrator(User user)
@@ -48,7 +48,7 @@ namespace BusinessLogic
 
         public string GetUserRoleByToken(Guid token)
         {
-            return _userRepository.GetUserById(_tokenRepository.GetUserIdByToken(token)).Role.ToString();
+            return _userRepository.GetUserById(_sessionRepository.GetUserIdByToken(token)).Role.ToString();
         }
 
         public IEnumerable<User> GetAllMaintenanceEmployees()
