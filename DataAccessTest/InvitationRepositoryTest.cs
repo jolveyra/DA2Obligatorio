@@ -74,5 +74,20 @@ namespace DataAccessTest
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("Invitation not found", exception.Message);
         }
+
+        [TestMethod]
+        public void CreateInvitationTest()
+        {
+            Invitation invitation = new Invitation() { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com" };
+
+            _contextMock.Setup(context => context.Invitations.Add(invitation));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            Invitation result = _invitationRepository.CreateInvitation(invitation);
+
+            _contextMock.Verify(context => context.Invitations.Add(invitation), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+            Assert.AreEqual(invitation, result);
+        }
     }
 }

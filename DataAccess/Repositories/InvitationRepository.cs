@@ -15,7 +15,10 @@ namespace DataAccess.Repositories
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            throw new NotImplementedException();
+            _context.Invitations.Add(invitation);
+            _context.SaveChanges();
+
+            return invitation;
         }
 
         public void DeleteInvitation(Guid id)
