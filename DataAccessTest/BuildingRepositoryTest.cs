@@ -48,5 +48,20 @@ namespace DataAccessTest
             CollectionAssert.AreEqual(buildings, result.ToList());
 
         }
+
+
+        [TestMethod]
+        public void CreateBuildingTestOk()
+        {
+            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
+
+            buildingRepository = new BuildingRepository(mockContext.Object);
+
+            Building result = buildingRepository.CreateBuilding(building);
+
+            Assert.AreEqual(building, result);
+        }
     }
 }
