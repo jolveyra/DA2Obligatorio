@@ -47,5 +47,26 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.Users, Times.Once());
             Assert.AreEqual(user, result);
         }
+
+        [TestMethod]
+        public void GetNonExistingUserByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            _contextMock.Setup(context => context.Users).ReturnsDbSet(new List<User>());
+
+            Exception exception = null;
+
+            try
+            {
+                _userRepository.GetUserById(id);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("User not found", exception.Message);
+        }
     }
 }
