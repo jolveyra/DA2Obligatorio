@@ -8,6 +8,16 @@ namespace BusinessLogicTest
     [TestClass]
     public class RequestLogicTest
     {
+        private Mock<IRequestRepository> requestRepositoryMock;
+        private RequestLogic requestLogic;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            requestRepositoryMock = new Mock<IRequestRepository>();
+            requestLogic = new RequestLogic(requestRepositoryMock.Object);
+        }
+
         [TestMethod]
         public void GetAllRequestsTest()
         {
@@ -18,9 +28,7 @@ namespace BusinessLogicTest
                 new Request() { Id = Guid.NewGuid(), Description = "Request 3" }
             };
 
-            Mock<IRequestRepository> requestRepositoryMock = new Mock<IRequestRepository>();
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
-            RequestLogic requestLogic = new RequestLogic(requestRepositoryMock.Object);
 
             IEnumerable<Request> result = requestLogic.GetAllRequests();
 
@@ -33,10 +41,8 @@ namespace BusinessLogicTest
         {
             Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1" };
 
-            Mock<IRequestRepository> requestRepositoryMock = new Mock<IRequestRepository>();
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
-            RequestLogic requestLogic = new RequestLogic(requestRepositoryMock.Object);
-
+            
             Request result = requestLogic.GetRequestById(request.Id);
 
             requestRepositoryMock.VerifyAll();
