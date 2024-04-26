@@ -15,11 +15,6 @@ namespace DataAccess.Repositories
 
         public Invitation CreateInvitation(Invitation invitation)
         {
-            if (_context.Invitations.FirstOrDefault(i => i.Id == invitation.Id) is not null)
-            { // Tendria que chequearse igual??
-                throw new ArgumentException("An invitation with the same id already exists");
-            }
-
             _context.Invitations.Add(invitation);
             _context.SaveChanges();
             return invitation;
