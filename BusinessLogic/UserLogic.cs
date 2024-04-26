@@ -51,7 +51,7 @@ namespace BusinessLogic
 
         public string GetUserRoleByToken(Guid token)
         {
-            return _userRepository.GetUserById(_sessionRepository.GetUserIdByToken(token)).Role.ToString();
+            return _userRepository.GetUserById(_sessionRepository.GetSessionByToken(token).UserId).Role.ToString();
         }
 
         public IEnumerable<User> GetAllMaintenanceEmployees()

@@ -21,7 +21,7 @@ namespace DataAccess.Repositories
             return session;
         }
 
-        public Guid GetUserIdByToken(Guid guid)
+        public Session GetSessionByToken(Guid guid)
         {
             Session? session = _context.Sessions.FirstOrDefault(s => s.Id == guid);
 
@@ -30,7 +30,7 @@ namespace DataAccess.Repositories
                 throw new ArgumentException("Session not found");
             }
 
-            return session.UserId;
+            return session;
         }
     }
 }

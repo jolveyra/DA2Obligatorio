@@ -20,17 +20,17 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetUserIdByTokenTest()
+        public void GetSessionByTokenTest()
         {
             Guid token = Guid.NewGuid();
             Session session = new Session { Id = token, UserId = Guid.NewGuid() };
 
             _contextMock.Setup(context => context.Sessions).ReturnsDbSet(new List<Session>() { session });
             
-            Guid userId = _sessionRepository.GetUserIdByToken(token);
+            Session result = _sessionRepository.GetSessionByToken(token);
 
             _contextMock.Verify(context => context.Sessions, Times.Once);
-            Assert.AreEqual(session.UserId, userId);
+            Assert.AreEqual(session, result);
         }
 
         [TestMethod]

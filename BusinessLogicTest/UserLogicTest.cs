@@ -43,13 +43,13 @@ namespace BusinessLogicTest
         public void GetUserRoleTestOk()
         {
             User user = new User() { Role = Role.Administrator };
-            Guid id = user.Id;
+            Session session = new Session() { UserId = user.Id };
 
-            tokenRepositoryMock.Setup(x => x.GetUserIdByToken(It.IsAny<Guid>())).Returns(id);
+            tokenRepositoryMock.Setup(x => x.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
             userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
 
             string expected = user.Role.ToString();
-            string result = _userLogic.GetUserRoleByToken(It.IsAny<Guid>());
+            string result = _userLogic.GetUserRoleByToken(session.UserId);
 
             tokenRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
