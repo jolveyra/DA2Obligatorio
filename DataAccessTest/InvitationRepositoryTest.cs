@@ -10,6 +10,16 @@ namespace DataAccessTest
     [TestClass]
     public class InvitationRepositoryTest
     {
+        private Mock<BuildingBossContext> _contextMock;
+        private InvitationRepository _invitationRepository;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _contextMock = new Mock<BuildingBossContext>();
+            _invitationRepository = new InvitationRepository(_contextMock.Object);
+        }
+
         [TestMethod]
         public void GetAllInvitationsTest()
         {
@@ -19,13 +29,10 @@ namespace DataAccessTest
                 new Invitation() { Id = Guid.NewGuid(), Name = "Jose", Email = "jose@gmail.com" },
             };
 
-            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
-            contextMock.Setup(context => context.Invitations).ReturnsDbSet(invitations);
-            InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
+            _contextMock.Setup(context => context.Invitations).ReturnsDbSet(invitations);
+            IEnumerable<Invitation> result = _invitationRepository.GetAllInvitations();
 
-            IEnumerable<Invitation> result = invitationRepository.GetAllInvitations();
-
-            contextMock.Verify(context => context.Invitations, Times.Once());
+            _contextMock.Verify(context => context.Invitations, Times.Once());
             Assert.IsTrue(result.SequenceEqual(invitations));
         }
 
@@ -35,13 +42,11 @@ namespace DataAccessTest
             Guid id = Guid.NewGuid();
             Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
 
-            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
-            contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>() { invitation });
-            InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
+            _contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>() { invitation });
 
-            Invitation result = invitationRepository.GetInvitationById(id);
+            Invitation result = _invitationRepository.GetInvitationById(id);
 
-            contextMock.Verify(context => context.Invitations, Times.Once());
+            _contextMock.Verify(context => context.Invitations, Times.Once());
             Assert.AreEqual(invitation, result);
         }
 
@@ -52,22 +57,20 @@ namespace DataAccessTest
         {
             Guid id = Guid.NewGuid();
 
-            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
-            contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>());
-            InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
-
+            _contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>());
+            
             Exception exception = null;
 
             try
             {
-                invitationRepository.GetInvitationById(id);
+                _invitationRepository.GetInvitationById(id);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
-            contextMock.Verify(context => context.Invitations, Times.Once());
+            _contextMock.Verify(context => context.Invitations, Times.Once());
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("Invitation not found", exception.Message);
         }
