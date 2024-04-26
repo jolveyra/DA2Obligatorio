@@ -45,7 +45,7 @@ namespace BusinessLogic
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
-            return _invitationRepository.UpdateInvitationStatus(id, isAccepted);
+            return _invitationRepository.UpdateInvitationStatusById(id, isAccepted);
         }
 
         private static void ValidateInvitation(Invitation invitation)

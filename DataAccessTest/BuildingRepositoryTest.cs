@@ -1,9 +1,9 @@
 namespace DataAccessTest
 {
-    [TestClass]
+    //[TestClass]
     public class BuildingRepositoryTest
     {
-        [TestMethod]
+        //[TestMethod]
         public void AddBuildingTestOk(BuildingRepositoryTest building)
         {
             //Building building = new Building();

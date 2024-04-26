@@ -8,6 +8,6 @@ namespace RepositoryInterfaces
         void DeleteInvitationById(Guid id);
         public IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid id);
-        Invitation UpdateInvitationStatus(Guid id, bool isAccepted);
+        Invitation UpdateInvitationStatusById(Guid id, bool isAccepted);
     }
 }

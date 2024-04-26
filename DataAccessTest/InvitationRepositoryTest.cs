@@ -136,6 +136,24 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
         }
 
+        [TestMethod]
+        public void UpdateInvitationStatusByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            bool isAccepted = true;
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
 
+            _contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>() { invitation });
+            _contextMock.Setup(context => context.Invitations.Update(invitation));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            Invitation result = _invitationRepository.UpdateInvitationStatusById(id, isAccepted);
+
+            _contextMock.Verify(context => context.Invitations, Times.Exactly(2));
+            _contextMock.Verify(context => context.Invitations.Update(invitation), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+            Assert.AreEqual(expected, result);
+        }
     }
 }
