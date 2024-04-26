@@ -24,8 +24,25 @@ namespace DataAccessTest
             InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
 
             IEnumerable<Invitation> result = invitationRepository.GetAllInvitations();
+
             contextMock.Verify(context => context.Invitations, Times.Once());
             Assert.IsTrue(result.SequenceEqual(invitations));
+        }
+
+        [TestMethod]
+        public void GetInvitationByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
+
+            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
+            contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>() { invitation });
+            InvitationRepository invitationRepository = new InvitationRepository(contextMock.Object);
+
+            Invitation result = invitationRepository.GetInvitationById(id);
+
+            contextMock.Verify(context => context.Invitations, Times.Once());
+            Assert.AreEqual(invitation, result);
         }
     }
 }

@@ -30,7 +30,9 @@ namespace DataAccess.Repositories
 
         public Invitation GetInvitationById(Guid id)
         {
-            throw new NotImplementedException();
+            Invitation invitation = _context.Invitations.FirstOrDefault(i => i.Id == id);
+
+            return invitation;
         }
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
