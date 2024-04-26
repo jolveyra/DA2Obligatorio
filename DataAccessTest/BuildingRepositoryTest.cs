@@ -1,4 +1,4 @@
-using IDataAccess;
+using RepositoryInterfaces;
 using DataAccess;
 using DataAccess.Context;
 using Domain;
@@ -49,7 +49,6 @@ namespace DataAccessTest
 
         }
 
-
         [TestMethod]
         public void CreateBuildingTestOk()
         {
@@ -62,6 +61,19 @@ namespace DataAccessTest
             Building result = buildingRepository.CreateBuilding(building);
 
             Assert.AreEqual(building, result);
+        }
+
+
+        [TestMethod]
+        public void UpdateBuildingTestOk()
+        {
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 200, Flats = new List<Flat>() };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
+
+            Building result = buildingRepository.UpdateBuilding(expected.Id, 200);
+
+            Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
         }
     }
 }

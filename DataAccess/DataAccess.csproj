@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
+    <ProjectReference Include="..\RepositoryInterfaces\RepositoryInterfaces.csproj" />
   </ItemGroup>
 
 </Project>
