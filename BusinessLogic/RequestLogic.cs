@@ -25,7 +25,7 @@ namespace BusinessLogic
 
         public Request GetRequestById(Guid id)
         {
-            throw new NotImplementedException();
+            return _requestRepository.GetRequestById(id);
         }
 
         public Request UpdateRequest(Request request)
