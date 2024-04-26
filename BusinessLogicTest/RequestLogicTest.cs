@@ -48,5 +48,20 @@ namespace BusinessLogicTest
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
         }
+
+        [TestMethod]
+        public void UpdateRequestTest()
+        {
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1" };
+            Request expected = new Request() { Id = request.Id, Description = "Request 2" };
+
+            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
+            requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
+
+            Request result = requestLogic.UpdateRequest(request);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

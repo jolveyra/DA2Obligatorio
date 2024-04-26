@@ -30,7 +30,15 @@ namespace BusinessLogic
 
         public Request UpdateRequest(Request request)
         {
-            throw new NotImplementedException();
+            Request existingRequest = GetRequestById(request.Id);
+
+            existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
+            existingRequest.BuildingId = request.BuildingId;
+            existingRequest.FlatId = request.FlatId;
+            existingRequest.Category = request.Category;
+            existingRequest.Description = request.Description;
+
+            return _requestRepository.UpdateRequest(existingRequest);
         }
     }
 }
