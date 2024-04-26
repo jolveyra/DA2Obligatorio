@@ -13,6 +13,14 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
+        public Session CreateSession(Session session)
+        {
+            _context.Sessions.Add(session);
+            _context.SaveChanges();
+
+            return session;
+        }
+
         public Guid GetUserIdByToken(Guid guid)
         {
             Session? session = _context.Sessions.FirstOrDefault(s => s.Id == guid);
