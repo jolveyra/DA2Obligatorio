@@ -9,6 +9,16 @@ namespace DataAccessTest
     [TestClass]
     public class UserRepositoryTest
     {
+        private Mock<BuildingBossContext> _contextMock;
+        private UserRepository _userRepository;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _contextMock = new Mock<BuildingBossContext>();
+            _userRepository = new UserRepository(_contextMock.Object);
+        }
+
         [TestMethod]
         public void GetAllUsersTest()
         {
@@ -17,13 +27,11 @@ namespace DataAccessTest
                 new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" }
             };
 
-            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
-            contextMock.Setup(context => context.Users).ReturnsDbSet(users);
-            UserRepository userRepository = new UserRepository(contextMock.Object);
+            _contextMock.Setup(context => context.Users).ReturnsDbSet(users);
 
-            IEnumerable<User> result = userRepository.GetAllUsers();
+            IEnumerable<User> result = _userRepository.GetAllUsers();
 
-            contextMock.Verify(context => context.Users, Times.Once());
+            _contextMock.Verify(context => context.Users, Times.Once());
             Assert.IsTrue(result.SequenceEqual(users));
         }
 
@@ -32,13 +40,11 @@ namespace DataAccessTest
         {
             User user = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
 
-            Mock<BuildingBossContext> contextMock = new Mock<BuildingBossContext>();
-            contextMock.Setup(context => context.Users).ReturnsDbSet(new List<User> { user });
-            UserRepository userRepository = new UserRepository(contextMock.Object);
+            _contextMock.Setup(context => context.Users).ReturnsDbSet(new List<User> { user });
+            
+            User result = _userRepository.GetUserById(user.Id);
 
-            User result = userRepository.GetUserById(user.Id);
-
-            contextMock.Verify(context => context.Users, Times.Once());
+            _contextMock.Verify(context => context.Users, Times.Once());
             Assert.AreEqual(user, result);
         }
     }
