@@ -47,8 +47,10 @@ namespace DataAccess.Repositories
         {
             Invitation invitation = GetInvitationById(id);
             invitation.IsAccepted = isAccepted;
+
             _context.Invitations.Update(invitation);
             _context.SaveChanges();
+
             return invitation;
         }
     }

@@ -15,7 +15,10 @@ namespace DataAccess.Repositories
 
         public User CreateUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return user;
         }
 
         public IEnumerable<User> GetAllUsers()

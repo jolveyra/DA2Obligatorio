@@ -68,5 +68,20 @@ namespace DataAccessTest
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("User not found", exception.Message);
         }
+
+        [TestMethod]
+        public void CreateUserTest()
+        {
+            User user = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
+
+            _contextMock.Setup(context => context.Users.Add(user));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            User result = _userRepository.CreateUser(user);
+
+            _contextMock.Verify(context => context.Users.Add(user), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+            Assert.AreEqual(user, result);
+        }
     }
 }

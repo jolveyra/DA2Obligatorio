@@ -85,7 +85,7 @@ namespace DataAccessTest
 
             Invitation result = _invitationRepository.CreateInvitation(invitation);
 
-            _contextMock.Verify(context => context.Invitations, Times.Exactly(2));
+            _contextMock.Verify(context => context.Invitations, Times.Once());
             _contextMock.Verify(context => context.Invitations.Add(invitation), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(invitation, result);
