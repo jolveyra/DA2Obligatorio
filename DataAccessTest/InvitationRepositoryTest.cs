@@ -1,7 +1,6 @@
 ﻿using DataAccess.Context;
 using DataAccess.Repositories;
 using Domain;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
 
