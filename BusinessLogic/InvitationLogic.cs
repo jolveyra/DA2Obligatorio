@@ -30,7 +30,7 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            _invitationRepository.DeleteInvitation(id);
+            _invitationRepository.DeleteInvitationById(id);
         }
 
         public IEnumerable<Invitation> GetAllInvitations()

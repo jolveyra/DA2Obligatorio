@@ -97,10 +97,12 @@ namespace DataAccessTest
         {
             Guid id = Guid.NewGuid();
             Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
+
             _contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>()
             {
                 new Invitation() { Id = id, Name = "Jose", Email = "jose@gmail.com" }
             });
+
             Exception exception = null;
 
             try
@@ -116,5 +118,24 @@ namespace DataAccessTest
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("An invitation with the same id already exists", exception.Message);
         }
+
+        [TestMethod]
+        public void DeleteInvitationByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com" };
+
+            _contextMock.Setup(context => context.Invitations).ReturnsDbSet(new List<Invitation>() { invitation });
+            _contextMock.Setup(context => context.Invitations.Remove(invitation));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            _invitationRepository.DeleteInvitationById(id);
+
+            _contextMock.Verify(context => context.Invitations, Times.Exactly(2));
+            _contextMock.Verify(context => context.Invitations.Remove(invitation), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+        }
+
+
     }
 }

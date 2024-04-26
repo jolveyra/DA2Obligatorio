@@ -167,7 +167,7 @@ namespace BusinessLogicTest
         {
             Guid idToDelete = Guid.NewGuid();
 
-            invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(It.IsAny<Guid>()));
+            invitationRepositoryMock.Setup(repository => repository.DeleteInvitationById(It.IsAny<Guid>()));
 
             invitationLogic.DeleteInvitation(idToDelete);
 

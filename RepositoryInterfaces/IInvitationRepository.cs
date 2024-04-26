@@ -5,7 +5,7 @@ namespace RepositoryInterfaces
     public interface IInvitationRepository
     {
         Invitation CreateInvitation(Invitation invitation);
-        void DeleteInvitation(Guid id);
+        void DeleteInvitationById(Guid id);
         public IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid id);
         Invitation UpdateInvitationStatus(Guid id, bool isAccepted);

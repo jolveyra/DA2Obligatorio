@@ -25,9 +25,10 @@ namespace DataAccess.Repositories
             return invitation;
         }
 
-        public void DeleteInvitation(Guid id)
+        public void DeleteInvitationById(Guid id)
         {
-            throw new NotImplementedException();
+            _context.Invitations.Remove(GetInvitationById(id));
+            _context.SaveChanges();
         }
 
         public IEnumerable<Invitation> GetAllInvitations()
