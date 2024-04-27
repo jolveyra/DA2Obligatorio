@@ -75,5 +75,19 @@ namespace DataAccessTest
 
             Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
         }
+
+        [TestMethod]
+        public void DeleteBuildingTestOk()
+        {
+            Guid id = Guid.NewGuid();
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = id, Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
+
+            buildingRepository.DeleteBuilding(id);
+
+            mockContext.Verify(x => x.SaveChanges(), Times.Once);
+        }
+
+
     }
 }

@@ -41,12 +41,14 @@ namespace DataAccess
 
         void IBuildingRepository.DeleteBuilding(Guid guid)
         {
-            throw new NotImplementedException();
+            _context.Buildings.Remove(_context.Buildings.Find(guid));
+            _context.SaveChanges();
         }
 
         Building IBuildingRepository.GetBuildingById(Guid guid)
         {
-            throw new NotImplementedException();
+
+            return _context.Buildings.Find(guid);
         }
 
         Flat IBuildingRepository.GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)
