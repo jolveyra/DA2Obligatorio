@@ -48,7 +48,15 @@ namespace DataAccess
         Building IBuildingRepository.GetBuildingById(Guid guid)
         {
 
-            return _context.Buildings.Find(guid);
+            Building building = _context.Buildings.FirstOrDefault(b => b.Id.Equals(guid));
+
+            if (building is null)
+            {
+                throw new ArgumentException("Building not found");
+            }
+
+            return building;
+
         }
 
         Flat IBuildingRepository.GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)

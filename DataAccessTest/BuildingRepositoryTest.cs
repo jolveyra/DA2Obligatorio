@@ -88,6 +88,17 @@ namespace DataAccessTest
             mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetBuildingByIdTestNotFound()
+        {
+            Guid id = Guid.NewGuid();
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
+
+            Building result = buildingRepository.GetBuildingById(id);
+        }
+
 
     }
 }
