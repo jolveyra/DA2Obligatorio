@@ -55,9 +55,16 @@ namespace DataAccess
 
         }
 
-        public Flat GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)
+        public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)
         {
-            return GetBuildingById(guid1).Flats.FirstOrDefault(f => f.Id.Equals(guid2));
+            Flat flat = GetBuildingById(buildingId).Flats.FirstOrDefault(f => f.Id.Equals(flatId));
+
+            if (flat is null)
+            {
+                throw new ArgumentException("Flat not found");
+            }
+
+            return flat;
         }
 
         public Flat UpdateFlat(Guid guid1, Guid guid2, Flat flat)

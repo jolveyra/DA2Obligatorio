@@ -170,7 +170,35 @@ namespace DataAccessTest
 
         }
 
+        [TestMethod]
+        public void GetFlatByBuildingAndFlatIdTestFlatNotFound()
+        {
+            Guid buildingId = Guid.NewGuid();
+            Guid flatId = Guid.NewGuid();
 
+            Building building = new Building()
+            {
+                Id = buildingId,
+                Name = "Building 1",
+                Direction = "Address 1",
+                ConstructorCompany = "City 1",
+                SharedExpenses = 150,
+                Flats = new List<Flat>() { }
+            };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { building });
+
+            try
+            {
+                Flat result = buildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+            }
+            catch (Exception e)
+            {
+                Assert.IsInstanceOfType(e, typeof(ArgumentException));
+                Assert.AreEqual(e.Message, "Flat not found");
+            }
+
+        }
 
 
     }
