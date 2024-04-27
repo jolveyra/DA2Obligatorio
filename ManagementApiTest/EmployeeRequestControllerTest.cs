@@ -10,6 +10,16 @@ namespace ManagementApiTest
     [TestClass]
     public class EmployeeRequestControllerTest
     {
+        private Mock<IEmployeeRequestLogic> requestLogicMock;
+        private EmployeeRequestController employeeRequestController;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            requestLogicMock = new Mock<IEmployeeRequestLogic>(MockBehavior.Strict);
+            employeeRequestController = new EmployeeRequestController(requestLogicMock.Object);
+        }
+
         [TestMethod]
         public void GetAllEmployeeRequestTest()
         {
@@ -20,9 +30,7 @@ namespace ManagementApiTest
                 new Request() { Id = Guid.NewGuid(), Description = "Description 2", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" }, AssignedEmployeeId = Guid.NewGuid() }
             };
 
-            Mock<IEmployeeRequestLogic> requestLogicMock = new Mock<IEmployeeRequestLogic>(MockBehavior.Strict);
             requestLogicMock.Setup(r => r.GetAllRequestsByEmployeeId(It.IsAny<Guid>())).Returns(new List<Request>() { requests.First() });
-            EmployeeRequestController requestController = new EmployeeRequestController(requestLogicMock.Object);
             
             OkObjectResult expected = new OkObjectResult(new List<RequestResponseModel>
             {
@@ -30,7 +38,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
             
-            OkObjectResult result = requestController.GetAllEmployeeRequests(employeeId) as OkObjectResult;
+            OkObjectResult result = employeeRequestController.GetAllEmployeeRequests(employeeId) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();
@@ -48,14 +56,12 @@ namespace ManagementApiTest
                 Status = RequestStatus.InProgress
             };
 
-            Mock<IEmployeeRequestLogic> requestLogicMock = new Mock<IEmployeeRequestLogic>(MockBehavior.Strict);
             requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);
-            EmployeeRequestController requestController = new EmployeeRequestController(requestLogicMock.Object);
-
+            
             RequestResponseModel expectedResult = new RequestResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            OkObjectResult result = requestController.UpdateRequestStatusById(expected.Id, requestUpdateStatusModel) as OkObjectResult;
+            OkObjectResult result = employeeRequestController.UpdateRequestStatusById(expected.Id, requestUpdateStatusModel) as OkObjectResult;
             RequestResponseModel resultObject = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();
