@@ -9,16 +9,24 @@ namespace DataAccessTest
     [TestClass]
     public class RequestRepositoryTest
     {
+        private Mock<BuildingBossContext> _contextMock;
+        private RequestRepository _requestRepository;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _contextMock = new Mock<BuildingBossContext>();
+            _requestRepository = new RequestRepository(_contextMock.Object);
+        }
+
         [TestMethod]
         public void GetAllRequestsTest()
         {
             Request request = new Request() { Id = Guid.NewGuid() };
 
-            Mock<BuildingBossContext> _contextMock = new Mock<BuildingBossContext>();
             _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request> { request });
-            RequestRepository requestRepository = new RequestRepository(_contextMock.Object);
 
-            IEnumerable<Request> result = requestRepository.GetAllRequests();
+            IEnumerable<Request> result = _requestRepository.GetAllRequests();
 
             _contextMock.Verify(context => context.Requests);
             Assert.IsTrue(result.SequenceEqual(new List<Request> { request }));
@@ -29,12 +37,10 @@ namespace DataAccessTest
         {
             Request request = new Request() { Id = Guid.NewGuid() };
 
-            Mock<BuildingBossContext> _contextMock = new Mock<BuildingBossContext>();
             _contextMock.Setup(context => context.Requests.Add(request));
             _contextMock.Setup(context => context.SaveChanges()).Returns(1);
-            RequestRepository requestRepository = new RequestRepository(_contextMock.Object);
 
-            Request result = requestRepository.CreateRequest(request);
+            Request result = _requestRepository.CreateRequest(request);
 
             _contextMock.Verify(context => context.Requests.Add(request));
             Assert.AreEqual(request, result);
@@ -46,11 +52,9 @@ namespace DataAccessTest
             Guid id = Guid.NewGuid();
             Request request = new Request() { Id = id };
 
-            Mock<BuildingBossContext> _contextMock = new Mock<BuildingBossContext>();
             _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request> { request });
-            RequestRepository requestRepository = new RequestRepository(_contextMock.Object);
 
-            Request result = requestRepository.GetRequestById(id);
+            Request result = _requestRepository.GetRequestById(id);
 
             _contextMock.Verify(context => context.Requests);
             Assert.AreEqual(request, result);
