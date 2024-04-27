@@ -403,6 +403,33 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestNotFoundFlat()
+    {
+        Flat flat = new Flat()
+        {
+            Floor = 3,
+            Number = 304,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+        }
+        catch (Exception e)
+        {
+            Assert.IsInstanceOfType(e, typeof(ArgumentException));
+            Assert.AreEqual(e.Message, "Building not found");
+        }
+    }
+
+    [TestMethod]
     public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
     {
         Flat flat = new Flat() {Floor = 3, Number = 303, Bathrooms = 3, HasBalcony = true, OwnerEmail = "pedro@mail.com", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos" };
