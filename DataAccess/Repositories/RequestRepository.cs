@@ -15,7 +15,9 @@ namespace DataAccess.Repositories
 
         public Request CreateRequest(Request request)
         {
-            throw new NotImplementedException();
+            _context.Requests.Add(request);
+            _context.SaveChanges();
+            return request;
         }
 
         public IEnumerable<Request> GetAllRequests()
