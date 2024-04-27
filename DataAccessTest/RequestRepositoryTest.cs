@@ -59,5 +59,27 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.Requests);
             Assert.AreEqual(request, result);
         }
+
+        [TestMethod]
+        public void GetNonExistingRequestByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+
+            _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request>());
+
+            Exception exception = null;
+
+            try
+            {
+                _requestRepository.GetRequestById(id);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsNotNull(exception);
+            Assert.AreEqual("Request not found", exception.Message);
+        }
     }
 }
