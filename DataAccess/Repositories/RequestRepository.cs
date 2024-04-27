@@ -27,7 +27,14 @@ namespace DataAccess.Repositories
 
         public Request GetRequestById(Guid id)
         {
-            throw new NotImplementedException();
+            Request? request = _context.Requests.FirstOrDefault(r => r.Id == id);
+
+            if (request == null)
+            {
+                throw new ArgumentException("Request not found");
+            }
+
+            return request;
         }
 
         public Request UpdateRequest(Request existingRequest)

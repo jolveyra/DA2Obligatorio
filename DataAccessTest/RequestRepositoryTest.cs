@@ -39,5 +39,21 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.Requests.Add(request));
             Assert.AreEqual(request, result);
         }
+
+        [TestMethod]
+        public void GetRequestByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            Request request = new Request() { Id = id };
+
+            Mock<BuildingBossContext> _contextMock = new Mock<BuildingBossContext>();
+            _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request> { request });
+            RequestRepository requestRepository = new RequestRepository(_contextMock.Object);
+
+            Request result = requestRepository.GetRequestById(id);
+
+            _contextMock.Verify(context => context.Requests);
+            Assert.AreEqual(request, result);
+        }
     }
 }
