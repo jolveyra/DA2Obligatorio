@@ -71,7 +71,7 @@ namespace DataAccessTest
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
 
-            Building result = buildingRepository.UpdateBuilding(expected.Id, 200);
+            Building result = buildingRepository.UpdateBuilding(expected);
 
             Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
         }
@@ -81,9 +81,11 @@ namespace DataAccessTest
         {
             Guid id = Guid.NewGuid();
 
+            Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
+
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = id, Name = "Building 1", Direction = "Address 1", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
 
-            buildingRepository.DeleteBuilding(id);
+            buildingRepository.DeleteBuilding(toDeleteBuilding);
 
             mockContext.Verify(x => x.SaveChanges(), Times.Once);
         }

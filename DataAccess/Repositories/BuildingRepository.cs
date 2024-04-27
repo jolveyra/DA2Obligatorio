@@ -27,25 +27,21 @@ namespace DataAccess
             return building;
         }
 
-        public Building UpdateBuilding(Guid id, float sharedExpenses)
+        public Building UpdateBuilding(Building building)
         {
-            Building building = _context.Buildings.FirstOrDefault(b => b.Id.Equals(id));
-
-            building.SharedExpenses = sharedExpenses;
-
             _context.Update(building);
             _context.SaveChanges();
 
             return building;
         }
 
-        void IBuildingRepository.DeleteBuilding(Guid guid)
+        public void DeleteBuilding(Building building)
         {
-            _context.Buildings.Remove(_context.Buildings.Find(guid));
+            _context.Buildings.Remove(building);
             _context.SaveChanges();
         }
 
-        Building IBuildingRepository.GetBuildingById(Guid guid)
+        public Building GetBuildingById(Guid guid)
         {
 
             Building building = _context.Buildings.FirstOrDefault(b => b.Id.Equals(guid));
@@ -59,12 +55,12 @@ namespace DataAccess
 
         }
 
-        Flat IBuildingRepository.GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)
+        public Flat GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)
         {
             throw new NotImplementedException();
         }
 
-        Flat IBuildingRepository.UpdateFlat(Guid guid1, Guid guid2, Flat flat)
+        public Flat UpdateFlat(Guid guid1, Guid guid2, Flat flat)
         {
             throw new NotImplementedException();
         }
