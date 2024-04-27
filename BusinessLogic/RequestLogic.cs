@@ -83,10 +83,6 @@ namespace BusinessLogic
             {
                 throw new RequestException("Category cannot be null");
             }
-            if (request.Status == null)
-            {
-                throw new RequestException("Status cannot be null");
-            }
         }
     }
 }

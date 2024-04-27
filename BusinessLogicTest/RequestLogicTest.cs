@@ -1,6 +1,7 @@
 ﻿using BusinessLogic;
 using CustomExceptions.BusinessLogic;
 using Domain;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Moq;
 using RepositoryInterfaces;
 
@@ -82,6 +83,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Description cannot be empty or null"));
         }
@@ -103,6 +105,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("BuildingId cannot be empty or null"));
         }
@@ -124,6 +127,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("FlatId cannot be empty or null"));
         }
@@ -144,6 +148,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("AssignedEmployeeId cannot be empty or null"));
         }
@@ -165,6 +170,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Category cannot be null"));
         }
