@@ -48,19 +48,23 @@ namespace BusinessLogic
         {
             if (string.IsNullOrEmpty(request.Description))
             {
-                throw new RequestException("Description cannot be null");
+                throw new RequestException("Description cannot be empty or null");
             }
-            if (request.BuildingId == Guid.Empty)
+            if (request.BuildingId == Guid.Empty)       // Deberiamos chequear que el id sea perteneciente a unos de los de manager??
             {
-                throw new RequestException("BuildingId cannot be empty");
+                throw new RequestException("BuildingId cannot be empty or null");
             }
-            if (request.FlatId == Guid.Empty)
+            if (request.FlatId == Guid.Empty) // Lo mismo con el building
             {
-                throw new RequestException("FlatId cannot be empty");
+                throw new RequestException("FlatId cannot be empty or null");
             }
             if (request.AssignedEmployeeId == Guid.Empty)
             {
-                throw new RequestException("AssignedEmployeeId cannot be empty");
+                throw new RequestException("AssignedEmployeeId cannot be empty or null");
+            }
+            if (request.Category == null)
+            {
+                throw new RequestException("Category cannot be null");
             }
         }
     }
