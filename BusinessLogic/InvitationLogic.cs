@@ -30,7 +30,7 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            _invitationRepository.DeleteInvitation(id);
+            _invitationRepository.DeleteInvitationById(id);
         }
 
         public IEnumerable<Invitation> GetAllInvitations()
@@ -45,7 +45,9 @@ namespace BusinessLogic
 
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
-            return _invitationRepository.UpdateInvitationStatus(id, isAccepted);
+            Invitation invitation = GetInvitationById(id);
+            invitation.IsAccepted = isAccepted;
+            return _invitationRepository.UpdateInvitation(invitation);
         }
 
         private static void ValidateInvitation(Invitation invitation)

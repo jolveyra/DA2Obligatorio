@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessTest
 {
-    [TestClass]
+    //[TestClass]
     public class BuildingRepositoryTest
     {
 

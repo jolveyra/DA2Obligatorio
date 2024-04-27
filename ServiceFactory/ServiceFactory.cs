@@ -2,8 +2,8 @@
 using LogicInterfaces;
 using RepositoryInterfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Cryptography.X509Certificates;
 using DataAccess.Context;
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace ServiceFactory
@@ -16,10 +16,11 @@ namespace ServiceFactory
             services.AddScoped<IAuthorizationLogic, UserLogic>();
             services.AddScoped<IAdministratorLogic, UserLogic>();
             services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
+            services.AddScoped<IRequestLogic, RequestLogic>();
 
-            //services.AddScoped<IInvitationRepository, InvitationRepository>();
-            //services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<IInvitationRepository, InvitationRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

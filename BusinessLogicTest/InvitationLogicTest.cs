@@ -152,9 +152,11 @@ namespace BusinessLogicTest
         public void UpdateInvitationStatusTest()
         {
             Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
             Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
 
-            invitationRepositoryMock.Setup(repository => repository.UpdateInvitationStatus(It.IsAny<Guid>(), It.IsAny<bool>())).Returns(expected);
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
 
             Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
 
@@ -167,7 +169,7 @@ namespace BusinessLogicTest
         {
             Guid idToDelete = Guid.NewGuid();
 
-            invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(It.IsAny<Guid>()));
+            invitationRepositoryMock.Setup(repository => repository.DeleteInvitationById(It.IsAny<Guid>()));
 
             invitationLogic.DeleteInvitation(idToDelete);
 

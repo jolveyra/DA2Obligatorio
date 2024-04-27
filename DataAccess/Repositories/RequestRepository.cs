@@ -1,0 +1,47 @@
+﻿using DataAccess.Context;
+using Domain;
+using RepositoryInterfaces;
+
+namespace DataAccess.Repositories
+{
+    public class RequestRepository : IRequestRepository
+    {
+        private readonly BuildingBossContext _context;
+
+        public RequestRepository(BuildingBossContext context)
+        {
+            _context = context;
+        }
+
+        public Request CreateRequest(Request request)
+        {
+            _context.Requests.Add(request);
+            _context.SaveChanges();
+            return request;
+        }
+
+        public IEnumerable<Request> GetAllRequests()
+        {
+            return _context.Requests;
+        }
+
+        public Request GetRequestById(Guid id)
+        {
+            Request? request = _context.Requests.FirstOrDefault(r => r.Id == id);
+
+            if (request == null)
+            {
+                throw new ArgumentException("Request not found");
+            }
+
+            return request;
+        }
+
+        public Request UpdateRequest(Request existingRequest)
+        {
+            _context.Requests.Update(existingRequest);
+            _context.SaveChanges();
+            return existingRequest;
+        }
+    }
+}

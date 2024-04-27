@@ -12,10 +12,11 @@ namespace DataAccess.Context
     {
         public virtual DbSet<Building> Buildings { get; set; }
         public DbSet<Flat> Flats { get; set; }
-        public DbSet<User> Users { get; set; } 
-        public DbSet<Request> Requests { get; set; }
+        public virtual DbSet<User> Users { get; set; } 
+        public virtual DbSet<Request> Requests { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Invitation> Invations { get; set; }
+        public virtual DbSet<Invitation> Invitations { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
 
         public BuildingBossContext() { }
 

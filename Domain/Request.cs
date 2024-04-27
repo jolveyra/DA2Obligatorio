@@ -8,5 +8,10 @@
         public Guid FlatId { get; set; }
         public Category Category { get; set; }
         public Guid AssignedEmployeeId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Request r && r.Id == Id;
+        }
     }
 }

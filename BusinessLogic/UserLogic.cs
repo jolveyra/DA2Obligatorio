@@ -8,13 +8,13 @@ namespace BusinessLogic
 {
     public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic
     {
-        private readonly ITokenRepository _tokenRepository;
+        private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
 
-        public UserLogic(IUserRepository userRepository, ITokenRepository tokenRepository)
+        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _userRepository = userRepository;
-            _tokenRepository = tokenRepository;
+            _sessionRepository = sessionRepository;
         }
 
         public User CreateAdministrator(User user)
@@ -38,7 +38,10 @@ namespace BusinessLogic
                 throw new UserException("A user with the same email already exists");
             }
 
-            return _userRepository.CreateUser(user);
+            User newUser = _userRepository.CreateUser(user);
+            _sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
+
+            return newUser;
         }
 
         public IEnumerable<User> GetAllAdministrators()
@@ -48,7 +51,7 @@ namespace BusinessLogic
 
         public string GetUserRoleByToken(Guid token)
         {
-            return _userRepository.GetUserById(_tokenRepository.GetUserIdByToken(token)).Role.ToString();
+            return _userRepository.GetUserById(_sessionRepository.GetSessionByToken(token).UserId).Role.ToString();
         }
 
         public IEnumerable<User> GetAllMaintenanceEmployees()
