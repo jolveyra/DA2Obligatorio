@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
+using CustomExceptions.BusinessLogic;
 
 namespace BusinessLogic
 {
@@ -20,12 +21,22 @@ namespace BusinessLogic
 
         public Category CreateCategory(Category category)
         {
+            CheckUniqueCategoryName(category);
+
             return _iCategoryRepository.CreateCategory(category);
+        }
+
+        private void CheckUniqueCategoryName(Category category)
+        {
+            if (GetAllCategories().Any(c => c.Name == category.Name))
+            {
+                throw new CategoryException("Category with same name already exists");
+            }
         }
 
         public IEnumerable<Category> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return _iCategoryRepository.GetAllCategories();
         }
     }
 }
