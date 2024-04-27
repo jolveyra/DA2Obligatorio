@@ -16,10 +16,11 @@ namespace ServiceFactory
             services.AddScoped<IAuthorizationLogic, UserLogic>();
             services.AddScoped<IAdministratorLogic, UserLogic>();
             services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
+            services.AddScoped<IRequestLogic, RequestLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<IRequestRepository, RequestRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

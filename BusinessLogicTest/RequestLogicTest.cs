@@ -15,7 +15,7 @@ namespace BusinessLogicTest
         [TestInitialize]
         public void TestInitialize()
         {
-            requestRepositoryMock = new Mock<IRequestRepository>();
+            requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
             requestLogic = new RequestLogic(requestRepositoryMock.Object);
         }
 

@@ -10,16 +10,16 @@ namespace BusinessLogicTest
     public class UserLogicTest
     {
 
-        private Mock<ISessionRepository> tokenRepositoryMock;
+        private Mock<ISessionRepository> sessionRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private UserLogic _userLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            userRepositoryMock = new Mock<IUserRepository>();
-            tokenRepositoryMock = new Mock<ISessionRepository>();
-            _userLogic = new UserLogic(userRepositoryMock.Object, tokenRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
+            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -45,13 +45,13 @@ namespace BusinessLogicTest
             User user = new User() { Role = Role.Administrator };
             Session session = new Session() { UserId = user.Id };
 
-            tokenRepositoryMock.Setup(x => x.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
+            sessionRepositoryMock.Setup(x => x.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
             userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
 
             string expected = user.Role.ToString();
             string result = _userLogic.GetUserRoleByToken(session.UserId);
 
-            tokenRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
             Assert.AreEqual(expected, result);
         }
@@ -77,8 +77,11 @@ namespace BusinessLogicTest
         public void CreateAdministratorTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
-            
+            Session session = new Session() { UserId = user.Id };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+            sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
 
             user.Id = Guid.NewGuid();
             User result = _userLogic.CreateAdministrator(user);
@@ -292,8 +295,11 @@ namespace BusinessLogicTest
         public void CreateMaintenanceEmployeeTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.MaintenanceEmployee };
-            
+            Session session = new Session() { UserId = user.Id };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+            sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
 
             user.Id = Guid.NewGuid();
             User result = _userLogic.CreateAdministrator(user);
