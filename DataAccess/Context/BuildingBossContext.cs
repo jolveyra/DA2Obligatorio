@@ -10,7 +10,7 @@ namespace DataAccess.Context
 {
     public class BuildingBossContext: DbContext
     {
-        public DbSet<Building> Buildings { get; set; }
+        public virtual DbSet<Building> Buildings { get; set; }
         public DbSet<Flat> Flats { get; set; }
         public virtual DbSet<User> Users { get; set; } 
         public virtual DbSet<Request> Requests { get; set; }

@@ -102,7 +102,8 @@ public class BuildingLogic: IBuildingLogic
 
     public void DeleteBuilding(Guid guid)
     {
-        _iBuildingRepository.DeleteBuilding(guid);
+        Building building = _iBuildingRepository.GetBuildingById(guid);
+        _iBuildingRepository.DeleteBuilding(building);
     }
 
     public IEnumerable<Building> GetAllBuildings()
@@ -125,7 +126,11 @@ public class BuildingLogic: IBuildingLogic
     {
         CheckNotNegativeSharedExpenses(sharedExpenses);
 
-        return _iBuildingRepository.UpdateBuilding(buildingId, sharedExpenses);
+        Building building = _iBuildingRepository.GetBuildingById(buildingId);
+
+        building.SharedExpenses = sharedExpenses;
+
+        return _iBuildingRepository.UpdateBuilding(building);
     }
 
     public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
@@ -134,7 +139,16 @@ public class BuildingLogic: IBuildingLogic
 
         CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
 
-        return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
+        Flat existingFlat = _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+
+        existingFlat.Number = flat.Number;
+        existingFlat.Bathrooms = flat.Bathrooms;
+        existingFlat.OwnerName = flat.OwnerName;
+        existingFlat.OwnerSurname = flat.OwnerSurname;
+        existingFlat.OwnerEmail = flat.OwnerEmail;
+        existingFlat.HasBalcony = flat.HasBalcony;
+
+        return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
     private void ValidateFlat(Flat flat)

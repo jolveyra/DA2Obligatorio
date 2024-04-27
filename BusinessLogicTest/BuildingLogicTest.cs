@@ -226,16 +226,41 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateBuildingTestOk()
     {
-        Building building = new Building() { Name = "Mirador" };
-        Building expected = new Building() { Name = "Mirador" };
+        Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
 
-        buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Returns(expected);
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+        buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
 
         Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>());
 
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
+    }
+
+
+    [TestMethod]
+    public void UpdateBuildingTestNotFound()
+    {
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+        Assert.AreEqual(exception.Message, "Building not found");
     }
 
     [TestMethod]
@@ -262,11 +287,37 @@ public class BuildingLogicTest
     [TestMethod]
     public void DeleteBuildingTestOk()
     {
-        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
+        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
 
         buildingLogic.DeleteBuilding(It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
+
+    }
+
+    [TestMethod]
+    public void DeleteBuildingTestNotFound()
+    {
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+
+        Exception exception = null;
+
+        try
+        {
+            buildingLogic.DeleteBuilding(It.IsAny<Guid>());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+        Assert.AreEqual(exception.Message, "Building not found");
+
 
     }
 
@@ -314,14 +365,68 @@ public class BuildingLogicTest
             OwnerSurname = "De Los Naranjos"
         };
 
-        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(expected);
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat> { toUpdateFlat } });
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat>() { new Flat() { Id = toUpdateFlat.Id } } });
+        buildingRepositoryMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(toUpdateFlat);
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(expected);
 
         Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
 
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestNotFoundBuilding()
+    {
+        Flat flat = new Flat()
+        {
+            Floor = 3,
+            Number = 304,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+        }catch(Exception e)
+        {
+            Assert.IsInstanceOfType(e, typeof(ArgumentException));
+            Assert.AreEqual(e.Message, "Building not found");
+        }
+    }
+
+    [TestMethod]
+    public void UpdateFlatByBuildingAndFlatIdTestNotFoundFlat()
+    {
+        Flat flat = new Flat()
+        {
+            Floor = 3,
+            Number = 304,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos"
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+        }
+        catch (Exception e)
+        {
+            Assert.IsInstanceOfType(e, typeof(ArgumentException));
+            Assert.AreEqual(e.Message, "Building not found");
+        }
     }
 
     [TestMethod]

@@ -21,6 +21,7 @@ namespace ServiceFactory
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

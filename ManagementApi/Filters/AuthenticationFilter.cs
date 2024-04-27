@@ -21,27 +21,36 @@ namespace ManagementApi.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
             string header = context.HttpContext.Request.Headers["Authorization"];
-            Guid token = Guid.Parse(header);
             if (header is null)
             {
                 context.Result = new ObjectResult(new { ErrorMessage = "Authorization header is missing" }) { StatusCode = 401 };
             }
             else
             {
-                if (Roles.Count > 0)
+                try
                 {
-                    var authenticationService = (IAuthorizationLogic)context.HttpContext.RequestServices.GetService(typeof(IAuthorizationLogic));
-                    string userRole = authenticationService.GetUserRoleByToken(token);
+                    Guid token = Guid.Parse(header);
 
-                    if (!Roles.Contains(userRole))
+                    if (Roles.Count > 0)
+                    {
+                        var authenticationService = (IAuthorizationLogic)context.HttpContext.RequestServices.GetService(typeof(IAuthorizationLogic));
+                        string userRole = authenticationService.GetUserRoleByToken(token);
+
+                        if (!Roles.Contains(userRole))
+                        {
+                            context.Result = new ObjectResult(new { ErrorMessage = "Unauthorized access" }) { StatusCode = 403 };
+                            return;
+                        }
+                    }
+                    else
                     {
                         context.Result = new ObjectResult(new { ErrorMessage = "Unauthorized access" }) { StatusCode = 403 };
-                        return;
                     }
                 }
-                else
+                catch(Exception e)
                 {
-                    context.Result = new ObjectResult(new { ErrorMessage = "Unauthorized access" }) { StatusCode = 403 };
+                    context.Result = new ObjectResult(new { ErrorMessage = "Invalid token" }) { StatusCode = 401 };
+                    return;
                 }
             }
 
