@@ -43,11 +43,8 @@ namespace DataAccess.Repositories
             return invitation;
         }
 
-        public Invitation UpdateInvitationStatusById(Guid id, bool isAccepted)
+        public Invitation UpdateInvitation(Invitation invitation)
         {
-            Invitation invitation = GetInvitationById(id);
-            invitation.IsAccepted = isAccepted;
-
             _context.Invitations.Update(invitation);
             _context.SaveChanges();
 
