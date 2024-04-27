@@ -67,9 +67,11 @@ namespace DataAccess
             return flat;
         }
 
-        public Flat UpdateFlat(Guid guid1, Guid guid2, Flat flat)
+        public Flat UpdateFlat(Flat flat)
         {
-            throw new NotImplementedException();
+            _context.Update(flat);
+            _context.SaveChanges();
+            return flat;
         }
     }
 }

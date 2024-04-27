@@ -365,8 +365,9 @@ public class BuildingLogicTest
             OwnerSurname = "De Los Naranjos"
         };
 
-        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat)).Returns(expected);
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat> { toUpdateFlat } });
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat>() { new Flat() { Id = toUpdateFlat.Id } } });
+        buildingRepositoryMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(toUpdateFlat);
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(expected);
 
         Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
 

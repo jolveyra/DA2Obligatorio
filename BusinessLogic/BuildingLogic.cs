@@ -139,7 +139,16 @@ public class BuildingLogic: IBuildingLogic
 
         CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
 
-        return _iBuildingRepository.UpdateFlat(buildingId, flatId, flat);
+        Flat existingFlat = _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+
+        existingFlat.Number = flat.Number;
+        existingFlat.Bathrooms = flat.Bathrooms;
+        existingFlat.OwnerName = flat.OwnerName;
+        existingFlat.OwnerSurname = flat.OwnerSurname;
+        existingFlat.OwnerEmail = flat.OwnerEmail;
+        existingFlat.HasBalcony = flat.HasBalcony;
+
+        return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
     private void ValidateFlat(Flat flat)

@@ -200,6 +200,51 @@ namespace DataAccessTest
 
         }
 
+        [TestMethod]
+        public void UpdateFlatTestOk()
+        {
+            Guid buildingId = Guid.NewGuid();
+            Guid flatId = Guid.NewGuid();
+
+            Building building = new Building()
+            {
+                Id = buildingId,
+                Name = "Building 1",
+                Direction = "Address 1",
+                ConstructorCompany = "City 1",
+                SharedExpenses = 150,
+                Flats = new List<Flat>()
+                {
+                    new Flat() { Id = flatId }
+                }
+            };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { building });
+
+            Flat flat = new Flat()
+            {
+                Id = flatId,
+                Floor = 3,
+                Number = 304,
+                HasBalcony = true,
+                OwnerEmail = "pedro@mail.com",
+                OwnerName = "Pedro",
+                OwnerSurname = "De Los Naranjos"
+            };
+
+            Flat result = buildingRepository.UpdateFlat(flat);
+
+            Assert.IsTrue(flat.Id.Equals(result.Id) &&
+                flat.Floor.Equals(result.Floor) &&
+                flat.Number.Equals(result.Number) &&
+                flat.HasBalcony.Equals(result.HasBalcony) &&
+                flat.OwnerEmail.Equals(result.OwnerEmail) &&
+                flat.OwnerName.Equals(result.OwnerName) &&
+                flat.OwnerSurname.Equals(result.OwnerSurname)
+            );
+
+        }
+
 
     }
 }
