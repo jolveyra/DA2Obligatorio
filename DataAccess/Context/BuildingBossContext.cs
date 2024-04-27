@@ -14,7 +14,7 @@ namespace DataAccess.Context
         public DbSet<Flat> Flats { get; set; }
         public virtual DbSet<User> Users { get; set; } 
         public virtual DbSet<Request> Requests { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
 
