@@ -7,16 +7,16 @@ using RepositoryInterfaces;
 namespace BusinessLogicTest
 {
     [TestClass]
-    public class ManagerRequestLogicTest
+    public class RequestLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
-        private RequestLogic _managerRequestLogic;
+        private RequestLogic _requestLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            _managerRequestLogic = new RequestLogic(requestRepositoryMock.Object);
+            _requestLogic = new RequestLogic(requestRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = _managerRequestLogic.GetAllRequests();
+            IEnumerable<Request> result = _requestLogic.GetAllRequests();
 
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(requests));
@@ -44,7 +44,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             
-            Request result = _managerRequestLogic.GetRequestById(request.Id);
+            Request result = _requestLogic.GetRequestById(request.Id);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
@@ -59,7 +59,7 @@ namespace BusinessLogicTest
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
 
-            Request result = _managerRequestLogic.UpdateRequest(request);
+            Request result = _requestLogic.UpdateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(expected, result);
@@ -75,7 +75,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _managerRequestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -96,7 +96,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _managerRequestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -117,7 +117,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _managerRequestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -137,7 +137,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _managerRequestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -158,7 +158,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _managerRequestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -176,10 +176,34 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
 
-            Request result = _managerRequestLogic.CreateRequest(request);
+            Request result = _requestLogic.CreateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
+        }
+
+        [TestMethod]
+        public void GetAllRequestsByEmployeeIdTest()
+        {
+            Guid employeeId = Guid.NewGuid();
+            IEnumerable<Request> requests = new List<Request>()
+            {
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", AssignedEmployeeId = employeeId },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", AssignedEmployeeId = Guid.NewGuid() },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", AssignedEmployeeId = employeeId }
+            };
+            IEnumerable<Request> expected = new List<Request>()
+            {
+                requests.First(),
+                requests.Last()
+            };
+
+            requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
+
+            IEnumerable<Request> result = _requestLogic.GetAllRequestsByEmployeeId(employeeId);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.SequenceEqual(expected));
         }
     }
 }

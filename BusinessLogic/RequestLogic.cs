@@ -28,7 +28,7 @@ namespace BusinessLogic
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            throw new NotImplementedException();
+            return GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
         }
 
         public Request GetRequestById(Guid id)
