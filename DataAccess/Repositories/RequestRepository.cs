@@ -39,7 +39,9 @@ namespace DataAccess.Repositories
 
         public Request UpdateRequest(Request existingRequest)
         {
-            throw new NotImplementedException();
+            _context.Requests.Update(existingRequest);
+            _context.SaveChanges();
+            return existingRequest;
         }
     }
 }

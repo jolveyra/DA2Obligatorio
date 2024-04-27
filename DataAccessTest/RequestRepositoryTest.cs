@@ -43,6 +43,7 @@ namespace DataAccessTest
             Request result = _requestRepository.CreateRequest(request);
 
             _contextMock.Verify(context => context.Requests.Add(request));
+            _contextMock.Verify(context => context.SaveChanges());
             Assert.AreEqual(request, result);
         }
 
@@ -80,6 +81,21 @@ namespace DataAccessTest
 
             Assert.IsNotNull(exception);
             Assert.AreEqual("Request not found", exception.Message);
+        }
+
+        [TestMethod]
+        public void UpdateRequestTest()
+        {
+            Request request = new Request() { Id = Guid.NewGuid() };
+
+            _contextMock.Setup(context => context.Requests.Update(request));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            Request result = _requestRepository.UpdateRequest(request);
+
+            _contextMock.Verify(context => context.Requests.Update(request));
+            _contextMock.Verify(context => context.SaveChanges());
+            Assert.AreEqual(request, result);
         }
     }
 }
