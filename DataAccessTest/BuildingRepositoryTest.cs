@@ -89,14 +89,24 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetBuildingByIdTestNotFound()
         {
             Guid id = Guid.NewGuid();
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
 
-            Building result = buildingRepository.GetBuildingById(id);
+            Exception exception = null;
+
+            try
+            {
+                Building result = buildingRepository.GetBuildingById(id);
+            }catch(Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual(exception.Message, "Building not found");
         }
 
 
