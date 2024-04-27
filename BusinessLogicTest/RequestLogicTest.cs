@@ -205,5 +205,22 @@ namespace BusinessLogicTest
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(expected));
         }
+
+        [TestMethod]
+        public void UpdateRequestStatusByIdTest()
+        {
+            Guid requestId = Guid.NewGuid();
+            RequestStatus requestStatus = RequestStatus.InProgress;
+            Request request = new Request() { Id = requestId, Description = "Request 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus = RequestStatus.Pending };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus };
+            
+            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
+            requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
+
+            Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.AreEqual(expected, result);
+        }
     }
 }

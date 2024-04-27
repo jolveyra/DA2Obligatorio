@@ -51,9 +51,14 @@ namespace BusinessLogic
             return _requestRepository.UpdateRequest(existingRequest);
         }
 
-        public Request UpdateRequestStatusById(Guid requestId, RequestStatus request)
+        public Request UpdateRequestStatusById(Guid requestId, RequestStatus requestStatus)
         {
-            throw new NotImplementedException();
+            Request request = GetRequestById(requestId);
+            request.Status = requestStatus;
+            
+            ValidateRequest(request);
+
+            return _requestRepository.UpdateRequest(request);
         }
 
         private void ValidateRequest(Request request)
@@ -77,6 +82,10 @@ namespace BusinessLogic
             if (request.Category == null)
             {
                 throw new RequestException("Category cannot be null");
+            }
+            if (request.Status == null)
+            {
+                throw new RequestException("Status cannot be null");
             }
         }
     }
