@@ -21,9 +21,19 @@ namespace BusinessLogic
 
         public Category CreateCategory(Category category)
         {
+            CheckNotNullOrEmptyCategoryName(category);
+
             CheckUniqueCategoryName(category);
 
             return _iCategoryRepository.CreateCategory(category);
+        }
+
+        private static void CheckNotNullOrEmptyCategoryName(Category category)
+        {
+            if (string.IsNullOrEmpty(category.Name))
+            {
+                throw new CategoryException("Category name cannot be empty");
+            }
         }
 
         private void CheckUniqueCategoryName(Category category)

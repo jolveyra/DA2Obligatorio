@@ -99,5 +99,32 @@ namespace BusinessLogicTest
         }
 
 
+
+        [TestMethod]
+        public void CreateCategoryTestCategoryWithAnEmptyName()
+        {
+
+            Category category = new Category()
+            {
+                Name = ""
+            };
+            Exception exception = null;
+
+            try
+            {
+                Category result = categoryLogic.CreateCategory(category);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            categoryRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(CategoryException));
+            Assert.AreEqual(exception.Message, "Category name cannot be empty");
+        }
+
+
     }
 }
