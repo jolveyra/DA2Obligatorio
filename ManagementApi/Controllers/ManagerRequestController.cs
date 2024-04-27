@@ -8,11 +8,11 @@ namespace ManagementApi.Controllers
     [Route("api/v1/requests")]
     [ExceptionFilter]
     [ApiController]
-    public class RequestController : ControllerBase
+    public class ManagerRequestController : ControllerBase
     {
         private IManagerRequestLogic _managerRequestLogic;
 
-        public RequestController(IManagerRequestLogic managerRequestLogic)
+        public ManagerRequestController(IManagerRequestLogic managerRequestLogic)
         {
             _managerRequestLogic = managerRequestLogic;
         }

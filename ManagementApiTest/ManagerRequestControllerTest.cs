@@ -8,16 +8,16 @@ using WebModels.RequestsModels;
 namespace ManagementApiTest
 {
     [TestClass]
-    public class RequestControllerTest
+    public class ManagerRequestControllerTest
     {
         private Mock<IManagerRequestLogic> requestLogicMock;
-        private RequestController requestController;
+        private ManagerRequestController managerRequestController;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestLogicMock = new Mock<IManagerRequestLogic>(MockBehavior.Strict);
-            requestController = new RequestController(requestLogicMock.Object);
+            managerRequestController = new ManagerRequestController(requestLogicMock.Object);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
 
-            OkObjectResult result = requestController.GetAllManagerRequests(It.IsAny<string>()) as OkObjectResult;
+            OkObjectResult result = managerRequestController.GetAllManagerRequests(It.IsAny<string>()) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();
@@ -63,7 +63,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
 
-            OkObjectResult result = requestController.GetAllManagerRequests(category.Name) as OkObjectResult;
+            OkObjectResult result = managerRequestController.GetAllManagerRequests(category.Name) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();
@@ -84,7 +84,7 @@ namespace ManagementApiTest
             OkObjectResult expected = new OkObjectResult(new RequestResponseModel(requests.First()));
             RequestResponseModel expectedObject = expected.Value as RequestResponseModel;
 
-            OkObjectResult result = requestController.GetRequestById(requests.First().Id) as OkObjectResult;
+            OkObjectResult result = managerRequestController.GetRequestById(requests.First().Id) as OkObjectResult;
             RequestResponseModel objectResult = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();
@@ -113,7 +113,7 @@ namespace ManagementApiTest
             RequestResponseModel expectedResult = new RequestResponseModel(expected); 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateRequest", "CreateRequest", new { Id = expected.Id }, expectedResult);
 
-            CreatedAtActionResult result = requestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
+            CreatedAtActionResult result = managerRequestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
             RequestResponseModel resultObject = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();
@@ -143,7 +143,7 @@ namespace ManagementApiTest
             RequestResponseModel expectedResult = new RequestResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            OkObjectResult result = requestController.UpdateRequestById(expected.Id, requestUpdateModel) as OkObjectResult;
+            OkObjectResult result = managerRequestController.UpdateRequestById(expected.Id, requestUpdateModel) as OkObjectResult;
             RequestResponseModel resultObject = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();

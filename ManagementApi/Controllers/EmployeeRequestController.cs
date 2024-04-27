@@ -24,5 +24,12 @@ namespace ManagementApi.Controllers
         {
             return Ok(_requestLogic.GetAllRequestsByEmployeeId(userId).Select(r => new RequestResponseModel(r)).ToList());
         }
+
+        [HttpPut]
+        public IActionResult UpdateRequestStatusById([FromRoute] Guid requestId, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
+        {
+            RequestResponseModel response = new RequestResponseModel(_requestLogic.UpdateRequestStatusById(requestId, requestUpdateStatusModel.ToEntity()));
+            return Ok(response);
+        }
     }
 }

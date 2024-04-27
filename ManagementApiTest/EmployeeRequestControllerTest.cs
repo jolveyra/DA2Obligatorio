@@ -36,5 +36,30 @@ namespace ManagementApiTest
             requestLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.SequenceEqual(objectResult));
         }
+
+        [TestMethod]
+        public void UpdateRequestStatusByIdTest()
+        {
+            RequestUpdateStatusModel requestUpdateStatusModel = new RequestUpdateStatusModel() { Status = RequestStatus.InProgress.ToString() };
+
+            Request expected = new Request
+            {
+                Id = Guid.NewGuid(),
+                Status = RequestStatus.InProgress
+            };
+
+            Mock<IEmployeeRequestLogic> requestLogicMock = new Mock<IEmployeeRequestLogic>(MockBehavior.Strict);
+            requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);
+            EmployeeRequestController requestController = new EmployeeRequestController(requestLogicMock.Object);
+
+            RequestResponseModel expectedResult = new RequestResponseModel(expected);
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            OkObjectResult result = requestController.UpdateRequestStatusById(expected.Id, requestUpdateStatusModel) as OkObjectResult;
+            RequestResponseModel resultObject = result.Value as RequestResponseModel;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(resultObject));
+        }
     }
 }

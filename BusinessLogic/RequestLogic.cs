@@ -51,6 +51,11 @@ namespace BusinessLogic
             return _requestRepository.UpdateRequest(existingRequest);
         }
 
+        public Request UpdateRequestStatusById(Guid requestId, RequestStatus request)
+        {
+            throw new NotImplementedException();
+        }
+
         private void ValidateRequest(Request request)
         {
             if (string.IsNullOrEmpty(request.Description))
