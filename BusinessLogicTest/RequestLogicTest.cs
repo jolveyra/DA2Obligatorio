@@ -168,5 +168,18 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Category cannot be null"));
         }
+
+        [TestMethod]
+        public void CreateRequestTest()
+        {
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category() };
+
+            requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
+
+            Request result = requestLogic.CreateRequest(request);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.AreEqual(request, result);
+        }
     }
 }

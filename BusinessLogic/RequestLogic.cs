@@ -16,7 +16,9 @@ namespace BusinessLogic
 
         public Request CreateRequest(Request request)
         {
-            throw new NotImplementedException();
+            ValidateRequest(request);
+
+            return _requestRepository.CreateRequest(request);
         }
 
         public IEnumerable<Request> GetAllRequests()
