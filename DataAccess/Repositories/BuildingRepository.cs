@@ -57,7 +57,7 @@ namespace DataAccess
 
         public Flat GetFlatByBuildingAndFlatId(Guid guid1, Guid guid2)
         {
-            throw new NotImplementedException();
+            return GetBuildingById(guid1).Flats.FirstOrDefault(f => f.Id.Equals(guid2));
         }
 
         public Flat UpdateFlat(Guid guid1, Guid guid2, Flat flat)
