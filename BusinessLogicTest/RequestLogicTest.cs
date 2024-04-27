@@ -1,6 +1,7 @@
 ﻿using BusinessLogic;
 using CustomExceptions.BusinessLogic;
 using Domain;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Moq;
 using RepositoryInterfaces;
 
@@ -10,13 +11,13 @@ namespace BusinessLogicTest
     public class RequestLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
-        private RequestLogic requestLogic;
+        private RequestLogic _requestLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            requestLogic = new RequestLogic(requestRepositoryMock.Object);
+            _requestLogic = new RequestLogic(requestRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -31,7 +32,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = requestLogic.GetAllRequests();
+            IEnumerable<Request> result = _requestLogic.GetAllRequests();
 
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(requests));
@@ -44,7 +45,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             
-            Request result = requestLogic.GetRequestById(request.Id);
+            Request result = _requestLogic.GetRequestById(request.Id);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
@@ -59,7 +60,7 @@ namespace BusinessLogicTest
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
 
-            Request result = requestLogic.UpdateRequest(request);
+            Request result = _requestLogic.UpdateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(expected, result);
@@ -75,13 +76,14 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Description cannot be empty or null"));
         }
@@ -96,13 +98,14 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("BuildingId cannot be empty or null"));
         }
@@ -117,13 +120,14 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("FlatId cannot be empty or null"));
         }
@@ -137,13 +141,14 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("AssignedEmployeeId cannot be empty or null"));
         }
@@ -158,13 +163,14 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _requestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
+            requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Category cannot be null"));
         }
@@ -176,10 +182,51 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
 
-            Request result = requestLogic.CreateRequest(request);
+            Request result = _requestLogic.CreateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
+        }
+
+        [TestMethod]
+        public void GetAllRequestsByEmployeeIdTest()
+        {
+            Guid employeeId = Guid.NewGuid();
+            IEnumerable<Request> requests = new List<Request>()
+            {
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", AssignedEmployeeId = employeeId },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", AssignedEmployeeId = Guid.NewGuid() },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", AssignedEmployeeId = employeeId }
+            };
+            IEnumerable<Request> expected = new List<Request>()
+            {
+                requests.First(),
+                requests.Last()
+            };
+
+            requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
+
+            IEnumerable<Request> result = _requestLogic.GetAllRequestsByEmployeeId(employeeId);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.SequenceEqual(expected));
+        }
+
+        [TestMethod]
+        public void UpdateRequestStatusByIdTest()
+        {
+            Guid requestId = Guid.NewGuid();
+            RequestStatus requestStatus = RequestStatus.InProgress;
+            Request request = new Request() { Id = requestId, Description = "Request 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus = RequestStatus.Pending };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus };
+            
+            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
+            requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
+
+            Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.AreEqual(expected, result);
         }
     }
 }

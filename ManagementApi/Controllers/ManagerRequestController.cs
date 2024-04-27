@@ -8,20 +8,20 @@ namespace ManagementApi.Controllers
     [Route("api/v1/requests")]
     [ExceptionFilter]
     [ApiController]
-    public class RequestController : ControllerBase
+    public class ManagerRequestController : ControllerBase
     {
-        private IRequestLogic _requestLogic;
+        private IManagerRequestLogic _managerRequestLogic;
 
-        public RequestController(IRequestLogic requestLogic)
+        public ManagerRequestController(IManagerRequestLogic managerRequestLogic)
         {
-            _requestLogic = requestLogic;
+            _managerRequestLogic = managerRequestLogic;
         }
 
         [HttpGet]
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllManagerRequests([FromQuery] string? category)
         {
-            var requests = _requestLogic.GetAllRequests();
+            var requests = _managerRequestLogic.GetAllRequests();
             
             if (category is not null)
             {
@@ -35,14 +35,14 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
-            return Ok(new RequestResponseModel(_requestLogic.GetRequestById(id)));
+            return Ok(new RequestResponseModel(_managerRequestLogic.GetRequestById(id)));
         }
 
         [HttpPost]
         [AuthenticationFilter(["Manager"])]
         public IActionResult CreateRequest([FromBody] RequestCreateModel requestCreateModel)
         {
-            var request = _requestLogic.CreateRequest(requestCreateModel.ToEntity());
+            var request = _managerRequestLogic.CreateRequest(requestCreateModel.ToEntity());
             return CreatedAtAction(nameof(GetRequestById), new { id = request.Id }, new RequestResponseModel(request));
         }
 
@@ -50,7 +50,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager", "MaintenanceEmployee"])]
         public IActionResult UpdateRequestById([FromRoute] Guid id, [FromBody] RequestUpdateModel requestUpdateModel)
         {
-            var request = _requestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));
+            var request = _managerRequestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));
             return Ok(new RequestResponseModel(request));
         }
     }

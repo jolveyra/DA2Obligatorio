@@ -1,0 +1,71 @@
+﻿using Domain;
+using LogicInterfaces;
+using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using WebModels.RequestsModels;
+
+namespace ManagementApiTest
+{
+    [TestClass]
+    public class EmployeeRequestControllerTest
+    {
+        private Mock<IEmployeeRequestLogic> requestLogicMock;
+        private EmployeeRequestController employeeRequestController;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            requestLogicMock = new Mock<IEmployeeRequestLogic>(MockBehavior.Strict);
+            employeeRequestController = new EmployeeRequestController(requestLogicMock.Object);
+        }
+
+        [TestMethod]
+        public void GetAllEmployeeRequestTest()
+        {
+            Guid employeeId = Guid.NewGuid();
+            IEnumerable<Request> requests = new List<Request>()
+            {
+                new Request() { Id = Guid.NewGuid(), Description = "Description 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 1" }, AssignedEmployeeId = employeeId },
+                new Request() { Id = Guid.NewGuid(), Description = "Description 2", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" }, AssignedEmployeeId = Guid.NewGuid() }
+            };
+
+            requestLogicMock.Setup(r => r.GetAllRequestsByEmployeeId(It.IsAny<Guid>())).Returns(new List<Request>() { requests.First() });
+            
+            OkObjectResult expected = new OkObjectResult(new List<RequestResponseModel>
+            {
+                new RequestResponseModel(requests.First())
+            });
+            List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
+            
+            OkObjectResult result = employeeRequestController.GetAllEmployeeRequests(employeeId) as OkObjectResult;
+            List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.SequenceEqual(objectResult));
+        }
+
+        [TestMethod]
+        public void UpdateRequestStatusByIdTest()
+        {
+            RequestUpdateStatusModel requestUpdateStatusModel = new RequestUpdateStatusModel() { Status = RequestStatus.InProgress.ToString() };
+
+            Request expected = new Request
+            {
+                Id = Guid.NewGuid(),
+                Status = RequestStatus.InProgress
+            };
+
+            requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);
+            
+            RequestResponseModel expectedResult = new RequestResponseModel(expected);
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            OkObjectResult result = employeeRequestController.UpdateRequestStatusById(expected.Id, requestUpdateStatusModel) as OkObjectResult;
+            RequestResponseModel resultObject = result.Value as RequestResponseModel;
+
+            requestLogicMock.VerifyAll();
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(resultObject));
+        }
+    }
+}

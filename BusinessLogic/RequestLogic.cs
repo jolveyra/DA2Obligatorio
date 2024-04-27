@@ -5,7 +5,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class RequestLogic : IRequestLogic
+    public class RequestLogic : IManagerRequestLogic, IEmployeeRequestLogic
     {
         private readonly IRequestRepository _requestRepository;
 
@@ -26,6 +26,11 @@ namespace BusinessLogic
             return _requestRepository.GetAllRequests();
         }
 
+        public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
+        {
+            return GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
+        }
+
         public Request GetRequestById(Guid id)
         {
             return _requestRepository.GetRequestById(id);
@@ -44,6 +49,16 @@ namespace BusinessLogic
             ValidateRequest(existingRequest);
 
             return _requestRepository.UpdateRequest(existingRequest);
+        }
+
+        public Request UpdateRequestStatusById(Guid requestId, RequestStatus requestStatus)
+        {
+            Request request = GetRequestById(requestId);
+            request.Status = requestStatus;
+            
+            ValidateRequest(request);
+
+            return _requestRepository.UpdateRequest(request);
         }
 
         private void ValidateRequest(Request request)
