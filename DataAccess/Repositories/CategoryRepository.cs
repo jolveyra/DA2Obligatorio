@@ -21,7 +21,9 @@ namespace DataAccess
 
         public Category CreateCategory(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Add(category);
+            _context.SaveChanges();
+            return category;
         }
 
         public IEnumerable<Category> GetAllCategories()

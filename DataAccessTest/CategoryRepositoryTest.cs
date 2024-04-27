@@ -46,5 +46,23 @@ namespace DataAccessTest
             CollectionAssert.AreEqual(categories, result.ToList());
         }
 
+        [TestMethod]
+        public void CreateCategoryTestOk()
+        {
+            Category category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category1"
+            };
+
+            mockContext.Setup(x => x.Categories.Add(category));
+
+            Category result = categoryRepository.CreateCategory(category);
+
+            mockContext.Verify(x => x.SaveChanges(), Times.Once);
+
+            Assert.AreEqual(category, result);
+        }
+
     }
 }   
