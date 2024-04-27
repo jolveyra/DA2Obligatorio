@@ -7,16 +7,16 @@ using RepositoryInterfaces;
 namespace BusinessLogicTest
 {
     [TestClass]
-    public class RequestLogicTest
+    public class ManagerRequestLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
-        private RequestLogic requestLogic;
+        private RequestLogic _managerRequestLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            requestLogic = new RequestLogic(requestRepositoryMock.Object);
+            _managerRequestLogic = new RequestLogic(requestRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = requestLogic.GetAllRequests();
+            IEnumerable<Request> result = _managerRequestLogic.GetAllRequests();
 
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(requests));
@@ -44,7 +44,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             
-            Request result = requestLogic.GetRequestById(request.Id);
+            Request result = _managerRequestLogic.GetRequestById(request.Id);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
@@ -59,7 +59,7 @@ namespace BusinessLogicTest
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
 
-            Request result = requestLogic.UpdateRequest(request);
+            Request result = _managerRequestLogic.UpdateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(expected, result);
@@ -75,7 +75,7 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _managerRequestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -96,7 +96,7 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _managerRequestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -117,7 +117,7 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _managerRequestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -137,7 +137,7 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _managerRequestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -158,7 +158,7 @@ namespace BusinessLogicTest
 
             try
             {
-                requestLogic.UpdateRequest(request);
+                _managerRequestLogic.UpdateRequest(request);
             }
             catch (Exception e)
             {
@@ -176,7 +176,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
 
-            Request result = requestLogic.CreateRequest(request);
+            Request result = _managerRequestLogic.CreateRequest(request);
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);

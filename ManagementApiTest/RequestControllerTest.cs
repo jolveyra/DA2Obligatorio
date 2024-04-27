@@ -10,13 +10,13 @@ namespace ManagementApiTest
     [TestClass]
     public class RequestControllerTest
     {
-        private Mock<IRequestLogic> requestLogicMock;
+        private Mock<IManagerRequestLogic> requestLogicMock;
         private RequestController requestController;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            requestLogicMock = new Mock<IRequestLogic>(MockBehavior.Strict);
+            requestLogicMock = new Mock<IManagerRequestLogic>(MockBehavior.Strict);
             requestController = new RequestController(requestLogicMock.Object);
         }
 

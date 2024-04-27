@@ -5,7 +5,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class RequestLogic : IRequestLogic
+    public class RequestLogic : IManagerRequestLogic, IEmployeeRequestLogic
     {
         private readonly IRequestRepository _requestRepository;
 
@@ -24,6 +24,11 @@ namespace BusinessLogic
         public IEnumerable<Request> GetAllRequests()
         {
             return _requestRepository.GetAllRequests();
+        }
+
+        public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
+        {
+            throw new NotImplementedException();
         }
 
         public Request GetRequestById(Guid id)

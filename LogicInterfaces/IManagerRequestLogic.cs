@@ -2,7 +2,7 @@
 
 namespace LogicInterfaces
 {
-    public interface IRequestLogic
+    public interface IManagerRequestLogic
     {
         Request CreateRequest(Request request);
         IEnumerable<Request> GetAllRequests();
