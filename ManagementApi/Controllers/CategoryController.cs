@@ -20,6 +20,8 @@ namespace ManagementApi.Controllers
             this._iCategoryLogic = iCategoryLogic;
         }
 
+        [HttpPost]
+        [AuthenticationFilter(["Administrator"])]
         public IActionResult CreateCategory(CreateCategoryRequestModel categoryRequestModel)
         {
 
