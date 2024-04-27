@@ -1,6 +1,8 @@
-﻿using LogicInterfaces;
+﻿using BusinessLogic;
+using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
+using WebModels.BuildingModels;
 using WebModels.CategoryModels;
 
 namespace ManagementApi.Controllers
@@ -16,6 +18,13 @@ namespace ManagementApi.Controllers
         public CategoryController(ICategoryLogic iCategoryLogic)
         {
             this._iCategoryLogic = iCategoryLogic;
+        }
+
+        public IActionResult CreateCategory(CreateCategoryRequestModel categoryRequestModel)
+        {
+
+            CategoryResponseModel response = new CategoryResponseModel(_iCategoryLogic.CreateCategory(categoryRequestModel.ToEntity()));
+            return CreatedAtAction("CreateCategory", new { Id = response.Id }, response);
         }
 
         [HttpGet]

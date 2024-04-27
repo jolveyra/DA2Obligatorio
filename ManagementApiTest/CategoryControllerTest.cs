@@ -53,5 +53,30 @@ namespace ManagementApiTest
             CollectionAssert.AreEqual(expectedObject, objectResult);
         }
 
+        [TestMethod]
+        public void CreateCategoryTestOk()
+        {
+            CreateCategoryRequestModel categoryRequestModel = new CreateCategoryRequestModel()
+            {
+                Name = "Category 1"
+            };
+
+            Category category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = categoryRequestModel.Name
+            };
+
+            categoryLogicMock.Setup(c => c.CreateCategory(It.IsAny<Category>())).Returns(category);
+
+            CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateCategory", "CreateCategory", new { id = 1 }, new CategoryResponseModel(category));
+
+            CreatedAtActionResult result = categoryController.CreateCategory(categoryRequestModel) as CreatedAtActionResult;
+
+            categoryLogicMock.VerifyAll();
+            Assert.AreEqual(expectedObjectResult.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObjectResult.Value, result.Value);
+        }
+
     }
 }

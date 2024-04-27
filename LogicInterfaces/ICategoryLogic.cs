@@ -9,6 +9,7 @@ namespace LogicInterfaces
 {
     public interface ICategoryLogic
     {
+        Category CreateCategory(Category category);
         public IEnumerable<Category> GetAllCategories();
     }
 }
