@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions.BusinessLogic;
+using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
 
@@ -38,7 +39,29 @@ namespace BusinessLogic
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
 
+            ValidateRequest(existingRequest);
+
             return _requestRepository.UpdateRequest(existingRequest);
+        }
+
+        private void ValidateRequest(Request request)
+        {
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                throw new RequestException("Description cannot be null");
+            }
+            if (request.BuildingId == Guid.Empty)
+            {
+                throw new RequestException("BuildingId cannot be empty");
+            }
+            if (request.FlatId == Guid.Empty)
+            {
+                throw new RequestException("FlatId cannot be empty");
+            }
+            if (request.AssignedEmployeeId == Guid.Empty)
+            {
+                throw new RequestException("AssignedEmployeeId cannot be empty");
+            }
         }
     }
 }
