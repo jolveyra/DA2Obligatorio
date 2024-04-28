@@ -18,6 +18,10 @@ namespace BusinessLogic
             {
                 return GenerateReport(_requestRepository, new BuildingRequestReport());
             }
+            if (filter.ToLower().Equals("employee"))
+            {
+                return GenerateReport(_requestRepository, new EmployeeRequestReport());
+            }
 
             throw new ReportException("Invalid filter");
         }
