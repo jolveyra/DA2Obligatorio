@@ -7,7 +7,9 @@ namespace WebModels.BuildingModels
     {
         public string Name { get; set; }
         public int Flats { get; set; }
-        public string Direction { get; set; }
+        public string Street { get; set; }
+        public int DoorNumber { get; set; }
+        public string CornerStreet { get; set; }
         public string ConstructorCompany { get; set; }
         public float SharedExpenses { get; set; }
 
@@ -17,7 +19,9 @@ namespace WebModels.BuildingModels
             return new Building
             {
                 Name = Name,
-                Direction = Direction,
+                Street = Street,
+                DoorNumber = DoorNumber,
+                CornerStreet = CornerStreet,
                 ConstructorCompany = ConstructorCompany,
                 SharedExpenses = SharedExpenses
             };

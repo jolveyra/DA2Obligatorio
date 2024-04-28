@@ -70,9 +70,9 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckNotEmptyBuildingDirection(Building building)
     {
-        if (string.IsNullOrEmpty(building.Direction))
+        if (string.IsNullOrEmpty(building.Street))
         {
-            throw new BuildingException("Building direction cannot be empty");
+            throw new BuildingException("Building street cannot be empty");
         }
     }
 

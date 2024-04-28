@@ -26,12 +26,17 @@ public class BuildingLogicTest
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
             ConstructorCompany = "A Company",
-            Direction = "A direction",
+            Street = "Street", 
+            DoorNumber = 12, 
+            CornerStreet = "Another Street",
             SharedExpenses = 100
         };
-        Building expected = new Building() { Id = building.Id, Name = "Mirador",
+        Building expected = new Building() { Id = building.Id, 
+            Name = "Mirador",
             ConstructorCompany = "A Company",
-            Direction = "A direction",
+            Street = "Street", 
+            DoorNumber = 12, 
+            CornerStreet = "Another Street",
             SharedExpenses = 100
         };
 
@@ -50,7 +55,9 @@ public class BuildingLogicTest
     {
         Building building = new Building() { Name = "", 
             ConstructorCompany = "A Company",
-            Direction = "A direction",
+            Street = "Street", 
+            DoorNumber = 12, 
+            CornerStreet = "Another Street",
             SharedExpenses = 100
         };
 
@@ -75,7 +82,9 @@ public class BuildingLogicTest
         Building building = new Building() { Name = "Mirador",
             SharedExpenses = -1,
             ConstructorCompany = "A Company",
-            Direction = "A direction"
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street"
         };
 
         Exception exception = null;
@@ -98,7 +107,9 @@ public class BuildingLogicTest
     {
         Building building = new Building() { Name = "Mirador",
             ConstructorCompany = "A Company",
-            Direction = "A direction",
+            Street = "Street", 
+            DoorNumber = 12, 
+            CornerStreet = "Another Street",
             SharedExpenses = 100
         };
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador" } });
@@ -121,9 +132,9 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void CreateBuildingTestBuildingWithEmptyDirection()
+    public void CreateBuildingTestBuildingWithEmptyStreetName()
     {
-        Building building = new Building() { Direction = "",
+        Building building = new Building() { Street = "",
             ConstructorCompany = "A Company",
             Name = "A name",
             SharedExpenses = 100
@@ -143,7 +154,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Building direction cannot be empty");
+        Assert.AreEqual(exception.Message, "Building street cannot be empty");
     }
 
     [TestMethod]
@@ -151,7 +162,9 @@ public class BuildingLogicTest
     {
         Building building = new Building() { ConstructorCompany = "",
             Name = "A Name",
-            Direction = "A direction",
+            Street = "Street", 
+            DoorNumber = 12, 
+            CornerStreet = "Another Street",
             SharedExpenses = 100
         };
 

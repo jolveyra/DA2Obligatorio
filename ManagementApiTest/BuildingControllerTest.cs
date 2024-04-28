@@ -61,8 +61,24 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateBuildingTestOk()
         {
-            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador" };
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
+            BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", 
+                ConstructorCompany = "ConstructorCompany", 
+                CornerStreet = "CornerStreet", 
+                DoorNumber = 12, 
+                Flats = 1, 
+                SharedExpenses = 123, 
+                Street = "Street" 
+            };
+
+            Building expected = new Building() { Id = Guid.NewGuid(), 
+                Name = "Mirador", 
+                ConstructorCompany = "ConstructorCompany", 
+                CornerStreet = "CornerStreet", 
+                DoorNumber = 12, 
+                Flats = new List<Flat>() { new Flat() }, 
+                SharedExpenses = 123, 
+                Street = "Street"
+            };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
@@ -76,7 +92,8 @@ namespace ManagementApiTest
 
             buildingLogicMock.VerifyAll();
 
-            Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue, expectedResult);
         }
 
         [TestMethod]
@@ -99,6 +116,7 @@ namespace ManagementApiTest
 
             Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
             Assert.AreEqual(resultValue, expectedResult);
+            Assert.AreEqual(resultValue.Flats.First(), expectedResult.Flats.First());
 
         }
 
