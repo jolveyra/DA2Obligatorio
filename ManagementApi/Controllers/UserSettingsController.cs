@@ -22,5 +22,12 @@ namespace ManagementApi.Controllers
         {
             return Ok(new UserResponseModel(_userSettingsLogic.GetUserById(userId)));
         }
+
+        [HttpPut]
+        public IActionResult UpdateUserSettings([FromHeader] Guid userId, [FromBody] UserUpdateRequestModel userUpdateRequestModel)
+        {
+            UserResponseModel response = new UserResponseModel(_userSettingsLogic.UpdateUserSettings(userId, userUpdateRequestModel.ToEntity()));
+            return Ok(response);
+        }
     }
 }
