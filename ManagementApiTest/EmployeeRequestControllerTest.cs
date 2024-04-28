@@ -1,6 +1,7 @@
 ﻿using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.RequestsModels;
@@ -12,7 +13,6 @@ namespace ManagementApiTest
     {
         private Mock<IEmployeeRequestLogic> requestLogicMock;
         private EmployeeRequestController employeeRequestController;
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -30,6 +30,16 @@ namespace ManagementApiTest
                 new Request() { Id = Guid.NewGuid(), Description = "Description 2", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" }, AssignedEmployeeId = Guid.NewGuid() }
             };
 
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", employeeId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            EmployeeRequestController anotherEmployeeRequestController = new EmployeeRequestController(requestLogicMock.Object) { ControllerContext = controllerContext };
+
             requestLogicMock.Setup(r => r.GetAllRequestsByEmployeeId(It.IsAny<Guid>())).Returns(new List<Request>() { requests.First() });
             
             OkObjectResult expected = new OkObjectResult(new List<RequestResponseModel>
@@ -38,7 +48,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
             
-            OkObjectResult result = employeeRequestController.GetAllEmployeeRequests(employeeId) as OkObjectResult;
+            OkObjectResult result = anotherEmployeeRequestController.GetAllEmployeeRequests() as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();

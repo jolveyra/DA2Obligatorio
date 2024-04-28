@@ -193,7 +193,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 5 characters long"));
         }
 
         [TestMethod]
@@ -212,7 +212,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 5 characters long"));
         }
 
         [TestMethod]
@@ -230,8 +230,8 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
-            Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
+            Assert.IsInstanceOfType(exception, typeof(UserException));  
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 5 characters long"));
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long"));
+            Assert.IsTrue(exception.Message.Equals("A Password must an uppercase and lowercase letter, a number and must be longer than 5 characters long"));
         }
 
         [TestMethod]

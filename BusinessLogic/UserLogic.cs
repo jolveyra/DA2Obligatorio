@@ -11,6 +11,8 @@ namespace BusinessLogic
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
 
+        private const int minPasswordLength = 6;
+
         public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _userRepository = userRepository;
@@ -68,7 +70,7 @@ namespace BusinessLogic
 
             if (!isValidPassword(user.Password))
             {
-                throw new UserException("A Password must an uppercase and lowercase letter, a number and must be longer than 7 characters long");
+                throw new UserException("A Password must an uppercase and lowercase letter, a number and must be longer than 5 characters long");
             }
 
             if (string.IsNullOrEmpty(user.Name))
@@ -87,7 +89,7 @@ namespace BusinessLogic
             return Regex.IsMatch(password, "[A-Z]") && 
                    Regex.IsMatch(password, "[a-z]") &&
                    Regex.IsMatch(password, "[0-9]") &&
-                   password.Length >= 8;
+                   password.Length >= minPasswordLength;
         }
 
         public static bool isValidEmail(string email)
