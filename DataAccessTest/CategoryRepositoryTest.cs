@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
 using DataAccess.Repositories;
 using DataAccess.Context;
-using DataAccess;
 using Moq;
 using RepositoryInterfaces;
 using Moq.EntityFrameworkCore;

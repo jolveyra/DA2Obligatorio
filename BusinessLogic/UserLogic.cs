@@ -6,7 +6,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic
+    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic, IUserSettingsLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -98,6 +98,16 @@ namespace BusinessLogic
         private bool ExistsUserEmail(string email)
         {
             return _userRepository.GetAllUsers().Any(u => u.Email == email);
+        }
+
+        public User GetUserById(Guid userId)
+        {
+            return _userRepository.GetUserById(userId);
+        }
+
+        public User UpdateUserSettings(Guid userId, User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

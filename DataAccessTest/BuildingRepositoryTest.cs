@@ -1,16 +1,9 @@
 using RepositoryInterfaces;
-using DataAccess;
 using DataAccess.Context;
 using Domain;
 using Moq;
 using Moq.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DataAccess.Repositories;
 
 
 namespace DataAccessTest

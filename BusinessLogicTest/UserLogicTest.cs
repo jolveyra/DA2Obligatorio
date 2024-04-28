@@ -329,5 +329,19 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
+
+        [TestMethod]
+        public void GetUserByIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+            User user = new User { Id = userId, Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "JuanPerez123"};
+
+            userRepositoryMock.Setup(u => u.GetUserById(userId)).Returns(user);
+
+            User result = _userLogic.GetUserById(userId);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(user, result);
+        }
     }
 }

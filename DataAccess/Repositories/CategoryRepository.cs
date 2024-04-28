@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RepositoryInterfaces;
+﻿using RepositoryInterfaces;
 using Domain;
 using DataAccess.Context;
 
-namespace DataAccess
+namespace DataAccess.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {

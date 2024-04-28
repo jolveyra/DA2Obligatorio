@@ -2,7 +2,7 @@
 using DataAccess.Context;
 using RepositoryInterfaces;
 
-namespace DataAccess
+namespace DataAccess.Repositories
 {
 
     public class BuildingRepository: IBuildingRepository
