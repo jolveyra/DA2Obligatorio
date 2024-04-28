@@ -45,7 +45,7 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateBuildingTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
+            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", Latitude = -34.88449565, Longitude = -56.1587038155517, ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
 

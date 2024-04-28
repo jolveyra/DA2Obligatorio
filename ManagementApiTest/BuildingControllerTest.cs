@@ -65,7 +65,9 @@ namespace ManagementApiTest
                 ConstructorCompany = "ConstructorCompany", 
                 CornerStreet = "CornerStreet", 
                 DoorNumber = 12, 
-                Flats = 1, 
+                Flats = 1,
+                Latitude = -34.88449565,
+                Longitude = -56.1587038155517,
                 SharedExpenses = 123, 
                 Street = "Street" 
             };
@@ -75,7 +77,9 @@ namespace ManagementApiTest
                 ConstructorCompany = "ConstructorCompany", 
                 CornerStreet = "CornerStreet", 
                 DoorNumber = 12, 
-                Flats = new List<Flat>() { new Flat() }, 
+                Flats = new List<Flat>() { new Flat() },
+                Latitude = -34.88449565,
+                Longitude = -56.1587038155517,
                 SharedExpenses = 123, 
                 Street = "Street"
             };
