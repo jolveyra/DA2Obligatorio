@@ -9,6 +9,7 @@ namespace LogicInterfaces
 {
     public interface IAuthorizationLogic
     {
+        public Guid GetUserIdByToken(Guid token);
         public string GetUserRoleByToken(Guid guid);
     }
 }

@@ -117,5 +117,10 @@ namespace BusinessLogic
 
             return _userRepository.UpdateUser(userToUpdate);
         }
+
+        public Guid GetUserIdByToken(Guid token)
+        {
+            return _sessionRepository.GetSessionByToken(token).UserId;
+        }
     }
 }

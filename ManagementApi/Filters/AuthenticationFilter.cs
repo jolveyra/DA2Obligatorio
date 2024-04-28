@@ -31,10 +31,14 @@ namespace ManagementApi.Filters
                 {
                     Guid token = Guid.Parse(header);
 
+
                     if (Roles.Count > 0)
                     {
                         var authenticationService = (IAuthorizationLogic)context.HttpContext.RequestServices.GetService(typeof(IAuthorizationLogic));
                         string userRole = authenticationService.GetUserRoleByToken(token);
+                        string userId = authenticationService.GetUserIdByToken(token).ToString();
+
+                        context.HttpContext.Items.Add("UserId", userId);
 
                         if (!Roles.Contains(userRole))
                         {

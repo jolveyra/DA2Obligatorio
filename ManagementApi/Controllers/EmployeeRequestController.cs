@@ -19,9 +19,9 @@ namespace ManagementApi.Controllers
 
         [HttpGet]
         [AuthenticationFilter(["MaintenanceEmployee"])]
-        public IActionResult GetAllEmployeeRequests([FromHeader] Guid userId)
+        public IActionResult GetAllEmployeeRequests()
         {
-            return Ok(_requestLogic.GetAllRequestsByEmployeeId(userId).Select(r => new RequestResponseModel(r)).ToList());
+            return Ok(_requestLogic.GetAllRequestsByEmployeeId(Guid.Parse(HttpContext.Items["UserId"] as string)).Select(r => new RequestResponseModel(r)).ToList());
         }
 
         [HttpPut]

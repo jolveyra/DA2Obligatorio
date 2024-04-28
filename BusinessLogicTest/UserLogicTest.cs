@@ -360,5 +360,22 @@ namespace BusinessLogicTest
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
+
+        [TestMethod]
+        public void GetUserIdByTokenTestOk()
+        {
+            Guid token = Guid.NewGuid();
+
+            Session session = new Session() { UserId = Guid.NewGuid(), Id = token };
+
+            sessionRepositoryMock.Setup(s => s.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
+
+            Guid result = _userLogic.GetUserIdByToken(token);
+
+            sessionRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(session.UserId, result);
+
+        }
     }
 }
