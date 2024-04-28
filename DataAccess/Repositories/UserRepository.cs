@@ -37,5 +37,10 @@ namespace DataAccess.Repositories
 
             return user;
         }
+
+        public User UpdateUser(User userToUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

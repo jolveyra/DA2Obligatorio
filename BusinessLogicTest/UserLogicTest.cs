@@ -336,12 +336,29 @@ namespace BusinessLogicTest
             Guid userId = Guid.NewGuid();
             User user = new User { Id = userId, Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "JuanPerez123"};
 
-            userRepositoryMock.Setup(u => u.GetUserById(userId)).Returns(user);
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(user);
 
             User result = _userLogic.GetUserById(userId);
 
             userRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
+        public void UpdateUserSettingsTest()
+        {
+            Guid userId = Guid.NewGuid();
+            User userParameter = new User() { Name = "Juan1", Surname = "Perez1", Password = "Juan123"};
+            User user = new User() { Id = userId, Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "JuanPerez123"};
+            User expected = new User() { Id = userId, Name = "Juan1", Surname = "Perez1", Email = "juan@gmail.com", Password = "Juan123"};
+
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(user);
+            userRepositoryMock.Setup(u => u.UpdateUser(It.IsAny<User>())).Returns(expected);
+
+            User result = _userLogic.UpdateUserSettings(userId, user);
+
+            userRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
         }
     }
 }

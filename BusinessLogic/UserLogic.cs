@@ -107,7 +107,15 @@ namespace BusinessLogic
 
         public User UpdateUserSettings(Guid userId, User user)
         {
-            throw new NotImplementedException();
+            User userToUpdate = _userRepository.GetUserById(userId);
+
+            userToUpdate.Name = user.Name;
+            userToUpdate.Surname = user.Surname;
+            userToUpdate.Password = user.Password;
+
+            ValidateUser(userToUpdate);
+
+            return _userRepository.UpdateUser(userToUpdate);
         }
     }
 }
