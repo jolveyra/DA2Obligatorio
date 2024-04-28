@@ -6,7 +6,6 @@ namespace WebModels.RequestsModels
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Guid BuildingId { get; set; }
         public Guid FlatId { get; set; }
         public Category Category { get; set; }
         public Guid AssignedEmployeeId { get; set; }
@@ -15,10 +14,9 @@ namespace WebModels.RequestsModels
         {
             Id = request.Id;
             Description = request.Description;
-            BuildingId = request.BuildingId;
-            FlatId = request.FlatId;
+            FlatId = request.Flat.Id;
             Category = request.Category;
-            AssignedEmployeeId = request.AssignedEmployeeId;
+            AssignedEmployeeId = request.AssignedEmployee.Id;
         }
 
         public override bool Equals(object obj)
