@@ -27,9 +27,19 @@ public class BuildingLogic: IBuildingLogic
 
         CheckUniqueBuildingName(building);
 
+        CheckUniqueBuildingCoordinates(building);
+
         CreateBuildingFlats(building, amountOfFlats);
 
         return _iBuildingRepository.CreateBuilding(building);
+    }
+
+    private void CheckUniqueBuildingCoordinates(Building building)
+    {
+        if(GetAllBuildings().ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
+        {
+            throw new BuildingException("Building with same coordinates already exists");
+        }
     }
 
     private void CheckUniqueBuildingAddress(Building building)

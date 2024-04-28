@@ -247,6 +247,48 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void CreateBuildingTestBuildingWithAlreadyExistingCoordinates()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            Latitude = 32,
+            Longitude = 34,
+            SharedExpenses = 100
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 132,
+            CornerStreet = "Another",
+            Latitude = 32,
+            Longitude = 34,
+            SharedExpenses = 100
+        } });
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building with same coordinates already exists");
+    }
+
+    [TestMethod]
     public void GetAllBuildingsTestOk()
     { 
         IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };
