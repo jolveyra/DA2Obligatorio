@@ -7,6 +7,6 @@ namespace RepositoryInterfaces
         User GetUserById(Guid id);
         IEnumerable<User> GetAllUsers();
         User CreateUser(User user);
-        User UpdateUser(User userToUpdate);
+        User UpdateUser(User user);
     }
 }
