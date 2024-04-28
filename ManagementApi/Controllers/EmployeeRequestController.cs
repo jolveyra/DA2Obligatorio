@@ -18,14 +18,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        // Casi seguro que no es [FromHeader] ya que no va el userId en el header sino que su token,
-        // no deberiamos guardar en el authorization filter de alguna forma para pasarselo a las func??
+        [AuthenticationFilter(["MaintenanceEmployee"])]
         public IActionResult GetAllEmployeeRequests([FromHeader] Guid userId)
         {
             return Ok(_requestLogic.GetAllRequestsByEmployeeId(userId).Select(r => new RequestResponseModel(r)).ToList());
         }
 
         [HttpPut]
+        [AuthenticationFilter(["MaintenanceEmployee"])]
         public IActionResult UpdateRequestStatusById([FromRoute] Guid requestId, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
         {
             RequestResponseModel response = new RequestResponseModel(_requestLogic.UpdateRequestStatusById(requestId, requestUpdateStatusModel.ToEntity()));

@@ -47,7 +47,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter(["Manager", "MaintenanceEmployee"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateRequestById([FromRoute] Guid id, [FromBody] RequestUpdateModel requestUpdateModel)
         {
             var request = _managerRequestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));

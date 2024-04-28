@@ -7,7 +7,6 @@ namespace ManagementApi.Controllers
 {
     [Route("api/v1/administrators")]
     [ExceptionFilter]
-    [AuthenticationFilter([])]
     [ApiController]
     public class AdministratorController : ControllerBase
     {
@@ -19,6 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter(["Administrator"])]
         public IActionResult GetAllAdministrators()
         {
             return Ok(_administratorLogic.GetAllAdministrators().Select(admin => new AdministratorResponseModel(admin)).ToList());

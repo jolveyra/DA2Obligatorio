@@ -18,12 +18,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter(["Administrator", "Manager", "MaintenanceEmployee"])]
         public IActionResult GetUserSettings([FromHeader] Guid userId)
         {
             return Ok(new UserResponseModel(_userSettingsLogic.GetUserById(userId)));
         }
 
         [HttpPut]
+        [AuthenticationFilter(["Administrator", "Manager", "MaintenanceEmployee"])]
         public IActionResult UpdateUserSettings([FromHeader] Guid userId, [FromBody] UserUpdateRequestModel userUpdateRequestModel)
         {
             UserResponseModel response = new UserResponseModel(_userSettingsLogic.UpdateUserSettings(userId, userUpdateRequestModel.ToEntity()));

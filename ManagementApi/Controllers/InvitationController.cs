@@ -18,7 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter([])]
+        [AuthenticationFilter(["Administrator"])]
         public IActionResult GetAllInvitations()
         {
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponseModel(invitation)).ToList());
