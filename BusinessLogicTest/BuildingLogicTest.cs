@@ -190,6 +190,7 @@ public class BuildingLogicTest
     {
         Building building = new Building();
 
+
         Exception exception = null;
 
         try
@@ -205,6 +206,44 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "It is not possible to create a building with no flats");
+    }
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithAlreadyExistingAddress()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            SharedExpenses = 100
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another",
+            SharedExpenses = 100
+        } });
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building with same address already exists");
     }
 
     [TestMethod]

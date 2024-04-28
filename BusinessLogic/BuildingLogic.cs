@@ -23,11 +23,21 @@ public class BuildingLogic: IBuildingLogic
 
         ValidateBuilding(building);
 
+        CheckUniqueBuildingAddress(building);
+
         CheckUniqueBuildingName(building);
 
         CreateBuildingFlats(building, amountOfFlats);
 
         return _iBuildingRepository.CreateBuilding(building);
+    }
+
+    private void CheckUniqueBuildingAddress(Building building)
+    {
+        if(GetAllBuildings().ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
+        {
+            throw new BuildingException("Building with same address already exists");
+        }
     }
 
     private void ValidateFlatAmount(int amountOfFlats)
