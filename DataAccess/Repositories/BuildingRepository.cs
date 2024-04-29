@@ -88,6 +88,11 @@ namespace DataAccess.Repositories
 
         public List<Flat> GetAllFlats()
         {
+            return _context.Flats.ToList();
+        }
+
+        public void DeleteFlat(Flat flat)
+        {
             throw new NotImplementedException();
         }
     }

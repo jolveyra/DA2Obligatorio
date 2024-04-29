@@ -286,6 +286,15 @@ namespace DataAccessTest
 
         }
 
+        [TestMethod]
+        public void GetAllFlatsTestOk()
+        {
+            List<Flat> expectedList = new List<Flat> { new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 304, HasBalcony = true, OwnerEmail = "", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos" } };
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(expectedList);
 
+            List<Flat> result = buildingRepository.GetAllFlats().ToList();
+
+            CollectionAssert.AreEqual(expectedList.ToList(), result);
+        }
     }
 }
