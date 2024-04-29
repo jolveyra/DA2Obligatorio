@@ -35,7 +35,14 @@ namespace DataAccess.Repositories
 
         public Session GetSessionByUserId(Guid id)
         {
-            throw new NotImplementedException();
+            Session? session = _context.Sessions.FirstOrDefault(s => s.UserId == id);
+
+            if (session == null)
+            {
+                throw new ArgumentException("Session not found");
+            }
+
+            return session;
         }
     }
 }
