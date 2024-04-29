@@ -78,6 +78,20 @@ public class BuildingLogic: IBuildingLogic
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
         CheckNotEmptyConstructorCompany(building);
+        CheckValidCoordinates(building);
+    }
+
+    private void CheckValidCoordinates(Building building)
+    {
+        if (building.Latitude < -90 || building.Latitude > 90)
+        {
+            throw new BuildingException("Invalid latitude, must be between -90 and 90 degrees");
+        }
+
+        if (building.Longitude < -180 || building.Longitude > 180)
+        {
+            throw new BuildingException("Invalid longitude, must be between -180 and 180 degrees");
+        }
     }
 
     private void CheckNotEmptyConstructorCompany(Building building)

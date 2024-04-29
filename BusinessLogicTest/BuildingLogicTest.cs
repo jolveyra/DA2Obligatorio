@@ -288,6 +288,134 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Building with same coordinates already exists");
     }
 
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithInvalidCoordinatesLatitudeGreaterThanNinety()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            Latitude = 91,
+            Longitude = 34,
+            SharedExpenses = 100
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid latitude, must be between -90 and 90 degrees");
+    }
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithInvalidCoordinatesLatitudeSmallerThanMinusNinety()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            Latitude = -91,
+            Longitude = 34,
+            SharedExpenses = 100
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid latitude, must be between -90 and 90 degrees");
+    }
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithInvalidCoordinatesLatitudeSmallerThanMinusAHundredAndEighty()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            Latitude = -90,
+            Longitude = -181,
+            SharedExpenses = 100
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid longitude, must be between -180 and 180 degrees");
+    }
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithInvalidCoordinatesLongitudeGreaterThanAHundredAndEighty()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador2",
+            ConstructorCompany = "A Company",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            Latitude = 90,
+            Longitude = 181,
+            SharedExpenses = 100
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Invalid longitude, must be between -180 and 180 degrees");
+    }
     [TestMethod]
     public void GetAllBuildingsTestOk()
     { 
