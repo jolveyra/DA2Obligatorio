@@ -11,6 +11,5 @@
         public string OwnerEmail { get; set; }
         public int Bathrooms { get; set; }
         public bool HasBalcony { get; set; }
-        public Building Building { get; set; }
     }
 }
