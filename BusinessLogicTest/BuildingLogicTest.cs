@@ -421,7 +421,7 @@ public class BuildingLogicTest
     public void GetAllBuildingsTestOk()
     {
         User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
-        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", BuildingManager = user } };
+        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", Manager = user } };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
 

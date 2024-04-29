@@ -143,7 +143,7 @@ public class BuildingLogic: IBuildingLogic
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
-        return _iBuildingRepository.GetAllBuildings().Where(x => x.BuildingManager.Id.Equals(managerId));
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.Manager.Id.Equals(managerId));
     }
 
     public Building GetBuildingById(Guid id)
@@ -157,7 +157,7 @@ public class BuildingLogic: IBuildingLogic
         return _iBuildingRepository.GetFlatByFlatId(flatId);
     }
 
-    public Building UpdateBuilding(Guid buildingId, float sharedExpenses)
+    public Building UpdateBuilding(Guid buildingId, float sharedExpenses, List<Guid> maintenanceEmployeeIds)
     {
         CheckNotNegativeSharedExpenses(sharedExpenses);
 

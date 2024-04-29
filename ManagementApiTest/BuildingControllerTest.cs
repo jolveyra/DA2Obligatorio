@@ -29,7 +29,7 @@ namespace ManagementApiTest
 
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
-            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", BuildingManager = user } };
+            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", Manager = user } };
 
             HttpContext httpContext = new DefaultHttpContext();
             httpContext.Items.Add("UserId", user.Id.ToString());
@@ -58,7 +58,7 @@ namespace ManagementApiTest
         {
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
-            Building building =  new Building() { Name = "Mirador", BuildingManager = user } ;
+            Building building =  new Building() { Name = "Mirador", Manager = user } ;
 
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -179,13 +179,39 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateBuildingTestOk()
+        public void UpdateBuildingSharedExpensesTestOk()
         {
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000 };
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), It.IsAny<List<Guid>>())).Returns(expected);
+
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+
+            IActionResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), updateBuildingRequest);
+
+            OkObjectResult resultObject = result as OkObjectResult;
+            BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
+        }
+
+
+
+        [TestMethod]
+        public void UpdateBuildingMaintenanceEmployeesTestOk()
+        {
+            UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000, 
+                MaintenanceEmployees = new List<Guid>() {} 
+            };
+
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
+
+            BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), It.IsAny<List<Guid>>())).Returns(expected);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
