@@ -23,28 +23,28 @@ public class BuildingLogic: IBuildingLogic
 
         ValidateBuilding(building);
 
-        CheckUniqueBuildingAddress(building);
+        CheckUniqueBuildingAddress(building, userId);
 
-        CheckUniqueBuildingName(building);
+        CheckUniqueBuildingName(building, userId);
 
-        CheckUniqueBuildingCoordinates(building);
+        CheckUniqueBuildingCoordinates(building, userId);
 
         CreateBuildingFlats(building, amountOfFlats);
 
         return _iBuildingRepository.CreateBuilding(building);
     }
 
-    private void CheckUniqueBuildingCoordinates(Building building)
+    private void CheckUniqueBuildingCoordinates(Building building, Guid userId)
     {
-        if(GetAllBuildings().ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
+        if(GetAllBuildings(userId).ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
         {
             throw new BuildingException("Building with same coordinates already exists");
         }
     }
 
-    private void CheckUniqueBuildingAddress(Building building)
+    private void CheckUniqueBuildingAddress(Building building, Guid userId)
     {
-        if(GetAllBuildings().ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
+        if(GetAllBuildings(userId).ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
         {
             throw new BuildingException("Building with same address already exists");
         }
@@ -127,9 +127,9 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void CheckUniqueBuildingName(Building building)
+    private void CheckUniqueBuildingName(Building building, Guid userId)
     {
-        if (GetAllBuildings().ToList().Exists(x => x.Name == building.Name))
+        if (GetAllBuildings(userId).ToList().Exists(x => x.Name == building.Name))
         {
             throw new BuildingException("Building with same name already exists");
         }
@@ -141,7 +141,7 @@ public class BuildingLogic: IBuildingLogic
         _iBuildingRepository.DeleteBuilding(building);
     }
 
-    public IEnumerable<Building> GetAllBuildings()
+    public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
         return _iBuildingRepository.GetAllBuildings();
     }

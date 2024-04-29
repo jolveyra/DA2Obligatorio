@@ -26,14 +26,27 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetAllBuildingsTestOk()
         {
-            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };
 
-            buildingLogicMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
+            User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
+
+            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", BuildingManager = user } };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", user.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            buildingLogicMock.Setup(x => x.GetAllBuildings(It.IsAny<Guid>())).Returns(buildings);
 
             OkObjectResult expected = new OkObjectResult(new List<BuildingResponseModel> { new BuildingResponseModel(buildings.First()) });
             List<BuildingResponseModel> expectedObject = expected.Value as List<BuildingResponseModel>;
 
-            OkObjectResult result = buildingController.GetAllBuildings() as OkObjectResult;
+            BuildingController anotherBuildingController = new BuildingController(buildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkObjectResult result = anotherBuildingController.GetAllBuildings() as OkObjectResult;
             List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
 
             buildingLogicMock.VerifyAll();

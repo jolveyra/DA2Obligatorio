@@ -37,7 +37,8 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
         {
-            return Ok(_iBuildingLogic.GetAllBuildings().Select(building => new BuildingResponseModel(building)).ToList());
+            return Ok(_iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).
+                Select(building => new BuildingResponseModel(building)).ToList());
         
         }
 

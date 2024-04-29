@@ -424,7 +424,7 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
 
-        IEnumerable<Building> result = buildingLogic.GetAllBuildings();
+        IEnumerable<Building> result = buildingLogic.GetAllBuildings(It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
 
