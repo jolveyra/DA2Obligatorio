@@ -13,7 +13,7 @@ namespace WebModels.InvitationModels
             return new Invitation()
             {
                 Name = Name,
-                Email = Email,
+                Email = Email.ToLower(),
                 ExpirationDate = new DateTime(
                     DateTime.Now.Year,
                     DateTime.Now.Month,

@@ -15,7 +15,7 @@ namespace WebModels.AdministratorModels
             {
                 Name = Name,
                 Surname = Surname,
-                Email = Email,
+                Email = Email.ToLower(),
                 Password = Password
             };
         }

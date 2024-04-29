@@ -18,9 +18,15 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetReport([FromQuery] string filter)
+        [AuthenticationFilter(["Manager"])]
+        public IActionResult GetReport([FromQuery] string? filter)
         {
-            return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter).Select(t => new ReportResponseModel(t)));
+            if (filter != null)
+            {
+                return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter).Select(t => new ReportResponseModel(t)));
+            }
+
+            return NoContent();
         }
     }
 }

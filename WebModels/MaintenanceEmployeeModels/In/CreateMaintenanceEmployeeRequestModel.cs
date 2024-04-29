@@ -15,7 +15,7 @@ namespace WebModels.MaintenanceEmployeeModels
             {
                 Name = Name,
                 Surname = Surname,
-                Email = Email,
+                Email = Email.ToLower(),
                 Password = Password
             };
         }

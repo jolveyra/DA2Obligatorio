@@ -11,7 +11,7 @@ namespace WebModels.LoginModels
         {
             return new User()
             {
-                Email = Email,
+                Email = Email.ToLower(),
                 Password = Password
             };
         }
