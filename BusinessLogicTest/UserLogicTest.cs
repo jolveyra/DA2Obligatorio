@@ -393,5 +393,22 @@ namespace BusinessLogicTest
             sessionRepositoryMock.VerifyAll();
             Assert.AreEqual(token, result);
         }
+
+        [TestMethod]
+        public void CreateManagerTest()
+        {
+            User user = new User { Name = "Juan", Email = "juan@gmail.com", Password = Invitation.DefaultPassword };
+            User expected = new User { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com", Role = Role.Manager, Password = Invitation.DefaultPassword };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(expected);
+            sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
+
+            User result = UserLogic.CreateManager(userRepositoryMock.Object, sessionRepositoryMock.Object, user);
+
+            userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
+        }
     }
 }
