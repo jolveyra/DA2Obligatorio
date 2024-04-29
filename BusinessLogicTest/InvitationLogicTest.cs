@@ -181,5 +181,32 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteNonAnsweredNonExpiredInvitationTest()
+        {
+            Guid idToDelete = Guid.NewGuid();
+            Invitation invitation = new Invitation()
+            {
+                Id = idToDelete, Name = "Juan", Email = "juan@gmail.com", ExpirationDate = DateTime.Now.AddDays(3),
+                IsAccepted = false, IsAnswered = false
+            };
+
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.DeleteInvitation(idToDelete);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The invitation cannot be deleted"));
+        }
     }
 }
