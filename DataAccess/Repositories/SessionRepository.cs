@@ -32,5 +32,17 @@ namespace DataAccess.Repositories
 
             return session;
         }
+
+        public Session GetSessionByUserId(Guid id)
+        {
+            Session? session = _context.Sessions.FirstOrDefault(s => s.UserId == id);
+
+            if (session == null)
+            {
+                throw new ArgumentException("Session not found");
+            }
+
+            return session;
+        }
     }
 }

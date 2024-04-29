@@ -373,9 +373,25 @@ namespace BusinessLogicTest
             Guid result = _userLogic.GetUserIdByToken(token);
 
             sessionRepositoryMock.VerifyAll();
-
             Assert.AreEqual(session.UserId, result);
+        }
 
+        [TestMethod]
+        public void GetSessionByUserIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+            Guid token = Guid.NewGuid();
+            Session session = new Session() { Id = token, UserId = userId };
+
+            IEnumerable<User> users = new List<User> { new User { Id = userId, Email = "juan@gmail.com", Password = "Juan1234" } };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            sessionRepositoryMock.Setup(s => s.GetSessionByUserId(It.IsAny<Guid>())).Returns(session);
+
+            Guid result = _userLogic.Login(users.First());
+
+            sessionRepositoryMock.VerifyAll();
+            Assert.AreEqual(token, result);
         }
     }
 }

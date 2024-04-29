@@ -21,13 +21,13 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetAllEmployeeRequestTest()
+        public void GetAllEmployeeRequestTestOk()
         {
             Guid employeeId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Description 1", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 1" }, AssignedEmployeeId = employeeId },
-                new Request() { Id = Guid.NewGuid(), Description = "Description 2", BuildingId = Guid.NewGuid(), FlatId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" }, AssignedEmployeeId = Guid.NewGuid() }
+                new Request() { Id = Guid.NewGuid(), Description = "Description 1", Flat = new Flat(), AssignedEmployee = new User() { Id = employeeId, Role = Role.MaintenanceEmployee }, Category = new Category() { Id = Guid.NewGuid(), Name = "Category 1" } },
+                new Request() { Id = Guid.NewGuid(), Description = "Description 2", Flat = new Flat(), AssignedEmployee = new User() { Id = Guid.NewGuid(), Role = Role.MaintenanceEmployee }, Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" } }
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -56,14 +56,17 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateRequestStatusByIdTest()
+        public void UpdateRequestStatusByIdTestOk()
         {
             RequestUpdateStatusModel requestUpdateStatusModel = new RequestUpdateStatusModel() { Status = RequestStatus.InProgress.ToString() };
 
             Request expected = new Request
             {
                 Id = Guid.NewGuid(),
-                Status = RequestStatus.InProgress
+                Status = RequestStatus.InProgress,
+                Description = "Description",
+                Flat = new Flat() { Id = Guid.NewGuid() },
+                AssignedEmployee = new User() { Id = Guid.NewGuid() },
             };
 
             requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);

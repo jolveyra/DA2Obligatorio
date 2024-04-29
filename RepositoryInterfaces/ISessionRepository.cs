@@ -7,5 +7,6 @@ namespace RepositoryInterfaces
     {
         public Session CreateSession(Session session);
         public Session GetSessionByToken(Guid guid);
+        public Session GetSessionByUserId(Guid id);
     }
 }

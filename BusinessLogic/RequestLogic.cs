@@ -28,7 +28,7 @@ namespace BusinessLogic
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            return GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
+            return GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
         }
 
         public Request GetRequestById(Guid id)
@@ -40,9 +40,8 @@ namespace BusinessLogic
         {
             Request existingRequest = GetRequestById(request.Id);
 
-            existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
-            existingRequest.BuildingId = request.BuildingId;
-            existingRequest.FlatId = request.FlatId;
+            existingRequest.AssignedEmployee = request.AssignedEmployee;
+            existingRequest.Flat = request.Flat;
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
 
@@ -67,17 +66,13 @@ namespace BusinessLogic
             {
                 throw new RequestException("Description cannot be empty or null");
             }
-            if (request.BuildingId == Guid.Empty)       // Deberiamos chequear que el id sea perteneciente a unos de los de manager??
+            if (request.Flat == null)
             {
-                throw new RequestException("BuildingId cannot be empty or null");
+                throw new RequestException("Flat cannot be empty or null");
             }
-            if (request.FlatId == Guid.Empty) // Lo mismo con el building
+            if (request.AssignedEmployee == null)
             {
-                throw new RequestException("FlatId cannot be empty or null");
-            }
-            if (request.AssignedEmployeeId == Guid.Empty)
-            {
-                throw new RequestException("AssignedEmployeeId cannot be empty or null");
+                throw new RequestException("AssignedEmployee cannot be empty or null");
             }
             if (request.Category == null)
             {

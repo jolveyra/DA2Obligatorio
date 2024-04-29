@@ -47,5 +47,19 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.SaveChanges(), Times.Once);
             Assert.AreEqual(session, newSession);
         }
+
+        [TestMethod]
+        public void GetSessionByUserIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+            Session session = new Session { Id = Guid.NewGuid(), UserId = userId };
+
+            _contextMock.Setup(context => context.Sessions).ReturnsDbSet(new List<Session>() { session });
+
+            Session result = _sessionRepository.GetSessionByUserId(userId);
+
+            _contextMock.Verify(context => context.Sessions, Times.Once);
+            Assert.AreEqual(session, result);
+        }
     }
 }
