@@ -135,7 +135,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingName(Building building)
     {
-        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name == building.Name))
+        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower()))
         {
             throw new BuildingException("Building with same name already exists");
         }
