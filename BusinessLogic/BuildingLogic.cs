@@ -11,10 +11,12 @@ namespace BusinessLogic;
 public class BuildingLogic: IBuildingLogic
 {
     private IBuildingRepository _iBuildingRepository;
+    private IUserRepository _iUserRepository;
 
-    public BuildingLogic(IBuildingRepository iBuildingRepository)
+    public BuildingLogic(IBuildingRepository iBuildingRepository, IUserRepository iUserRepository)
     {
-        this._iBuildingRepository = iBuildingRepository;
+        _iBuildingRepository = iBuildingRepository;
+        _iUserRepository = iUserRepository;
     }
 
     public Building CreateBuilding(Building building, int amountOfFlats, Guid userId)
@@ -165,7 +167,28 @@ public class BuildingLogic: IBuildingLogic
 
         building.SharedExpenses = sharedExpenses;
 
+        AddMaintenanceEmployees(building, maintenanceEmployeeIds);
+
         return _iBuildingRepository.UpdateBuilding(building);
+    }
+
+    private void AddMaintenanceEmployees(Building building, List<Guid> maintenanceEmployeeIds)
+    {
+        foreach (Guid id in maintenanceEmployeeIds)
+        {
+            User user = _iUserRepository.GetUserById(id);
+            CheckUserIsMaintenanceEmployee(user);
+
+            building.MaintenanceEmployees.Add(user);
+        }
+    }
+
+    private static void CheckUserIsMaintenanceEmployee(User user)
+    {
+        if (user.Role != Role.MaintenanceEmployee)
+        {
+            throw new BuildingException("User in maintenance employees list is not a maintenance employee");
+        }
     }
 
     public Flat UpdateFlat(Guid flatId, Flat flat)

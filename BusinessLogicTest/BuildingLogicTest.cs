@@ -12,13 +12,15 @@ public class BuildingLogicTest
 {
 
     private Mock<IBuildingRepository> buildingRepositoryMock;
+    private Mock<IUserRepository> userRepositoryMock;
     private BuildingLogic buildingLogic;
 
     [TestInitialize]
     public void Initialize()
     {
         buildingRepositoryMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
-        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object);
+        userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object, userRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -452,16 +454,20 @@ public class BuildingLogicTest
     {
         Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
         Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
+        
+        List<Guid> guids = new List<Guid> { Guid.NewGuid() };
 
+        userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = guids.First(), Role = Role.MaintenanceEmployee });
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
 
-        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>());
+        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
 
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
         Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
+        CollectionAssert.AreEqual(expected.MaintenanceEmployees.ToList(), result.MaintenanceEmployees.ToList());
     }
 
 
@@ -474,7 +480,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300);
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300, It.IsAny<List<Guid>>());
         }
         catch (Exception e)
         {
@@ -497,7 +503,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(building.Id, sharedExpenses: -1);
+            Building result = buildingLogic.UpdateBuilding(building.Id, sharedExpenses: -1, It.IsAny<List<Guid>>());
         }
         catch (Exception e)
         {
@@ -506,6 +512,28 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Shared expenses cannot be negative");
+    }
+
+    [TestMethod]
+    public void UpdateBuildingTestNotAMaintenanceEmployeeInList()
+    {
+        Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
+
+        List<Guid> guids = new List<Guid> { Guid.NewGuid() };
+
+        userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = guids.First(), Role = Role.Manager });
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        try
+        {
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
+        }catch(Exception e)
+        {
+            Assert.IsInstanceOfType(e, typeof(BuildingException));
+            Assert.AreEqual(e.Message, "User in maintenance employees list is not a maintenance employee");
+        }
+
     }
 
     [TestMethod]
