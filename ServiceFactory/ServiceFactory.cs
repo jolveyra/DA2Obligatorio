@@ -21,6 +21,7 @@ namespace ServiceFactory
             services.AddScoped<IEmployeeRequestLogic, RequestLogic>();
             services.AddScoped<IBuildingLogic, BuildingLogic>();
             services.AddScoped<ICategoryLogic, CategoryLogic>();
+            services.AddScoped<IReportLogic, ReportLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

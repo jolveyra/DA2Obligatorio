@@ -1,9 +1,10 @@
 ﻿using CustomExceptions.BusinessLogic;
+using LogicInterfaces;
 using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class ReportLogic
+    public class ReportLogic : IReportLogic
     {
         private readonly IRequestRepository _requestRepository;
 
