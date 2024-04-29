@@ -54,7 +54,16 @@ namespace BusinessLogic
         {
             Request request = GetRequestById(requestId);
             request.Status = requestStatus;
-            
+
+            if (requestStatus == RequestStatus.InProgress)
+            {
+                request.StartingDate = DateTime.Now;
+            }
+            else if (requestStatus == RequestStatus.Completed)
+            {
+                request.CompletionDate = DateTime.Now;
+            }
+
             ValidateRequest(request);
 
             return _requestRepository.UpdateRequest(request);
