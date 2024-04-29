@@ -6,7 +6,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IUserSettingsLogic, ILoginLogic
+    public class UserLogic : IAdministratorLogic, IManagerLogic, IMaintenanceEmployeeLogic, IUserSettingsLogic, ILoginLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -132,6 +132,11 @@ namespace BusinessLogic
             Session session = _sessionRepository.GetSessionByUserId(existingUser.Id);
 
             return session.Id;
+        }
+
+        public IEnumerable<User> GetAllManagers()
+        {
+            return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
         }
     }
 }
