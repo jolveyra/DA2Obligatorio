@@ -17,7 +17,7 @@ public class BuildingLogic: IBuildingLogic
         this._iBuildingRepository = iBuildingRepository;
     }
 
-    public Building CreateBuilding(Building building, int amountOfFlats)
+    public Building CreateBuilding(Building building, int amountOfFlats, Guid userId)
     {
         ValidateFlatAmount(amountOfFlats);
 

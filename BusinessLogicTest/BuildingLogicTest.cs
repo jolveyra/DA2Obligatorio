@@ -44,7 +44,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
         buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
 
-        Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+        Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
 
@@ -66,7 +66,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -92,7 +92,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -119,7 +119,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -145,7 +145,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -173,7 +173,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -196,7 +196,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 0);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 0, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -234,7 +234,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -276,7 +276,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -309,7 +309,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -341,7 +341,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -373,7 +373,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -405,7 +405,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {

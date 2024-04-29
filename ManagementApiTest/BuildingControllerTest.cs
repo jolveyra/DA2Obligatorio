@@ -61,6 +61,8 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateBuildingTestOk()
         {
+            User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
+
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", 
                 ConstructorCompany = "ConstructorCompany", 
                 CornerStreet = "CornerStreet", 
@@ -83,13 +85,22 @@ namespace ManagementApiTest
                 Street = "Street"
             };
 
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", user.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(expected);
             buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { } });
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
-
-            IActionResult result = buildingController.CreateBuilding(buildingRequest);
+            BuildingController anotherBuildingController = new BuildingController(buildingLogicMock.Object) { ControllerContext = controllerContext };
+            IActionResult result = anotherBuildingController.CreateBuilding(buildingRequest);
 
             CreatedAtActionResult resultObject = result as CreatedAtActionResult;
             BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
@@ -103,8 +114,18 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateBuildingWithFlatsTestOk()
         {
+            User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
+
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", Flats = 1 };
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", user.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
 
@@ -112,7 +133,7 @@ namespace ManagementApiTest
 
             expectedResult.Flats = new List<FlatResponseModel> { new FlatResponseModel(new Flat() { Id = id, Building = expected }) };
 
-            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(expected);
             buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Id = id, Building = expected }  });
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);

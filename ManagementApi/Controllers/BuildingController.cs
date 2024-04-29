@@ -23,7 +23,10 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
-            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), buildingRequest.Flats));
+
+            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), 
+                buildingRequest.Flats, 
+                Guid.Parse(HttpContext.Items["UserId"] as string)));
 
             response.Flats = _iBuildingLogic.GetAllBuildingFlats(response.Id).Select(flat => new FlatResponseModel(flat)).ToList();
 
