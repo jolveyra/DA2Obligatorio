@@ -163,6 +163,8 @@ public class BuildingLogic: IBuildingLogic
     {
         CheckNotNegativeSharedExpenses(sharedExpenses);
 
+        CheckNotRepetitiveMaintenanceEmployeeIds(maintenanceEmployeeIds);
+
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
         building.SharedExpenses = sharedExpenses;
@@ -170,6 +172,14 @@ public class BuildingLogic: IBuildingLogic
         AddMaintenanceEmployees(building, maintenanceEmployeeIds);
 
         return _iBuildingRepository.UpdateBuilding(building);
+    }
+
+    private void CheckNotRepetitiveMaintenanceEmployeeIds(List<Guid> maintenanceEmployeeIds)
+    {
+        if (maintenanceEmployeeIds.Distinct().Count() != maintenanceEmployeeIds.Count)
+        {
+            throw new BuildingException("Maintenance employees list contains repeated ids");
+        }
     }
 
     private void AddMaintenanceEmployees(Building building, List<Guid> maintenanceEmployeeIds)

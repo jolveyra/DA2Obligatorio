@@ -480,7 +480,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300, It.IsAny<List<Guid>>());
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300, new List<Guid>() { });
         }
         catch (Exception e)
         {
@@ -532,6 +532,28 @@ public class BuildingLogicTest
         {
             Assert.IsInstanceOfType(e, typeof(BuildingException));
             Assert.AreEqual(e.Message, "User in maintenance employees list is not a maintenance employee");
+        }
+
+    }
+
+    [TestMethod]
+    public void UpdateBuildingTestRepeatedIdInList()
+    {
+        Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
+
+        Guid guid = Guid.NewGuid();
+
+        List<Guid> guids = new List<Guid> { guid, guid };
+
+        try
+        {
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
+        }
+        catch (Exception e)
+        {
+            Assert.IsInstanceOfType(e, typeof(BuildingException));
+            Assert.AreEqual(e.Message, "Maintenance employees list contains repeated ids");
         }
 
     }
