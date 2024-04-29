@@ -217,9 +217,9 @@ public class BuildingLogic: IBuildingLogic
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
-        if (IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail))
+        if (IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail) || IsNewOwnerNameForExistingOwner(flat.OwnerName, existingFlat.OwnerName))
         {
-            UpdateExistingFlatsOwnerEmail(existingFlat.OwnerEmail, flat.OwnerEmail);
+            UpdateExistingFlatsOwnerInfo(existingFlat, flat);
         }
 
         existingFlat.Number = flat.Number;
@@ -232,19 +232,25 @@ public class BuildingLogic: IBuildingLogic
         return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
+    private bool IsNewOwnerNameForExistingOwner(string newName, string existingName)
+    {
+        return !string.IsNullOrEmpty(existingName) && existingName.ToLower() != newName.ToLower();
+    }
+
     private static bool IsNewOwnerEmailForExistingOwner(string newEmail, string existingEmail)
     {
         return !string.IsNullOrEmpty(existingEmail) && existingEmail.ToLower() != newEmail.ToLower();
     }
 
-    private void UpdateExistingFlatsOwnerEmail(string previousEmail, string newEmail)
+    private void UpdateExistingFlatsOwnerInfo(Flat existingFlat, Flat newFlat)
     {
         List<Flat> flatsWithPreviousOwnerEmail = _iBuildingRepository.GetAllFlats().
-            Where(flat => flat.OwnerEmail.ToLower() == previousEmail.ToLower()).ToList();
+            Where(flat => flat.OwnerEmail.ToLower() == existingFlat.OwnerEmail.ToLower()).ToList();
 
         foreach (Flat flat in flatsWithPreviousOwnerEmail)
         {
-            flat.OwnerEmail = newEmail;
+            flat.OwnerEmail = newFlat.OwnerEmail;
+            flat.OwnerName = newFlat.OwnerName;
             _iBuildingRepository.UpdateFlat(flat);
         }
                 
