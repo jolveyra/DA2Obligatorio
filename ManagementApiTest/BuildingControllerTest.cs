@@ -77,7 +77,6 @@ namespace ManagementApiTest
                 ConstructorCompany = "ConstructorCompany", 
                 CornerStreet = "CornerStreet", 
                 DoorNumber = 12, 
-                Flats = new List<Flat>() { new Flat() },
                 Latitude = -34.88449565,
                 Longitude = -56.1587038155517,
                 SharedExpenses = 123, 
@@ -86,6 +85,7 @@ namespace ManagementApiTest
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { } });
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 
@@ -104,10 +104,16 @@ namespace ManagementApiTest
         public void CreateBuildingWithFlatsTestOk()
         {
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", Flats = 1 };
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", Flats = new List<Flat> { new Flat() } };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+
+            Guid id = Guid.NewGuid();
+
+            expectedResult.Flats = new List<FlatResponseModel> { new FlatResponseModel(new Flat() { Id = id, Building = expected }) };
+
             buildingLogicMock.Setup(x => x.CreateBuilding(It.IsAny<Building>(), It.IsAny<int>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Id = id, Building = expected }  });
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 
@@ -159,7 +165,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestOk()
+        public void GetFlatByFlatIdTestOk()
         {
             Flat expected = new Flat()
             {
@@ -174,11 +180,11 @@ namespace ManagementApiTest
             };
 
             FlatResponseModel expectedResult = new FlatResponseModel(expected);
-            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(expected);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            IActionResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
+            IActionResult result = buildingController.GetFlatByFlatId(It.IsAny<Guid>());
 
             OkObjectResult resultObject = result as OkObjectResult;
             FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
@@ -190,7 +196,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void UpdateFlatByBuildingAndFlatIdTestOk()
+        public void UpdateFlatByFlatIdTestOk()
         {
             Guid buildingId = Guid.NewGuid();
             UpdateFlatRequestModel updateFlatRequest = new UpdateFlatRequestModel()
@@ -216,12 +222,12 @@ namespace ManagementApiTest
                 HasBalcony = true
             };
 
-            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Flat>())).Returns(expected);
 
             FlatResponseModel expectedResult = new FlatResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            OkObjectResult resultObject = buildingController.UpdateFlatByBuildingAndFlatId(buildingId, expected.Id, updateFlatRequest) as OkObjectResult;
+            OkObjectResult resultObject = buildingController.UpdateFlatByFlatId(expected.Id, updateFlatRequest) as OkObjectResult;
             FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
 
             buildingLogicMock.VerifyAll();

@@ -2,7 +2,6 @@
 using LogicInterfaces;
 using WebModels.BuildingModels;
 using ManagementApi.Filters;
-using Domain;
 using System.Security.Cryptography;
 using System.Reflection.Metadata;
 
@@ -25,6 +24,8 @@ namespace ManagementApi.Controllers
         public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
         {
             BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), buildingRequest.Flats));
+
+            response.Flats = _iBuildingLogic.GetAllBuildingFlats(response.Id).Select(flat => new FlatResponseModel(flat)).ToList();
 
             return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
         }
@@ -63,21 +64,21 @@ namespace ManagementApi.Controllers
          
         }
 
-        [HttpPut("{buildingId}/{flatId}")]
+        [HttpPut("{buildingId}/flats/{flatId}")]
         [AuthenticationFilter(["Manager"])]
-        public IActionResult UpdateFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
+        public IActionResult UpdateFlatByFlatId([FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
-            
-            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity())));
-        
+
+            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(flatId, updateFlatRequest.ToEntity())));
+
         }
 
-        [HttpGet("{buildingId}/{flatId}")]
+        [HttpGet("{buildingId}/flats/{flatId}")]
         [AuthenticationFilter(["Manager"])]
-        public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
+        public IActionResult GetFlatByFlatId([FromRoute] Guid flatId)
         {
-            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
-    
+            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByFlatId(flatId)));
+
         }
     }
 }

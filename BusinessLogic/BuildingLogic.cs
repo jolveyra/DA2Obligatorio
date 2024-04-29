@@ -60,15 +60,16 @@ public class BuildingLogic: IBuildingLogic
 
     private void CreateBuildingFlats(Building building, int amountOfFlats)
     {
-        building.Flats = new List<Flat>();
+        List<Flat> flats = new List<Flat>();
         for (int i = 0; i < amountOfFlats; i++)
         {
             Flat flat = new Flat
             {
+                Building = building,
                 Id = Guid.NewGuid()
             };
 
-            building.Flats.Add(flat);
+            _iBuildingRepository.CreateFlat(flat);
         }
     }
 
@@ -151,9 +152,9 @@ public class BuildingLogic: IBuildingLogic
         
     }
 
-    public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)
+    public Flat GetFlatByFlatId(Guid flatId)
     {
-        return _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+        return _iBuildingRepository.GetFlatByFlatId(flatId);
     }
 
     public Building UpdateBuilding(Guid buildingId, float sharedExpenses)
@@ -167,13 +168,13 @@ public class BuildingLogic: IBuildingLogic
         return _iBuildingRepository.UpdateBuilding(building);
     }
 
-    public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat)
+    public Flat UpdateFlat(Guid flatId, Flat flat)
     {
         ValidateFlat(flat);
 
-        CheckUniqueFlatNumberInBuilding(buildingId, flatId, flat);
+        Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
+        CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
-        Flat existingFlat = _iBuildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
 
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
@@ -257,11 +258,16 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void CheckUniqueFlatNumberInBuilding(Guid buildingId, Guid flatId, Flat flat)
+    private void CheckUniqueFlatNumberInBuilding(Flat existingFlat, Flat flat)
     {
-        if (GetBuildingById(buildingId).Flats.Exists(x => x.Id != flatId && x.Number == flat.Number))
+        if (GetAllBuildingFlats(existingFlat.Building.Id).ToList().Exists(x => x.Id != existingFlat.Id && x.Number == flat.Number))
         {
             throw new BuildingException("Flat with same number already exists");
         }
+    }
+
+    public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
+    {
+        return _iBuildingRepository.GetAllBuildingFlats(buildingId);
     }
 }

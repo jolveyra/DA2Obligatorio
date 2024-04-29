@@ -55,9 +55,9 @@ namespace DataAccess.Repositories
 
         }
 
-        public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)
+        public Flat GetFlatByFlatId(Guid flatId)
         {
-            Flat flat = GetBuildingById(buildingId).Flats.FirstOrDefault(f => f.Id.Equals(flatId));
+            Flat flat = _context.Flats.FirstOrDefault(f => f.Id.Equals(flatId));
 
             if (flat is null)
             {
@@ -70,6 +70,18 @@ namespace DataAccess.Repositories
         public Flat UpdateFlat(Flat flat)
         {
             _context.Update(flat);
+            _context.SaveChanges();
+            return flat;
+        }
+
+        public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
+        {
+            return _context.Flats.Where(f => f.Building.Id.Equals(buildingId));
+        }
+
+        public Flat CreateFlat(Flat flat)
+        {
+            _context.Flats.Add(flat);
             _context.SaveChanges();
             return flat;
         }

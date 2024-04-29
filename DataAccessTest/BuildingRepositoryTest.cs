@@ -29,8 +29,8 @@ namespace DataAccessTest
         {
             List<Building> buildings = new List<Building>()
             {
-                new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() },
-                new Building() { Id = Guid.NewGuid(), Name = "Building 2", Street = "Street2", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 2", SharedExpenses = 152, Flats = new List<Flat>() }
+                new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 },
+                new Building() { Id = Guid.NewGuid(), Name = "Building 2", Street = "Street2", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 2", SharedExpenses = 152 }
 
             };
 
@@ -45,7 +45,7 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateBuildingTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", Latitude = -34.88449565, Longitude = -56.1587038155517, ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
+            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", Latitude = -34.88449565, Longitude = -56.1587038155517, ConstructorCompany = "City 1", SharedExpenses = 150 };
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
 
@@ -60,9 +60,9 @@ namespace DataAccessTest
         [TestMethod]
         public void UpdateBuildingTestOk()
         {
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 200, Flats = new List<Flat>() };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 200 };
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 } });
 
             Building result = buildingRepository.UpdateBuilding(expected);
 
@@ -74,9 +74,9 @@ namespace DataAccessTest
         {
             Guid id = Guid.NewGuid();
 
-            Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() };
+            Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 };
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150, Flats = new List<Flat>() } });
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 } });
 
             buildingRepository.DeleteBuilding(toDeleteBuilding);
 
@@ -105,7 +105,7 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestOk()
+        public void GetFlatByFlatIdTestOk()
         {
             Guid buildingId = Guid.NewGuid();
             Guid flatId = Guid.NewGuid();
@@ -116,23 +116,31 @@ namespace DataAccessTest
                 Name = "Building 1",
                 Street = "Street", DoorNumber = 12, CornerStreet = "Another Street",
                 ConstructorCompany = "City 1",
-                SharedExpenses = 150,
-                Flats = new List<Flat>()
-                    {
-                        new Flat() { Id = flatId }
-                    }
+                SharedExpenses = 150
             };
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { building });
+            Flat flat = new Flat()
+            {
+                Id = flatId,
+                Floor = 3,
+                Number = 304,
+                HasBalcony = true,
+                OwnerEmail = "pedro@mail.com",
+                OwnerName = "Pedro",
+                OwnerSurname = "De Los Naranjos",
+                Building = building
+            };
 
-            Flat result = buildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat> { flat });
 
-            Assert.AreEqual(building.Flats.First(), result);
+            Flat result = buildingRepository.GetFlatByFlatId(flatId);
+
+            Assert.AreEqual(flat, result);
 
         }
 
         [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestBuildingNotFound()
+        public void GetFlatByFlatIdTestBuildingNotFound()
         {
             Guid buildingId = Guid.NewGuid();
             Guid flatId = Guid.NewGuid();
@@ -143,51 +151,15 @@ namespace DataAccessTest
                 Name = "Building 1",
                 Street = "Street", DoorNumber = 12, CornerStreet = "Another Street",
                 ConstructorCompany = "City 1",
-                SharedExpenses = 150,
-                Flats = new List<Flat>()
-                    {
-                        new Flat() { Id = flatId }
-                    }
+                SharedExpenses = 150
             };
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { });
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat> { });
 
             try
             {
-                Flat result = buildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
+                Flat result = buildingRepository.GetFlatByFlatId(flatId);
             }catch(Exception e)
-            {
-                Assert.IsInstanceOfType(e, typeof(ArgumentException));
-                Assert.AreEqual(e.Message, "Building not found");
-            }
-
-        }
-
-        [TestMethod]
-        public void GetFlatByBuildingAndFlatIdTestFlatNotFound()
-        {
-            Guid buildingId = Guid.NewGuid();
-            Guid flatId = Guid.NewGuid();
-
-            Building building = new Building()
-            {
-                Id = buildingId,
-                Name = "Building 1",
-                Street = "Street", 
-                DoorNumber = 12, 
-                CornerStreet = "Another Street",
-                ConstructorCompany = "City 1",
-                SharedExpenses = 150,
-                Flats = new List<Flat>() { }
-            };
-
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { building });
-
-            try
-            {
-                Flat result = buildingRepository.GetFlatByBuildingAndFlatId(buildingId, flatId);
-            }
-            catch (Exception e)
             {
                 Assert.IsInstanceOfType(e, typeof(ArgumentException));
                 Assert.AreEqual(e.Message, "Flat not found");
@@ -209,11 +181,7 @@ namespace DataAccessTest
                 DoorNumber = 12, 
                 CornerStreet = "Another Street",
                 ConstructorCompany = "City 1",
-                SharedExpenses = 150,
-                Flats = new List<Flat>()
-                {
-                    new Flat() { Id = flatId }
-                }
+                SharedExpenses = 150
             };
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { building });
@@ -226,7 +194,8 @@ namespace DataAccessTest
                 HasBalcony = true,
                 OwnerEmail = "pedro@mail.com",
                 OwnerName = "Pedro",
-                OwnerSurname = "De Los Naranjos"
+                OwnerSurname = "De Los Naranjos",
+                Building = building
             };
 
             Flat result = buildingRepository.UpdateFlat(flat);
@@ -237,8 +206,83 @@ namespace DataAccessTest
                 flat.HasBalcony.Equals(result.HasBalcony) &&
                 flat.OwnerEmail.Equals(result.OwnerEmail) &&
                 flat.OwnerName.Equals(result.OwnerName) &&
-                flat.OwnerSurname.Equals(result.OwnerSurname)
+                flat.OwnerSurname.Equals(result.OwnerSurname) &&
+                flat.Building.Equals(result.Building)
             );
+
+        }
+
+        [TestMethod]
+        public void GetAllBuildingFlatsTestOk()
+        {
+            Guid buildingId = Guid.NewGuid();
+            Guid flatId = Guid.NewGuid();
+
+            Building building = new Building()
+            {
+                Id = buildingId,
+                Name = "Building 1",
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                ConstructorCompany = "City 1",
+                SharedExpenses = 150
+            };
+
+            Flat flat = new Flat()
+            {
+                Id = flatId,
+                Floor = 3,
+                Number = 304,
+                HasBalcony = true,
+                OwnerEmail = "",
+                OwnerName = "Pedro",
+                OwnerSurname = "De Los Naranjos",
+                Building = building
+            };
+
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat> { flat });
+
+            IEnumerable<Flat> result = buildingRepository.GetAllBuildingFlats(buildingId);
+
+            CollectionAssert.AreEqual(new List<Flat> { flat }, result.ToList());
+
+        }
+
+        [TestMethod]
+        public void CreateFlatTestOk()
+        {
+            Guid buildingId = Guid.NewGuid();
+            Guid flatId = Guid.NewGuid();
+
+            Building building = new Building()
+            {
+                Id = buildingId,
+                Name = "Building 1",
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                ConstructorCompany = "City 1",
+                SharedExpenses = 150
+            };
+
+            Flat flat = new Flat()
+            {
+                Id = flatId,
+                Floor = 3,
+                Number = 304,
+                HasBalcony = true,
+                OwnerEmail = "",
+                OwnerName = "Pedro",
+                OwnerSurname = "De Los Naranjos",
+                Building = building
+            };
+
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat> { });
+
+            Flat result = buildingRepository.CreateFlat(flat);
+
+            Assert.AreEqual(flat, result);
 
         }
 

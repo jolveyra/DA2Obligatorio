@@ -42,6 +42,7 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
+        buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
 
         Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1);
 
@@ -544,13 +545,13 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void GetFlatByBuildingAndFlatIdTestOk()
+    public void GetFlatByFlatIdTestOk()
     {
         Flat flat = new Flat();
 
-        buildingRepositoryMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(flat);
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(flat);
 
-        Flat result = buildingLogic.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
+        Flat result = buildingLogic.GetFlatByFlatId(It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
 
@@ -558,7 +559,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestOk()
+    public void UpdateFlatByFlatIdTestOk()
     {
         Flat toUpdateFlat = new Flat() {
             Floor = 3, 
@@ -567,7 +568,8 @@ public class BuildingLogicTest
             HasBalcony = true, 
             OwnerEmail = "pedro@mail.com", 
             OwnerName = "Pedro", 
-            OwnerSurname = "De Los Naranjos" 
+            OwnerSurname = "De Los Naranjos",
+            Building = new Building()
         };
         Flat flat = new Flat() { 
             Floor = 3, 
@@ -581,17 +583,18 @@ public class BuildingLogicTest
         Flat expected = new Flat() { 
             Floor = 3, 
             Number = 304,
+            Bathrooms = 3,
             HasBalcony = true,
             OwnerEmail = "pedro@mail.com",
             OwnerName = "Pedro",
             OwnerSurname = "De Los Naranjos"
         };
 
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building() { Flats = new List<Flat>() { new Flat() { Id = toUpdateFlat.Id } } });
-        buildingRepositoryMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(toUpdateFlat);
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { toUpdateFlat });
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(toUpdateFlat);
         buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(expected);
 
-        Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+        Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat);
 
         buildingRepositoryMock.VerifyAll();
 
@@ -599,33 +602,22 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestNotFoundBuilding()
+    public void GetAllBuildingFlatsTestOk()
     {
-        Flat flat = new Flat()
-        {
-            Floor = 3,
-            Number = 304,
-            Bathrooms = 3,
-            HasBalcony = true,
-            OwnerEmail = "pedro@mail.com",
-            OwnerName = "Pedro",
-            OwnerSurname = "De Los Naranjos"
-        };
+        Guid buildingId = Guid.NewGuid();
+        IEnumerable<Flat> flats = new List<Flat> { new Flat() { Building = new Building() { Id = buildingId } } };
 
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(buildingId)).Returns(flats);
 
-        try
-        {
-            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
-        }catch(Exception e)
-        {
-            Assert.IsInstanceOfType(e, typeof(ArgumentException));
-            Assert.AreEqual(e.Message, "Building not found");
-        }
+        IEnumerable<Flat> result = buildingLogic.GetAllBuildingFlats(buildingId);
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(flats, result);
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestNotFoundFlat()
+    public void UpdateFlatByFlatIdTestNotFoundFlat()
     {
         Flat flat = new Flat()
         {
@@ -638,43 +630,43 @@ public class BuildingLogicTest
             OwnerSurname = "De Los Naranjos"
         };
 
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Throws(new ArgumentException("Flat not found"));
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat);
+            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat);
         }
         catch (Exception e)
         {
             Assert.IsInstanceOfType(e, typeof(ArgumentException));
-            Assert.AreEqual(e.Message, "Building not found");
+            Assert.AreEqual(e.Message, "Flat not found");
         }
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithSameNumberAlreadyExists()
+    public void UpdateFlatTestFlatWithSameNumberAlreadyExists()
     {
-        Flat flat = new Flat() {Floor = 3, Number = 303, Bathrooms = 3, HasBalcony = true, OwnerEmail = "pedro@mail.com", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos" };
+        Flat flat = new Flat() {Floor = 3, Number = 303, Bathrooms = 3, HasBalcony = true, OwnerEmail = "pedro@mail.com", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos", Building = new Building() };
 
-        Flat toChangeFlat = new Flat();
+        Flat toChangeFlat = new Flat() { Building = flat.Building };
 
-        Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 303 };
+        Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 303, Building = flat.Building };
 
-        Building building = new Building() { Flats = new List<Flat>() { toChangeFlat, anotherFlat } };
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(toChangeFlat);
 
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { anotherFlat, toChangeFlat } );
 
         Exception exception = null;
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch(Exception e)
         {
             exception = e;
         }
-
+        
         buildingRepositoryMock.VerifyAll();
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
@@ -682,7 +674,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithInvalidFloorNumber()
+    public void UpdateFlatByFlatIdTestFlatWithInvalidFloorNumber()
     {
         Flat flat = new Flat() { Number = 303, Floor = 4,
             Bathrooms = 3,
@@ -700,7 +692,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -714,7 +706,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyOwnerName()
+    public void UpdateFlatByFlatIdTestFlatWithEmptyOwnerName()
     {
         Flat flat = new Flat() { Number = 303, 
             Floor = 3, 
@@ -733,7 +725,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -747,7 +739,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyEmail()
+    public void UpdateFlatByFlatIdTestFlatWithEmptyEmail()
     {
         Flat flat = new Flat()
         {
@@ -768,7 +760,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -783,7 +775,7 @@ public class BuildingLogicTest
 
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithEmptyOwnerSurname()
+    public void UpdateFlatByFlatIdTestFlatWithEmptyOwnerSurname()
     {
         Flat flat = new Flat()
         {
@@ -804,7 +796,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -818,7 +810,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestFlatWithNegativeNumberOfBathrooms()
+    public void UpdateFlatByFlatIdTestFlatWithNegativeNumberOfBathrooms()
     {
         Flat flat = new Flat()
         {
@@ -839,7 +831,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -854,7 +846,7 @@ public class BuildingLogicTest
 
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestOwnerEmailWithNoAt()
+    public void UpdateFlatByFlatIdTestOwnerEmailWithNoAt()
     {
         Flat flat = new Flat()
         {
@@ -875,7 +867,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {
@@ -889,7 +881,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void UpdateFlatByBuildingAndFlatIdTestOwnerEmailWithNoDot()
+    public void UpdateFlatByFlatIdTestOwnerEmailWithNoDot()
     {
         Flat flat = new Flat()
         {
@@ -910,7 +902,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(building.Id, toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
         }
         catch (Exception e)
         {

@@ -6,10 +6,11 @@ namespace LogicInterfaces
     {
         Building CreateBuilding(Building building, int amountOfFlats);
         void DeleteBuilding(Guid guid);
+        IEnumerable<Flat> GetAllBuildingFlats(Guid id);
         IEnumerable<Building> GetAllBuildings();
         Building GetBuildingById(Guid id);
-        Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId);
+        Flat GetFlatByFlatId(Guid flatId);
         Building UpdateBuilding(Guid guid, float v);
-        Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat);
+        Flat UpdateFlat(Guid flatId, Flat flat);
     }
 }
