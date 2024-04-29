@@ -6,7 +6,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic, IUserSettingsLogic, ILoginLogic
+    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IUserSettingsLogic, ILoginLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -57,11 +57,6 @@ namespace BusinessLogic
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Administrator);
         }
 
-        public string GetUserRoleByToken(Guid token)
-        {
-            return _userRepository.GetUserById(_sessionRepository.GetSessionByToken(token).UserId).Role.ToString();
-        }
-
         public IEnumerable<User> GetAllMaintenanceEmployees()
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.MaintenanceEmployee);
@@ -89,7 +84,6 @@ namespace BusinessLogic
                 throw new UserException("The Surname field cannot be empty");
             }
         }
-
         private static bool isValidPassword(string password)
         {
             return Regex.IsMatch(password, "[A-Z]") && 
@@ -124,11 +118,6 @@ namespace BusinessLogic
             ValidateUser(userToUpdate);
 
             return _userRepository.UpdateUser(userToUpdate);
-        }
-
-        public Guid GetUserIdByToken(Guid token)
-        {
-            return _sessionRepository.GetSessionByToken(token).UserId;
         }
 
         public Guid Login(User user)

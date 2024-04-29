@@ -38,23 +38,6 @@ namespace BusinessLogicTest
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
         }
-
-        [TestMethod]
-        public void GetUserRoleTestOk()
-        {
-            User user = new User() { Role = Role.Administrator };
-            Session session = new Session() { UserId = user.Id };
-
-            sessionRepositoryMock.Setup(x => x.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
-            userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
-
-            string expected = user.Role.ToString();
-            string result = _userLogic.GetUserRoleByToken(session.UserId);
-
-            sessionRepositoryMock.VerifyAll();
-            userRepositoryMock.VerifyAll();
-            Assert.AreEqual(expected, result);
-        }
         
         [TestMethod]
         public void GetAllMaintenanceEmployeesTest()
@@ -359,21 +342,6 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
-        }
-
-        [TestMethod]
-        public void GetUserIdByTokenTestOk()
-        {
-            Guid token = Guid.NewGuid();
-
-            Session session = new Session() { UserId = Guid.NewGuid(), Id = token };
-
-            sessionRepositoryMock.Setup(s => s.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
-
-            Guid result = _userLogic.GetUserIdByToken(token);
-
-            sessionRepositoryMock.VerifyAll();
-            Assert.AreEqual(session.UserId, result);
         }
 
         [TestMethod]
