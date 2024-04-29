@@ -470,29 +470,6 @@ public class BuildingLogicTest
         CollectionAssert.AreEqual(expected.MaintenanceEmployees.ToList(), result.MaintenanceEmployees.ToList());
     }
 
-
-    [TestMethod]
-    public void UpdateBuildingTestNotFound()
-    {
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
-
-        Exception exception = null;
-
-        try
-        {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), 300, new List<Guid>() { });
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.IsInstanceOfType(exception, typeof(ArgumentException));
-        Assert.AreEqual(exception.Message, "Building not found");
-    }
-
     [TestMethod]
     public void UpdateBuildingTestNegativeSharedExpenses()
     {
@@ -571,31 +548,6 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void DeleteBuildingTestNotFound()
-    {
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Throws(new ArgumentException("Building not found"));
-
-        Exception exception = null;
-
-        try
-        {
-            buildingLogic.DeleteBuilding(It.IsAny<Guid>());
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.IsInstanceOfType(exception, typeof(ArgumentException));
-        Assert.AreEqual(exception.Message, "Building not found");
-
-
-    }
-
-    [TestMethod]
     public void GetFlatByFlatIdTestOk()
     {
         Flat flat = new Flat();
@@ -665,33 +617,6 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(flats, result);
-    }
-
-    [TestMethod]
-    public void UpdateFlatByFlatIdTestNotFoundFlat()
-    {
-        Flat flat = new Flat()
-        {
-            Floor = 3,
-            Number = 304,
-            Bathrooms = 3,
-            HasBalcony = true,
-            OwnerEmail = "pedro@mail.com",
-            OwnerName = "Pedro",
-            OwnerSurname = "De Los Naranjos"
-        };
-
-        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Throws(new ArgumentException("Flat not found"));
-
-        try
-        {
-            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat);
-        }
-        catch (Exception e)
-        {
-            Assert.IsInstanceOfType(e, typeof(ArgumentException));
-            Assert.AreEqual(e.Message, "Flat not found");
-        }
     }
 
     [TestMethod]

@@ -169,7 +169,9 @@ public class BuildingLogic: IBuildingLogic
 
         building.SharedExpenses = sharedExpenses;
 
-        AddMaintenanceEmployees(building, maintenanceEmployeeIds);
+        List<User> maintenanceEmployees = BuildMaintenanceEmployeeList(building, maintenanceEmployeeIds);
+
+        building.MaintenanceEmployees = maintenanceEmployees;
 
         return _iBuildingRepository.UpdateBuilding(building);
     }
@@ -182,15 +184,18 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void AddMaintenanceEmployees(Building building, List<Guid> maintenanceEmployeeIds)
+    private List<User> BuildMaintenanceEmployeeList(Building building, List<Guid> maintenanceEmployeeIds)
     {
+        List<User> maintenanceEmployees = new List<User>();
+
         foreach (Guid id in maintenanceEmployeeIds)
         {
             User user = _iUserRepository.GetUserById(id);
             CheckUserIsMaintenanceEmployee(user);
 
-            building.MaintenanceEmployees.Add(user);
+            maintenanceEmployees.Add(user);
         }
+        return maintenanceEmployees;
     }
 
     private static void CheckUserIsMaintenanceEmployee(User user)
