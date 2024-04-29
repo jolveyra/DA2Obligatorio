@@ -32,5 +32,10 @@ namespace DataAccess.Repositories
 
             return session;
         }
+
+        public Session GetSessionByUserId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

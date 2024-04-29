@@ -6,7 +6,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic, IUserSettingsLogic
+    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic, IUserSettingsLogic, ILoginLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -123,6 +123,20 @@ namespace BusinessLogic
         public Guid GetUserIdByToken(Guid token)
         {
             return _sessionRepository.GetSessionByToken(token).UserId;
+        }
+
+        public Guid Login(User user)
+        {
+            User? existingUser = _userRepository.GetAllUsers().FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+
+            if (existingUser == null)
+            {
+                throw new UserException("Invalid email or password");
+            }
+
+            Session session = _sessionRepository.GetSessionByUserId(existingUser.Id);
+
+            return session.Id;
         }
     }
 }
