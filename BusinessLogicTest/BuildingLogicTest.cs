@@ -419,16 +419,17 @@ public class BuildingLogicTest
     }
     [TestMethod]
     public void GetAllBuildingsTestOk()
-    { 
-        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador" } };
+    {
+        User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
+        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", BuildingManager = user } };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
 
-        IEnumerable<Building> result = buildingLogic.GetAllBuildings(It.IsAny<Guid>());
+        IEnumerable<Building> result = buildingLogic.GetAllBuildings(user.Id);
 
         buildingRepositoryMock.VerifyAll();
 
-        Assert.AreEqual(buildings, result);
+        CollectionAssert.AreEqual(buildings.ToList(), result.ToList());
 
     }
 

@@ -143,7 +143,7 @@ public class BuildingLogic: IBuildingLogic
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
-        return _iBuildingRepository.GetAllBuildings();
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.BuildingManager.Id.Equals(managerId));
     }
 
     public Building GetBuildingById(Guid id)
