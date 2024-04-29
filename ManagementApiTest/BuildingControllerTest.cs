@@ -138,7 +138,8 @@ namespace ManagementApiTest
 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateBuilding", "CreateBuilding", new { id = 1 }, expectedResult);
 
-            IActionResult result = buildingController.CreateBuilding(buildingRequest);
+            BuildingController anotherBuildingController = new BuildingController(buildingLogicMock.Object) { ControllerContext = controllerContext };
+            IActionResult result = anotherBuildingController.CreateBuilding(buildingRequest);
 
             CreatedAtActionResult resultObject = result as CreatedAtActionResult;
             BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
