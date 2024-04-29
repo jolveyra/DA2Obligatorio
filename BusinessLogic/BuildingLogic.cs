@@ -217,7 +217,7 @@ public class BuildingLogic: IBuildingLogic
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
-        if (IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail) || IsNewOwnerNameForExistingOwner(flat.OwnerName, existingFlat.OwnerName))
+        if (OwnerInfoChanges(flat, existingFlat))
         {
             UpdateExistingFlatsOwnerInfo(existingFlat, flat);
         }
@@ -230,6 +230,18 @@ public class BuildingLogic: IBuildingLogic
         existingFlat.HasBalcony = flat.HasBalcony;
 
         return _iBuildingRepository.UpdateFlat(existingFlat);
+    }
+
+    private bool OwnerInfoChanges(Flat flat, Flat existingFlat)
+    {
+        return IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail) || 
+            IsNewOwnerNameForExistingOwner(flat.OwnerName, existingFlat.OwnerName) || 
+            IsNewOwnerSurnameForExistingOwner(flat.OwnerSurname, existingFlat.OwnerSurname);
+    }
+
+    private bool IsNewOwnerSurnameForExistingOwner(string newSurname, string existingSurname)
+    {
+        return !string.IsNullOrEmpty(existingSurname) && existingSurname.ToLower() != newSurname.ToLower();
     }
 
     private bool IsNewOwnerNameForExistingOwner(string newName, string existingName)
@@ -251,6 +263,7 @@ public class BuildingLogic: IBuildingLogic
         {
             flat.OwnerEmail = newFlat.OwnerEmail;
             flat.OwnerName = newFlat.OwnerName;
+            flat.OwnerSurname = newFlat.OwnerSurname;
             _iBuildingRepository.UpdateFlat(flat);
         }
                 

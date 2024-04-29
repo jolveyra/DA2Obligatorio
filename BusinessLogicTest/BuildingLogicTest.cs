@@ -1040,4 +1040,64 @@ public class BuildingLogicTest
 
         Assert.AreEqual(result.OwnerName, anotherExistingFlat.OwnerName);
     }
+
+    [TestMethod]
+    public void UpdateFlatByFlatIdTestUpdateOwnerEmailInOtherFlatsUpdatingSurname()
+    {
+        Flat toUpdateFlat = new Flat()
+        {
+            Floor = 3,
+            Number = 303,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos",
+            Building = new Building()
+        };
+
+        Flat anotherExistingFlat = new Flat()
+        {
+            Floor = 3,
+            Number = 303,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "De Los Naranjos",
+            Building = new Building()
+        };
+
+        Flat flat = new Flat()
+        {
+            Floor = 3,
+            Number = 303,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "From The Orange Trees"
+        };
+        Flat expected = new Flat()
+        {
+            Floor = 3,
+            Number = 303,
+            Bathrooms = 3,
+            HasBalcony = true,
+            OwnerEmail = "pedro@mail.com",
+            OwnerName = "Pedro",
+            OwnerSurname = "From The Orange Trees"
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllFlats()).Returns(new List<Flat>() { toUpdateFlat, anotherExistingFlat });
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(toUpdateFlat);
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { toUpdateFlat });
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(expected);
+
+        Flat result = buildingLogic.UpdateFlat(toUpdateFlat.Id, flat);
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(result.OwnerName, anotherExistingFlat.OwnerName);
+    }
 }
