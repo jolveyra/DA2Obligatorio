@@ -27,7 +27,7 @@ namespace ManagementApiTest
             loginLogic.Setup(x => x.Login(It.IsAny<User>())).Returns(token);
             LoginController controller = new LoginController(loginLogic.Object);
 
-            OkObjectResult result = controller.LogIn(request) as OkObjectResult;
+            OkObjectResult result = controller.Login(request) as OkObjectResult;
             LoginResponseModel resultValue = result.Value as LoginResponseModel;
 
             loginLogic.VerifyAll();

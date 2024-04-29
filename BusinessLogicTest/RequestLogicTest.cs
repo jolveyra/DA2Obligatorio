@@ -10,31 +10,36 @@ namespace BusinessLogicTest
     public class RequestLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
         private RequestLogic _requestLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            _requestLogic = new RequestLogic(requestRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            _requestLogic = new RequestLogic(requestRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
-        public void GetAllRequestsTest()
+        public void GetAllManagerRequestsTest()
         {
+            Guid managerId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1" },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2" },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3" }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = Guid.NewGuid() } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } }
             };
 
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = managerId, Role = Role.Manager });
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = _requestLogic.GetAllRequests();
+            IEnumerable<Request> result = _requestLogic.GetAllManagerRequests(managerId);
 
             requestRepositoryMock.VerifyAll();
-            Assert.IsTrue(result.SequenceEqual(requests));
+            userRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.SequenceEqual(new List<Request>() { requests.ToList()[0], requests.ToList()[2] }));
         }
 
         [TestMethod]

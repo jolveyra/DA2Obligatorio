@@ -2,6 +2,6 @@
 {
     public interface IReportLogic
     {
-        public IEnumerable<(string, int, int, int, double)> GetReport(string filter);
+        public IEnumerable<(string, int, int, int, double)> GetReport(Guid managerId, string filter);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.UserResponseModel;
@@ -12,12 +13,23 @@ namespace ManagementApiTest
     {
         private Mock<IUserSettingsLogic> _userSettingsLogicMock;
         private UserSettingsController _userSettingsController;
+        private Guid userId;
 
         [TestInitialize]
         public void Initialize()
         {
             _userSettingsLogicMock = new Mock<IUserSettingsLogic>();
-            _userSettingsController = new UserSettingsController(_userSettingsLogicMock.Object);
+            
+            userId = Guid.NewGuid();
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", userId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            _userSettingsController = new UserSettingsController(_userSettingsLogicMock.Object) { ControllerContext = controllerContext };
         }
 
         [TestMethod]
@@ -33,7 +45,7 @@ namespace ManagementApiTest
 
             _userSettingsLogicMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
             
-            OkObjectResult result = _userSettingsController.GetUserSettings(userId) as OkObjectResult;
+            OkObjectResult result = _userSettingsController.GetUserSettings() as OkObjectResult;
             UserResponseModel userResponseModel = result.Value as UserResponseModel;
 
             _userSettingsLogicMock.VerifyAll();
@@ -64,7 +76,7 @@ namespace ManagementApiTest
             
             UserResponseModel expected = new UserResponseModel(user);
 
-            OkObjectResult result = _userSettingsController.UpdateUserSettings(userId, userUpdateRequestModel) as OkObjectResult;
+            OkObjectResult result = _userSettingsController.UpdateUserSettings(userUpdateRequestModel) as OkObjectResult;
             UserResponseModel userResponseModel = result.Value as UserResponseModel;
 
             _userSettingsLogicMock.VerifyAll();

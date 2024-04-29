@@ -17,8 +17,8 @@ namespace ManagementApi.Controllers
             _loginLogic = loginLogic;
         }
 
-        [HttpPut] // La dejo como post? o put esta bien?
-        public IActionResult LogIn([FromBody] LoginRequestModel request)
+        [HttpPost]
+        public IActionResult Login([FromBody] LoginRequestModel request)
         {
             LoginResponseModel response = new LoginResponseModel(_loginLogic.Login(request.ToEntity()));
             return Ok(response);

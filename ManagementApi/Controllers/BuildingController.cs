@@ -16,7 +16,7 @@ namespace ManagementApi.Controllers
 
         public BuildingController(IBuildingLogic iBuildingLogic)
         {
-            this._iBuildingLogic = iBuildingLogic;
+            _iBuildingLogic = iBuildingLogic;
         }
 
         [HttpPost]

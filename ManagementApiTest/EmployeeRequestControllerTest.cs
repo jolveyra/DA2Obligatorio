@@ -13,6 +13,7 @@ namespace ManagementApiTest
     {
         private Mock<IEmployeeRequestLogic> requestLogicMock;
         private EmployeeRequestController employeeRequestController;
+
         [TestInitialize]
         public void TestInitialize()
         {

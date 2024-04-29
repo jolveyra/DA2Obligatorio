@@ -1,5 +1,6 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.ReportModels.Out;
@@ -12,6 +13,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetReportTestOk()
         {
+            Guid managerId = Guid.NewGuid();
             IEnumerable<(string, int, int, int, double)> report = new List<(string, int, int, int, double)>
             {
                 ("Building1", 1, 1, 1, 1),
@@ -23,9 +25,17 @@ namespace ManagementApiTest
                 new ReportResponseModel(report.Last())
             };
 
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", managerId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
             Mock<IReportLogic> reportLogicMock = new Mock<IReportLogic>();
-            reportLogicMock.Setup(rl => rl.GetReport(It.IsAny<string>())).Returns(report);
-            ReportController reportController = new ReportController(reportLogicMock.Object);
+            ReportController reportController = new ReportController(reportLogicMock.Object) { ControllerContext = controllerContext };
+            reportLogicMock.Setup(rl => rl.GetReport(It.IsAny<Guid>(), It.IsAny<string>())).Returns(report);
 
             OkObjectResult result = reportController.GetReport("building") as OkObjectResult;
             IEnumerable<ReportResponseModel> resultValue = result.Value as IEnumerable<ReportResponseModel>;

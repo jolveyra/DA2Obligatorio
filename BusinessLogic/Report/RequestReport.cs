@@ -7,7 +7,7 @@ namespace BusinessLogic
         protected List<string> requestsFilter;
         protected List<List<Request>> requestsPerFilter;
 
-        public IEnumerable<(string, int, int, int, double)> GenerateReport(List<Request> requests)
+        public IEnumerable<(string, int, int, int, double)> GenerateReport(IEnumerable<Request> requests)
         {
             FilterRequests(requests);
             List<int> pendingRequests = GatherPendingRequests();
@@ -16,7 +16,7 @@ namespace BusinessLogic
             return BringReportTogether(pendingRequests, inProgressRequests, completedAndAvgTimeRequests);
         }
 
-        protected abstract void FilterRequests(List<Request> requests);
+        protected abstract void FilterRequests(IEnumerable<Request> requests);
 
         private List<int> GatherPendingRequests()
         {
