@@ -30,7 +30,17 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            _invitationRepository.DeleteInvitationById(id);
+            Invitation invitation = GetInvitationById(id);
+
+            if ((invitation.IsAnswered && !invitation.IsAccepted) || invitation.ExpirationDate < DateTime.Now)
+            {
+                _invitationRepository.DeleteInvitationById(id);
+            }
+            else
+            {
+                throw new InvitationException("The invitation cannot be deleted");
+            }
+
         }
 
         public IEnumerable<Invitation> GetAllInvitations()

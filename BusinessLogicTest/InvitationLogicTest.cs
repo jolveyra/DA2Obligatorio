@@ -165,15 +165,21 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void DeleteInvitationTest()
+        public void DeleteAnsweredInvitationTest()
         {
             Guid idToDelete = Guid.NewGuid();
+            Invitation invitation = new Invitation()
+            {
+                Id = idToDelete, Name = "Juan", Email = "juan@gmail.com", ExpirationDate = DateTime.Now.AddDays(3),
+                IsAccepted = false, IsAnswered = true
+            };
 
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.DeleteInvitationById(It.IsAny<Guid>()));
 
             invitationLogic.DeleteInvitation(idToDelete);
 
-            invitationRepositoryMock.Verify();
+            invitationRepositoryMock.VerifyAll();
         }
     }
 }
