@@ -378,5 +378,22 @@ namespace BusinessLogicTest
             sessionRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
+
+        [TestMethod]
+        public void GetAllManagersTest()
+        {
+            IEnumerable<User> users = new List<User>
+            {
+                new User { Role = Role.Manager },
+                new User { Role = Role.MaintenanceEmployee }
+            };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            
+            IEnumerable<User> result = _userLogic.GetAllManagers();
+
+            userRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
+        }
     }
 }
