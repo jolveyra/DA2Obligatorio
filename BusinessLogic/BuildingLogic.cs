@@ -10,6 +10,7 @@ namespace BusinessLogic;
 
 public class BuildingLogic: IBuildingLogic
 {
+    private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
     private IUserRepository _iUserRepository;
 
@@ -80,7 +81,7 @@ public class BuildingLogic: IBuildingLogic
         CheckNotEmptyBuildingName(building);
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
-        CheckNotEmptyConstructorCompany(building);
+        CheckConstructorCompany(building);
         CheckValidCoordinates(building);
     }
 
@@ -97,11 +98,14 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void CheckNotEmptyConstructorCompany(Building building)
+    private void CheckConstructorCompany(Building building)
     {
         if (string.IsNullOrEmpty(building.ConstructorCompany))
         {
             throw new BuildingException("Building constructor company cannot be empty");
+        }else if(building.ConstructorCompany.Length > maximumCharactersForConstructorCompany)
+        {
+            throw new BuildingException("Building constructor company cannot be longer than 100 characters");
         }
     }
 

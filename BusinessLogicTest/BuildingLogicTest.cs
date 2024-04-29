@@ -189,6 +189,36 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void CreateBuildingTestBuildingWithConstructorCompanyWithMoreThan100Characters()
+    {
+        Building building = new Building()
+        {
+            ConstructorCompany = "12345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911",
+            Name = "A Name",
+            Street = "Street",
+            DoorNumber = 12,
+            CornerStreet = "Another Street",
+            SharedExpenses = 100
+        };
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building constructor company cannot be longer than 100 characters");
+    }
+
+    [TestMethod]
     public void CreateBuildingTestBuildingWithNoFlats()
     {
         Building building = new Building();
