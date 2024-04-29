@@ -15,6 +15,7 @@ namespace ServiceFactory
             services.AddScoped<IInvitationLogic, InvitationLogic>();
             services.AddScoped<IAuthorizationLogic, SessionLogic>();
             services.AddScoped<IAdministratorLogic, UserLogic>();
+            services.AddScoped<IManagerLogic, UserLogic>();
             services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
             services.AddScoped<IUserSettingsLogic, UserLogic>();
             services.AddScoped<ILoginLogic, UserLogic>();

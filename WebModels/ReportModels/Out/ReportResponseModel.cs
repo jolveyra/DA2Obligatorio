@@ -1,4 +1,4 @@
-﻿namespace WebModels.ReportModels.Out
+﻿namespace WebModels.ReportModels
 {
     public class ReportResponseModel
     {

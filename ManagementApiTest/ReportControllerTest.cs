@@ -3,7 +3,7 @@ using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModels.ReportModels.Out;
+using WebModels.ReportModels;
 
 namespace ManagementApiTest
 {
