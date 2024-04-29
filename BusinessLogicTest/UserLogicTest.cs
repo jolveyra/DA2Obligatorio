@@ -271,7 +271,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty"));
+            Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty for non manager users"));
         }
         
         [TestMethod]

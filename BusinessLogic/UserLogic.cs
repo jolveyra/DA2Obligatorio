@@ -34,6 +34,7 @@ namespace BusinessLogic
         public static User CreateManager(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
         {
             user.Role = Role.Manager;
+            user.Surname = "";
             return CreateUser(userRepository, sessionRepository, user);
         }
 
@@ -81,7 +82,7 @@ namespace BusinessLogic
 
             if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager)
             {
-                throw new UserException("The Surname field cannot be empty");
+                throw new UserException("The Surname field cannot be empty for non manager users");
             }
         }
         private static bool isValidPassword(string password)

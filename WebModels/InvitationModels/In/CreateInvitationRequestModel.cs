@@ -6,7 +6,7 @@ namespace WebModels.InvitationModels
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public int DaysToExpiration { get; set; }
+        public uint DaysToExpiration { get; set; }
 
         public Invitation ToEntity()
         {
@@ -14,7 +14,10 @@ namespace WebModels.InvitationModels
             {
                 Name = Name,
                 Email = Email,
-                ExpirationDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(DaysToExpiration+1)
+                ExpirationDate = new DateTime(
+                    DateTime.Now.Year,
+                    DateTime.Now.Month,
+                    DateTime.Now.Day).AddDays(DaysToExpiration < 1 ? 1 : DaysToExpiration)
             };
         }
     }

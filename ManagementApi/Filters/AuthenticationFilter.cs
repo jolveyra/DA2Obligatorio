@@ -53,7 +53,7 @@ namespace ManagementApi.Filters
                 }
                 catch(Exception e)
                 {
-                    context.Result = new ObjectResult(new { ErrorMessage = "Invalid token" }) { StatusCode = 401 };
+                    context.Result = new ObjectResult(new { ErrorMessage = "Invalid authorization token" }) { StatusCode = 401 };
                     return;
                 }
             }

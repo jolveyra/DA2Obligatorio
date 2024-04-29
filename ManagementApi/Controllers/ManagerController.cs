@@ -5,7 +5,7 @@ using WebModels.ManagerModels;
 
 namespace ManagementApi.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("api/v1/managers")]
+    [Route("api/v1/managers")]
     [ExceptionFilter]
     [ApiController]
     public class ManagerController : ControllerBase

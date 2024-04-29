@@ -176,7 +176,6 @@ namespace BusinessLogicTest
         {
             Guid id = Guid.NewGuid();
             Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
-            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
@@ -195,6 +194,29 @@ namespace BusinessLogicTest
             userRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("There is already a user with the same email"));
+        }
+
+        [TestMethod]
+        public void UpdateAnsweredInvitationStatusTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAnswered = true, IsAccepted = false };
+
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            Exception exception = null;
+
+            try
+            {
+                Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            invitationRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The invitation has already been answered"));
         }
 
 

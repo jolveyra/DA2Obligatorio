@@ -54,6 +54,11 @@ namespace BusinessLogic
         {
             Invitation invitation = GetInvitationById(id);
 
+            if (invitation.IsAnswered)
+            {
+                throw new InvitationException("The invitation has already been answered");
+            }
+
             ValidateInvitationEmail(invitation.Email);
             invitation.IsAnswered = true;
             invitation.IsAccepted = isAccepted;
