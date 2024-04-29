@@ -9,13 +9,20 @@ namespace BusinessLogicTest
     [TestClass]
     public class ReportLogicTest
     {
+        private Mock<IRequestRepository> requestRepositoryMock;
+        private ReportLogic reportLogic;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
+            reportLogic = new ReportLogic(requestRepositoryMock.Object);
+        }
+
         [TestMethod]
         public void GetNonExistingReportTest()
         {
             string filter = "NonExistingFilter";
-
-            Mock<IRequestRepository> requestRepositoryMock = new Mock<IRequestRepository>();
-            ReportLogic reportLogic = new ReportLogic(requestRepositoryMock.Object);
 
             Exception exception = null;
 
@@ -37,9 +44,6 @@ namespace BusinessLogicTest
         public void GetBuildingReportTest()
         {
             string filter = "Building";
-
-            Mock<IRequestRepository> requestRepositoryMock = new Mock<IRequestRepository>();
-            ReportLogic reportLogic = new ReportLogic(requestRepositoryMock.Object);
 
             List<Request> requests = new List<Request>
             {
@@ -118,9 +122,6 @@ namespace BusinessLogicTest
         public void GetEmployeeReportTest()
         {
             string filter = "Employee";
-
-            Mock<IRequestRepository> requestRepositoryMock = new Mock<IRequestRepository>();
-            ReportLogic reportLogic = new ReportLogic(requestRepositoryMock.Object);
 
             List<Request> requests = new List<Request>
             {
