@@ -217,6 +217,10 @@ public class BuildingLogic: IBuildingLogic
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
+        if (IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail))
+        {
+            UpdateExistingFlatsOwnerEmail(existingFlat.OwnerEmail, flat.OwnerEmail);
+        }
 
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
@@ -226,6 +230,24 @@ public class BuildingLogic: IBuildingLogic
         existingFlat.HasBalcony = flat.HasBalcony;
 
         return _iBuildingRepository.UpdateFlat(existingFlat);
+    }
+
+    private static bool IsNewOwnerEmailForExistingOwner(string newEmail, string existingEmail)
+    {
+        return !string.IsNullOrEmpty(existingEmail) && existingEmail.ToLower() != newEmail.ToLower();
+    }
+
+    private void UpdateExistingFlatsOwnerEmail(string previousEmail, string newEmail)
+    {
+        List<Flat> flatsWithPreviousOwnerEmail = _iBuildingRepository.GetAllFlats().
+            Where(flat => flat.OwnerEmail.ToLower() == previousEmail.ToLower()).ToList();
+
+        foreach (Flat flat in flatsWithPreviousOwnerEmail)
+        {
+            flat.OwnerEmail = newEmail;
+            _iBuildingRepository.UpdateFlat(flat);
+        }
+                
     }
 
     private void ValidateFlat(Flat flat)

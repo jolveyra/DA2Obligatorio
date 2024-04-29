@@ -10,6 +10,7 @@ public interface IBuildingRepository
     void DeleteBuilding(Building building);
     IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId);
     public IEnumerable<Building> GetAllBuildings();
+    List<Flat> GetAllFlats();
     Building GetBuildingById(Guid buildingId);
     Flat GetFlatByFlatId(Guid flatId);
     Building UpdateBuilding(Building building);

@@ -85,5 +85,10 @@ namespace DataAccess.Repositories
             _context.SaveChanges();
             return flat;
         }
+
+        public List<Flat> GetAllFlats()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
