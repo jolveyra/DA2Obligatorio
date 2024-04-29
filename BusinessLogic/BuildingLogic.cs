@@ -23,28 +23,28 @@ public class BuildingLogic: IBuildingLogic
 
         ValidateBuilding(building);
 
-        CheckUniqueBuildingAddress(building, userId);
+        CheckUniqueBuildingAddress(building);
 
-        CheckUniqueBuildingName(building, userId);
+        CheckUniqueBuildingName(building);
 
-        CheckUniqueBuildingCoordinates(building, userId);
+        CheckUniqueBuildingCoordinates(building);
 
         CreateBuildingFlats(building, amountOfFlats);
 
         return _iBuildingRepository.CreateBuilding(building);
     }
 
-    private void CheckUniqueBuildingCoordinates(Building building, Guid userId)
+    private void CheckUniqueBuildingCoordinates(Building building)
     {
-        if(GetAllBuildings(userId).ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
+        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
         {
             throw new BuildingException("Building with same coordinates already exists");
         }
     }
 
-    private void CheckUniqueBuildingAddress(Building building, Guid userId)
+    private void CheckUniqueBuildingAddress(Building building)
     {
-        if(GetAllBuildings(userId).ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
+        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
         {
             throw new BuildingException("Building with same address already exists");
         }
@@ -127,9 +127,9 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void CheckUniqueBuildingName(Building building, Guid userId)
+    private void CheckUniqueBuildingName(Building building)
     {
-        if (GetAllBuildings(userId).ToList().Exists(x => x.Name == building.Name))
+        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name == building.Name))
         {
             throw new BuildingException("Building with same name already exists");
         }

@@ -56,14 +56,27 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetBuildingByIdTestOk()
         {
-            Building building =  new Building() { Name = "Mirador" } ;
+            User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
+
+            Building building =  new Building() { Name = "Mirador", BuildingManager = user } ;
+
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", user.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
 
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
             OkObjectResult expected = new OkObjectResult(new BuildingResponseModel(building));
             BuildingResponseModel expectedObject = expected.Value as BuildingResponseModel;
 
-            OkObjectResult result = buildingController.GetBuildingById(It.IsAny<Guid>()) as OkObjectResult;
+            BuildingController anotherBuildingController = new BuildingController(buildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkObjectResult result = anotherBuildingController.GetBuildingById(It.IsAny<Guid>()) as OkObjectResult;
             BuildingResponseModel objectResult = result.Value as BuildingResponseModel;
 
             buildingLogicMock.VerifyAll();
