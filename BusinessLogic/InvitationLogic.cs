@@ -9,21 +9,19 @@ namespace BusinessLogic
     {
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISessionRepository _sessionRepository;
 
-        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository)
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _invitationRepository = invitationRepository;
             _userRepository = userRepository;
+            _sessionRepository = sessionRepository;
         }
 
         public Invitation CreateInvitation(Invitation invitation)
         {
             ValidateInvitation(invitation);
-
-            if (_userRepository.GetAllUsers().Any(u => u.Email == invitation.Email))
-            {
-                throw new InvitationException("There is already a user with the same email");
-            }
+            ValidateInvitationEmail(invitation.Email);
 
             return _invitationRepository.CreateInvitation(invitation);
         }
@@ -40,7 +38,6 @@ namespace BusinessLogic
             {
                 throw new InvitationException("The invitation cannot be deleted");
             }
-
         }
 
         public IEnumerable<Invitation> GetAllInvitations()
@@ -56,7 +53,16 @@ namespace BusinessLogic
         public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
         {
             Invitation invitation = GetInvitationById(id);
+
+            ValidateInvitationEmail(invitation.Email);
+            invitation.IsAnswered = true;
             invitation.IsAccepted = isAccepted;
+
+            if (isAccepted)
+            {
+                UserLogic.CreateManager(_userRepository, _sessionRepository, new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword });
+            }
+
             return _invitationRepository.UpdateInvitation(invitation);
         }
 
@@ -75,6 +81,14 @@ namespace BusinessLogic
             if (invitation.ExpirationDate <= DateTime.Today)
             {
                 throw new InvitationException("The date of expiration must be from tomorrow onwards");
+            }
+        }
+
+        private void ValidateInvitationEmail(string email)
+        {
+            if (UserLogic.ExistsUserEmail(_userRepository, email))
+            {
+                throw new InvitationException("There is already a user with the same email");
             }
         }
     }

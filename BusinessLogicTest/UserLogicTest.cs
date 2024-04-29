@@ -117,7 +117,7 @@ namespace BusinessLogicTest
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
 
-            _userLogic.ValidateUser(user);
+            UserLogic.ValidateUser(user);
         }
         
         [TestMethod]
@@ -128,7 +128,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -147,7 +147,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -166,7 +166,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -185,7 +185,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -204,7 +204,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -223,7 +223,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -242,7 +242,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -261,7 +261,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -280,7 +280,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {

@@ -22,26 +22,32 @@ namespace BusinessLogic
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
-            return CreateUser(user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
         public User CreateMaintenanceEmployee(User user)
         {
             user.Role = Role.MaintenanceEmployee;
-            return CreateUser(user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
-        private User CreateUser(User user)
+        public static User CreateManager(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
+        {
+            user.Role = Role.Manager;
+            return CreateUser(userRepository, sessionRepository, user);
+        }
+
+        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository,User user)
         {
             ValidateUser(user);
 
-            if (ExistsUserEmail(user.Email))
+            if (ExistsUserEmail(userRepository, user.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
 
-            User newUser = _userRepository.CreateUser(user);
-            _sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
+            User newUser = userRepository.CreateUser(user);
+            sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
 
             return newUser;
         }
@@ -61,7 +67,7 @@ namespace BusinessLogic
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.MaintenanceEmployee);
         }
 
-        public void ValidateUser(User user)
+        public static void ValidateUser(User user)
         {
             if (!isValidEmail(user.Email))
             {
@@ -78,7 +84,7 @@ namespace BusinessLogic
                 throw new UserException("The Name field cannot be empty");
             }
 
-            if (string.IsNullOrEmpty(user.Surname))
+            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager)
             {
                 throw new UserException("The Surname field cannot be empty");
             }
@@ -97,9 +103,9 @@ namespace BusinessLogic
             return email.Contains("@") && email.Contains(".") && email.Length > 5;
         }
 
-        private bool ExistsUserEmail(string email)
+        public static bool ExistsUserEmail(IUserRepository userRepository, string email)
         {
-            return _userRepository.GetAllUsers().Any(u => u.Email == email);
+            return userRepository.GetAllUsers().Any(u => u.Email.ToLower().Equals(email.ToLower()));
         }
 
         public User GetUserById(Guid userId)

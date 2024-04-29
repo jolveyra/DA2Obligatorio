@@ -11,6 +11,7 @@ namespace BusinessLogicTest
     {
         private Mock<IInvitationRepository> invitationRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
+        private Mock<ISessionRepository> sessionRepositoryMock;
         private InvitationLogic invitationLogic;
 
         [TestInitialize]
@@ -18,7 +19,8 @@ namespace BusinessLogicTest
         {
             invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object, userRepositoryMock.Object);
+            sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
+            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object, userRepositoryMock.Object, sessionRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -155,14 +157,46 @@ namespace BusinessLogicTest
             Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
             Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
 
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
+            sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
 
             Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
 
             invitationRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
+
+        [TestMethod]
+        public void UpdateExistingEmailInvitationStatusTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
+
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            Exception exception = null;
+
+            try
+            {
+                Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            invitationRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("There is already a user with the same email"));
+        }
+
 
         [TestMethod]
         public void DeleteAnsweredInvitationTest()
@@ -226,5 +260,7 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("The invitation cannot be deleted"));
         }
+
+
     }
 }
