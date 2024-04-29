@@ -1,4 +1,4 @@
 ﻿namespace CustomExceptions.BusinessLogic
 {
-    public class ReportException(string message) : Exception(message);
+    public class ReportException(string message) : BusinessLogicException(message);
 }

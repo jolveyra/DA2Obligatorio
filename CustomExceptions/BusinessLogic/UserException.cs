@@ -1,4 +1,4 @@
 ﻿namespace CustomExceptions.BusinessLogic
 {
-    public class UserException(string message) : Exception(message) { }
+    public class UserException(string message) : BusinessLogicException(message);
 }
