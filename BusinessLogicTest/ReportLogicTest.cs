@@ -108,10 +108,10 @@ namespace BusinessLogicTest
                 ("Building2", 1, 0, 1, 2)
             };
 
-            List<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
+            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
 
             requestRepositoryMock.VerifyAll();
-            CollectionAssert.AreEqual(expectedReport, actualReport);
+            Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
 
         [TestMethod]
@@ -178,16 +178,16 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            List<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
+            IEnumerable<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
             {
                 ("Employee1 Employee1", 2, 1, 0, 0),
                 ("Employee2 Employee2", 1, 0, 1, 2)
             };
 
-            List<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
+            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
 
             requestRepositoryMock.VerifyAll();
-            CollectionAssert.AreEqual(expectedReport, actualReport);
+            Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
     }
 }

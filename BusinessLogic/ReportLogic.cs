@@ -13,7 +13,7 @@ namespace BusinessLogic
             _requestRepository = requestRepository;
         }
 
-        public List<(string, int, int, int, double)> GetReport(string filter)
+        public IEnumerable<(string, int, int, int, double)> GetReport(string filter)
         {
             if (filter.ToLower().Equals("building"))
             {
@@ -27,7 +27,7 @@ namespace BusinessLogic
             throw new ReportException("Invalid filter");
         }
 
-        private static List<(string, int, int, int, double)> GenerateReport(IRequestRepository _requestRepository, RequestReport requestReport)
+        private static IEnumerable<(string, int, int, int, double)> GenerateReport(IRequestRepository _requestRepository, RequestReport requestReport)
         {
             return requestReport.GenerateReport(_requestRepository.GetAllRequests().ToList());
         }
