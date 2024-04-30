@@ -10,7 +10,7 @@ namespace LogicInterfaces
         IEnumerable<Building> GetAllBuildings(Guid userId);
         Building GetBuildingById(Guid id);
         Flat GetFlatByFlatId(Guid flatId);
-        Building UpdateBuilding(Guid guid, Building building, List<Guid> maintenanceEmployeeIds);
+        Building UpdateBuilding(Guid guid, Building building);
         Flat UpdateFlat(Guid flatId, Flat flat, bool changeOwner);
     }
 }

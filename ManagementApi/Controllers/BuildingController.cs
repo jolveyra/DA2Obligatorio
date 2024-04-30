@@ -56,7 +56,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
-            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.ToEntity(), updateBuildingRequest.MaintenanceEmployees))
+            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.ToEntity()))
             {
                 Flats = _iBuildingLogic.GetAllBuildingFlats(id).Select(f => new FlatResponseModel(f)).ToList()
             });

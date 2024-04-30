@@ -188,7 +188,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000, Address = new Address() { Street = "", CornerStreet = "" } };
             
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expected);
             buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
@@ -212,7 +212,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = toUpdate.Id, ConstructorCompany = "Saciim", Address = new Address() { Street = "Hola", CornerStreet = "Hola" } };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expected);
             buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
@@ -240,7 +240,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 , Address = new Address() { Street = "Hola", CornerStreet = "Hola" } };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expected);
             buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);

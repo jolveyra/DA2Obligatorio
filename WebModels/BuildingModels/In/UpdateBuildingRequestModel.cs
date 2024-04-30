@@ -13,7 +13,8 @@ namespace WebModels.BuildingModels
             return new Building
             {
                 SharedExpenses = SharedExpenses,
-                ConstructorCompany = ConstructorCompany
+                ConstructorCompany = ConstructorCompany,
+                MaintenanceEmployees = MaintenanceEmployees
             };
         }
     }
