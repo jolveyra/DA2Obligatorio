@@ -31,7 +31,7 @@ namespace BusinessLogic
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
+            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
         }
 
         public Request GetRequestById(Guid id)
@@ -43,14 +43,12 @@ namespace BusinessLogic
         {
             Request existingRequest = GetRequestById(request.Id);
 
-            
-            existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
+            existingRequest.AssignedEmployee = request.AssignedEmployee;
             existingRequest.Flat = request.Flat;
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
 
             ValidateRequest(existingRequest);
-            ValidateAssignedEmployeeId(existingRequest.AssignedEmployeeId);
 
             return _requestRepository.UpdateRequest(existingRequest);
         }
@@ -84,21 +82,13 @@ namespace BusinessLogic
             {
                 throw new RequestException("Flat cannot be empty or null");
             }
-            if (request.AssignedEmployeeId == Guid.Empty)
+            if (request.AssignedEmployee == null)
             {
-                throw new RequestException("Assigned employee cannot be empty or null");
+                throw new RequestException("AssignedEmployee cannot be empty or null");
             }
             if (request.Category == null)
             {
                 throw new RequestException("Category cannot be null");
-            }
-        }
-
-        private void ValidateAssignedEmployeeId(Guid id)
-        {
-            if (_userRepository.GetAllUsers().All(u => u.Id != id))
-            {
-                throw new RequestException("Assigned employee does not exist");
             }
         }
     }

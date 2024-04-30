@@ -16,7 +16,7 @@ namespace WebModels.RequestsModels
                 Id = id,
                 Description = Description,
                 Category = new Category { Name = CategoryName },
-                AssignedEmployeeId = AssignedEmployeeId
+                AssignedEmployee = new User() { Id = AssignedEmployeeId }
             };
         }
     }

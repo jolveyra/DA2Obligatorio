@@ -16,7 +16,7 @@ namespace WebModels.RequestsModels
             Description = request.Description;
             FlatId = request.Flat.Id;
             Category = request.Category;
-            AssignedEmployeeId = request.AssignedEmployeeId;
+            AssignedEmployeeId = request.AssignedEmployee.Id;
         }
 
         public override bool Equals(object obj)

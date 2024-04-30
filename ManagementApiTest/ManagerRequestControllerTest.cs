@@ -27,8 +27,8 @@ namespace ManagementApiTest
             Guid managerId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>
             {
-                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() },
-                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() }
+                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } },
+                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } }
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -64,8 +64,8 @@ namespace ManagementApiTest
             Category category = new Category { Name = "Electricity" };
             IEnumerable<Request> requests = new List<Request>
             {
-                new Request { Id = Guid.NewGuid(), Category = category, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() },
-                new Request {Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() }
+                new Request { Id = Guid.NewGuid(), Category = category, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } },
+                new Request {Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } }
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -98,8 +98,8 @@ namespace ManagementApiTest
         {
             IEnumerable<Request> requests = new List<Request>
             {
-                new Request { Id = Guid.NewGuid(), Category = new Category { Name = "Electricity" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() },
-                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployeeId = Guid.NewGuid() }
+                new Request { Id = Guid.NewGuid(), Category = new Category { Name = "Electricity" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } },
+                new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } }
             };
 
             requestLogicMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(requests.First());
@@ -128,7 +128,7 @@ namespace ManagementApiTest
                 Description = requestCreateModel.Description,
                 Flat = new Flat() { Id = requestCreateModel.FlatId },
                 Category = new Category { Name = requestCreateModel.CategoryName },
-                AssignedEmployeeId = Guid.NewGuid() 
+                AssignedEmployee = new User() { Id = Guid.NewGuid() }
             };
             requestLogicMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(expected);
 
@@ -157,7 +157,7 @@ namespace ManagementApiTest
                 Description = requestUpdateModel.Description,
                 Flat = new Flat() { Id = Guid.NewGuid() },
                 Category = new Category { Name = requestUpdateModel.CategoryName },
-                AssignedEmployeeId = requestUpdateModel.AssignedEmployeeId
+                AssignedEmployee = new User() { Id = requestUpdateModel.AssignedEmployeeId }
             };
             requestLogicMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
 
