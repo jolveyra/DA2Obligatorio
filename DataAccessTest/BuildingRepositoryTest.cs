@@ -55,6 +55,10 @@ namespace DataAccessTest
 
             Building result = buildingRepository.CreateBuilding(building);
 
+            mockContext.Verify(x => x.Buildings, Times.Once());
+            mockContext.Verify(x => x.Buildings.Add(building), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+
             Assert.AreEqual(building, result);
         }
 
