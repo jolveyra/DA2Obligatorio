@@ -31,6 +31,7 @@ namespace ServiceFactory
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IPeopleRepository, PeopleRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)
