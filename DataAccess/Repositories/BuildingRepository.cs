@@ -1,5 +1,6 @@
 ﻿using Domain;
 using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 using RepositoryInterfaces;
 
 namespace DataAccess.Repositories
@@ -17,7 +18,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Building> GetAllBuildings()
         {
-            return _context.Buildings;
+            return _context.Buildings.Include(b=>b.Address);
         }
 
         public Building CreateBuilding(Building building)
@@ -45,7 +46,7 @@ namespace DataAccess.Repositories
         public Building GetBuildingById(Guid guid)
         {
 
-            Building building = _context.Buildings.FirstOrDefault(b => b.Id.Equals(guid));
+            Building building = _context.Buildings.Include(b => b.Address).FirstOrDefault(b => b.Id.Equals(guid));
 
             if (building is null)
             {
