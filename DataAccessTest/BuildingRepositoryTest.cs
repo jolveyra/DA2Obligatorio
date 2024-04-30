@@ -177,6 +177,8 @@ namespace DataAccessTest
 
             Flat result = buildingRepository.GetFlatByFlatId(flatId);
 
+            mockContext.Verify(x => x.Flats, Times.Once());
+
             Assert.AreEqual(flat, result);
 
         }
