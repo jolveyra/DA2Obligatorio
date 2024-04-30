@@ -1,7 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.AdministratorModels;
+using WebModels.UserModels;
 
 namespace ManagementApi.Controllers
 {
@@ -21,14 +21,14 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Administrator"])]
         public IActionResult GetAllAdministrators()
         {
-            return Ok(_administratorLogic.GetAllAdministrators().Select(admin => new AdministratorResponseModel(admin)).ToList());
+            return Ok(_administratorLogic.GetAllAdministrators().Select(admin => new UserResponseModel(admin)).ToList());
         }
 
         [HttpPost]
         [AuthenticationFilter(["Administrator"])]
-        public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequestModel administratorCreateModel)
+        public IActionResult CreateAdministrator([FromBody] CreateUserRequestModel userCreateModel)
         {
-            AdministratorResponseModel response = new AdministratorResponseModel(_administratorLogic.CreateAdministrator(administratorCreateModel.ToEntity()));
+            UserResponseModel response = new UserResponseModel(_administratorLogic.CreateAdministrator(userCreateModel.ToEntity()));
             return CreatedAtAction("CreateAdministrator", new { response.Id }, response);
         }
     }

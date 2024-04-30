@@ -1,15 +1,15 @@
 ﻿using Domain;
 
-namespace WebModels.AdministratorModels
+namespace WebModels.UserModels
 {
-    public class AdministratorResponseModel
+    public class UserResponseModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
 
-        public AdministratorResponseModel(User user)
+        public UserResponseModel(User user)
         {
             Id = user.Id;
             Name = user.Name;
@@ -19,7 +19,7 @@ namespace WebModels.AdministratorModels
 
         public override bool Equals(object? obj)
         {
-            return obj is AdministratorResponseModel a && a.Id == Id;
+            return obj is UserResponseModel u && u.Id == Id;
         }
     }
 }

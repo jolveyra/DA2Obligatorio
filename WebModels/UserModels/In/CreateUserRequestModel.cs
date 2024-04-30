@@ -1,8 +1,8 @@
 ﻿using Domain;
 
-namespace WebModels.MaintenanceEmployeeModels
+namespace WebModels.UserModels
 {
-    public class CreateMaintenanceEmployeeRequestModel
+    public class CreateUserRequestModel
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -11,7 +11,7 @@ namespace WebModels.MaintenanceEmployeeModels
 
         public User ToEntity()
         {
-            return new User()
+            return new User
             {
                 Name = Name,
                 Surname = Surname,

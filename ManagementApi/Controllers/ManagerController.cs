@@ -1,7 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.ManagerModels;
+using WebModels.UserModels;
 
 namespace ManagementApi.Controllers
 {
@@ -21,7 +21,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Administrator"])]
         public IActionResult GetAllManagers()
         {
-            return Ok(_managerLogic.GetAllManagers().Select(m => new ManagerResponseModel(m)).ToList());
+            return Ok(_managerLogic.GetAllManagers().Select(m => new UserResponseModel(m)).ToList());
         }
     }
 }

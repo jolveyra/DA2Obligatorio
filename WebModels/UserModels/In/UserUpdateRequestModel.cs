@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace WebModels.UserResponseModel
+namespace WebModels.UserModels
 {
     public class UserUpdateRequestModel
     {

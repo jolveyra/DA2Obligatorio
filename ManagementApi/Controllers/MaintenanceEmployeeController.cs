@@ -1,7 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.MaintenanceEmployeeModels;
+using WebModels.UserModels;
 
 namespace ManagementApi.Controllers
 {
@@ -21,14 +21,14 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllMaintenanceEmployees()
         {
-            return Ok(_maintenanceEmployeeLogic.GetAllMaintenanceEmployees().Select(employee => new MaintenanceEmployeeResponseModel(employee)).ToList());
+            return Ok(_maintenanceEmployeeLogic.GetAllMaintenanceEmployees().Select(employee => new UserResponseModel(employee)).ToList());
         }
 
         [HttpPost]
         [AuthenticationFilter(["Manager"])]
-        public IActionResult CreateMaintenanceEmployee([FromBody] CreateMaintenanceEmployeeRequestModel createMaintenanceEmployeeRequestModel)
+        public IActionResult CreateMaintenanceEmployee([FromBody] CreateUserRequestModel createMaintenanceEmployeeRequestModel)
         {
-            MaintenanceEmployeeResponseModel response = new MaintenanceEmployeeResponseModel(_maintenanceEmployeeLogic.CreateMaintenanceEmployee(createMaintenanceEmployeeRequestModel.ToEntity()));
+            UserResponseModel response = new UserResponseModel(_maintenanceEmployeeLogic.CreateMaintenanceEmployee(createMaintenanceEmployeeRequestModel.ToEntity()));
             return CreatedAtAction("CreateMaintenanceEmployee", new { response.Id }, response);
         }
     }

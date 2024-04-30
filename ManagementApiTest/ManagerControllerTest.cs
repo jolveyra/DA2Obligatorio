@@ -3,7 +3,7 @@ using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModels.ManagerModels;
+using WebModels.UserModels;
 
 namespace ManagementApiTest
 {
@@ -29,14 +29,14 @@ namespace ManagementApiTest
             managerLogicMock.Setup(m => m.GetAllManagers()).Returns(managers);
             ManagerController managerController = new ManagerController(managerLogicMock.Object);
 
-            OkObjectResult expected = new OkObjectResult(new List<ManagerResponseModel>()
+            OkObjectResult expected = new OkObjectResult(new List<UserResponseModel>()
             {
-                new ManagerResponseModel(managers.First())
+                new UserResponseModel(managers.First())
             });
-            List<ManagerResponseModel> expectedResult = expected.Value as List<ManagerResponseModel>;
+            List<UserResponseModel> expectedResult = expected.Value as List<UserResponseModel>;
 
             OkObjectResult result = managerController.GetAllManagers() as OkObjectResult;
-            List<ManagerResponseModel> resultValue = result.Value as List<ManagerResponseModel>;
+            List<UserResponseModel> resultValue = result.Value as List<UserResponseModel>;
 
             managerLogicMock.VerifyAll();
             Assert.IsTrue(result.StatusCode.Equals(expected.StatusCode) && expectedResult.SequenceEqual(resultValue));

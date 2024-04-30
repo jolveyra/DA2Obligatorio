@@ -1,7 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.UserResponseModel;
+using WebModels.UserModels;
 
 namespace ManagementApi.Controllers
 {

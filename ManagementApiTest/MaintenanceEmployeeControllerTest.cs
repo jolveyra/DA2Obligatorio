@@ -3,8 +3,7 @@ using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModels.AdministratorModels;
-using WebModels.MaintenanceEmployeeModels;
+using WebModels.UserModels;
 
 namespace ManagementApiTest
 {
@@ -33,16 +32,16 @@ namespace ManagementApiTest
 
             maintenanceEmployeeLogicMock.Setup(m => m.GetAllMaintenanceEmployees()).Returns(maintenanceEmployees.Where(u => u.Role == Role.Manager));
 
-            OkObjectResult expected = new OkObjectResult(new List<MaintenanceEmployeeResponseModel>
+            OkObjectResult expected = new OkObjectResult(new List<UserResponseModel>
             {
-                new MaintenanceEmployeeResponseModel(maintenanceEmployees.First()),
-                new MaintenanceEmployeeResponseModel(maintenanceEmployees.Last())
+                new UserResponseModel(maintenanceEmployees.First()),
+                new UserResponseModel(maintenanceEmployees.Last())
             });
 
-            List<MaintenanceEmployeeResponseModel> expectedObject = expected.Value as List<MaintenanceEmployeeResponseModel>;
+            List<UserResponseModel> expectedObject = expected.Value as List<UserResponseModel>;
 
             OkObjectResult result = maintenanceEmployeeController.GetAllMaintenanceEmployees() as OkObjectResult;
-            List<MaintenanceEmployeeResponseModel> objectResult = result.Value as List<MaintenanceEmployeeResponseModel>;
+            List<UserResponseModel> objectResult = result.Value as List<UserResponseModel>;
 
             maintenanceEmployeeLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()) && expectedObject.Last().Equals(objectResult.Last()));
@@ -51,7 +50,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateMaintenanceEmployeeTestCreated()
         {
-            CreateMaintenanceEmployeeRequestModel maintenanceEmployeeRequestModel = new CreateMaintenanceEmployeeRequestModel()
+            CreateUserRequestModel maintenanceEmployeeRequestModel = new CreateUserRequestModel()
             {
                 Email = "juan123@gmail.com",
                 Name = "Juan",
@@ -63,11 +62,11 @@ namespace ManagementApiTest
 
             maintenanceEmployeeLogicMock.Setup(m => m.CreateMaintenanceEmployee(It.IsAny<User>())).Returns(expected);
 
-            MaintenanceEmployeeResponseModel expectedResult = new MaintenanceEmployeeResponseModel(expected);
+            UserResponseModel expectedResult = new UserResponseModel(expected);
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateMaintenanceEmployee", "CreateMaintenanceEmployee", new { expected.Id }, expectedResult);
 
             CreatedAtActionResult result = maintenanceEmployeeController.CreateMaintenanceEmployee(maintenanceEmployeeRequestModel) as CreatedAtActionResult;
-            MaintenanceEmployeeResponseModel objectResult = result.Value as MaintenanceEmployeeResponseModel;
+            UserResponseModel objectResult = result.Value as UserResponseModel;
 
             maintenanceEmployeeLogicMock.VerifyAll();
             Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Equals(objectResult));

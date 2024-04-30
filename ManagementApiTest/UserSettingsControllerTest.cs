@@ -4,7 +4,7 @@ using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModels.UserResponseModel;
+using WebModels.UserModels;
 
 namespace ManagementApiTest
 {
