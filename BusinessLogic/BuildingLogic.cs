@@ -219,69 +219,32 @@ public class BuildingLogic: IBuildingLogic
     public Flat UpdateFlat(Guid flatId, Flat flat)
     {
         ValidateFlat(flat);
+        ValidateOwner(flat.Owner);
 
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
-        if (OwnerInfoChanges(flat, existingFlat))
-        {
-            UpdateExistingFlatsOwnerInfo(existingFlat, flat);
-        }
-
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
-        existingFlat.OwnerName = flat.OwnerName;
-        existingFlat.OwnerSurname = flat.OwnerSurname;
-        existingFlat.OwnerEmail = flat.OwnerEmail;
+        existingFlat.Owner.Name = flat.Owner.Name;
+        existingFlat.Owner.Surname = flat.Owner.Surname;
+        existingFlat.Owner.Email = flat.Owner.Email;
         existingFlat.HasBalcony = flat.HasBalcony;
 
         return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
-    private bool OwnerInfoChanges(Flat flat, Flat existingFlat)
-    {
-        return IsNewOwnerEmailForExistingOwner(flat.OwnerEmail, existingFlat.OwnerEmail) || 
-            IsNewOwnerNameForExistingOwner(flat.OwnerName, existingFlat.OwnerName) || 
-            IsNewOwnerSurnameForExistingOwner(flat.OwnerSurname, existingFlat.OwnerSurname);
-    }
-
-    private bool IsNewOwnerSurnameForExistingOwner(string newSurname, string existingSurname)
-    {
-        return !string.IsNullOrEmpty(existingSurname) && existingSurname.ToLower() != newSurname.ToLower();
-    }
-
-    private bool IsNewOwnerNameForExistingOwner(string newName, string existingName)
-    {
-        return !string.IsNullOrEmpty(existingName) && existingName.ToLower() != newName.ToLower();
-    }
-
-    private static bool IsNewOwnerEmailForExistingOwner(string newEmail, string existingEmail)
-    {
-        return !string.IsNullOrEmpty(existingEmail) && existingEmail.ToLower() != newEmail.ToLower();
-    }
-
-    private void UpdateExistingFlatsOwnerInfo(Flat existingFlat, Flat newFlat)
-    {
-        List<Flat> flatsWithPreviousOwnerEmail = _iBuildingRepository.GetAllFlats().
-            Where(flat => flat.OwnerEmail.ToLower() == existingFlat.OwnerEmail.ToLower()).ToList();
-
-        foreach (Flat flat in flatsWithPreviousOwnerEmail)
-        {
-            flat.OwnerEmail = newFlat.OwnerEmail;
-            flat.OwnerName = newFlat.OwnerName;
-            flat.OwnerSurname = newFlat.OwnerSurname;
-            _iBuildingRepository.UpdateFlat(flat);
-        }
-                
-    }
-
     private void ValidateFlat(Flat flat)
     {
         CheckFlatDigit(flat);
-        CheckNotEmptyFLatOwnerName(flat);
-        CheckFlatOwnerEmail(flat.OwnerEmail);
-        CheckNotEmptyFLatOwnerSurname(flat);
         CheckNotNegativeBathrooms(flat.Bathrooms);
+    }
+
+    private void ValidateOwner(Person owner)
+    {
+        CheckNotEmptyFLatOwnerName(owner.Name);
+        CheckFlatOwnerEmail(owner.Email);
+        CheckNotEmptyFLatOwnerSurname(owner.Surname);
     }
 
     private void CheckNotNegativeBathrooms(int bathrooms)
@@ -292,9 +255,9 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private void CheckNotEmptyFLatOwnerSurname(Flat flat)
+    private void CheckNotEmptyFLatOwnerSurname(string surname)
     {
-        if (string.IsNullOrEmpty(flat.OwnerSurname))
+        if (string.IsNullOrEmpty(surname))
         {
             throw new BuildingException("Owner surname cannot be empty");
         }
@@ -331,9 +294,9 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private static void CheckNotEmptyFLatOwnerName(Flat flat)
+    private static void CheckNotEmptyFLatOwnerName(string name)
     {
-        if (string.IsNullOrEmpty(flat.OwnerName))
+        if (string.IsNullOrEmpty(name))
         {
             throw new BuildingException("Owner name cannot be empty");
         }

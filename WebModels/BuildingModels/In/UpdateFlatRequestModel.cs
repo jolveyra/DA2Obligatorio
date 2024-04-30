@@ -18,9 +18,12 @@ namespace WebModels.BuildingModels
             {
                 Floor = Floor,
                 Number = Number,
-                OwnerName = OwnerName,
-                OwnerSurname = OwnerSurname,
-                OwnerEmail = OwnerEmail,
+                Owner = new Person()
+                {
+                    Name = OwnerName,
+                    Surname = OwnerSurname,
+                    Email = OwnerEmail
+                },
                 Bathrooms = Bathrooms,
                 HasBalcony = HasBalcony
             };

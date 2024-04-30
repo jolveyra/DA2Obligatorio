@@ -166,9 +166,12 @@ namespace DataAccessTest
                 Floor = 3,
                 Number = 304,
                 HasBalcony = true,
-                OwnerEmail = "pedro@mail.com",
-                OwnerName = "Pedro",
-                OwnerSurname = "De Los Naranjos",
+                Owner = new Person()
+                {
+                    Email = "pedro@mail.com", 
+                    Name = "Pedro", 
+                    Surname = "De Los Naranjos",
+                },
                 Building = building
             };
 
@@ -239,9 +242,12 @@ namespace DataAccessTest
                 Floor = 3,
                 Number = 304,
                 HasBalcony = true,
-                OwnerEmail = "pedro@mail.com",
-                OwnerName = "Pedro",
-                OwnerSurname = "De Los Naranjos",
+                Owner = new Person()
+                {
+                    Email = "pedro@mail.com", 
+                    Name = "Pedro", 
+                    Surname = "De Los Naranjos",
+                },
                 Building = building
             };
 
@@ -254,9 +260,7 @@ namespace DataAccessTest
                 flat.Floor.Equals(result.Floor) &&
                 flat.Number.Equals(result.Number) &&
                 flat.HasBalcony.Equals(result.HasBalcony) &&
-                flat.OwnerEmail.Equals(result.OwnerEmail) &&
-                flat.OwnerName.Equals(result.OwnerName) &&
-                flat.OwnerSurname.Equals(result.OwnerSurname) &&
+                flat.Owner.Equals(result.Owner) &&
                 flat.Building.Equals(result.Building)
             );
 
@@ -288,9 +292,12 @@ namespace DataAccessTest
                 Floor = 3,
                 Number = 304,
                 HasBalcony = true,
-                OwnerEmail = "",
-                OwnerName = "Pedro",
-                OwnerSurname = "De Los Naranjos",
+                Owner = new Person()
+                {
+                    Email = "pedro@mail.com", 
+                    Name = "Pedro", 
+                    Surname = "De Los Naranjos",
+                },
                 Building = building
             };
 
@@ -330,9 +337,12 @@ namespace DataAccessTest
                 Floor = 3,
                 Number = 304,
                 HasBalcony = true,
-                OwnerEmail = "",
-                OwnerName = "Pedro",
-                OwnerSurname = "De Los Naranjos",
+                Owner = new Person()
+                {
+                    Email = "pedro@mail.com", 
+                    Name = "Pedro", 
+                    Surname = "De Los Naranjos",
+                },
                 Building = building
             };
 
@@ -350,7 +360,13 @@ namespace DataAccessTest
         [TestMethod]
         public void GetAllFlatsTestOk()
         {
-            List<Flat> expectedList = new List<Flat> { new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 304, HasBalcony = true, OwnerEmail = "", OwnerName = "Pedro", OwnerSurname = "De Los Naranjos" } };
+            List<Flat> expectedList = new List<Flat> { new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 304, HasBalcony = true,
+                Owner = new Person()
+                {
+                Email = "pedro@mail.com", 
+                Name = "Pedro", 
+                Surname = "De Los Naranjos",
+            } } };
             mockContext.Setup(x => x.Flats).ReturnsDbSet(expectedList);
 
             List<Flat> result = buildingRepository.GetAllFlats().ToList();

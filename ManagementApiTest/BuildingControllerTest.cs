@@ -272,9 +272,12 @@ namespace ManagementApiTest
                 Id = Guid.NewGuid(),
                 Floor = 2,
                 Number = 201,
-                OwnerName = "Gonzalo",
-                OwnerSurname = "Bergessio",
-                OwnerEmail = "gonzabergessiobolso@gmail.com",
+                Owner = new Person()
+                {
+                    Name = "Gonzalo",
+                    Surname = "Bergessio",
+                    Email = "gonzabergessiobolso@gmail.com",
+                },
                 Bathrooms = 3,
                 HasBalcony = true
             };
@@ -315,9 +318,12 @@ namespace ManagementApiTest
                 Id = Guid.NewGuid(),
                 Floor = 2,
                 Number = 201,
-                OwnerName = "Gonzalo",
-                OwnerSurname = "Bergessio",
-                OwnerEmail = "gonzabergessiobolso@gmail.com",
+                Owner = new Person()
+                {
+                    Name = "Gonzalo",
+                    Surname = "Bergessio",
+                    Email = "gonzabergessiobolso@gmail.com",
+                },
                 Bathrooms = 3,
                 HasBalcony = true
             };

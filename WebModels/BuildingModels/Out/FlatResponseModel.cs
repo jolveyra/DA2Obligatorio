@@ -23,9 +23,9 @@ namespace WebModels.BuildingModels
             Id = flat.Id;
             Number = flat.Number;
             Floor = flat.Floor;
-            OwnerName = flat.OwnerName;
-            OwnerSurname = flat.OwnerSurname;
-            OwnerEmail = flat.OwnerEmail;
+            OwnerName = flat.Owner.Name;
+            OwnerSurname = flat.Owner.Surname;
+            OwnerEmail = flat.Owner.Email;
             Bathrooms = flat.Bathrooms;
             HasBalcony = flat.HasBalcony;
         }
