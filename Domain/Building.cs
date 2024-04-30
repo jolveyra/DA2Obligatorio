@@ -13,5 +13,10 @@
         public string ConstructorCompany { get; set; }
         public User Manager { get; set; }
         public List<User> MaintenanceEmployees { get; set; } = new List<User>();
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Building b && b.Id == Id;
+        }
     }
 }

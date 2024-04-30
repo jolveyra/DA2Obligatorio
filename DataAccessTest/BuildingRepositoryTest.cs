@@ -85,6 +85,29 @@ namespace DataAccessTest
         }
 
         [TestMethod]
+        public void GetBuildingByIdTestOk()
+        {
+            Guid id = Guid.NewGuid();
+
+            Building building = new Building()
+            {
+                Id = id,
+                Name = "Building 1",
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                ConstructorCompany = "City 1",
+                SharedExpenses = 150
+            };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { building });
+
+            Building result = buildingRepository.GetBuildingById(id);
+
+            Assert.AreEqual(building, result);
+        }
+
+        [TestMethod]
         public void GetBuildingByIdTestNotFound()
         {
             Guid id = Guid.NewGuid();
