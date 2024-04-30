@@ -49,6 +49,27 @@ namespace DataAccessTest
         }
 
         [TestMethod]
+        public void GetNonExistingPersonByIdTest()
+        {
+            Guid id = Guid.NewGuid();
+            _contextMock.Setup(context => context.People).ReturnsDbSet(new List<Person>());
+
+            Exception exception = null;
+
+            try
+            {
+                _peopleRepository.GetPersonById(id);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Person not found", exception.Message);
+        }
+
+        [TestMethod]
         public void CreatePersonTest()
         {
             Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
