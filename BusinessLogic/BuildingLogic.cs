@@ -182,6 +182,7 @@ public class BuildingLogic: IBuildingLogic
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
         building.SharedExpenses = buildingData.SharedExpenses;
+        building.ConstructorCompany = buildingData.ConstructorCompany;
 
         List<User> maintenanceEmployees = BuildMaintenanceEmployeeList(building, maintenanceEmployeeIds);
 

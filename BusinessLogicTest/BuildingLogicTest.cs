@@ -483,7 +483,8 @@ public class BuildingLogicTest
     public void UpdateBuildingTestOk()
     {
         Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
-        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
+        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim" };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = "Saciim" };
         
         List<Guid> guids = new List<Guid> { Guid.NewGuid() };
 
@@ -491,12 +492,13 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
 
-        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
+        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), toUpdateBuilding, guids);
 
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
         Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
+        Assert.AreEqual(expected.ConstructorCompany, expected.ConstructorCompany);
         CollectionAssert.AreEqual(expected.MaintenanceEmployees.ToList(), result.MaintenanceEmployees.ToList());
     }
 
@@ -526,6 +528,7 @@ public class BuildingLogicTest
     public void UpdateBuildingTestNotAMaintenanceEmployeeInList()
     {
         Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
+        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim" };
         Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
 
         List<Guid> guids = new List<Guid> { Guid.NewGuid() };
@@ -535,7 +538,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), toUpdateBuilding, guids);
         }catch(Exception e)
         {
             Assert.IsInstanceOfType(e, typeof(BuildingException));
@@ -547,8 +550,7 @@ public class BuildingLogicTest
     [TestMethod]
     public void UpdateBuildingTestRepeatedIdInList()
     {
-        Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
-        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300 };
+        Building building = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim" };
 
         Guid guid = Guid.NewGuid();
 
@@ -556,7 +558,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), building, guids);
         }
         catch (Exception e)
         {
