@@ -293,6 +293,8 @@ namespace DataAccessTest
 
             IEnumerable<Flat> result = buildingRepository.GetAllBuildingFlats(buildingId);
 
+            mockContext.Verify(x => x.Flats, Times.Once());
+
             CollectionAssert.AreEqual(new List<Flat> { flat }, result.ToList());
 
         }
