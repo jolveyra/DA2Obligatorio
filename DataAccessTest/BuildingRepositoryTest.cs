@@ -76,11 +76,12 @@ namespace DataAccessTest
 
             Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 };
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 } });
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { new Flat() { Building = toDeleteBuilding } });
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { toDeleteBuilding });
 
             buildingRepository.DeleteBuilding(toDeleteBuilding);
 
-            mockContext.Verify(x => x.SaveChanges(), Times.Once);
+            mockContext.Verify(x => x.SaveChanges(), Times.Exactly(2));
         }
 
         [TestMethod]
