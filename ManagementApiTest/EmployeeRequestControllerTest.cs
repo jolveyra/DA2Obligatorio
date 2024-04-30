@@ -68,6 +68,7 @@ namespace ManagementApiTest
                 Description = "Description",
                 Flat = new Flat() { Id = Guid.NewGuid() },
                 AssignedEmployee = new User() { Id = Guid.NewGuid() },
+                Category = new Category() { Id = Guid.NewGuid(), Name = "Hola" }
             };
 
             requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);
