@@ -25,5 +25,17 @@ namespace DataAccess.Repositories
         {
             return _context.People;
         }
+
+        public Person GetPersonById(Guid id)
+        {
+            Person? person = _context.People.FirstOrDefault(u => u.Id == id);
+
+            if (person == null)
+            {
+                throw new ArgumentException("Person not found");
+            }
+
+            return person;
+        }
     }
 }

@@ -36,6 +36,19 @@ namespace DataAccessTest
         }
 
         [TestMethod]
+        public void GetPersonByIdTest()
+        {
+            Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
+
+            _contextMock.Setup(context => context.People).ReturnsDbSet(new List<Person> { person });
+            
+            Person result = _peopleRepository.GetPersonById(person.Id);
+
+            _contextMock.Verify(context => context.People, Times.Once());
+            Assert.AreEqual(person, result);
+        }
+
+        [TestMethod]
         public void CreatePersonTest()
         {
             Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
