@@ -245,6 +245,9 @@ namespace DataAccessTest
 
             Flat result = buildingRepository.UpdateFlat(flat);
 
+            mockContext.Verify(x => x.Update(flat), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+
             Assert.IsTrue(flat.Id.Equals(result.Id) &&
                 flat.Floor.Equals(result.Floor) &&
                 flat.Number.Equals(result.Number) &&
