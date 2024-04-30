@@ -173,15 +173,15 @@ public class BuildingLogic: IBuildingLogic
         return _iBuildingRepository.GetFlatByFlatId(flatId);
     }
 
-    public Building UpdateBuilding(Guid buildingId, float sharedExpenses, List<Guid> maintenanceEmployeeIds)
+    public Building UpdateBuilding(Guid buildingId, Building buildingData, List<Guid> maintenanceEmployeeIds)
     {
-        CheckNotNegativeSharedExpenses(sharedExpenses);
+        CheckNotNegativeSharedExpenses(buildingData.SharedExpenses);
 
         CheckNotRepetitiveMaintenanceEmployeeIds(maintenanceEmployeeIds);
 
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
-        building.SharedExpenses = sharedExpenses;
+        building.SharedExpenses = buildingData.SharedExpenses;
 
         List<User> maintenanceEmployees = BuildMaintenanceEmployeeList(building, maintenanceEmployeeIds);
 

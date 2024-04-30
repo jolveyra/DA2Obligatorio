@@ -185,7 +185,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
@@ -196,7 +196,31 @@ namespace ManagementApiTest
 
             buildingLogicMock.VerifyAll();
 
-            Assert.IsTrue(resultObject.StatusCode.Equals(expectedObjectResult.StatusCode) && resultValue.Equals(expectedResult));
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue.SharedExpenses, expectedResult.SharedExpenses);
+        }
+
+        [TestMethod]
+        public void UpdateBuildingConstructorCompanyTestOk()
+        {
+            Building toUpdate = new Building() { Id = Guid.NewGuid(), ConstructorCompany = "Sacoom" };
+            UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { ConstructorCompany = "Saciim" };
+            Building expected = new Building() { Id = toUpdate.Id, ConstructorCompany = "Saciim" };
+
+            BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+
+            OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
+            
+            IActionResult result = buildingController.UpdateBuildingById(It.IsAny<Guid>(), updateBuildingRequest);
+
+            OkObjectResult resultObject = result as OkObjectResult;
+            BuildingResponseModel resultValue = resultObject.Value as BuildingResponseModel;
+
+            buildingLogicMock.VerifyAll();
+
+            Assert.AreEqual(resultObject.StatusCode, expectedObjectResult.StatusCode);
+            Assert.AreEqual(resultValue.ConstructorCompany, expectedResult.ConstructorCompany);
         }
 
 
@@ -211,7 +235,7 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
-            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 

@@ -491,7 +491,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
 
-        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
+        Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
 
         buildingRepositoryMock.VerifyAll();
 
@@ -505,12 +505,13 @@ public class BuildingLogicTest
     {
 
         Building building = new Building();
+        Building toUpdateData = new Building() { SharedExpenses = -1 };
 
         Exception exception = null;
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(building.Id, sharedExpenses: -1, It.IsAny<List<Guid>>());
+            Building result = buildingLogic.UpdateBuilding(building.Id, toUpdateData, It.IsAny<List<Guid>>());
         }
         catch (Exception e)
         {
@@ -534,7 +535,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
         }catch(Exception e)
         {
             Assert.IsInstanceOfType(e, typeof(BuildingException));
@@ -555,7 +556,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<float>(), guids);
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), guids);
         }
         catch (Exception e)
         {
