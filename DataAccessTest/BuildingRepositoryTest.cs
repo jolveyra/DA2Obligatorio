@@ -38,6 +38,8 @@ namespace DataAccessTest
 
             IEnumerable<Building> result = buildingRepository.GetAllBuildings();
 
+            mockContext.Verify(x => x.Buildings, Times.Once());
+
             CollectionAssert.AreEqual(buildings, result.ToList());
 
         }
