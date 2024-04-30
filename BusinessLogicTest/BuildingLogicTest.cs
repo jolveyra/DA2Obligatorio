@@ -707,8 +707,6 @@ public class BuildingLogicTest
 
         Flat toChangeFlat = new Flat();
 
-        Building building = new Building();
-
         Exception exception = null;
 
         try
@@ -739,8 +737,6 @@ public class BuildingLogicTest
         };
 
         Flat toChangeFlat = new Flat();
-
-        Building building = new Building();
 
         Exception exception = null;
 
@@ -774,8 +770,6 @@ public class BuildingLogicTest
         };
 
         Flat toChangeFlat = new Flat();
-
-        Building building = new Building();
 
         Exception exception = null;
 
@@ -811,8 +805,6 @@ public class BuildingLogicTest
 
         Flat toChangeFlat = new Flat();
 
-        Building building = new Building();
-
         Exception exception = null;
 
         try
@@ -845,8 +837,6 @@ public class BuildingLogicTest
         };
 
         Flat toChangeFlat = new Flat();
-
-        Building building = new Building();
 
         Exception exception = null;
 
@@ -882,8 +872,6 @@ public class BuildingLogicTest
 
         Flat toChangeFlat = new Flat();
 
-        Building building = new Building();
-
         Exception exception = null;
 
         try
@@ -916,8 +904,6 @@ public class BuildingLogicTest
         };
 
         Flat toChangeFlat = new Flat();
-
-        Building building = new Building();
 
         Exception exception = null;
 
