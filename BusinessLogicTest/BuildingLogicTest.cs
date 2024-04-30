@@ -103,6 +103,8 @@ public class BuildingLogicTest
             exception = e;
         }
 
+        buildingRepositoryMock.VerifyAll();
+
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Shared expenses cannot be negative");
     }
