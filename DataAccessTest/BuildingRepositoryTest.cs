@@ -347,6 +347,8 @@ namespace DataAccessTest
 
             List<Flat> result = buildingRepository.GetAllFlats().ToList();
 
+            mockContext.Verify(x => x.Flats, Times.Once());
+
             CollectionAssert.AreEqual(expectedList.ToList(), result);
         }
     }
