@@ -32,6 +32,8 @@ public class BuildingLogic: IBuildingLogic
 
         CheckUniqueBuildingCoordinates(building);
 
+        building.Manager = _iUserRepository.GetUserById(userId);
+
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
         CreateBuildingFlats(toReturn, amountOfFlats);
