@@ -205,6 +205,7 @@ namespace DataAccessTest
                 Flat result = buildingRepository.GetFlatByFlatId(flatId);
             }catch(Exception e)
             {
+                mockContext.Verify(x => x.Flats, Times.Once());
                 Assert.IsInstanceOfType(e, typeof(ArgumentException));
                 Assert.AreEqual(e.Message, "Flat not found");
             }
