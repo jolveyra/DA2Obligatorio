@@ -17,14 +17,5 @@ namespace DataAccess.Context
         public BuildingBossContext() { }
 
         public BuildingBossContext(DbContextOptions options) : base(options) { }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Request>()
-            .HasOne(r => r.AssignedEmployee)
-            .WithMany()
-            .HasForeignKey(r => r.AssignedEmployeeId)
-            .OnDelete(DeleteBehavior.NoAction);
-        }
     }
 }

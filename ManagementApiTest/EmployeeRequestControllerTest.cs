@@ -27,8 +27,8 @@ namespace ManagementApiTest
             Guid employeeId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Description 1", Flat = new Flat(), AssignedEmployee = new User() { Id = employeeId, Role = Role.MaintenanceEmployee }, Category = new Category() { Id = Guid.NewGuid(), Name = "Category 1" } },
-                new Request() { Id = Guid.NewGuid(), Description = "Description 2", Flat = new Flat(), AssignedEmployee = new User() { Id = Guid.NewGuid(), Role = Role.MaintenanceEmployee }, Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" } }
+                new Request() { Id = Guid.NewGuid(), Description = "Description 1", Flat = new Flat(), AssignedEmployeeId = employeeId, Category = new Category() { Id = Guid.NewGuid(), Name = "Category 1" } },
+                new Request() { Id = Guid.NewGuid(), Description = "Description 2", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category() { Id = Guid.NewGuid(), Name = "Category 2" } }
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -67,7 +67,7 @@ namespace ManagementApiTest
                 Status = RequestStatus.InProgress,
                 Description = "Description",
                 Flat = new Flat() { Id = Guid.NewGuid() },
-                AssignedEmployee = new User() { Id = Guid.NewGuid() },
+                AssignedEmployeeId = Guid.NewGuid(),
             };
 
             requestLogicMock.Setup(r => r.UpdateRequestStatusById(It.IsAny<Guid>(), It.IsAny<RequestStatus>())).Returns(expected);

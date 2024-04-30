@@ -11,14 +11,14 @@ namespace BusinessLogic
 
             foreach (Request request in requests)
             {
-                string employeeName = request.AssignedEmployee.Name + " " + request.AssignedEmployee.Surname;
-                if (!requestsFilter.Contains(employeeName))
+                string employeeId = request.AssignedEmployeeId.ToString();
+                if (!requestsFilter.Contains(employeeId))
                 {
-                    requestsFilter.Add(employeeName);
+                    requestsFilter.Add(employeeId);
                     requestsPerFilter.Add(new List<Request>());
                 }
 
-                requestsPerFilter[requestsFilter.IndexOf(employeeName)].Add(request);
+                requestsPerFilter[requestsFilter.IndexOf(employeeId)].Add(request);
             }
         }
     }

@@ -136,17 +136,16 @@ namespace BusinessLogicTest
         {
             User manager = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
             string filter = "Employee";
+            Guid employee1Id = Guid.NewGuid();
+            Guid employee2Id = Guid.NewGuid();
+            User employee1 = new User() { Id = employee1Id, Name = "Employee1", Surname = "Employee1" };
+            User employee2 = new User() { Id = employee2Id, Name = "Employee2", Surname = "Employee2" };
 
             List<Request> requests = new List<Request>
             {
                 new Request
                 {
-                    AssignedEmployee = new User()
-                    {
-                        Role = Role.MaintenanceEmployee,
-                        Name = "Employee1",
-                        Surname = "Employee1"
-                    },
+                    AssignedEmployeeId = employee1Id,
                     Flat = new Flat
                     {
                         Building = new Building
@@ -158,12 +157,7 @@ namespace BusinessLogicTest
                 },
                 new Request
                 {
-                    AssignedEmployee = new User()
-                    {
-                        Role = Role.MaintenanceEmployee,
-                        Name = "Employee2",
-                        Surname = "Employee2"
-                    },
+                    AssignedEmployeeId = employee2Id,
                     Flat = new Flat
                     {
                         Building = new Building
@@ -175,12 +169,7 @@ namespace BusinessLogicTest
                 },
                 new Request
                 {
-                    AssignedEmployee = new User()
-                    {
-                        Role = Role.MaintenanceEmployee,
-                        Name = "Employee1",
-                        Surname = "Employee1"
-                    },
+                    AssignedEmployeeId = employee1Id,
                     Flat = new Flat
                     {
                         Building = new Building
@@ -192,12 +181,7 @@ namespace BusinessLogicTest
                 },
                 new Request
                 {
-                    AssignedEmployee = new User()
-                    {
-                        Role = Role.MaintenanceEmployee,
-                        Name = "Employee2",
-                        Surname = "Employee2"
-                    },
+                    AssignedEmployeeId = employee2Id,
                     Flat = new Flat
                     {
                         Building = new Building
@@ -212,12 +196,7 @@ namespace BusinessLogicTest
                 },
                 new Request
                 {
-                    AssignedEmployee = new User()
-                    {
-                        Role = Role.MaintenanceEmployee,
-                        Name = "Employee1",
-                        Surname = "Employee1"
-                    },
+                    AssignedEmployeeId = employee1Id,
                     Flat = new Flat
                     {
                         Building = new Building
@@ -231,7 +210,9 @@ namespace BusinessLogicTest
                 }
             };
 
-            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(manager);
+            userRepositoryMock.Setup(u => u.GetUserById(manager.Id)).Returns(manager);
+            userRepositoryMock.Setup(u => u.GetUserById(employee1Id)).Returns(employee1);
+            userRepositoryMock.Setup(u => u.GetUserById(employee2Id)).Returns(employee2);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
             IEnumerable<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>

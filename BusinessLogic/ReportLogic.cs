@@ -28,7 +28,15 @@ namespace BusinessLogic
             if (filter.ToLower().Equals("employee"))
             {
                 IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
-                return GenerateReport(requests, new EmployeeRequestReport());
+                var report =  GenerateReport(requests, new EmployeeRequestReport()).ToList();
+
+                for (int i = 0; i < report.Count; i++)
+                {
+                    User employee = _userRepository.GetUserById(Guid.Parse(report[i].Item1));
+                    report[i] = (employee.Name + " " + employee.Surname, report[i].Item2, report[i].Item3, report[i].Item4, report[i].Item5);
+                }
+
+                return report;
             }
 
             throw new ReportException("Invalid filter");

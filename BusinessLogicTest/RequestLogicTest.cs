@@ -58,9 +58,10 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UpdateRequestTest()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category() };
-            Request expected = new Request() { Id = request.Id, Description = "Request 2", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category() };
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category() };
+            Request expected = new Request() { Id = request.Id, Description = "Request 2", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category() };
 
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>() { new User() { Id = request.AssignedEmployeeId } });
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
 
@@ -73,7 +74,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UpdateRequestTest_InvalidDescription()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee } };
+            Request request = new Request() { Id = Guid.NewGuid(), Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid() };
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             Exception exception = null;
@@ -95,7 +96,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UpdateRequestTest_InvalidFlat()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", AssignedEmployee = new User() { Role = Role.MaintenanceEmployee } };
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", AssignedEmployeeId = Guid.NewGuid() };
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             Exception exception = null;
@@ -132,13 +133,13 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
-            Assert.IsTrue(exception.Message.Equals("AssignedEmployee cannot be empty or null"));
+            Assert.IsTrue(exception.Message.Equals("Assigned employee cannot be empty or null"));
         }
 
         [TestMethod]
         public void UpdateRequestTest_InvalidCategory()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee } };
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid() };
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             Exception exception = null;
@@ -160,7 +161,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateRequestTest()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category() };
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category() };
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
 
@@ -176,9 +177,9 @@ namespace BusinessLogicTest
             Guid employeeId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Id = employeeId, Role = Role.MaintenanceEmployee } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2", Flat = new Flat(), AssignedEmployee = new User() { Id = Guid.NewGuid(), Role = Role.MaintenanceEmployee } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3", Flat = new Flat(), AssignedEmployee = new User() { Id = employeeId, Role = Role.MaintenanceEmployee } }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = employeeId },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid() },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", Flat = new Flat(), AssignedEmployeeId = employeeId }
             };
             IEnumerable<Request> expected = new List<Request>()
             {
@@ -199,8 +200,8 @@ namespace BusinessLogicTest
         {
             Guid requestId = Guid.NewGuid();
             RequestStatus requestStatus = RequestStatus.InProgress;
-            Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus = RequestStatus.Pending };
-            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
+            Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus = RequestStatus.Pending };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
             
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
@@ -218,8 +219,8 @@ namespace BusinessLogicTest
         {
             Guid requestId = Guid.NewGuid();
             RequestStatus requestStatus = RequestStatus.Completed;
-            Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
-            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now, CompletionDate = DateTime.Now };
+            Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid(), Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now, CompletionDate = DateTime.Now };
             
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
