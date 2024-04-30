@@ -215,7 +215,7 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    public Flat UpdateFlat(Guid flatId, Flat flat)
+    public Flat UpdateFlat(Guid flatId, Flat flat, bool changeOwner)
     {
         ValidateFlat(flat);
         ValidateOwner(flat.Owner);
@@ -223,12 +223,21 @@ public class BuildingLogic: IBuildingLogic
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
+        if (changeOwner)
+        {
+            Person newOwner = _iPeopleRepository.CreatePerson(flat.Owner);
+            existingFlat.Owner = newOwner;
+        }
+        else
+        {
+            existingFlat.Owner.Name = flat.Owner.Name;
+            existingFlat.Owner.Surname = flat.Owner.Surname;
+            existingFlat.Owner.Email = flat.Owner.Email;
+        }
+
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
         existingFlat.HasBalcony = flat.HasBalcony;
-        existingFlat.Owner.Name = flat.Owner.Name;
-        existingFlat.Owner.Surname = flat.Owner.Surname;
-        existingFlat.Owner.Email = flat.Owner.Email;
 
         _iPeopleRepository.UpdatePerson(existingFlat.Owner);
         return _iBuildingRepository.UpdateFlat(existingFlat);

@@ -2,9 +2,6 @@
 using LogicInterfaces;
 using WebModels.BuildingModels;
 using ManagementApi.Filters;
-using System.Security.Cryptography;
-using System.Reflection.Metadata;
-using Domain;
 
 namespace ManagementApi.Controllers
 {
@@ -79,9 +76,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateFlatByFlatId([FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
-
-            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(flatId, updateFlatRequest.ToEntity())));
-
+            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(flatId, updateFlatRequest.ToEntity(), updateFlatRequest.ChangeOwner)));
         }
 
         [HttpGet("{buildingId}/flats/{flatId}")]

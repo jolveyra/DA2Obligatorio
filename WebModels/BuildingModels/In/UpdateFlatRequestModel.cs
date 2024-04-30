@@ -12,6 +12,7 @@ namespace WebModels.BuildingModels
         public int Rooms { get; set; }
         public int Bathrooms { get; set; }
         public bool HasBalcony { get; set; }
+        public bool ChangeOwner { get; set; }
 
         public Flat ToEntity()
         {

@@ -4,7 +4,6 @@ using CustomExceptions;
 using Domain;
 using Moq;
 
-
 namespace BusinessLogicTest;
 
 [TestClass]
@@ -716,7 +715,7 @@ public class BuildingLogicTest
         peopleRepositoryMock.Setup(repo => repo.GetPeople()).Returns(new List<Person>());
         peopleRepositoryMock.Setup(repo => repo.UpdatePerson(It.IsAny<Person>())).Returns(expected.Owner);
 
-        Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat);
+        Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat, false);
 
         buildingRepositoryMock.VerifyAll();
 
@@ -763,7 +762,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch(Exception e)
         {
@@ -797,7 +796,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -832,7 +831,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -885,7 +884,7 @@ public class BuildingLogicTest
 
         try
         {
-            buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -923,7 +922,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -959,7 +958,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -996,7 +995,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -1034,7 +1033,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -1071,7 +1070,7 @@ public class BuildingLogicTest
 
         try
         {
-            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat, false);
         }
         catch (Exception e)
         {
@@ -1082,5 +1081,56 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Invalid email, must contain .");
+    }
+
+    [TestMethod]
+    public void UpdateFlatWithNewOwnerByFlatIdTest()
+    {
+        Guid flatId = Guid.NewGuid();
+        Flat flat = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Name = "Pedro",
+                Surname = "De Los Naranjos",
+                Email = "juan@gmail.com"
+            },
+            Building = new Building() { Id = Guid.NewGuid() }
+        };
+        Flat flatToUpdate = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Juan",
+                Surname = "De Los Naranjos",
+                Email = "juan@gmail.com"
+            },
+            Building = new Building() { Id = flat.Building.Id }
+        };
+
+        peopleRepositoryMock.Setup(x => x.UpdatePerson(It.IsAny<Person>())).Returns(flatToUpdate.Owner);
+        peopleRepositoryMock.Setup(x => x.CreatePerson(It.IsAny<Person>())).Returns(new Person() { Id = Guid.NewGuid(), Name = "Pedro", Surname = "De Los Naranjos", Email = "pedro@gmail.com" });
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { flatToUpdate });
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(flat);
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(flatToUpdate);
+
+        Flat result = buildingLogic.UpdateFlat(flatToUpdate.Id, flat, true);
+
+        buildingRepositoryMock.VerifyAll();
+        peopleRepositoryMock.VerifyAll();
+        Assert.IsTrue(result.Equals(flatToUpdate) && result.Owner.Name.Equals("Juan"));
     }
 }

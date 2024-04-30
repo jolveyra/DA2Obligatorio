@@ -332,7 +332,7 @@ namespace ManagementApiTest
                 HasBalcony = true
             };
 
-            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Flat>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Flat>(), It.IsAny<bool>())).Returns(expected);
 
             FlatResponseModel expectedResult = new FlatResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);

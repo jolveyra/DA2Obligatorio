@@ -11,6 +11,6 @@ namespace LogicInterfaces
         Building GetBuildingById(Guid id);
         Flat GetFlatByFlatId(Guid flatId);
         Building UpdateBuilding(Guid guid, Building building, List<Guid> maintenanceEmployeeIds);
-        Flat UpdateFlat(Guid flatId, Flat flat);
+        Flat UpdateFlat(Guid flatId, Flat flat, bool changeOwner);
     }
 }
