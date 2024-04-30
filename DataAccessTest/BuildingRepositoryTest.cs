@@ -120,6 +120,7 @@ namespace DataAccessTest
 
             Building result = buildingRepository.GetBuildingById(id);
 
+            mockContext.Verify(x => x.Buildings, Times.Once());
             Assert.AreEqual(building, result);
         }
 
