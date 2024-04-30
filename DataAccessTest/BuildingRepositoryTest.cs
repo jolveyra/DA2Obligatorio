@@ -89,10 +89,15 @@ namespace DataAccessTest
 
             mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { new Flat() { Building = toDeleteBuilding } });
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { toDeleteBuilding });
+            mockContext.Setup(mockContext => mockContext.SaveChanges()).Returns(1);
 
             buildingRepository.DeleteBuilding(toDeleteBuilding);
 
             mockContext.Verify(x => x.SaveChanges(), Times.Exactly(2));
+            mockContext.Verify(x => x.Buildings.Remove(toDeleteBuilding), Times.Once());
+            mockContext.Verify(x => x.Flats.Remove(It.IsAny<Flat>()), Times.Once());
+            mockContext.Verify(mockContext => mockContext.Flats, Times.Exactly(2));
+            mockContext.Verify(mockContext => mockContext.Buildings, Times.Once());
         }
 
         [TestMethod]
