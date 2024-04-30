@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Context
 {
@@ -29,31 +24,6 @@ namespace DataAccess.Context
             .WithMany()
             .HasForeignKey(r => r.AssignedEmployeeId)
             .OnDelete(DeleteBehavior.NoAction);
-
-            //modelBuilder.Entity<Building>()
-            // .HasMany(b => b.MaintenanceEmployees)
-            // .WithMany()
-            // .HasOne(b => b.Manager)
-            // .WithMany()
-            // .OnDelete(DeleteBehavior.NoAction);
-        }
-
-        public void AddInitialAdministrator()
-        {
-            if (Users.Any(u => u.Role == Role.Administrator))
-            {
-                return;
-            }
-
-            User admin = new User()
-            {
-                Email = "admin@gmail.com", Name = "Admin", Surname = "Admin",
-                Password = "Admin1234", Role = Role.Administrator
-            };
-            Users.Add(admin);
-            Sessions.Add(new Session() { UserId = admin.Id });
-
-            SaveChanges();
         }
     }
 }

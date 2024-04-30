@@ -11,5 +11,10 @@
         public string OwnerEmail { get; set; } = "";
         public int Bathrooms { get; set; } = 0;
         public bool HasBalcony { get; set; } = false;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Flat f && f.Id == Id;
+        }
     }
 }
