@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using BusinessLogic;
-using CustomExceptions.BusinessLogic;
 using Domain;
 using LogicInterfaces;
 using Moq;
 using RepositoryInterfaces;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 
 namespace BusinessLogicTest
 {

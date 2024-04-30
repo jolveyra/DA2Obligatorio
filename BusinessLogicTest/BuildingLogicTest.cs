@@ -1,6 +1,6 @@
 using BusinessLogic;
 using RepositoryInterfaces;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 using Domain;
 using Moq;
 

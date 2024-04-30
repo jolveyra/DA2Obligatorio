@@ -1,6 +1,6 @@
 ﻿using RepositoryInterfaces;
 using LogicInterfaces;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 using Domain;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Collections.Generic;

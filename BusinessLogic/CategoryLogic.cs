@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 
 namespace BusinessLogic
 {

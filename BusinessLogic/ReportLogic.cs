@@ -1,4 +1,4 @@
-﻿using CustomExceptions.BusinessLogic;
+﻿using CustomExceptions;
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;

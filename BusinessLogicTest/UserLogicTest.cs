@@ -2,7 +2,7 @@
 using BusinessLogic;
 using RepositoryInterfaces;
 using Moq;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 
 namespace BusinessLogicTest
 {

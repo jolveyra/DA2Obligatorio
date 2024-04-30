@@ -1,5 +1,5 @@
 ﻿using BusinessLogic;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 using Domain;
 using Moq;
 using RepositoryInterfaces;

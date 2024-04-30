@@ -1,7 +1,7 @@
 ﻿using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
-using CustomExceptions.BusinessLogic;
+using CustomExceptions;
 
 namespace BusinessLogic
 {
