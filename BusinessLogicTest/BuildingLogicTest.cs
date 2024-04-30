@@ -547,6 +547,8 @@ public class BuildingLogicTest
             Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), toUpdateBuilding, guids);
         }catch(Exception e)
         {
+            buildingRepositoryMock.VerifyAll();
+
             Assert.IsInstanceOfType(e, typeof(BuildingException));
             Assert.AreEqual(e.Message, "User in maintenance employees list is not a maintenance employee");
         }
