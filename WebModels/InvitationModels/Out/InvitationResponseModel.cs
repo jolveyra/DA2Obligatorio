@@ -8,7 +8,8 @@ namespace WebModels.InvitationModels
         public string Name { get; set; }
         public string Email { get; set; }
         public string ExpirationDate { get; set; }
-        public bool Accepted { get; set; }
+        public bool IsAccepted { get; set; }
+        public bool IsAnswered { get; set; }
 
         public InvitationResponseModel(Invitation invitation)
         {
@@ -16,7 +17,8 @@ namespace WebModels.InvitationModels
             Name = invitation.Name;
             Email = invitation.Email;
             ExpirationDate = invitation.ExpirationDate.ToString("d/M/yyyy");
-            Accepted = invitation.IsAccepted;
+            IsAccepted = invitation.IsAccepted;
+            IsAnswered = invitation.IsAnswered;
         }
 
         public override bool Equals(object? obj)

@@ -11,16 +11,11 @@ namespace WebModels.MaintenanceEmployeeModels
 
         public User ToEntity()
         {
-            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Surname) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
-            {
-                throw new ArgumentException("There is a missing field in the request's body");
-            }
-
             return new User()
             {
                 Name = Name,
                 Surname = Surname,
-                Email = Email,
+                Email = Email.ToLower(),
                 Password = Password
             };
         }

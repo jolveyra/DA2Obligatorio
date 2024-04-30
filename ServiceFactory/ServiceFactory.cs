@@ -13,10 +13,12 @@ namespace ServiceFactory
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IInvitationLogic, InvitationLogic>();
-            services.AddScoped<IAuthorizationLogic, UserLogic>();
+            services.AddScoped<IAuthorizationLogic, SessionLogic>();
             services.AddScoped<IAdministratorLogic, UserLogic>();
+            services.AddScoped<IManagerLogic, UserLogic>();
             services.AddScoped<IMaintenanceEmployeeLogic, UserLogic>();
             services.AddScoped<IUserSettingsLogic, UserLogic>();
+            services.AddScoped<ILoginLogic, UserLogic>();
             services.AddScoped<IManagerRequestLogic, RequestLogic>();
             services.AddScoped<IEmployeeRequestLogic, RequestLogic>();
             services.AddScoped<IBuildingLogic, BuildingLogic>();

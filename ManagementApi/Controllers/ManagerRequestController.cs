@@ -21,7 +21,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllManagerRequests([FromQuery] string? category)
         {
-            var requests = _managerRequestLogic.GetAllRequests();
+            var requests = _managerRequestLogic.GetAllManagerRequests(Guid.Parse(HttpContext.Items["UserId"] as string));
             
             if (category is not null)
             {

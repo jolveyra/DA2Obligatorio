@@ -93,14 +93,14 @@ namespace ManagementApiTest
             invitationLogicMock.Setup(i => i.UpdateInvitationStatus(It.IsAny<Guid>(), It.IsAny<bool>())).Returns(expected);
 
             expected.IsAccepted = true;
-            InvitationResponseModel expectedResult = new InvitationResponseModel(expected);
+            UpdateInvitationResponseModel expectedResult = new UpdateInvitationResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
             OkObjectResult result = invitationController.UpdateInvitationStatusById(expected.Id, createInvitationRequest) as OkObjectResult;
-            InvitationResponseModel resultObject = result.Value as InvitationResponseModel;
+            UpdateInvitationResponseModel resultObject = result.Value as UpdateInvitationResponseModel;
 
             invitationLogicMock.VerifyAll();
-            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.Accepted.Equals(resultObject.Accepted));
+            Assert.IsTrue(expectedObjectResult.StatusCode.Equals(result.StatusCode) && expectedResult.IsAccepted.Equals(resultObject.IsAccepted));
         }
 
         [TestMethod]

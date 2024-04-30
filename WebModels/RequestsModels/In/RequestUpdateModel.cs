@@ -10,10 +10,6 @@ namespace WebModels.RequestsModels
 
         public Request ToEntity(Guid id)
         {
-            if (String.IsNullOrEmpty(Description) || String.IsNullOrEmpty(CategoryName) || AssignedEmployeeId == null)
-            { 
-                throw new ArgumentException("There is a missing field in the request's body");
-            }
 
             return new Request
             {

@@ -24,7 +24,7 @@ namespace ManagementApi.Controllers
             return Ok(_requestLogic.GetAllRequestsByEmployeeId(Guid.Parse(HttpContext.Items["UserId"] as string)).Select(r => new RequestResponseModel(r)).ToList());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [AuthenticationFilter(["MaintenanceEmployee"])]
         public IActionResult UpdateRequestStatusById([FromRoute] Guid requestId, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
         {

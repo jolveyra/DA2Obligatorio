@@ -38,23 +38,6 @@ namespace BusinessLogicTest
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
         }
-
-        [TestMethod]
-        public void GetUserRoleTestOk()
-        {
-            User user = new User() { Role = Role.Administrator };
-            Session session = new Session() { UserId = user.Id };
-
-            sessionRepositoryMock.Setup(x => x.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
-            userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(user);
-
-            string expected = user.Role.ToString();
-            string result = _userLogic.GetUserRoleByToken(session.UserId);
-
-            sessionRepositoryMock.VerifyAll();
-            userRepositoryMock.VerifyAll();
-            Assert.AreEqual(expected, result);
-        }
         
         [TestMethod]
         public void GetAllMaintenanceEmployeesTest()
@@ -117,7 +100,7 @@ namespace BusinessLogicTest
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
 
-            _userLogic.ValidateUser(user);
+            UserLogic.ValidateUser(user);
         }
         
         [TestMethod]
@@ -128,7 +111,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -147,7 +130,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -166,7 +149,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -185,7 +168,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -204,7 +187,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -223,7 +206,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -242,7 +225,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -261,7 +244,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -280,7 +263,7 @@ namespace BusinessLogicTest
 
             try
             {
-                _userLogic.ValidateUser(user);
+                UserLogic.ValidateUser(user);
             }
             catch (Exception e)
             {
@@ -288,7 +271,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(UserException));
-            Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty"));
+            Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty for non manager users"));
         }
         
         [TestMethod]
@@ -362,21 +345,6 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void GetUserIdByTokenTestOk()
-        {
-            Guid token = Guid.NewGuid();
-
-            Session session = new Session() { UserId = Guid.NewGuid(), Id = token };
-
-            sessionRepositoryMock.Setup(s => s.GetSessionByToken(It.IsAny<Guid>())).Returns(session);
-
-            Guid result = _userLogic.GetUserIdByToken(token);
-
-            sessionRepositoryMock.VerifyAll();
-            Assert.AreEqual(session.UserId, result);
-        }
-
-        [TestMethod]
         public void GetSessionByUserIdTest()
         {
             Guid userId = Guid.NewGuid();
@@ -392,6 +360,40 @@ namespace BusinessLogicTest
 
             sessionRepositoryMock.VerifyAll();
             Assert.AreEqual(token, result);
+        }
+
+        [TestMethod]
+        public void CreateManagerTest()
+        {
+            User user = new User { Name = "Juan", Email = "juan@gmail.com", Password = Invitation.DefaultPassword };
+            User expected = new User { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com", Role = Role.Manager, Password = Invitation.DefaultPassword };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(expected);
+            sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
+
+            User result = UserLogic.CreateManager(userRepositoryMock.Object, sessionRepositoryMock.Object, user);
+
+            userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
+        }
+
+        [TestMethod]
+        public void GetAllManagersTest()
+        {
+            IEnumerable<User> users = new List<User>
+            {
+                new User { Role = Role.Manager },
+                new User { Role = Role.MaintenanceEmployee }
+            };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            
+            IEnumerable<User> result = _userLogic.GetAllManagers();
+
+            userRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
         }
     }
 }

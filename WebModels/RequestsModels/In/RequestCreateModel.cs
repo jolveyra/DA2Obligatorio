@@ -10,11 +10,6 @@ namespace WebModels.RequestsModels
 
         public Request ToEntity()
         {
-            if (String.IsNullOrEmpty(Description) || FlatId == null || String.IsNullOrEmpty(CategoryName))
-            {
-                throw new ArgumentException("There is a missing field in the request's body");
-            }
-
             return new Request
             {
                 Description = Description,

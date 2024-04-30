@@ -10,25 +10,29 @@ namespace BusinessLogicTest
     public class ReportLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
         private ReportLogic reportLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            reportLogic = new ReportLogic(requestRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            reportLogic = new ReportLogic(requestRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
         public void GetNonExistingReportTest()
         {
+            Guid managerId = Guid.NewGuid();
             string filter = "NonExistingFilter";
 
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = managerId, Role = Role.Manager });
             Exception exception = null;
 
             try
             {
-                reportLogic.GetReport(filter);
+                reportLogic.GetReport(managerId, filter);
             }
             catch (Exception e)
             {
@@ -36,6 +40,7 @@ namespace BusinessLogicTest
             }
 
             requestRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(ReportException));
             Assert.AreEqual("Invalid filter", exception.Message);
         }
@@ -43,6 +48,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetBuildingReportTest()
         {
+            User manager = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
             string filter = "Building";
 
             List<Request> requests = new List<Request>
@@ -53,7 +59,8 @@ namespace BusinessLogicTest
                     {
                         Building = new Building
                         {
-                            Name = "Building1"
+                            Name = "Building1",
+                            Manager = manager
                         }
                     }
                 },
@@ -63,7 +70,8 @@ namespace BusinessLogicTest
                     {
                         Building = new Building
                         {
-                            Name = "Building2"
+                            Name = "Building2",
+                            Manager = manager
                         }
                     }
                 },
@@ -73,7 +81,8 @@ namespace BusinessLogicTest
                     {
                         Building = new Building
                         {
-                            Name = "Building1"
+                            Name = "Building1",
+                            Manager = manager
                         }
                     }
                 },
@@ -83,7 +92,8 @@ namespace BusinessLogicTest
                     {
                         Building = new Building
                         {
-                            Name = "Building2"
+                            Name = "Building2",
+                            Manager = manager
                         }
                     },
                     Status = RequestStatus.Completed,
@@ -96,7 +106,8 @@ namespace BusinessLogicTest
                     {
                         Building = new Building
                         {
-                            Name = "Building1"
+                            Name = "Building1",
+                            Manager = manager
                         }
                     },
                     Status = RequestStatus.InProgress,
@@ -104,6 +115,7 @@ namespace BusinessLogicTest
                 }
             };
 
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(manager);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
             List<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
@@ -112,15 +124,17 @@ namespace BusinessLogicTest
                 ("Building2", 1, 0, 1, 2)
             };
 
-            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
+            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
             Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
 
         [TestMethod]
         public void GetEmployeeReportTest()
         {
+            User manager = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
             string filter = "Employee";
 
             List<Request> requests = new List<Request>
@@ -132,6 +146,14 @@ namespace BusinessLogicTest
                         Role = Role.MaintenanceEmployee,
                         Name = "Employee1",
                         Surname = "Employee1"
+                    },
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building1",
+                            Manager = manager
+                        }
                     }
                 },
                 new Request
@@ -141,6 +163,14 @@ namespace BusinessLogicTest
                         Role = Role.MaintenanceEmployee,
                         Name = "Employee2",
                         Surname = "Employee2"
+                    },
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building2",
+                            Manager = manager
+                        }
                     }
                 },
                 new Request
@@ -150,6 +180,14 @@ namespace BusinessLogicTest
                         Role = Role.MaintenanceEmployee,
                         Name = "Employee1",
                         Surname = "Employee1"
+                    },
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building2",
+                            Manager = manager
+                        }
                     }
                 },
                 new Request
@@ -159,6 +197,14 @@ namespace BusinessLogicTest
                         Role = Role.MaintenanceEmployee,
                         Name = "Employee2",
                         Surname = "Employee2"
+                    },
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building1",
+                            Manager = manager
+                        }
                     },
                     Status = RequestStatus.Completed,
                     StartingDate = DateTime.Now.AddHours(-2),
@@ -172,11 +218,20 @@ namespace BusinessLogicTest
                         Name = "Employee1",
                         Surname = "Employee1"
                     },
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building2",
+                            Manager = manager
+                        }
+                    },
                     Status = RequestStatus.InProgress,
                     StartingDate = DateTime.Now.AddHours(-2)
                 }
             };
 
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(manager);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
             IEnumerable<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
@@ -185,9 +240,10 @@ namespace BusinessLogicTest
                 ("Employee2 Employee2", 1, 0, 1, 2)
             };
 
-            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(filter);
+            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
             Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
     }

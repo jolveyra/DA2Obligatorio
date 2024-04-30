@@ -1,3 +1,4 @@
+using DataAccess.Context;
 using ServiceFactory;
 
 namespace ManagementApi;
@@ -27,10 +28,16 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<BuildingBossContext>();
+            context.AddInitialAdministrator();
+        }
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 

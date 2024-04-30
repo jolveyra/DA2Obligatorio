@@ -8,10 +8,12 @@ namespace BusinessLogic
     public class RequestLogic : IManagerRequestLogic, IEmployeeRequestLogic
     {
         private readonly IRequestRepository _requestRepository;
+        private readonly IUserRepository _userRepository;
 
-        public RequestLogic(IRequestRepository requestRepository)
+        public RequestLogic(IRequestRepository requestRepository, IUserRepository userRepository)
         {
             _requestRepository = requestRepository;
+            _userRepository = userRepository;
         }
 
         public Request CreateRequest(Request request)
@@ -21,14 +23,15 @@ namespace BusinessLogic
             return _requestRepository.CreateRequest(request);
         }
 
-        public IEnumerable<Request> GetAllRequests()
+        public IEnumerable<Request> GetAllManagerRequests(Guid userId)
         {
-            return _requestRepository.GetAllRequests();
+            User manager = _userRepository.GetUserById(userId);
+            return _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
         }
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            return GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
+            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
         }
 
         public Request GetRequestById(Guid id)
@@ -54,7 +57,16 @@ namespace BusinessLogic
         {
             Request request = GetRequestById(requestId);
             request.Status = requestStatus;
-            
+
+            if (requestStatus == RequestStatus.InProgress)
+            {
+                request.StartingDate = DateTime.Now;
+            }
+            else if (requestStatus == RequestStatus.Completed)
+            {
+                request.CompletionDate = DateTime.Now;
+            }
+
             ValidateRequest(request);
 
             return _requestRepository.UpdateRequest(request);

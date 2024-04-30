@@ -1,6 +1,7 @@
 ﻿using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.RequestsModels;
@@ -23,13 +24,24 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetAllManagerRequestsTestOk()
         {
+            Guid managerId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>
             {
                 new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } },
                 new Request { Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } }
             };
 
-            requestLogicMock.Setup(r => r.GetAllRequests()).Returns(requests);
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", managerId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ManagerRequestController anotherManagerRequestController = new ManagerRequestController(requestLogicMock.Object) { ControllerContext = controllerContext };
+
+            requestLogicMock.Setup(r => r.GetAllManagerRequests(It.IsAny<Guid>())).Returns(requests);
 
             OkObjectResult expected = new OkObjectResult(new List<RequestResponseModel>
             {
@@ -38,7 +50,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
 
-            OkObjectResult result = managerRequestController.GetAllManagerRequests(It.IsAny<string>()) as OkObjectResult;
+            OkObjectResult result = anotherManagerRequestController.GetAllManagerRequests(It.IsAny<string>()) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();
@@ -48,6 +60,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetAllManagerRequestsByCategoryTestOk()
         {
+            Guid managerId = Guid.NewGuid();
             Category category = new Category { Name = "Electricity" };
             IEnumerable<Request> requests = new List<Request>
             {
@@ -55,7 +68,17 @@ namespace ManagementApiTest
                 new Request {Id = Guid.NewGuid(), Category = new Category() { Name = "Plumbing" }, Flat = new Flat() { Id = Guid.NewGuid() }, AssignedEmployee = new User() { Id = Guid.NewGuid() } }
             };
 
-            requestLogicMock.Setup(r => r.GetAllRequests()).Returns(requests);
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", managerId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ManagerRequestController anotherManagerRequestController = new ManagerRequestController(requestLogicMock.Object) { ControllerContext = controllerContext };
+
+            requestLogicMock.Setup(r => r.GetAllManagerRequests(It.IsAny<Guid>())).Returns(requests);
 
             OkObjectResult expected = new OkObjectResult(new List<RequestResponseModel>
             {
@@ -63,7 +86,7 @@ namespace ManagementApiTest
             });
             List<RequestResponseModel> expectedObject = expected.Value as List<RequestResponseModel>;
 
-            OkObjectResult result = managerRequestController.GetAllManagerRequests(category.Name) as OkObjectResult;
+            OkObjectResult result = anotherManagerRequestController.GetAllManagerRequests(category.Name) as OkObjectResult;
             List<RequestResponseModel> objectResult = result.Value as List<RequestResponseModel>;
 
             requestLogicMock.VerifyAll();

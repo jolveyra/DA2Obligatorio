@@ -1,6 +1,6 @@
 ﻿namespace CustomExceptions.BusinessLogic
 {
-    public class BuildingException(string message): Exception(message)
+    public class BuildingException(string message): BusinessLogicException(message)
     {
     }
 }

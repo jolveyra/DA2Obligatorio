@@ -1,7 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.ReportModels.Out;
+using WebModels.ReportModels;
 
 namespace ManagementApi.Controllers
 {
@@ -18,9 +18,15 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetReport([FromQuery] string filter)
+        [AuthenticationFilter(["Manager"])]
+        public IActionResult GetReport([FromQuery] string? filter)
         {
-            return Ok(_reportLogic.GetReport(filter).Select(t => new ReportResponseModel(t)));
+            if (filter != null)
+            {
+                return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter).Select(t => new ReportResponseModel(t)));
+            }
+
+            return NoContent();
         }
     }
 }

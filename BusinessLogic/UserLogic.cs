@@ -6,7 +6,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class UserLogic : IAdministratorLogic, IMaintenanceEmployeeLogic, IAuthorizationLogic, IUserSettingsLogic, ILoginLogic
+    public class UserLogic : IAdministratorLogic, IManagerLogic, IMaintenanceEmployeeLogic, IUserSettingsLogic, ILoginLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
@@ -22,26 +22,33 @@ namespace BusinessLogic
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
-            return CreateUser(user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
         public User CreateMaintenanceEmployee(User user)
         {
             user.Role = Role.MaintenanceEmployee;
-            return CreateUser(user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
-        private User CreateUser(User user)
+        public static User CreateManager(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
+        {
+            user.Role = Role.Manager;
+            user.Surname = "";
+            return CreateUser(userRepository, sessionRepository, user);
+        }
+
+        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository,User user)
         {
             ValidateUser(user);
 
-            if (ExistsUserEmail(user.Email))
+            if (ExistsUserEmail(userRepository, user.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
 
-            User newUser = _userRepository.CreateUser(user);
-            _sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
+            User newUser = userRepository.CreateUser(user);
+            sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
 
             return newUser;
         }
@@ -51,17 +58,12 @@ namespace BusinessLogic
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Administrator);
         }
 
-        public string GetUserRoleByToken(Guid token)
-        {
-            return _userRepository.GetUserById(_sessionRepository.GetSessionByToken(token).UserId).Role.ToString();
-        }
-
         public IEnumerable<User> GetAllMaintenanceEmployees()
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.MaintenanceEmployee);
         }
 
-        public void ValidateUser(User user)
+        public static void ValidateUser(User user)
         {
             if (!isValidEmail(user.Email))
             {
@@ -78,12 +80,11 @@ namespace BusinessLogic
                 throw new UserException("The Name field cannot be empty");
             }
 
-            if (string.IsNullOrEmpty(user.Surname))
+            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager)
             {
-                throw new UserException("The Surname field cannot be empty");
+                throw new UserException("The Surname field cannot be empty for non manager users");
             }
         }
-
         private static bool isValidPassword(string password)
         {
             return Regex.IsMatch(password, "[A-Z]") && 
@@ -97,9 +98,9 @@ namespace BusinessLogic
             return email.Contains("@") && email.Contains(".") && email.Length > 5;
         }
 
-        private bool ExistsUserEmail(string email)
+        public static bool ExistsUserEmail(IUserRepository userRepository, string email)
         {
-            return _userRepository.GetAllUsers().Any(u => u.Email == email);
+            return userRepository.GetAllUsers().Any(u => u.Email.ToLower().Equals(email.ToLower()));
         }
 
         public User GetUserById(Guid userId)
@@ -120,11 +121,6 @@ namespace BusinessLogic
             return _userRepository.UpdateUser(userToUpdate);
         }
 
-        public Guid GetUserIdByToken(Guid token)
-        {
-            return _sessionRepository.GetSessionByToken(token).UserId;
-        }
-
         public Guid Login(User user)
         {
             User? existingUser = _userRepository.GetAllUsers().FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
@@ -137,6 +133,11 @@ namespace BusinessLogic
             Session session = _sessionRepository.GetSessionByUserId(existingUser.Id);
 
             return session.Id;
+        }
+
+        public IEnumerable<User> GetAllManagers()
+        {
+            return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
         }
     }
 }

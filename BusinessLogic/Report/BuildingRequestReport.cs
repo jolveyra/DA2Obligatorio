@@ -4,7 +4,7 @@ namespace BusinessLogic
 {
     internal class BuildingRequestReport : RequestReport
     {
-        protected override void FilterRequests(List<Request> requests)
+        protected override void FilterRequests(IEnumerable<Request> requests)
         {
             requestsFilter = new List<string>();
             requestsPerFilter = new List<List<Request>>();

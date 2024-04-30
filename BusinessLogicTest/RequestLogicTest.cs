@@ -1,7 +1,6 @@
 ﻿using BusinessLogic;
 using CustomExceptions.BusinessLogic;
 using Domain;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Moq;
 using RepositoryInterfaces;
 
@@ -11,31 +10,36 @@ namespace BusinessLogicTest
     public class RequestLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
         private RequestLogic _requestLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            _requestLogic = new RequestLogic(requestRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            _requestLogic = new RequestLogic(requestRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
-        public void GetAllRequestsTest()
+        public void GetAllManagerRequestsTest()
         {
+            Guid managerId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1" },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2" },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3" }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = Guid.NewGuid() } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } }
             };
 
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = managerId, Role = Role.Manager });
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = _requestLogic.GetAllRequests();
+            IEnumerable<Request> result = _requestLogic.GetAllManagerRequests(managerId);
 
             requestRepositoryMock.VerifyAll();
-            Assert.IsTrue(result.SequenceEqual(requests));
+            userRepositoryMock.VerifyAll();
+            Assert.IsTrue(result.SequenceEqual(new List<Request>() { requests.ToList()[0], requests.ToList()[2] }));
         }
 
         [TestMethod]
@@ -191,12 +195,12 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void UpdateRequestStatusByIdTest()
+        public void UpdateRequestStatusInProgressByIdTest()
         {
             Guid requestId = Guid.NewGuid();
             RequestStatus requestStatus = RequestStatus.InProgress;
             Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus = RequestStatus.Pending };
-            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
             
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
@@ -204,7 +208,26 @@ namespace BusinessLogicTest
             Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
 
             requestRepositoryMock.VerifyAll();
-            Assert.AreEqual(expected, result);
+            Assert.IsTrue(expected.Equals(result) && (result.StartingDate - DateTime.Now).Hours == 0);
+        }
+
+        
+
+        [TestMethod]
+        public void UpdateRequestStatusCompletedByIdTest()
+        {
+            Guid requestId = Guid.NewGuid();
+            RequestStatus requestStatus = RequestStatus.Completed;
+            Request request = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now };
+            Request expected = new Request() { Id = requestId, Description = "Request 1", Flat = new Flat(), AssignedEmployee = new User() { Role = Role.MaintenanceEmployee }, Category = new Category(), Status = requestStatus, StartingDate = DateTime.Now, CompletionDate = DateTime.Now };
+            
+            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
+            requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
+
+            Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
+
+            requestRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result) && (result.CompletionDate - DateTime.Now).Hours == 0);
         }
     }
 }
