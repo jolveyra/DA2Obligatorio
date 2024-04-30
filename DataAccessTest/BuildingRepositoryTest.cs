@@ -94,10 +94,8 @@ namespace DataAccessTest
 
             buildingRepository.DeleteBuilding(toDeleteBuilding);
 
-            mockContext.Verify(x => x.SaveChanges(), Times.Exactly(2));
+            mockContext.Verify(x => x.SaveChanges(), Times.Exactly(1));
             mockContext.Verify(x => x.Buildings.Remove(toDeleteBuilding), Times.Once());
-            mockContext.Verify(x => x.Flats.Remove(It.IsAny<Flat>()), Times.Once());
-            mockContext.Verify(mockContext => mockContext.Flats, Times.Exactly(2));
             mockContext.Verify(mockContext => mockContext.Buildings, Times.Once());
         }
 

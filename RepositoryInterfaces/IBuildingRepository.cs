@@ -8,7 +8,7 @@ public interface IBuildingRepository
     public Building CreateBuilding(Building building);
     Flat CreateFlat(Flat flat);
     void DeleteBuilding(Building building);
-    void DeleteFlat(Flat flat);
+    void DeleteFlats(List<Flat> flats);
     IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId);
     public IEnumerable<Building> GetAllBuildings();
     List<Flat> GetAllFlats();
