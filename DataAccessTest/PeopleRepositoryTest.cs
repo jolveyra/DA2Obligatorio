@@ -20,6 +20,22 @@ namespace DataAccessTest
         }
 
         [TestMethod]
+        public void GetAllUsersTest()
+        {
+            List<Person> people = new List<Person>
+            {
+                new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" }
+            };
+
+            _contextMock.Setup(context => context.People).ReturnsDbSet(people);
+
+            IEnumerable<Person> result = _peopleRepository.GetAllPeople();
+
+            _contextMock.Verify(context => context.People, Times.Once());
+            Assert.IsTrue(result.SequenceEqual(people));
+        }
+
+        [TestMethod]
         public void CreatePersonTest()
         {
             Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };

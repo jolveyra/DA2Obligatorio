@@ -20,5 +20,10 @@ namespace DataAccess.Repositories
 
             return person;
         }
+
+        public IEnumerable<Person> GetAllPeople()
+        {
+            return _context.People;
+        }
     }
 }
