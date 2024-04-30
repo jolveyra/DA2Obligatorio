@@ -11,8 +11,6 @@ namespace BusinessLogic
         {
             FilterRequests(requests);
             List<(int, int, int, double)> requestTuples = GatherPendingRequests();
-            //List<int> inProgressRequests = GatherInProgressRequests();
-            //List<(int, double)> completedAndAvgTimeRequests = GatherCompletedAndAvgTimeRequests();
             return BringReportTogether(requestTuples);
         }
 
@@ -57,57 +55,6 @@ namespace BusinessLogic
 
             return requestTuples;
         }
-
-        //private List<int> GatherInProgressRequests()
-        //{
-        //    List<int> inProgressRequests = new List<int>();
-
-        //    foreach (List<Request> requestList in requestsPerFilter)
-        //    {
-        //        int inProgress = 0;
-
-        //        foreach (Request request in requestList)
-        //        {
-        //            if (request.Status == RequestStatus.InProgress)
-        //            {
-        //                inProgress++;
-        //            }
-        //        }
-
-        //        inProgressRequests.Add(inProgress);
-        //    }
-
-        //    return inProgressRequests;
-        //}
-
-        //private List<(int, double)> GatherCompletedAndAvgTimeRequests()
-        //{
-        //    List<(int, double)> completedRequests = new List<(int, double)>();
-            
-        //    foreach (List<Request> requestList in requestsPerFilter)
-        //    {
-        //        double avgTimeToComplete = 0;
-        //        int completed = 0;
-
-        //        foreach (Request request in requestList)
-        //        {
-        //            if (request.Status == RequestStatus.Completed)
-        //            {
-        //                avgTimeToComplete += (request.CompletionDate - request.StartingDate).Hours;
-        //                completed++;
-        //            }
-        //        }
-
-        //        if (completed > 0)
-        //        {
-        //            avgTimeToComplete /= completed;
-        //        }
-
-        //        completedRequests.Add((completed, avgTimeToComplete));
-        //    }
-
-        //    return completedRequests;
-        //}
 
         private IEnumerable<(string, int, int, int, double)> BringReportTogether(List<(int, int, int, double)> requestTuples)
         {

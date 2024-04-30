@@ -38,7 +38,7 @@ namespace DataAccess.Repositories
 
         public void DeleteBuilding(Building building)
         {
-            GetAllBuildingFlats(building.Id).ToList().ForEach(flat => DeleteFlat(flat));
+            _context.Remove(building.Address);
             _context.Buildings.Remove(building);
             _context.SaveChanges();
         }
@@ -93,9 +93,9 @@ namespace DataAccess.Repositories
             return _context.Flats.ToList();
         }
 
-        public void DeleteFlat(Flat flat)
+        public void DeleteFlats(List<Flat> flats)
         {
-            _context.Flats.Remove(flat);
+            _context.Flats.RemoveRange(flats);
             _context.SaveChanges();
         }
     }

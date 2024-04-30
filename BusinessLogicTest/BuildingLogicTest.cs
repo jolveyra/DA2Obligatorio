@@ -616,7 +616,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() }); 
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
-        buildingRepositoryMock.Setup(x => x.DeleteFlat(It.IsAny<Flat>()));
+        buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
 
         buildingLogic.DeleteBuilding(It.IsAny<Guid>());
 

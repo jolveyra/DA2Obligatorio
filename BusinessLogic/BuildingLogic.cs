@@ -143,17 +143,8 @@ public class BuildingLogic: IBuildingLogic
     public void DeleteBuilding(Guid guid)
     {
         Building building = _iBuildingRepository.GetBuildingById(guid);
-        DeleteBuildingFlats(building);
+        _iBuildingRepository.DeleteFlats(_iBuildingRepository.GetAllBuildingFlats(building.Id).ToList());
         _iBuildingRepository.DeleteBuilding(building);
-    }
-
-    private void DeleteBuildingFlats(Building building)
-    {
-        IEnumerable<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id);
-        foreach (Flat flat in flats)
-        {
-            _iBuildingRepository.DeleteFlat(flat);
-        }
     }
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
