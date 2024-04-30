@@ -570,6 +570,8 @@ public class BuildingLogicTest
         }
         catch (Exception e)
         {
+            buildingRepositoryMock.VerifyAll();
+
             Assert.IsInstanceOfType(e, typeof(BuildingException));
             Assert.AreEqual(e.Message, "Maintenance employees list contains repeated ids");
         }
