@@ -69,9 +69,14 @@ namespace DataAccessTest
             Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 200 };
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", ConstructorCompany = "City 1", SharedExpenses = 150 } });
+            mockContext.Setup(x => x.Update(expected));
+            mockContext.Setup(x => x.SaveChanges()).Returns(1);
+
 
             Building result = buildingRepository.UpdateBuilding(expected);
 
+            mockContext.Verify(x => x.Update(expected), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
             Assert.AreEqual(expected.SharedExpenses, result.SharedExpenses);
         }
 
