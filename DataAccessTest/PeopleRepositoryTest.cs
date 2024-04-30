@@ -83,5 +83,20 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(person, result);
         }
+
+        [TestMethod]
+        public void UpdatePersonTest()
+        {
+            Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
+
+            _contextMock.Setup(context => context.People.Update(person));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            Person result = _peopleRepository.UpdatePerson(person);
+
+            _contextMock.Verify(context => context.People.Update(person), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+            Assert.AreEqual(person, result);
+        }
     }
 }

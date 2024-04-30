@@ -37,5 +37,13 @@ namespace DataAccess.Repositories
 
             return person;
         }
+
+        public Person UpdatePerson(Person person)
+        {
+            _context.People.Update(person);
+            _context.SaveChanges();
+
+            return person;
+        }
     }
 }
