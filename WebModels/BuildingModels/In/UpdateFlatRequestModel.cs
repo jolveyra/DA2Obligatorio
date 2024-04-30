@@ -9,6 +9,7 @@ namespace WebModels.BuildingModels
         public string OwnerName { get; set; }
         public string OwnerSurname { get; set; }
         public string OwnerEmail { get; set; }
+        public int Rooms { get; set; }
         public int Bathrooms { get; set; }
         public bool HasBalcony { get; set; }
 
@@ -24,6 +25,7 @@ namespace WebModels.BuildingModels
                     Surname = OwnerSurname,
                     Email = OwnerEmail
                 },
+                Rooms = Rooms,
                 Bathrooms = Bathrooms,
                 HasBalcony = HasBalcony
             };

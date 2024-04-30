@@ -238,6 +238,7 @@ public class BuildingLogic: IBuildingLogic
     {
         CheckFlatDigit(flat);
         CheckNotNegativeBathrooms(flat.Bathrooms);
+        CheckNotNegativeRooms(flat.Rooms);
     }
 
     private void ValidateOwner(Person owner)
@@ -245,14 +246,13 @@ public class BuildingLogic: IBuildingLogic
         CheckNotEmptyFLatOwnerName(owner.Name);
         CheckFlatOwnerEmail(owner.Email);
         CheckNotEmptyFLatOwnerSurname(owner.Surname);
-        CheckNonExistingEmail(owner.Email);
     }
 
-    private void CheckNonExistingEmail(string email)
+    private void CheckNotNegativeRooms(int rooms)
     {
-        if (_iPeopleRepository.GetPeople().ToList().Exists(x => x.Email == email))
+        if (rooms <= 0)
         {
-            throw new BuildingException("Owner with same email already exists");
+            throw new BuildingException("Number of rooms cannot be negative or zero");
         }
     }
 

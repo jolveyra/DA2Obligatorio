@@ -15,6 +15,7 @@ namespace WebModels.BuildingModels
         public string OwnerName { get; set; }
         public string OwnerSurname { get; set; }
         public string OwnerEmail { get; set; }
+        public int Rooms { get; set; }
         public int Bathrooms { get; set; }
         public bool HasBalcony { get; set; }
 
@@ -26,6 +27,7 @@ namespace WebModels.BuildingModels
             OwnerName = flat.Owner.Name;
             OwnerSurname = flat.Owner.Surname;
             OwnerEmail = flat.Owner.Email;
+            Rooms = flat.Rooms;
             Bathrooms = flat.Bathrooms;
             HasBalcony = flat.HasBalcony;
         }

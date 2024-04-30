@@ -673,6 +673,7 @@ public class BuildingLogicTest
             Floor = 3, 
             Number = 303, 
             Bathrooms = 3, 
+            Rooms = 1,
             HasBalcony = true, 
             Owner = new Person()
             {
@@ -686,6 +687,7 @@ public class BuildingLogicTest
             Floor = 3, 
             Number = 304,
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -698,6 +700,7 @@ public class BuildingLogicTest
             Floor = 3, 
             Number = 304,
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -744,7 +747,8 @@ public class BuildingLogicTest
                 Email = "pedro@mail.com", 
                 Name = "Pedro", 
                 Surname = "De Los Naranjos",
-            }, Building = new Building() };
+            }, Building = new Building(),
+            Rooms = 1 };
 
         Flat toChangeFlat = new Flat() { Building = flat.Building };
 
@@ -777,6 +781,7 @@ public class BuildingLogicTest
     {
         Flat flat = new Flat() { Number = 303, Floor = 4,
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -811,6 +816,7 @@ public class BuildingLogicTest
         Flat flat = new Flat() { Number = 303, 
             Floor = 3, 
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -849,6 +855,7 @@ public class BuildingLogicTest
             Building = new Building() { Id = Guid.NewGuid() },
             Floor = 3,
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -900,6 +907,7 @@ public class BuildingLogicTest
             Number = 303,
             Floor = 3,
             Bathrooms = 3,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -964,6 +972,43 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Number of bathrooms cannot be negative or zero");
     }
 
+    [TestMethod]
+    public void UpdateFlatByFlatIdTestFlatWithNegativeNumberOfRooms()
+    {
+        Flat flat = new Flat()
+        {
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = -1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Email = "pedro@mail.com", 
+                Name = "Pedro", 
+                Surname = "De Los Naranjos",
+            },
+        };
+
+        Flat toChangeFlat = new Flat();
+
+        Exception exception = null;
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(toChangeFlat.Id, flat);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Number of rooms cannot be negative or zero");
+    }
+
 
     [TestMethod]
     public void UpdateFlatByFlatIdTestOwnerEmailWithNoAt()
@@ -973,6 +1018,7 @@ public class BuildingLogicTest
             Number = 303,
             Floor = 3,
             Bathrooms = 1,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {
@@ -1009,6 +1055,7 @@ public class BuildingLogicTest
             Number = 303,
             Floor = 3,
             Bathrooms = 1,
+            Rooms = 1,
             HasBalcony = true,
             Owner = new Person()
             {

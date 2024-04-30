@@ -8,6 +8,7 @@
         public int Floor { get; set; } = 0;
         public Person Owner { get; set; } = new Person();
         public Guid OwnerId { get; set; }
+        public int Rooms { get; set; } = 0;
         public int Bathrooms { get; set; } = 0;
         public bool HasBalcony { get; set; } = false;
 
