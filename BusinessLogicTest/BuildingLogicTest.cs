@@ -28,17 +28,20 @@ public class BuildingLogicTest
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
             ConstructorCompany = "A Company",
-            Street = "Street", 
-            DoorNumber = 12, 
-            CornerStreet = "Another Street",
-            SharedExpenses = 100
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
         };
         Building expected = new Building() { Id = building.Id, 
             Name = "Mirador",
             ConstructorCompany = "A Company",
-            Street = "Street", 
-            DoorNumber = 12, 
-            CornerStreet = "Another Street",
+            Address = building.Address,
             SharedExpenses = 100
         };
 
@@ -57,12 +60,17 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyName()
     {
-        Building building = new Building() { Name = "", 
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "",
             ConstructorCompany = "A Company",
-            Street = "Street", 
-            DoorNumber = 12, 
-            CornerStreet = "Another Street",
-            SharedExpenses = 100
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
         };
 
         Exception exception = null;
@@ -85,12 +93,17 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithNegativeSharedExpenses()
     {
-        Building building = new Building() { Name = "Mirador",
-            SharedExpenses = -1,
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
             ConstructorCompany = "A Company",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another Street"
+            SharedExpenses = -100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
         };
 
         Exception exception = null;
@@ -113,14 +126,30 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
-        Building building = new Building() { Name = "Mirador",
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
             ConstructorCompany = "A Company",
-            Street = "Street", 
-            DoorNumber = 12, 
-            CornerStreet = "Another Street",
-            SharedExpenses = 100
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
         };
-        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador" } });
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Id = Guid.NewGuid(), Name = "Mirador",
+            ConstructorCompany = "A Company",
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 13, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        } });
 
         Exception exception = null;
 
@@ -136,13 +165,13 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Building with same name already exists");
+        Assert.AreEqual("Building with same name already exists", exception.Message);
     }
 
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyStreetName()
     {
-        Building building = new Building() { Street = "",
+        Building building = new Building() { Address = new Address() {Street = ""},
             ConstructorCompany = "A Company",
             Name = "A name",
             SharedExpenses = 100
@@ -162,7 +191,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Building street cannot be empty");
+        Assert.AreEqual(exception.Message, "Building's street cannot be empty");
     }
 
     [TestMethod]
@@ -170,9 +199,11 @@ public class BuildingLogicTest
     {
         Building building = new Building() { ConstructorCompany = "",
             Name = "A Name",
+            Address = new Address() {
             Street = "Street", 
             DoorNumber = 12, 
             CornerStreet = "Another Street",
+            },
             SharedExpenses = 100
         };
 
@@ -200,9 +231,12 @@ public class BuildingLogicTest
         {
             ConstructorCompany = "12345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911",
             Name = "A Name",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another Street",
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+            },
             SharedExpenses = 100
         };
 
@@ -253,17 +287,23 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another Street",
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+            },
             SharedExpenses = 100
         };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
             ConstructorCompany = "A Company",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another",
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+            },
             SharedExpenses = 100
         } });
 
@@ -291,21 +331,26 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
+            Address = new Address() {
             Street = "Street",
             DoorNumber = 12,
             CornerStreet = "Another Street",
             Latitude = 32,
             Longitude = 34,
+            },
             SharedExpenses = 100
         };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
             ConstructorCompany = "A Company",
+            Address = new Address()
+            {
             Street = "Street",
             DoorNumber = 132,
             CornerStreet = "Another",
             Latitude = 32,
             Longitude = 34,
+            },
             SharedExpenses = 100
         } });
 
@@ -334,11 +379,14 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another Street",
-            Latitude = 91,
-            Longitude = 34,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 91,
+                Longitude = 34,
+            },
             SharedExpenses = 100
         };
 
@@ -366,11 +414,14 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
+            Address = new Address()
+            {
             Street = "Street",
             DoorNumber = 12,
             CornerStreet = "Another Street",
             Latitude = -91,
             Longitude = 34,
+            },
             SharedExpenses = 100
         };
 
@@ -398,11 +449,14 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
-            Street = "Street",
-            DoorNumber = 12,
-            CornerStreet = "Another Street",
-            Latitude = -90,
-            Longitude = -181,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 90,
+                Longitude = -181,
+            },
             SharedExpenses = 100
         };
 
@@ -430,11 +484,14 @@ public class BuildingLogicTest
         {
             Name = "Mirador2",
             ConstructorCompany = "A Company",
+            Address = new Address()
+            {
             Street = "Street",
             DoorNumber = 12,
             CornerStreet = "Another Street",
             Latitude = 90,
             Longitude = 181,
+            },
             SharedExpenses = 100
         };
 

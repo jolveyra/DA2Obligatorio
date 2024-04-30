@@ -29,7 +29,7 @@ namespace ManagementApiTest
 
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
-            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", Manager = user } };
+            IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", Manager = user, Address = new Address() { Street = "", CornerStreet = "" } } };
 
             HttpContext httpContext = new DefaultHttpContext();
             httpContext.Items.Add("UserId", user.Id.ToString());
@@ -58,7 +58,7 @@ namespace ManagementApiTest
         {
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
-            Building building =  new Building() { Name = "Mirador", Manager = user } ;
+            Building building =  new Building() { Name = "Mirador", Manager = user , Address = new Address() { Street = "", CornerStreet = "" } } ;
 
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -103,12 +103,14 @@ namespace ManagementApiTest
             Building expected = new Building() { Id = Guid.NewGuid(), 
                 Name = "Mirador", 
                 ConstructorCompany = "ConstructorCompany", 
+                SharedExpenses = 123, 
+                Address = new Address() {
                 CornerStreet = "CornerStreet", 
                 DoorNumber = 12, 
                 Latitude = -34.88449565,
                 Longitude = -56.1587038155517,
-                SharedExpenses = 123, 
                 Street = "Street"
+                }
             };
 
 
@@ -143,7 +145,7 @@ namespace ManagementApiTest
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", Flats = 1 };
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador" };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", Address = new Address() { Street = "", CornerStreet = "" } };
 
             HttpContext httpContext = new DefaultHttpContext();
             httpContext.Items.Add("UserId", user.Id.ToString());
@@ -182,8 +184,8 @@ namespace ManagementApiTest
         public void UpdateBuildingSharedExpensesTestOk()
         {
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000 };
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
-
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000, Address = new Address() { Street = "", CornerStreet = "" } };
+            
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
 
@@ -203,9 +205,9 @@ namespace ManagementApiTest
         [TestMethod]
         public void UpdateBuildingConstructorCompanyTestOk()
         {
-            Building toUpdate = new Building() { Id = Guid.NewGuid(), ConstructorCompany = "Sacoom" };
+            Building toUpdate = new Building() { Id = Guid.NewGuid(), ConstructorCompany = "Sacoom", Address = new Address() { Street = "Hola", CornerStreet = "Hola" } };
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { ConstructorCompany = "Saciim" };
-            Building expected = new Building() { Id = toUpdate.Id, ConstructorCompany = "Saciim" };
+            Building expected = new Building() { Id = toUpdate.Id, ConstructorCompany = "Saciim", Address = new Address() { Street = "Hola", CornerStreet = "Hola" } };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
@@ -229,10 +231,10 @@ namespace ManagementApiTest
         public void UpdateBuildingMaintenanceEmployeesTestOk()
         {
             UpdateBuildingRequestModel updateBuildingRequest = new UpdateBuildingRequestModel() { SharedExpenses = 5000, 
-                MaintenanceEmployees = new List<Guid>() {} 
+                MaintenanceEmployees = new List<Guid>() {}
             };
 
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Mirador", SharedExpenses = 5000 , Address = new Address() { Street = "Hola", CornerStreet = "Hola" } };
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);

@@ -22,12 +22,12 @@ namespace WebModels.BuildingModels
             Id = building.Id;
             Name = building.Name;
             SharedExpenses = building.SharedExpenses;
-            Street = building.Street;
-            DoorNumber = building.DoorNumber;
-            CornerStreet = building.CornerStreet;
             ConstructorCompany = building.ConstructorCompany;
-            Latitude = building.Latitude;
-            Longitude = building.Longitude;
+            Street = building.Address.Street;
+            DoorNumber = building.Address.DoorNumber;
+            CornerStreet = building.Address.CornerStreet;
+            Latitude = building.Address.Latitude;
+            Longitude = building.Address.Longitude;
             Flats = new List<FlatResponseModel>();
 
         }

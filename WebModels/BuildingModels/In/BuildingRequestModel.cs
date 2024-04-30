@@ -21,13 +21,16 @@ namespace WebModels.BuildingModels
             return new Building
             {
                 Name = Name,
-                Street = Street,
-                DoorNumber = DoorNumber,
-                CornerStreet = CornerStreet,
                 ConstructorCompany = ConstructorCompany,
                 SharedExpenses = SharedExpenses,
-                Latitude = Latitude,
-                Longitude = Longitude
+                Address = new Address
+                {
+                    Street = Street,
+                    DoorNumber = DoorNumber,
+                    CornerStreet = CornerStreet,
+                    Latitude = Latitude,
+                    Longitude = Longitude
+                }
             };
         }
     }

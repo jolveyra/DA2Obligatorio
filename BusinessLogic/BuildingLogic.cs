@@ -23,17 +23,13 @@ public class BuildingLogic: IBuildingLogic
     public Building CreateBuilding(Building building, int amountOfFlats, Guid userId)
     {
         ValidateFlatAmount(amountOfFlats);
-
         ValidateBuilding(building);
 
-        CheckUniqueBuildingAddress(building);
-
         CheckUniqueBuildingName(building);
-
+        CheckUniqueBuildingAddress(building);
         CheckUniqueBuildingCoordinates(building);
-
+        
         building.Manager = _iUserRepository.GetUserById(userId);
-
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
         CreateBuildingFlats(toReturn, amountOfFlats);
@@ -43,7 +39,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingCoordinates(Building building)
     {
-        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Latitude == building.Latitude && x.Longitude == building.Longitude))
+        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Latitude == building.Address.Latitude && x.Address.Longitude == building.Address.Longitude))
         {
             throw new BuildingException("Building with same coordinates already exists");
         }
@@ -51,7 +47,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingAddress(Building building)
     {
-        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Street == building.Street && x.DoorNumber == building.DoorNumber))
+        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Equals(building.Address)))
         {
             throw new BuildingException("Building with same address already exists");
         }
@@ -91,12 +87,12 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckValidCoordinates(Building building)
     {
-        if (building.Latitude < -90 || building.Latitude > 90)
+        if (building.Address.Latitude < -90 || building.Address.Latitude > 90)
         {
             throw new BuildingException("Invalid latitude, must be between -90 and 90 degrees");
         }
 
-        if (building.Longitude < -180 || building.Longitude > 180)
+        if (building.Address.Longitude < -180 || building.Address.Longitude > 180)
         {
             throw new BuildingException("Invalid longitude, must be between -180 and 180 degrees");
         }
@@ -115,9 +111,9 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckNotEmptyBuildingDirection(Building building)
     {
-        if (string.IsNullOrEmpty(building.Street))
+        if (string.IsNullOrEmpty(building.Address.Street))
         {
-            throw new BuildingException("Building street cannot be empty");
+            throw new BuildingException("Building's street cannot be empty");
         }
     }
 
