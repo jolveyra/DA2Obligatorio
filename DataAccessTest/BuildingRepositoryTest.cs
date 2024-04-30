@@ -141,6 +141,7 @@ namespace DataAccessTest
                 exception = e;
             }
 
+            mockContext.Verify(x => x.Buildings, Times.Once());
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual(exception.Message, "Building not found");
         }
