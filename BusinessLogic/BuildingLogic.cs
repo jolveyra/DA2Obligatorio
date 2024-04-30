@@ -32,9 +32,13 @@ public class BuildingLogic: IBuildingLogic
 
         CheckUniqueBuildingCoordinates(building);
 
-        CreateBuildingFlats(building, amountOfFlats);
+        building.Manager = _iUserRepository.GetUserById(userId);
 
-        return _iBuildingRepository.CreateBuilding(building);
+        Building toReturn = _iBuildingRepository.CreateBuilding(building);
+
+        CreateBuildingFlats(toReturn, amountOfFlats);
+
+        return toReturn;
     }
 
     private void CheckUniqueBuildingCoordinates(Building building)
@@ -184,9 +188,9 @@ public class BuildingLogic: IBuildingLogic
         building.SharedExpenses = buildingData.SharedExpenses;
         building.ConstructorCompany = buildingData.ConstructorCompany;
 
-        List<User> maintenanceEmployees = BuildMaintenanceEmployeeList(building, maintenanceEmployeeIds);
+        CheckMaintenanceEmployeeList(building, maintenanceEmployeeIds);
 
-        building.MaintenanceEmployees = maintenanceEmployees;
+        building.MaintenanceEmployees = maintenanceEmployeeIds;
 
         return _iBuildingRepository.UpdateBuilding(building);
     }
@@ -199,18 +203,13 @@ public class BuildingLogic: IBuildingLogic
         }
     }
 
-    private List<User> BuildMaintenanceEmployeeList(Building building, List<Guid> maintenanceEmployeeIds)
+    private void CheckMaintenanceEmployeeList(Building building, List<Guid> maintenanceEmployeeIds)
     {
-        List<User> maintenanceEmployees = new List<User>();
-
         foreach (Guid id in maintenanceEmployeeIds)
         {
             User user = _iUserRepository.GetUserById(id);
             CheckUserIsMaintenanceEmployee(user);
-
-            maintenanceEmployees.Add(user);
         }
-        return maintenanceEmployees;
     }
 
     private static void CheckUserIsMaintenanceEmployee(User user)
