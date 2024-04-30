@@ -2,9 +2,6 @@
 using LogicInterfaces;
 using CustomExceptions;
 using Domain;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace BusinessLogic;
 
@@ -13,11 +10,13 @@ public class BuildingLogic: IBuildingLogic
     private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
     private IUserRepository _iUserRepository;
+    private IPeopleRepository _iPeopleRepository;
 
-    public BuildingLogic(IBuildingRepository iBuildingRepository, IUserRepository iUserRepository)
+    public BuildingLogic(IBuildingRepository iBuildingRepository, IUserRepository iUserRepository, IPeopleRepository iPeopleRepository)
     {
         _iBuildingRepository = iBuildingRepository;
         _iUserRepository = iUserRepository;
+        _iPeopleRepository = iPeopleRepository;
     }
 
     public Building CreateBuilding(Building building, int amountOfFlats, Guid userId)
@@ -226,11 +225,12 @@ public class BuildingLogic: IBuildingLogic
 
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
+        existingFlat.HasBalcony = flat.HasBalcony;
         existingFlat.Owner.Name = flat.Owner.Name;
         existingFlat.Owner.Surname = flat.Owner.Surname;
         existingFlat.Owner.Email = flat.Owner.Email;
-        existingFlat.HasBalcony = flat.HasBalcony;
 
+        _iPeopleRepository.UpdatePerson(existingFlat.Owner);
         return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
@@ -245,6 +245,15 @@ public class BuildingLogic: IBuildingLogic
         CheckNotEmptyFLatOwnerName(owner.Name);
         CheckFlatOwnerEmail(owner.Email);
         CheckNotEmptyFLatOwnerSurname(owner.Surname);
+        CheckNonExistingEmail(owner.Email);
+    }
+
+    private void CheckNonExistingEmail(string email)
+    {
+        if (_iPeopleRepository.GetPeople().ToList().Exists(x => x.Email == email))
+        {
+            throw new BuildingException("Owner with same email already exists");
+        }
     }
 
     private void CheckNotNegativeBathrooms(int bathrooms)

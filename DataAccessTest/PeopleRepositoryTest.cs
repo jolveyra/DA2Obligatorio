@@ -29,7 +29,7 @@ namespace DataAccessTest
 
             _contextMock.Setup(context => context.People).ReturnsDbSet(people);
 
-            IEnumerable<Person> result = _peopleRepository.GetAllPeople();
+            IEnumerable<Person> result = _peopleRepository.GetPeople();
 
             _contextMock.Verify(context => context.People, Times.Once());
             Assert.IsTrue(result.SequenceEqual(people));

@@ -13,6 +13,7 @@ public class BuildingLogicTest
 
     private Mock<IBuildingRepository> buildingRepositoryMock;
     private Mock<IUserRepository> userRepositoryMock;
+    private Mock<IPeopleRepository> peopleRepositoryMock;
     private BuildingLogic buildingLogic;
 
     [TestInitialize]
@@ -20,7 +21,8 @@ public class BuildingLogicTest
     {
         buildingRepositoryMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object, userRepositoryMock.Object);
+        peopleRepositoryMock = new Mock<IPeopleRepository>(MockBehavior.Strict);
+        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object, userRepositoryMock.Object, peopleRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -708,6 +710,8 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { toUpdateFlat });
         buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(toUpdateFlat);
         buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(expected);
+        peopleRepositoryMock.Setup(repo => repo.GetPeople()).Returns(new List<Person>());
+        peopleRepositoryMock.Setup(repo => repo.UpdatePerson(It.IsAny<Person>())).Returns(expected.Owner);
 
         Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), flat);
 
@@ -747,8 +751,9 @@ public class BuildingLogicTest
         Flat anotherFlat = new Flat() { Id = Guid.NewGuid(), Floor = 3, Number = 303, Building = flat.Building };
 
         buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(toChangeFlat);
-
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { anotherFlat, toChangeFlat } );
+        peopleRepositoryMock.Setup(repo => repo.GetPeople()).Returns(new List<Person>());
+        peopleRepositoryMock.Setup(repo => repo.UpdatePerson(It.IsAny<Person>())).Returns(flat.Owner);
 
         Exception exception = null;
 
