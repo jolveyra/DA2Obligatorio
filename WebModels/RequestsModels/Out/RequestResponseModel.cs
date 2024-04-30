@@ -7,7 +7,7 @@ namespace WebModels.RequestsModels
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Guid FlatId { get; set; }
-        public Category Category { get; set; }
+        public string CategoryName { get; set; }
         public Guid AssignedEmployeeId { get; set; }
 
         public RequestResponseModel(Request request)
@@ -15,7 +15,7 @@ namespace WebModels.RequestsModels
             Id = request.Id;
             Description = request.Description;
             FlatId = request.Flat.Id;
-            Category = request.Category;
+            CategoryName = request.Category.Name;
             AssignedEmployeeId = request.AssignedEmployee.Id;
         }
 
