@@ -332,6 +332,9 @@ namespace DataAccessTest
 
             Flat result = buildingRepository.CreateFlat(flat);
 
+            mockContext.Verify(x => x.Flats, Times.Once());
+            mockContext.Verify(x => x.Flats.Add(flat), Times.Once());
+
             Assert.AreEqual(flat, result);
 
         }
