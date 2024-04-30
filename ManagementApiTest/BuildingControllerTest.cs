@@ -70,6 +70,7 @@ namespace ManagementApiTest
             };
 
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expected = new OkObjectResult(new BuildingResponseModel(building));
             BuildingResponseModel expectedObject = expected.Value as BuildingResponseModel;
@@ -188,6 +189,7 @@ namespace ManagementApiTest
             
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
@@ -211,6 +213,7 @@ namespace ManagementApiTest
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
             
@@ -238,6 +241,7 @@ namespace ManagementApiTest
 
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>(), It.IsAny<List<Guid>>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 

@@ -4,6 +4,7 @@ using WebModels.BuildingModels;
 using ManagementApi.Filters;
 using System.Security.Cryptography;
 using System.Reflection.Metadata;
+using Domain;
 
 namespace ManagementApi.Controllers
 {
@@ -47,7 +48,10 @@ namespace ManagementApi.Controllers
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             
-            return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId)));
+            return Ok(new BuildingResponseModel(_iBuildingLogic.GetBuildingById(buildingId))
+            {
+                Flats = _iBuildingLogic.GetAllBuildingFlats(buildingId).Select(f => new FlatResponseModel(f)).ToList()
+            });
             
         }
 
@@ -55,7 +59,10 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
-            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.ToEntity(), updateBuildingRequest.MaintenanceEmployees)));
+            return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.ToEntity(), updateBuildingRequest.MaintenanceEmployees))
+            {
+                Flats = _iBuildingLogic.GetAllBuildingFlats(id).Select(f => new FlatResponseModel(f)).ToList()
+            });
             
         }
 
