@@ -18,7 +18,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Building> GetAllBuildings()
         {
-            return _context.Buildings.Include(b=>b.Address);
+            return _context.Buildings.Include(b=>b.Address).Include(b => b.Manager);
         }
 
         public Building CreateBuilding(Building building)
@@ -46,7 +46,7 @@ namespace DataAccess.Repositories
         public Building GetBuildingById(Guid guid)
         {
 
-            Building building = _context.Buildings.Include(b => b.Address).FirstOrDefault(b => b.Id.Equals(guid));
+            Building building = _context.Buildings.Include(b => b.Address).Include(b => b.Manager).FirstOrDefault(b => b.Id.Equals(guid));
 
             if (building is null)
             {
@@ -99,7 +99,6 @@ namespace DataAccess.Repositories
 
         public void DeleteFlats(List<Flat> flats)
         {
-            _context.People.RemoveRange(flats.Select(f => f.Owner));
             _context.Flats.RemoveRange(flats);
             _context.SaveChanges();
         }
