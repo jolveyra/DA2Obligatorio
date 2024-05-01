@@ -25,8 +25,6 @@ namespace ManagementApi.Controllers
             {
                 return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter).Select(t => new ReportResponseModel(t)));
             }
-
-            return NoContent();
         }
     }
 }

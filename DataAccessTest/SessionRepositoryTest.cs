@@ -61,5 +61,51 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.Sessions, Times.Once);
             Assert.AreEqual(session, result);
         }
+
+        [TestMethod]
+        public void GetNonExistingSessionByUserIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+
+            _contextMock.Setup(context => context.Sessions).ReturnsDbSet(new List<Session>());
+
+            Exception exception = null;
+
+            try
+            {
+                _sessionRepository.GetSessionByUserId(userId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            _contextMock.Verify(context => context.Sessions, Times.Once);
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Session not found", exception.Message);
+        }
+
+        [TestMethod]
+        public void GetNonExistingSessionByTokenTest()
+        {
+            Guid token = Guid.NewGuid();
+
+            _contextMock.Setup(context => context.Sessions).ReturnsDbSet(new List<Session>());
+
+            Exception exception = null;
+
+            try
+            {
+                _sessionRepository.GetSessionByToken(token);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            _contextMock.Verify(context => context.Sessions, Times.Once);
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Session not found", exception.Message);
+        }
     }
 }
