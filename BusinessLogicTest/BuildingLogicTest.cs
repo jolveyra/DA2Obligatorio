@@ -567,6 +567,30 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
+    public void UpdateBuildingTestNotAMaintenanceEmployeeInList()
+    {
+        Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
+        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim", MaintenanceEmployees = new List<Guid>() { Guid.NewGuid() } };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = "Saciim" };
+
+        userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = toUpdateBuilding.MaintenanceEmployees.First(), Role = Role.Administrator });
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        try
+        {
+
+            Building result = buildingLogic.UpdateBuilding(It.IsAny<Guid>(), toUpdateBuilding);
+        }catch(Exception e)
+        {
+            buildingRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(e, typeof(BuildingException));
+            Assert.AreEqual(e.Message, "User in maintenance employees list is not a maintenance employee");
+        }
+    }
+
+
+    [TestMethod]
     public void UpdateBuildingTestNegativeSharedExpenses()
     {
 
