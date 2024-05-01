@@ -1238,10 +1238,7 @@ public class BuildingLogicTest
             HasBalcony = true,
             Owner = new Person()
             {
-                Id = Guid.NewGuid(),
-                Name = "Juan",
-                Surname = "De Los Naranjos",
-                Email = "juan@gmail.com"
+                Id = Guid.NewGuid()
             },
             Building = new Building() { Id = flat.Building.Id }
         };
