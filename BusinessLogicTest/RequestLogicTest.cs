@@ -27,9 +27,9 @@ namespace BusinessLogicTest
             Guid managerId = Guid.NewGuid();
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = Guid.NewGuid() } } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3", Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", ManagerId = managerId, Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", ManagerId = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = Guid.NewGuid() } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", ManagerId = managerId, Flat = new Flat() { Building = new Building() { Manager = new User() { Role = Role.Manager, Id = managerId } } } }
             };
 
             userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = managerId, Role = Role.Manager });
@@ -164,7 +164,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
 
-            Request result = _requestLogic.CreateRequest(request);
+            Request result = _requestLogic.CreateRequest(request, It.IsAny<Guid>());
 
             requestRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);

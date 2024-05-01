@@ -8,6 +8,7 @@
         public Flat Flat { get; set; }
         public Category Category { get; set; }
         public Guid AssignedEmployeeId { get; set; }
+        public Guid ManagerId { get; set; }
         public RequestStatus Status { get; set; }
         public DateTime StartingDate { get; set; }
         public DateTime CompletionDate { get; set; }

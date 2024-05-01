@@ -16,8 +16,9 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
-        public Request CreateRequest(Request request)
+        public Request CreateRequest(Request request, Guid userId)
         {
+            request.ManagerId = userId;
             ValidateRequest(request);
 
             return _requestRepository.CreateRequest(request);
@@ -26,7 +27,7 @@ namespace BusinessLogic
         public IEnumerable<Request> GetAllManagerRequests(Guid userId)
         {
             User manager = _userRepository.GetUserById(userId);
-            return _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
+            return _requestRepository.GetAllRequests().Where(r => r.ManagerId == userId);
         }
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)

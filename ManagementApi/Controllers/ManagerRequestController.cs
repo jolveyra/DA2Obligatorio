@@ -1,4 +1,5 @@
-﻿using LogicInterfaces;
+﻿using System.ComponentModel;
+using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 using WebModels.RequestsModels;
@@ -42,7 +43,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult CreateRequest([FromBody] RequestCreateModel requestCreateModel)
         {
-            var request = _managerRequestLogic.CreateRequest(requestCreateModel.ToEntity());
+            var request = _managerRequestLogic.CreateRequest(requestCreateModel.ToEntity(), Guid.Parse(HttpContext.Items["UserId"] as string));
             return CreatedAtAction(nameof(GetRequestById), new { id = request.Id }, new RequestResponseModel(request));
         }
 

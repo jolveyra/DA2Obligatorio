@@ -128,14 +128,25 @@ namespace ManagementApiTest
                 Description = requestCreateModel.Description,
                 Flat = new Flat() { Id = requestCreateModel.FlatId },
                 Category = new Category { Name = requestCreateModel.CategoryName },
-                AssignedEmployeeId = Guid.NewGuid() 
+                AssignedEmployeeId = Guid.NewGuid(),
+                ManagerId = Guid.NewGuid()
             };
-            requestLogicMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(expected);
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", expected.ManagerId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ManagerRequestController anotherManagerRequestController = new ManagerRequestController(requestLogicMock.Object) { ControllerContext = controllerContext };
+            requestLogicMock.Setup(r => r.CreateRequest(It.IsAny<Request>(), It.IsAny<Guid>())).Returns(expected);
 
             RequestResponseModel expectedResult = new RequestResponseModel(expected); 
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateRequest", "CreateRequest", new { Id = expected.Id }, expectedResult);
 
-            CreatedAtActionResult result = managerRequestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
+            CreatedAtActionResult result = anotherManagerRequestController.CreateRequest(requestCreateModel) as CreatedAtActionResult;
             RequestResponseModel resultObject = result.Value as RequestResponseModel;
 
             requestLogicMock.VerifyAll();
