@@ -35,9 +35,13 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
         {
-            return Ok(_iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).
-                Select(building => new BuildingResponseModel(building)).ToList());
-        
+            List<BuildingWithoutFlatsResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).
+                Select(building => new BuildingWithoutFlatsResponseModel(building)
+                {
+                    Flats = _iBuildingLogic.GetAllBuildingFlats(building.Id).ToList().Count
+                }).ToList();
+
+            return Ok(response);
         }
 
         [HttpGet("{buildingId}")]
