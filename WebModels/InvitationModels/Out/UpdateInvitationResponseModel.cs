@@ -10,7 +10,7 @@ namespace WebModels.InvitationModels
         public DateTime ExpirationDate { get; set; }
         public bool IsAnswered { get; set; }
         public bool IsAccepted { get; set; }
-        public string defaultPassword { get; set; }
+        public string DefaultPassword { get; set; }
 
         public UpdateInvitationResponseModel(Invitation invitation)
         {
@@ -20,7 +20,7 @@ namespace WebModels.InvitationModels
             ExpirationDate = invitation.ExpirationDate;
             IsAnswered = invitation.IsAnswered;
             IsAccepted = invitation.IsAccepted;
-            defaultPassword = Invitation.DefaultPassword;
+            DefaultPassword = Invitation.DefaultPassword;
         }
     }
 }
