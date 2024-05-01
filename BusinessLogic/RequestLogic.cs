@@ -45,7 +45,6 @@ namespace BusinessLogic
             Request existingRequest = GetRequestById(request.Id);
 
             existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
-            existingRequest.Flat = request.Flat;
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
 

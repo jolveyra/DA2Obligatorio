@@ -31,12 +31,12 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Request> GetAllRequests()
         {
-            return _context.Requests.Include(r => r.Category);
+            return _context.Requests.Include(r => r.Category).Include(r => r.Flat);
         }
 
         public Request GetRequestById(Guid id)
         {
-            Request? request = _context.Requests.FirstOrDefault(r => r.Id == id);
+            Request? request = _context.Requests.Include(r => r.Category).Include(r => r.Flat).FirstOrDefault(r => r.Id == id);
 
             if (request == null)
             {
