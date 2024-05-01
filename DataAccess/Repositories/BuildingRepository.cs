@@ -59,7 +59,7 @@ namespace DataAccess.Repositories
 
         public Flat GetFlatByFlatId(Guid flatId)
         {
-            Flat flat = _context.Flats.FirstOrDefault(f => f.Id.Equals(flatId));
+            Flat flat = _context.Flats.Include(f => f.Building).FirstOrDefault(f => f.Id.Equals(flatId));
 
             if (flat is null)
             {
@@ -78,7 +78,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
         {
-            return _context.Flats.Where(f => f.Building.Id.Equals(buildingId));
+            return _context.Flats.Include(f => f.Building).Where(f => f.Building.Id.Equals(buildingId));
         }
 
         public Flat CreateFlat(Flat flat)
@@ -90,7 +90,7 @@ namespace DataAccess.Repositories
 
         public List<Flat> GetAllFlats()
         {
-            return _context.Flats.ToList();
+            return _context.Flats.Include(f => f.Building).ToList();
         }
 
         public void DeleteFlats(List<Flat> flats)
