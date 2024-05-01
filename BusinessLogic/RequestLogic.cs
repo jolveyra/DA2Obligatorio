@@ -44,6 +44,9 @@ namespace BusinessLogic
         {
             Request existingRequest = GetRequestById(request.Id);
 
+            if (existingRequest.Status == RequestStatus.Completed)
+                throw new RequestException("Cannot update completed request");
+
             existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
             existingRequest.Flat = request.Flat;
             existingRequest.Category = request.Category;
@@ -62,6 +65,7 @@ namespace BusinessLogic
             if (requestStatus == RequestStatus.InProgress)
             {
                 request.StartingDate = DateTime.Now;
+                request.CompletionDate = DateTime.Now;
             }
             else if (requestStatus == RequestStatus.Completed)
             {

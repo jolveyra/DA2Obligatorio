@@ -211,8 +211,6 @@ namespace BusinessLogicTest
             Assert.IsTrue(expected.Equals(result) && (result.StartingDate - DateTime.Now).Hours == 0);
         }
 
-        
-
         [TestMethod]
         public void UpdateRequestStatusCompletedByIdTest()
         {
@@ -228,6 +226,28 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result) && (result.CompletionDate - DateTime.Now).Hours == 0);
+        }
+
+        [TestMethod]
+        public void UpdateCompletedRequestTest()
+        {
+            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Status = RequestStatus.Completed, Flat = new Flat(), AssignedEmployeeId = Guid.NewGuid() };
+
+            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
+            Exception exception = null;
+
+            try
+            {
+                _requestLogic.UpdateRequest(request);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            requestRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(exception, typeof(RequestException));
+            Assert.IsTrue(exception.Message.Equals("Cannot update completed request"));
         }
     }
 }
