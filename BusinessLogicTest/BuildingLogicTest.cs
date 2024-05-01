@@ -1238,7 +1238,10 @@ public class BuildingLogicTest
             HasBalcony = true,
             Owner = new Person()
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                Name = "Juan",
+                Surname = "De Los Naranjos",
+                Email = "juan@gmail.com"
             },
             Building = new Building() { Id = flat.Building.Id }
         };
@@ -1254,5 +1257,63 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
         peopleRepositoryMock.VerifyAll();
         Assert.IsTrue(result.Equals(flatToUpdate) && result.Owner.Name.Equals(flat.Owner.Name) && result.Owner.Surname.Equals(flat.Owner.Surname) && result.Owner.Email.Equals(flat.Owner.Email));
+    }
+
+    [TestMethod]
+    public void UpdateFlatWithNewOwnerExistingEmailByFlatIdTest()
+    {
+        Guid flatId = Guid.NewGuid();
+        Flat flat = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Name = "Pedro",
+                Surname = "De Las Manzanas",
+                Email = "pedro@gmail.com"
+            },
+            Building = new Building() { Id = Guid.NewGuid() }
+        };
+        Flat flatToUpdate = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Juan",
+                Surname = "De Los Naranjos",
+                Email = "juan@gmail.com"
+            },
+            Building = new Building() { Id = flat.Building.Id }
+        };
+
+        peopleRepositoryMock.Setup(x => x.GetPeople()).Returns(new List<Person>() { new Person() { Email = "pedro@gmail.com", Id = Guid.NewGuid() } });
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { flatToUpdate });
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(flatToUpdate);
+        Exception exception = null;
+
+        try
+        {
+            buildingLogic.UpdateFlat(flatToUpdate.Id, flat, false);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        } 
+
+        buildingRepositoryMock.VerifyAll();
+        peopleRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Another owner with same email already exists");
     }
 }
