@@ -39,15 +39,16 @@ namespace ManagementApiTest
                 HttpContext = httpContext
             };
 
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Id = Guid.NewGuid(), Bathrooms = 3, Building = buildings.First(), Floor = 2, HasBalcony = true, Number = 300, Owner = new Person() { Email = "",  Name="", Surname="" }, Rooms = 3 } });
             buildingLogicMock.Setup(x => x.GetAllBuildings(It.IsAny<Guid>())).Returns(buildings);
 
-            OkObjectResult expected = new OkObjectResult(new List<BuildingResponseModel> { new BuildingResponseModel(buildings.First()) });
-            List<BuildingResponseModel> expectedObject = expected.Value as List<BuildingResponseModel>;
+            OkObjectResult expected = new OkObjectResult(new List<BuildingWithoutFlatsResponseModel> { new BuildingWithoutFlatsResponseModel(buildings.First()) });
+            List<BuildingWithoutFlatsResponseModel> expectedObject = expected.Value as List<BuildingWithoutFlatsResponseModel>;
 
             BuildingController anotherBuildingController = new BuildingController(buildingLogicMock.Object) { ControllerContext = controllerContext };
 
             OkObjectResult result = anotherBuildingController.GetAllBuildings() as OkObjectResult;
-            List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
+            List<BuildingWithoutFlatsResponseModel> objectResult = result.Value as List<BuildingWithoutFlatsResponseModel>;
 
             buildingLogicMock.VerifyAll();
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
