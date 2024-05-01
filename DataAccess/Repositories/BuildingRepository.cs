@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions.DataAccessExceptions;
+using Domain;
 using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using RepositoryInterfaces;
@@ -38,6 +39,13 @@ namespace DataAccess.Repositories
 
         public void DeleteBuilding(Building building)
         {
+            Building? buildingToDelete = _context.Buildings.FirstOrDefault(b => b.Id.Equals(building.Id));
+
+            if (buildingToDelete is null)
+            {
+                throw new DeleteException();
+            }
+
             _context.Remove(building.Address);
             _context.Buildings.Remove(building);
             _context.SaveChanges();

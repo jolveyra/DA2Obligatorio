@@ -1,3 +1,4 @@
+using CustomExceptions.DataAccessExceptions;
 using RepositoryInterfaces;
 using DataAccess.Context;
 using Domain;
@@ -372,6 +373,23 @@ namespace DataAccessTest
             mockContext.Verify(x => x.Flats, Times.Once());
 
             CollectionAssert.AreEqual(expectedList.ToList(), result);
+        }
+
+        [TestMethod]
+        public void DeleteNonExistingBuilding()
+        {
+            Building building = new Building() { Id = Guid.NewGuid() };
+
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building> { });
+
+            try
+            {
+                buildingRepository.DeleteBuilding(building);
+            }catch(Exception e)
+            {
+                mockContext.Verify(x => x.Buildings, Times.Once());
+                Assert.IsInstanceOfType(e, typeof(DeleteException));
+            }
         }
     }
 }
