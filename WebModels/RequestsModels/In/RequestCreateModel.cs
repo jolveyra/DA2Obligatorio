@@ -16,7 +16,7 @@ namespace WebModels.RequestsModels
                 Description = Description,
                 Flat = new Flat() { Id = FlatId },
                 Category = new Category { Name = CategoryName },
-                AssignedEmployee = new User() { Id = AssignedEmployee }
+                AssignedEmployeeId = AssignedEmployee
             };
         }
     }

@@ -31,7 +31,7 @@ namespace BusinessLogic
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
+            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
         }
 
         public Request GetRequestById(Guid id)
@@ -43,7 +43,7 @@ namespace BusinessLogic
         {
             Request existingRequest = GetRequestById(request.Id);
 
-            existingRequest.AssignedEmployee = request.AssignedEmployee;
+            existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
             existingRequest.Flat = request.Flat;
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
@@ -82,7 +82,7 @@ namespace BusinessLogic
             {
                 throw new RequestException("Flat cannot be empty or null");
             }
-            if (request.AssignedEmployee == null)
+            if (request.AssignedEmployeeId == Guid.Empty)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");
             }

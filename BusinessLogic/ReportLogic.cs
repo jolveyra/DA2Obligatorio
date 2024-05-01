@@ -2,6 +2,7 @@
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
+using System.Collections.Generic;
 
 namespace BusinessLogic
 {
@@ -28,7 +29,16 @@ namespace BusinessLogic
             if (filter.ToLower().Equals("employee"))
             {
                 IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
-                return GenerateReport(requests, new EmployeeRequestReport());
+                List<(string, int, int, int, double)> reportWithIds = GenerateReport(requests, new EmployeeRequestReport()).ToList();
+                List<(string, int, int, int, double)> reportWithNames = new List<(string, int, int, int, double)>();
+                
+                for (int i=0; i<reportWithIds.Count; i++)
+                {
+                    User employee = _userRepository.GetUserById(Guid.Parse(reportWithIds[i].Item1));
+                    reportWithNames.Add((employee.Name + " " + employee.Surname, reportWithIds[i].Item2, reportWithIds[i].Item3, reportWithIds[i].Item4, reportWithIds[i].Item5));
+                }
+
+                return reportWithNames;
             }
 
             throw new ReportException("Invalid filter");

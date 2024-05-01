@@ -20,12 +20,6 @@ namespace DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Request>()
-            .HasOne(r => r.AssignedEmployee)
-            .WithMany()
-            .HasForeignKey(r => r.AssignedEmployeeId)
-            .OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<Flat>()
                 .HasOne(f => f.Owner)
                 .WithMany()
