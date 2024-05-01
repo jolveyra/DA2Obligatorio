@@ -99,7 +99,6 @@ namespace DataAccess.Repositories
 
         public void DeleteFlats(List<Flat> flats)
         {
-            _context.People.RemoveRange(flats.Select(f => f.Owner));
             _context.Flats.RemoveRange(flats);
             _context.SaveChanges();
         }
