@@ -21,10 +21,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetReport([FromQuery] string? filter)
         {
-            if (filter != null)
-            {
-                return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter).Select(t => new ReportResponseModel(t)));
-            }
+            return Ok(_reportLogic.GetReport(Guid.Parse(HttpContext.Items["UserId"] as string), filter ?? "none").Select(t => new ReportResponseModel(t)));
         }
     }
 }

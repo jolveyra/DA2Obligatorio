@@ -58,7 +58,7 @@ namespace ManagementApiTest
         {
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
-            Building building =  new Building() { Name = "Mirador", Manager = user , Address = new Address() { Street = "", CornerStreet = "" } } ;
+            Building building =  new Building() { Id = Guid.NewGuid(), Name = "Mirador", Manager = user , Address = new Address() { Street = "", CornerStreet = "" } } ;
 
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -70,7 +70,7 @@ namespace ManagementApiTest
             };
 
             buildingLogicMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
-            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Id = Guid.NewGuid(), Bathrooms = 3, Building = building, Floor = 2, HasBalcony = true, Number = 300, Owner = new Person() { Email = "",  Name="", Surname="" }, Rooms = 3 } });
 
             OkObjectResult expected = new OkObjectResult(new BuildingResponseModel(building));
             BuildingResponseModel expectedObject = expected.Value as BuildingResponseModel;
@@ -189,7 +189,7 @@ namespace ManagementApiTest
             
             BuildingResponseModel expectedResult = new BuildingResponseModel(expected);
             buildingLogicMock.Setup(x => x.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<Building>())).Returns(expected);
-            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
+            buildingLogicMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Id = Guid.NewGuid(), Bathrooms = 3, Building = expected, Floor = 2, HasBalcony = true, Number = 300, Owner = new Person() { Email = "",  Name="", Surname="" }, Rooms = 3 } });
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 

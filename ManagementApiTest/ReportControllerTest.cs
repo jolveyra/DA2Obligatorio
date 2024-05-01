@@ -43,5 +43,7 @@ namespace ManagementApiTest
             reportLogicMock.VerifyAll();
             Assert.IsTrue(resultValue.SequenceEqual(expected));
         }
+
+
     }
 }
