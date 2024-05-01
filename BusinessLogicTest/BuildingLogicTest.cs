@@ -637,7 +637,7 @@ public class BuildingLogicTest
     [TestMethod]
     public void DeleteBuildingTestOk()
     {
-        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(new Building());
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { new Building() });
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() }); 
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
         buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
@@ -647,6 +647,23 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.VerifyAll();
         peopleRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void DeleteBuildingNonExistingTest()
+    {
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { });
+
+        try
+        {
+            buildingLogic.DeleteBuilding(It.IsAny<Guid>());
+        }
+        catch(Exception e)
+        {
+            buildingRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(DeleteException));
+
+        }
     }
 
     [TestMethod]

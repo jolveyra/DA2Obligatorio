@@ -143,7 +143,13 @@ public class BuildingLogic : IBuildingLogic
 
     public void DeleteBuilding(Guid guid)
     {
-        Building building = _iBuildingRepository.GetBuildingById(guid);
+        Building building = _iBuildingRepository.GetAllBuildings().ToList().FirstOrDefault(b => b.Id == guid);
+
+        if(building is null)
+        {
+            throw new DeleteException();
+        }
+
         DeleteFlatsFromBuilding(building);
         _iBuildingRepository.DeleteBuilding(building);
     }
