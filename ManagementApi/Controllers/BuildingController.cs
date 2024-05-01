@@ -35,7 +35,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
         {
-            List<BuildingWithoutFlatsResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).
+            List<BuildingWithoutFlatsResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).ToList().
                 Select(building => new BuildingWithoutFlatsResponseModel(building)
                 {
                     AmountOfFlats = _iBuildingLogic.GetAllBuildingFlats(building.Id).ToList().Count
