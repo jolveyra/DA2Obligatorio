@@ -1,6 +1,7 @@
 ﻿using DataAccess.Context;
 using DataAccess.Repositories;
 using Domain;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Moq;
 using Moq.EntityFrameworkCore;
 
@@ -97,6 +98,22 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.People.Update(person), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(person, result);
+        }
+
+        [TestMethod]
+        public void DeletePersonTest()
+        {
+            Person person = new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
+
+            _contextMock.Setup(context => context.People).ReturnsDbSet(new List<Person>() { person });
+            _contextMock.Setup(context => context.People.Remove(person));            
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            _peopleRepository.DeletePerson(person.Id);
+
+            _contextMock.Verify(context => context.People, Times.Exactly(2));
+            _contextMock.Verify(context => context.People.Remove(person), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
         }
     }
 }

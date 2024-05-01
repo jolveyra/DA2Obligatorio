@@ -23,7 +23,8 @@ namespace DataAccess.Repositories
 
         public void DeletePerson(Guid id)
         {
-            throw new NotImplementedException();
+            _context.People.Remove(GetPersonById(id));
+            _context.SaveChanges();
         }
 
         public IEnumerable<Person> GetPeople()
