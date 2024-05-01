@@ -10,13 +10,13 @@ namespace BusinessLogic
         public IEnumerable<(string, int, int, int, double)> GenerateReport(IEnumerable<Request> requests)
         {
             FilterRequests(requests);
-            List<(int, int, int, double)> requestTuples = GatherPendingRequests();
+            List<(int, int, int, double)> requestTuples = GatherRequestsAmountByState();
             return BringReportTogether(requestTuples);
         }
 
         protected abstract void FilterRequests(IEnumerable<Request> requests);
 
-        private List<(int, int, int, double)> GatherPendingRequests()
+        private List<(int, int, int, double)> GatherRequestsAmountByState()
         {
             List<(int, int, int, double)> requestTuples = new List<(int, int, int, double)>();
 
@@ -38,6 +38,7 @@ namespace BusinessLogic
                     {
                         inProgress++;
                     }
+
                     if (request.Status == RequestStatus.Completed)
                     {
                         avgTimeToComplete += (request.CompletionDate - request.StartingDate).Hours;
