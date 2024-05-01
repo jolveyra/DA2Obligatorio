@@ -7,6 +7,7 @@ namespace WebModels.RequestsModels
         public string Description { get; set; }
         public Guid FlatId { get; set; }
         public string CategoryName { get; set; }
+        public Guid AssignedEmployee { get; set; }
 
         public Request ToEntity()
         {
@@ -14,7 +15,8 @@ namespace WebModels.RequestsModels
             {
                 Description = Description,
                 Flat = new Flat() { Id = FlatId },
-                Category = new Category { Name = CategoryName }
+                Category = new Category { Name = CategoryName },
+                AssignedEmployee = new User() { Id = AssignedEmployee }
             };
         }
     }

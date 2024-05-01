@@ -18,9 +18,9 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginRequestModel request)
+        public IActionResult Login([FromBody] LoginRequestModel loginRequestModel)
         {
-            LoginResponseModel response = new LoginResponseModel(_loginLogic.Login(request.ToEntity()));
+            LoginResponseModel response = new LoginResponseModel(_loginLogic.Login(loginRequestModel.ToEntity()));
             return Ok(response);
         }
     }

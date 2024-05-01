@@ -6,7 +6,7 @@ namespace ManagementApi.Filters
 {
     public class AuthenticationFilter : Attribute, IActionFilter
     {
-        public List<string> Roles { get; set; }
+        private List<string> Roles { get; set; }
 
         public AuthenticationFilter(string[] roles)
         {
