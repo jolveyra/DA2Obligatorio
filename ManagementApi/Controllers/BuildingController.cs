@@ -38,7 +38,7 @@ namespace ManagementApi.Controllers
             List<BuildingWithoutFlatsResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).
                 Select(building => new BuildingWithoutFlatsResponseModel(building)
                 {
-                    Flats = _iBuildingLogic.GetAllBuildingFlats(building.Id).ToList().Count
+                    AmountOfFlats = _iBuildingLogic.GetAllBuildingFlats(building.Id).ToList().Count
                 }).ToList();
 
             return Ok(response);

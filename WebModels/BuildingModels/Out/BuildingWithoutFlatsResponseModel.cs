@@ -8,7 +8,7 @@ namespace WebModels.BuildingModels
 
         public string Name { get; set; }
         public float SharedExpenses { get; set; }
-        public int Flats { get; set; }
+        public int AmountOfFlats { get; set; }
         public string Street { get; set; }
         public int DoorNumber { get; set; }
         public string CornerStreet { get; set; }
@@ -34,6 +34,5 @@ namespace WebModels.BuildingModels
         {
             return obj is BuildingWithoutFlatsResponseModel buildingResponseModel && Id == buildingResponseModel.Id;
         }
-
     }
 }
