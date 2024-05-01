@@ -1,5 +1,6 @@
 ﻿using DataAccess.Context;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using RepositoryInterfaces;
 
 namespace DataAccess.Repositories
@@ -15,6 +16,14 @@ namespace DataAccess.Repositories
 
         public Request CreateRequest(Request request)
         {
+            Flat? flat = _context.Flats.Find(request.Flat.Id);
+
+            if(flat is null)
+            {
+                throw new ArgumentException("Flat not found");
+            }
+
+            request.Flat = flat;
             _context.Requests.Add(request);
             _context.SaveChanges();
             return request;
@@ -22,7 +31,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Request> GetAllRequests()
         {
-            return _context.Requests;
+            return _context.Requests.Include(r => r.Flat.Building.Manager).Include(r => r.Category);
         }
 
         public Request GetRequestById(Guid id)
