@@ -119,7 +119,7 @@ namespace BusinessLogicTest
                 }
             };
 
-            requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
+            requestRepositoryMock.Setup(r => r.GetAllRequestsWithBuilding()).Returns(requests);
 
             List<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
             {

@@ -144,8 +144,26 @@ public class BuildingLogic : IBuildingLogic
     public void DeleteBuilding(Guid guid)
     {
         Building building = _iBuildingRepository.GetBuildingById(guid);
-        _iBuildingRepository.DeleteFlats(_iBuildingRepository.GetAllBuildingFlats(building.Id).ToList());
+        DeleteFlatsFromBuilding(building);
         _iBuildingRepository.DeleteBuilding(building);
+    }
+
+    private void DeleteFlatsFromBuilding(Building building)
+    {
+        List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
+        DeleteOwnersWithEmptyEmail(flats);
+        _iBuildingRepository.DeleteFlats(flats);
+    }
+
+    private void DeleteOwnersWithEmptyEmail(List<Flat> flats)
+    {
+        foreach (Flat flat in flats)
+        {
+            if (string.IsNullOrEmpty(flat.Owner.Email))
+            {
+                _iPeopleRepository.DeletePerson(flat.OwnerId);
+            }
+        }
     }
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
@@ -215,39 +233,52 @@ public class BuildingLogic : IBuildingLogic
         Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
+        OverrideFlatInfo(flat, existingFlat);
+
+        if (changeOwner)
+        {
+            ChangeOwner(flat, existingFlat);
+        }
+        else
+        {
+            UpdateOwnerInfo(flat, existingFlat);
+        }
+
+        return _iBuildingRepository.UpdateFlat(existingFlat);
+    }
+
+    private void UpdateOwnerInfo(Flat flat, Flat existingFlat)
+    {
+        if (_iPeopleRepository.GetPeople().Any(p => !string.IsNullOrEmpty(p.Email) && p.Email.Equals(flat.Owner.Email) && p.Id != existingFlat.OwnerId))
+        {
+            throw new BuildingException("Another owner with same email already exists");
+        }
+        existingFlat.Owner.Name = flat.Owner.Name;
+        existingFlat.Owner.Surname = flat.Owner.Surname;
+        existingFlat.Owner.Email = flat.Owner.Email;
+        _iPeopleRepository.UpdatePerson(existingFlat.Owner);
+    }
+
+    private void ChangeOwner(Flat flat, Flat existingFlat)
+    {
+        Person? newOwner = null;
+
+        if (string.IsNullOrEmpty(existingFlat.Owner.Email))
+        {
+            _iPeopleRepository.DeletePerson(existingFlat.Id);
+        }
+        newOwner = _iPeopleRepository.GetPeople().FirstOrDefault(p => p.Email.Equals(flat.Owner.Email));
+
+        existingFlat.Owner = newOwner ?? _iPeopleRepository.CreatePerson(flat.Owner);
+    }
+
+    private void OverrideFlatInfo(Flat flat, Flat existingFlat)
+    {
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
         existingFlat.HasBalcony = flat.HasBalcony;
         existingFlat.Rooms = flat.Rooms;
         existingFlat.Floor = flat.Floor;
-
-        if (changeOwner)
-        {
-            Person? newOwner = null;
-
-            if (string.IsNullOrEmpty(existingFlat.Owner.Email))
-            {
-                _iPeopleRepository.DeletePerson(existingFlat.Id);
-            }
-            newOwner = _iPeopleRepository.GetPeople().FirstOrDefault(p => p.Email.Equals(flat.Owner.Email));
-
-            existingFlat.Owner = newOwner ?? _iPeopleRepository.CreatePerson(flat.Owner);
-        }
-        else
-        {
-            if (_iPeopleRepository.GetPeople()
-                .Any(p => p.Email.Equals(flat.Owner.Email) && p.Id != existingFlat.OwnerId))
-            {
-                throw new BuildingException("Another owner with same email already exists");
-            }
-            existingFlat.Owner.Name = flat.Owner.Name;
-            existingFlat.Owner.Surname = flat.Owner.Surname;
-            existingFlat.Owner.Email = flat.Owner.Email;
-            _iPeopleRepository.UpdatePerson(existingFlat.Owner);
-        }
-
-
-        return _iBuildingRepository.UpdateFlat(existingFlat);
     }
 
     private void ValidateFlat(Flat flat)

@@ -192,8 +192,8 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
-            Assert.IsInstanceOfType(exception, typeof(InvitationException));
-            Assert.IsTrue(exception.Message.Equals("There is already a user with the same email"));
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
 
         [TestMethod]

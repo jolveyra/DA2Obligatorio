@@ -105,7 +105,7 @@ namespace DataAccessTest
 
             _invitationRepository.DeleteInvitationById(id);
 
-            _contextMock.Verify(context => context.Invitations, Times.Exactly(2));
+            _contextMock.Verify(context => context.Invitations, Times.Exactly(3));
             _contextMock.Verify(context => context.Invitations.Remove(invitation), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
         }

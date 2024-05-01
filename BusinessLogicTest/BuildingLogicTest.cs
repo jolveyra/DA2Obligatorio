@@ -617,11 +617,12 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() }); 
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
         buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
+        peopleRepositoryMock.Setup(x=>x.DeletePerson(It.IsAny<Guid>()));
 
         buildingLogic.DeleteBuilding(It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
-
+        peopleRepositoryMock.VerifyAll();
     }
 
     [TestMethod]

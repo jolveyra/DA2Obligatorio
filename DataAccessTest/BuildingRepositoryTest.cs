@@ -97,7 +97,7 @@ namespace DataAccessTest
 
             mockContext.Verify(x => x.SaveChanges(), Times.Exactly(1));
             mockContext.Verify(x => x.Buildings.Remove(toDeleteBuilding), Times.Once());
-            mockContext.Verify(mockContext => mockContext.Buildings, Times.Once());
+            mockContext.Verify(mockContext => mockContext.Buildings, Times.Exactly(2));
         }
 
         [TestMethod]
@@ -390,6 +390,22 @@ namespace DataAccessTest
                 mockContext.Verify(x => x.Buildings, Times.Once());
                 Assert.IsInstanceOfType(e, typeof(DeleteException));
             }
+        }
+
+        [TestMethod]
+        public void DeleteFlatsTestOk()
+        {
+            List<Flat> flats = new List<Flat> { new Flat() { Id = Guid.NewGuid() } };
+
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { new Flat(), flats[0] });
+            mockContext.Setup(x => x.Flats.RemoveRange(flats));
+            mockContext.Setup(x => x.SaveChanges());
+
+            buildingRepository.DeleteFlats(flats);
+
+            mockContext.Verify(x=>x.Flats, Times.Once());
+            mockContext.Verify(x=>x.Flats.RemoveRange(flats), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
     }
 }
