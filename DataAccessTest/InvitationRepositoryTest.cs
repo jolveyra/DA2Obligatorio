@@ -1,8 +1,10 @@
-﻿using DataAccess.Context;
+﻿using CustomExceptions.DataAccessExceptions;
+using DataAccess.Context;
 using DataAccess.Repositories;
 using Domain;
 using Moq;
 using Moq.EntityFrameworkCore;
+using RepositoryInterfaces;
 
 namespace DataAccessTest
 {
@@ -121,6 +123,23 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.Invitations.Update(invitation), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(invitation, result);
+        }
+
+        [TestMethod]
+        public void DeleteNonExistingInvitation()
+        {
+            Guid invitationId = Guid.NewGuid();
+
+            _contextMock.Setup(x => x.Invitations).ReturnsDbSet(new List<Invitation> { });
+
+            try
+            {
+                _invitationRepository.DeleteInvitationById(invitationId);
+            }catch(Exception e)
+            {
+                _contextMock.Verify(x => x.Invitations, Times.Once());
+                Assert.IsInstanceOfType(e, typeof(DeleteException));
+            }
         }
     }
 }

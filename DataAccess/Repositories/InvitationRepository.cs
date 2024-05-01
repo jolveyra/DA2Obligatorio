@@ -1,4 +1,5 @@
-﻿using DataAccess.Context;
+﻿using CustomExceptions.DataAccessExceptions;
+using DataAccess.Context;
 using Domain;
 using RepositoryInterfaces;
 
@@ -22,6 +23,13 @@ namespace DataAccess.Repositories
 
         public void DeleteInvitationById(Guid id)
         {
+            Invitation? invitation = _context.Invitations.FirstOrDefault(i => i.Id == id);
+
+            if (invitation == null)
+            {
+                throw new DeleteException();
+            }
+
             _context.Invitations.Remove(GetInvitationById(id));
             _context.SaveChanges();
         }
