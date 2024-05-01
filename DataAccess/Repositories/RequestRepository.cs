@@ -31,7 +31,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Request> GetAllRequests()
         {
-            return _context.Requests.Include(r => r.Flat.Building.Manager).Include(r => r.Category);
+            return _context.Requests.Include(r => r.Category);
         }
 
         public Request GetRequestById(Guid id)
