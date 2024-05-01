@@ -1207,4 +1207,52 @@ public class BuildingLogicTest
         peopleRepositoryMock.VerifyAll();
         Assert.IsTrue(result.Equals(flatToUpdate) && result.Owner.Name.Equals(flat.Owner.Name) && result.Owner.Surname.Equals(flat.Owner.Surname) && result.Owner.Email.Equals(flat.Owner.Email));
     }
+
+    [TestMethod]
+    public void UpdateFlatWithNewOwnerForTheFirstTimeByFlatIdTest()
+    {
+        Guid flatId = Guid.NewGuid();
+        Flat flat = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Name = "Pedro",
+                Surname = "De Las Manzanas",
+                Email = "pedro@gmail.com"
+            },
+            Building = new Building() { Id = Guid.NewGuid() }
+        };
+        Flat flatToUpdate = new Flat()
+        {
+            Id = flatId,
+            Number = 303,
+            Floor = 3,
+            Bathrooms = 1,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Id = Guid.NewGuid()
+            },
+            Building = new Building() { Id = flat.Building.Id }
+        };
+
+        peopleRepositoryMock.Setup(x => x.GetPeople()).Returns(new List<Person>() { flat.Owner });
+        peopleRepositoryMock.Setup(x => x.DeletePerson(It.IsAny<Guid>()));
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { flatToUpdate });
+        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(flatToUpdate);
+        buildingRepositoryMock.Setup(x => x.UpdateFlat(It.IsAny<Flat>())).Returns(flat);
+
+        Flat result = buildingLogic.UpdateFlat(flatToUpdate.Id, flat, true);
+
+        buildingRepositoryMock.VerifyAll();
+        peopleRepositoryMock.VerifyAll();
+        Assert.IsTrue(result.Equals(flatToUpdate) && result.Owner.Name.Equals(flat.Owner.Name) && result.Owner.Surname.Equals(flat.Owner.Surname) && result.Owner.Email.Equals(flat.Owner.Email));
+    }
 }

@@ -8,5 +8,6 @@ namespace RepositoryInterfaces
         public Person GetPersonById(Guid id);
         public Person CreatePerson(Person owner);
         public Person UpdatePerson(Person owner);
+        void DeletePerson(Guid id);
     }
 }

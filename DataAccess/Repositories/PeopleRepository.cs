@@ -21,6 +21,11 @@ namespace DataAccess.Repositories
             return person;
         }
 
+        public void DeletePerson(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Person> GetPeople()
         {
             return _context.People;

@@ -227,21 +227,18 @@ public class BuildingLogic : IBuildingLogic
 
             if (string.IsNullOrEmpty(existingFlat.Owner.Email))
             {
-                //_iPeopleRepository.DeletePerson(existingFlat.Id);
+                _iPeopleRepository.DeletePerson(existingFlat.Id);
             }
-            else
-            {
-                newOwner = _iPeopleRepository.GetPeople().FirstOrDefault(p => p.Email.Equals(flat.Owner.Email));
-            }
+            newOwner = _iPeopleRepository.GetPeople().FirstOrDefault(p => p.Email.Equals(flat.Owner.Email));
 
             existingFlat.Owner = newOwner ?? _iPeopleRepository.CreatePerson(flat.Owner);
         }
         else
         {
             if (_iPeopleRepository.GetPeople()
-                .Any(p => p.Email.Equals(flat.Owner.Email)))
+                .Any(p => p.Email.Equals(flat.Owner.Email) && p.Id != existingFlat.OwnerId))
             {
-                throw new BuildingException("Owner with same email already exists");
+                throw new BuildingException("Another owner with same email already exists");
             }
             existingFlat.Owner.Name = flat.Owner.Name;
             existingFlat.Owner.Surname = flat.Owner.Surname;
