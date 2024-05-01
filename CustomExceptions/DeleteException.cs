@@ -1,4 +1,4 @@
-﻿namespace CustomExceptions.DataAccessExceptions
+﻿namespace CustomExceptions
 {
     public class DeleteException() : Exception();
 }

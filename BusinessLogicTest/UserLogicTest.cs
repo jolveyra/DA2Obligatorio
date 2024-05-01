@@ -74,6 +74,23 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void CreateMaintenanceEmployeeTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.MaintenanceEmployee };
+            Session session = new Session() { UserId = user.Id };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+            sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
+
+            user.Id = Guid.NewGuid();
+            User result = _userLogic.CreateMaintenanceEmployee(user);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
         public void CreateAdministratorWithExistingEmailTest()
         {
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
@@ -273,23 +290,6 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("The Surname field cannot be empty for non manager users"));
         }
-        
-        [TestMethod]
-        public void CreateMaintenanceEmployeeTest()
-        {
-            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.MaintenanceEmployee };
-            Session session = new Session() { UserId = user.Id };
-
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
-            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
-            sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
-
-            user.Id = Guid.NewGuid();
-            User result = _userLogic.CreateAdministrator(user);
-
-            userRepositoryMock.VerifyAll();
-            Assert.AreEqual(user, result);
-        }
 
         [TestMethod]
         public void CreateMaintenanceEmployeeWithExistingEmailTest()
@@ -394,6 +394,29 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
             Assert.IsTrue(result.Count() == 1 && result.First().Equals(users.First()));
+        }
+
+        [TestMethod]
+        public void LoginTestInvalidPassword()
+        {
+            Guid userId = Guid.NewGuid();
+            Guid token = Guid.NewGuid();
+            Session session = new Session() { Id = token, UserId = userId };
+
+            IEnumerable<User> users = new List<User> { new User { Id = userId, Email = "juan@gmail.com", Password = "Juan1234" } };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User> { new User { Id = userId, Email = "juan@gmail.com", Password = "Juan84" } });
+
+            try
+            {
+                Guid result = _userLogic.Login(users.First());
+            }catch(Exception e)
+            {
+                sessionRepositoryMock.VerifyAll();
+                Assert.IsInstanceOfType(e, typeof(UserException));
+                Assert.AreEqual("Invalid email or password", e.Message);
+            }
+
         }
     }
 }
