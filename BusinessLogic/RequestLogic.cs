@@ -62,7 +62,7 @@ namespace BusinessLogic
             Request request = GetRequestById(requestId);
             request.Status = requestStatus;
 
-            if (requestStatus == RequestStatus.InProgress)
+            if (requestStatus == RequestStatus.Pending || requestStatus == RequestStatus.InProgress)
             {
                 request.StartingDate = DateTime.Now;
                 request.CompletionDate = DateTime.Now;
