@@ -151,18 +151,30 @@ public class BuildingLogic : IBuildingLogic
     private void DeleteFlatsFromBuilding(Building building)
     {
         List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
-        DeleteOwnersWithEmptyEmail(flats);
+
+        List<Guid> ownersToDelete = new List<Guid>();
+        GetOwnersToDeleteIds(flats, ownersToDelete);
+
         _iBuildingRepository.DeleteFlats(flats);
+        DeleteOwners(ownersToDelete);
     }
 
-    private void DeleteOwnersWithEmptyEmail(List<Flat> flats)
+    private static void GetOwnersToDeleteIds(List<Flat> flats, List<Guid> ownersToDelete)
     {
         foreach (Flat flat in flats)
         {
             if (string.IsNullOrEmpty(flat.Owner.Email))
             {
-                _iPeopleRepository.DeletePerson(flat.OwnerId);
+                ownersToDelete.Add(flat.OwnerId);
             }
+        }
+    }
+
+    private void DeleteOwners(List<Guid> ids)
+    {
+        foreach (Guid id in ids)
+        {
+            _iPeopleRepository.DeletePerson(id);
         }
     }
 
