@@ -120,5 +120,19 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.SaveChanges());
             Assert.AreEqual(request, result);
         }
+
+        [TestMethod]
+        public void GetAllRequestsWithBuildingTest()
+        {
+            Guid buildingId = Guid.NewGuid();
+            Request request = new Request() { Id = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { Id = buildingId, Name = "Mirador" } } };
+
+            _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request> { request });
+
+            IEnumerable<Request> result = _requestRepository.GetAllRequestsWithBuilding();
+
+            _contextMock.Verify(context => context.Requests);
+            Assert.IsTrue(result.SequenceEqual(new List<Request> { request }));
+        }
     }
 }

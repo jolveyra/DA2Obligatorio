@@ -20,7 +20,7 @@ namespace BusinessLogic
         {
             if (filter.ToLower().Equals("building"))
             {
-                IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.ManagerId == managerId);
+                IEnumerable<Request> requests = _requestRepository.GetAllRequestsWithBuilding().Where(r => r.ManagerId == managerId);
                 return GenerateReport(requests, new BuildingRequestReport());
             }
             if (filter.ToLower().Equals("employee"))
