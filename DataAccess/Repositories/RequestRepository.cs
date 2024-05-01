@@ -1,5 +1,6 @@
 ﻿using DataAccess.Context;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using RepositoryInterfaces;
 
 namespace DataAccess.Repositories
@@ -30,7 +31,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Request> GetAllRequests()
         {
-            return _context.Requests;
+            return _context.Requests.Include(r => r.Flat.Building.Manager).Include(r => r.Category);
         }
 
         public Request GetRequestById(Guid id)
