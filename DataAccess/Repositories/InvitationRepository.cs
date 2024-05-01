@@ -1,7 +1,7 @@
-﻿using CustomExceptions.DataAccessExceptions;
-using DataAccess.Context;
+﻿using DataAccess.Context;
 using Domain;
 using RepositoryInterfaces;
+using CustomExceptions;
 
 namespace DataAccess.Repositories
 {

@@ -28,7 +28,12 @@ namespace BusinessLogic
 
         public void DeleteInvitation(Guid id)
         {
-            Invitation invitation = GetInvitationById(id);
+            Invitation invitation = _invitationRepository.GetAllInvitations().ToList().FirstOrDefault(i => i.Id == id);
+            
+            if(invitation is null)
+            {
+                throw new DeleteException();
+            }
 
             if ((invitation.IsAnswered && !invitation.IsAccepted) || invitation.ExpirationDate < DateTime.Now)
             {

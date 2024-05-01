@@ -1,4 +1,4 @@
-using CustomExceptions.DataAccessExceptions;
+using CustomExceptions;
 using RepositoryInterfaces;
 using DataAccess.Context;
 using Domain;

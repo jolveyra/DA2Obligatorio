@@ -1,4 +1,4 @@
-﻿using CustomExceptions.DataAccessExceptions;
+﻿using CustomExceptions;
 using Domain;
 using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;

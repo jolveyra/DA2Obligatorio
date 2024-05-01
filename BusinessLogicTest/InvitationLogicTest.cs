@@ -3,6 +3,7 @@ using CustomExceptions;
 using Domain;
 using Moq;
 using RepositoryInterfaces;
+using System;
 
 namespace BusinessLogicTest
 {
@@ -219,6 +220,34 @@ namespace BusinessLogicTest
             Assert.IsTrue(exception.Message.Equals("The invitation has already been answered"));
         }
 
+        [TestMethod]
+        public void DeleteNotExistingInvitationTest()
+        {
+            Guid idToDelete = Guid.NewGuid();
+            Invitation invitation = new Invitation()
+            {
+                Id = idToDelete,
+                Name = "Juan",
+                Email = "juan@gmail.com",
+                ExpirationDate = DateTime.Now.AddDays(3),
+                IsAccepted = false,
+                IsAnswered = true
+            };
+
+            invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(new List<Invitation>() { });
+
+            try
+            {
+                invitationLogic.DeleteInvitation(idToDelete);
+
+            }
+            catch (Exception e)
+            {
+                invitationRepositoryMock.VerifyAll();
+                Assert.IsInstanceOfType(e, typeof(DeleteException));
+            }
+
+        }
 
         [TestMethod]
         public void DeleteAnsweredInvitationTest()
@@ -230,7 +259,7 @@ namespace BusinessLogicTest
                 IsAccepted = false, IsAnswered = true
             };
 
-            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(new List<Invitation>() { invitation });
             invitationRepositoryMock.Setup(repository => repository.DeleteInvitationById(It.IsAny<Guid>()));
 
             invitationLogic.DeleteInvitation(idToDelete);
@@ -248,7 +277,7 @@ namespace BusinessLogicTest
                 IsAccepted = false, IsAnswered = false
             };
 
-            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(new List<Invitation>() { invitation });
             invitationRepositoryMock.Setup(repository => repository.DeleteInvitationById(It.IsAny<Guid>()));
 
             invitationLogic.DeleteInvitation(idToDelete);
@@ -266,7 +295,7 @@ namespace BusinessLogicTest
                 IsAccepted = false, IsAnswered = false
             };
 
-            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(new List<Invitation>() { invitation });
             Exception exception = null;
 
             try
