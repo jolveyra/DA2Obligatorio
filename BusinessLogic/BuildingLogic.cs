@@ -5,7 +5,7 @@ using Domain;
 
 namespace BusinessLogic;
 
-public class BuildingLogic: IBuildingLogic
+public class BuildingLogic : IBuildingLogic
 {
     private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
@@ -27,7 +27,7 @@ public class BuildingLogic: IBuildingLogic
         CheckUniqueBuildingName(building);
         CheckUniqueBuildingAddress(building);
         CheckUniqueBuildingCoordinates(building);
-        
+
         building.Manager = _iUserRepository.GetUserById(userId);
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
@@ -38,7 +38,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingCoordinates(Building building)
     {
-        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Latitude == building.Address.Latitude && x.Address.Longitude == building.Address.Longitude))
+        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Latitude == building.Address.Latitude && x.Address.Longitude == building.Address.Longitude))
         {
             throw new BuildingException("Building with same coordinates already exists");
         }
@@ -46,7 +46,7 @@ public class BuildingLogic: IBuildingLogic
 
     private void CheckUniqueBuildingAddress(Building building)
     {
-        if(_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Equals(building.Address)))
+        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Equals(building.Address)))
         {
             throw new BuildingException("Building with same address already exists");
         }
@@ -102,7 +102,8 @@ public class BuildingLogic: IBuildingLogic
         if (string.IsNullOrEmpty(building.ConstructorCompany))
         {
             throw new BuildingException("Building constructor company cannot be empty");
-        }else if(building.ConstructorCompany.Length > maximumCharactersForConstructorCompany)
+        }
+        else if (building.ConstructorCompany.Length > maximumCharactersForConstructorCompany)
         {
             throw new BuildingException("Building constructor company cannot be longer than 100 characters");
         }
@@ -155,7 +156,7 @@ public class BuildingLogic: IBuildingLogic
     public Building GetBuildingById(Guid id)
     {
         return _iBuildingRepository.GetBuildingById(id);
-        
+
     }
 
     public Flat GetFlatByFlatId(Guid flatId)
@@ -229,6 +230,8 @@ public class BuildingLogic: IBuildingLogic
         existingFlat.Number = flat.Number;
         existingFlat.Bathrooms = flat.Bathrooms;
         existingFlat.HasBalcony = flat.HasBalcony;
+        existingFlat.Rooms = flat.Rooms;
+        existingFlat.Floor = flat.Floor;
 
         _iPeopleRepository.UpdatePerson(existingFlat.Owner);
         return _iBuildingRepository.UpdateFlat(existingFlat);

@@ -59,7 +59,9 @@ namespace DataAccess.Repositories
 
         public Flat GetFlatByFlatId(Guid flatId)
         {
-            Flat flat = _context.Flats.Include(f => f.Building).FirstOrDefault(f => f.Id.Equals(flatId));
+            Flat flat = _context.Flats.Include(f => f.Building).
+                Include(f => f.Owner).
+                FirstOrDefault(f => f.Id.Equals(flatId));
 
             if (flat is null)
             {
@@ -78,7 +80,8 @@ namespace DataAccess.Repositories
 
         public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
         {
-            return _context.Flats.Include(f => f.Building).Where(f => f.Building.Id.Equals(buildingId));
+            return _context.Flats.Include(f => f.Building).
+                Include(f => f.Owner).Where(f => f.Building.Id.Equals(buildingId));
         }
 
         public Flat CreateFlat(Flat flat)
@@ -90,11 +93,13 @@ namespace DataAccess.Repositories
 
         public List<Flat> GetAllFlats()
         {
-            return _context.Flats.Include(f => f.Building).ToList();
+            return _context.Flats.Include(f => f.Building).
+                Include(f => f.Owner).ToList();
         }
 
         public void DeleteFlats(List<Flat> flats)
         {
+            _context.People.RemoveRange(flats.Select(f => f.Owner));
             _context.Flats.RemoveRange(flats);
             _context.SaveChanges();
         }
