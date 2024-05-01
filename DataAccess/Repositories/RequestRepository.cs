@@ -15,6 +15,14 @@ namespace DataAccess.Repositories
 
         public Request CreateRequest(Request request)
         {
+            Flat? flat = _context.Flats.Find(request.Flat.Id);
+
+            if(flat is null)
+            {
+                throw new ArgumentException("Flat not found");
+            }
+
+            request.Flat = flat;
             _context.Requests.Add(request);
             _context.SaveChanges();
             return request;
