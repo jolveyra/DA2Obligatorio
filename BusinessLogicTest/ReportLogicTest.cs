@@ -27,7 +27,6 @@ namespace BusinessLogicTest
             Guid managerId = Guid.NewGuid();
             string filter = "NonExistingFilter";
 
-            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = managerId, Role = Role.Manager });
             Exception exception = null;
 
             try
@@ -62,29 +61,8 @@ namespace BusinessLogicTest
                             Name = "Building1",
                             Manager = manager
                         }
-                    }
-                },
-                new Request
-                {
-                    Flat = new Flat
-                    {
-                        Building = new Building
-                        {
-                            Name = "Building2",
-                            Manager = manager
-                        }
-                    }
-                },
-                new Request
-                {
-                    Flat = new Flat
-                    {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            Manager = manager
-                        }
-                    }
+                    },
+                    ManagerId = manager.Id
                 },
                 new Request
                 {
@@ -96,6 +74,31 @@ namespace BusinessLogicTest
                             Manager = manager
                         }
                     },
+                    ManagerId = manager.Id
+                },
+                new Request
+                {
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building1",
+                            Manager = manager
+                        }
+                    },
+                    ManagerId = manager.Id
+                },
+                new Request
+                {
+                    Flat = new Flat
+                    {
+                        Building = new Building
+                        {
+                            Name = "Building2",
+                            Manager = manager
+                        }
+                    },
+                    ManagerId = manager.Id,
                     Status = RequestStatus.Completed,
                     StartingDate = DateTime.Now.AddHours(-2),
                     CompletionDate = DateTime.Now
@@ -110,12 +113,12 @@ namespace BusinessLogicTest
                             Manager = manager
                         }
                     },
+                    ManagerId = manager.Id,
                     Status = RequestStatus.InProgress,
                     StartingDate = DateTime.Now.AddHours(-2)
                 }
             };
 
-            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(manager);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
             List<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
@@ -151,7 +154,8 @@ namespace BusinessLogicTest
                             Name = "Building1",
                             Manager = manager
                         }
-                    }
+                    },
+                    ManagerId = manager.Id
                 },
                 new Request
                 {
@@ -163,7 +167,8 @@ namespace BusinessLogicTest
                             Name = "Building2",
                             Manager = manager
                         }
-                    }
+                    },
+                    ManagerId = manager.Id
                 },
                 new Request
                 {
@@ -175,7 +180,8 @@ namespace BusinessLogicTest
                             Name = "Building2",
                             Manager = manager
                         }
-                    }
+                    },
+                    ManagerId = manager.Id
                 },
                 new Request
                 {
@@ -188,6 +194,7 @@ namespace BusinessLogicTest
                             Manager = manager
                         }
                     },
+                    ManagerId = manager.Id,
                     Status = RequestStatus.Completed,
                     StartingDate = DateTime.Now.AddHours(-2),
                     CompletionDate = DateTime.Now
@@ -203,12 +210,12 @@ namespace BusinessLogicTest
                             Manager = manager
                         }
                     },
+                    ManagerId = manager.Id,
                     Status = RequestStatus.InProgress,
                     StartingDate = DateTime.Now.AddHours(-2)
                 }
             };
 
-            userRepositoryMock.Setup(u => u.GetUserById(manager.Id)).Returns(manager);
             userRepositoryMock.Setup(u => u.GetUserById(employee1.Id)).Returns(employee1);
             userRepositoryMock.Setup(u => u.GetUserById(employee2.Id)).Returns(employee2);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);

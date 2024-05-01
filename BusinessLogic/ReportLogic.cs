@@ -2,7 +2,6 @@
 using Domain;
 using LogicInterfaces;
 using RepositoryInterfaces;
-using System.Collections.Generic;
 
 namespace BusinessLogic
 {
@@ -19,16 +18,14 @@ namespace BusinessLogic
 
         public IEnumerable<(string, int, int, int, double)> GetReport(Guid managerId, string filter)
         {
-            User manager = _userRepository.GetUserById(managerId);
-
             if (filter.ToLower().Equals("building"))
             {
-                IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
+                IEnumerable<Request> requests = _requestRepository.GetAllRequestsWithBuilding().Where(r => r.ManagerId == managerId);
                 return GenerateReport(requests, new BuildingRequestReport());
             }
             if (filter.ToLower().Equals("employee"))
             {
-                IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.Flat.Building.Manager.Equals(manager));
+                IEnumerable<Request> requests = _requestRepository.GetAllRequests().Where(r => r.ManagerId == managerId);
                 List<(string, int, int, int, double)> reportWithIds = GenerateReport(requests, new EmployeeRequestReport()).ToList();
                 List<(string, int, int, int, double)> reportWithNames = new List<(string, int, int, int, double)>();
                 

@@ -26,9 +26,9 @@ namespace ManagementApi.Controllers
 
         [HttpPut("{id}")]
         [AuthenticationFilter(["MaintenanceEmployee"])]
-        public IActionResult UpdateRequestStatusById([FromRoute] Guid requestId, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
+        public IActionResult UpdateRequestStatusById([FromRoute] Guid id, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
         {
-            RequestResponseModel response = new RequestResponseModel(_requestLogic.UpdateRequestStatusById(requestId, requestUpdateStatusModel.ToEntity()));
+            RequestResponseModel response = new RequestResponseModel(_requestLogic.UpdateRequestStatusById(id, requestUpdateStatusModel.ToEntity()));
             return Ok(response);
         }
     }

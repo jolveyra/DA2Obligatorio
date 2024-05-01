@@ -9,6 +9,7 @@ namespace WebModels.RequestsModels
         public Guid FlatId { get; set; }
         public string CategoryName { get; set; }
         public Guid AssignedEmployeeId { get; set; }
+        public string Status { get; set; }
 
         public RequestResponseModel(Request request)
         {
@@ -17,6 +18,7 @@ namespace WebModels.RequestsModels
             FlatId = request.Flat.Id;
             CategoryName = request.Category.Name;
             AssignedEmployeeId = request.AssignedEmployeeId;
+            Status = request.Status.ToString();
         }
 
         public override bool Equals(object obj)
