@@ -78,9 +78,9 @@ namespace ManagementApi.Controllers
 
         [HttpPut("{buildingId}/flats/{flatId}")]
         [AuthenticationFilter(["Manager"])]
-        public IActionResult UpdateFlatByFlatId([FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
+        public IActionResult UpdateFlatByFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
-            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(flatId, updateFlatRequest.ToEntity(), updateFlatRequest.ChangeOwner)));
+            return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity(), updateFlatRequest.ChangeOwner)));
         }
 
         [HttpGet("{buildingId}/flats/{flatId}")]

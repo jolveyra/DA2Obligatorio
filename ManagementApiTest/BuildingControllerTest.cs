@@ -330,15 +330,16 @@ namespace ManagementApiTest
                     Email = "gonzabergessiobolso@gmail.com",
                 },
                 Bathrooms = 3,
-                HasBalcony = true
+                HasBalcony = true,
+                Building = new Building() { Id = buildingId }
             };
 
-            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Flat>(), It.IsAny<bool>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Flat>(), It.IsAny<bool>())).Returns(expected);
 
             FlatResponseModel expectedResult = new FlatResponseModel(expected);
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            OkObjectResult resultObject = buildingController.UpdateFlatByFlatId(expected.Id, updateFlatRequest) as OkObjectResult;
+            OkObjectResult resultObject = buildingController.UpdateFlatByFlatId(buildingId, expected.Id, updateFlatRequest) as OkObjectResult;
             FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;
 
             buildingLogicMock.VerifyAll();

@@ -243,12 +243,18 @@ public class BuildingLogic : IBuildingLogic
         }
     }
 
-    public Flat UpdateFlat(Guid flatId, Flat flat, bool changeOwner)
+    public Flat UpdateFlat(Guid buildingId, Guid flatId, Flat flat, bool changeOwner)
     {
         ValidateFlat(flat);
         ValidateOwner(flat.Owner);
 
-        Flat existingFlat = _iBuildingRepository.GetFlatByFlatId(flatId);
+        Flat existingFlat = _iBuildingRepository.GetAllBuildingFlats(buildingId).FirstOrDefault(f => f.Id == flatId);
+
+        if(existingFlat is null)
+        {
+            throw new BuildingException("Flat not found in building");
+        }
+
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
         OverrideFlatInfo(flat, existingFlat);
