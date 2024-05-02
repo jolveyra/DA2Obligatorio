@@ -312,6 +312,23 @@ namespace BusinessLogicTest
             Assert.IsTrue(exception.Message.Equals("The invitation cannot be deleted"));
         }
 
+        [TestMethod]
+        public void UpdateInvitationWithNoBodyTest()
+        {
+            Guid id= Guid.NewGuid();
+            Exception exception = null;
 
+            try
+            {
+                invitationLogic.UpdateInvitationStatus(id, null);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The field isAccepted is missing in the body of the request"));
+        }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class UpdateInvitationRequestModel
     {
-        public bool IsAccepted { get; set; }
+        public bool? IsAccepted { get; set; }
     }
 }

@@ -55,19 +55,24 @@ namespace BusinessLogic
             return _invitationRepository.GetInvitationById(id);
         }
 
-        public Invitation UpdateInvitationStatus(Guid id, bool isAccepted)
+        public Invitation UpdateInvitationStatus(Guid id, bool? isAccepted)
         {
-            Invitation invitation = GetInvitationById(id);
+            if (isAccepted is null)
+            {
+                throw new InvitationException("The field isAccepted is missing in the body of the request");
+            }
 
+            Invitation invitation = GetInvitationById(id);
+            
             if (invitation.IsAnswered)
             {
                 throw new InvitationException("The invitation has already been answered");
             }
 
             invitation.IsAnswered = true;
-            invitation.IsAccepted = isAccepted;
+            invitation.IsAccepted = (bool)isAccepted;
 
-            if (isAccepted)
+            if ((bool)isAccepted)
             {
                 UserLogic.CreateManager(_userRepository, _sessionRepository, new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword });
             }
