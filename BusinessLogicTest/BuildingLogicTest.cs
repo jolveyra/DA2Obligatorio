@@ -667,17 +667,37 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void GetFlatByFlatIdTestOk()
+    public void GetFlatByBuildingAndFlatIdTestOk()
     {
         Flat flat = new Flat();
 
-        buildingRepositoryMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(flat);
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { flat });
 
-        Flat result = buildingLogic.GetFlatByFlatId(It.IsAny<Guid>());
+        Flat result = buildingLogic.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(flat, result);
+    }
+
+
+    [TestMethod]
+    public void GetFlatByBuildingAndFlatIdTestFlatNotFoundInBuilding()
+    {
+        Flat flat = new Flat();
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { });
+
+        try
+        {
+
+            Flat result = buildingLogic.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
+        }catch(Exception e)
+        {
+            buildingRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(BuildingException));
+            Assert.AreEqual(e.Message, "Flat not found in building");
+        }
     }
 
     [TestMethod]
@@ -734,6 +754,70 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.AreEqual(expected, result);
+    }
+
+
+
+    [TestMethod]
+    public void UpdateFlatByFlatIdTestFlatNotFoundInBuilding()
+    {
+        Flat toUpdateFlat = new Flat()
+        {
+            Floor = 3,
+            Number = 303,
+            Bathrooms = 3,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Email = "pedro@mail.com",
+                Name = "Pedro",
+                Surname = "De Los Naranjos",
+            },
+            Building = new Building()
+        };
+        Flat flat = new Flat()
+        {
+            Floor = 3,
+            Number = 304,
+            Bathrooms = 3,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Email = "pedro@mail.com",
+                Name = "Pedro",
+                Surname = "De Los Naranjos",
+            },
+        };
+        Flat expected = new Flat()
+        {
+            Floor = 3,
+            Number = 304,
+            Bathrooms = 3,
+            Rooms = 1,
+            HasBalcony = true,
+            Owner = new Person()
+            {
+                Email = "pedro@mail.com",
+                Name = "Pedro",
+                Surname = "De Los Naranjos",
+            },
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() {  });
+        peopleRepositoryMock.Setup(repo => repo.GetPeople()).Returns(new List<Person>());
+        peopleRepositoryMock.Setup(repo => repo.UpdatePerson(It.IsAny<Person>())).Returns(expected.Owner);
+
+        try
+        {
+            Flat result = buildingLogic.UpdateFlat(It.IsAny<Guid>(), It.IsAny<Guid>(), flat, false);
+        }catch(Exception e)
+        {
+            buildingRepositoryMock.VerifyAll();
+            Assert.IsInstanceOfType(e, typeof(BuildingException));
+            Assert.AreEqual(e.Message, "Flat not found in building");
+        }
     }
 
     [TestMethod]

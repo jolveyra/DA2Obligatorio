@@ -85,9 +85,9 @@ namespace ManagementApi.Controllers
 
         [HttpGet("{buildingId}/flats/{flatId}")]
         [AuthenticationFilter(["Manager"])]
-        public IActionResult GetFlatByFlatId([FromRoute] Guid flatId)
+        public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
-            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByFlatId(flatId)));
+            return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));
 
         }
     }

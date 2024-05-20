@@ -270,7 +270,7 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetFlatByFlatIdTestOk()
+        public void GetFlatByBuildingAndFlatIdTestOk()
         {
             Flat expected = new Flat()
             {
@@ -288,11 +288,11 @@ namespace ManagementApiTest
             };
 
             FlatResponseModel expectedResult = new FlatResponseModel(expected);
-            buildingLogicMock.Setup(x => x.GetFlatByFlatId(It.IsAny<Guid>())).Returns(expected);
+            buildingLogicMock.Setup(x => x.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(expected);
 
             OkObjectResult expectedObjectResult = new OkObjectResult(expectedResult);
 
-            IActionResult result = buildingController.GetFlatByFlatId(It.IsAny<Guid>());
+            IActionResult result = buildingController.GetFlatByBuildingAndFlatId(It.IsAny<Guid>(), It.IsAny<Guid>());
 
             OkObjectResult resultObject = result as OkObjectResult;
             FlatResponseModel resultValue = resultObject.Value as FlatResponseModel;

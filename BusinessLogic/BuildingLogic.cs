@@ -195,9 +195,17 @@ public class BuildingLogic : IBuildingLogic
 
     }
 
-    public Flat GetFlatByFlatId(Guid flatId)
+    public Flat GetFlatByBuildingAndFlatId(Guid buildingId, Guid flatId)
     {
-        return _iBuildingRepository.GetFlatByFlatId(flatId);
+
+        Flat existingFlat = _iBuildingRepository.GetAllBuildingFlats(buildingId).FirstOrDefault(f => f.Id == flatId);
+
+        if (existingFlat is null)
+        {
+            throw new BuildingException("Flat not found in building");
+        }
+
+        return existingFlat;
     }
 
     public Building UpdateBuilding(Guid buildingId, Building buildingData)
@@ -247,18 +255,18 @@ public class BuildingLogic : IBuildingLogic
     {
         ValidateFlat(flat);
         ValidateOwner(flat.Owner);
-
-        Flat existingFlat = _iBuildingRepository.GetAllBuildingFlats(buildingId).FirstOrDefault(f => f.Id == flatId);
-
-        if(existingFlat is null)
-        {
-            throw new BuildingException("Flat not found in building");
-        }
+        Flat existingFlat = GetFlatFromGivenBuilding(buildingId, flatId);
 
         CheckUniqueFlatNumberInBuilding(existingFlat, flat);
 
         OverrideFlatInfo(flat, existingFlat);
+        ChangeOwnerOrUpdateOwnerInfo(flat, changeOwner, existingFlat);
 
+        return _iBuildingRepository.UpdateFlat(existingFlat);
+    }
+
+    private void ChangeOwnerOrUpdateOwnerInfo(Flat flat, bool changeOwner, Flat existingFlat)
+    {
         if (changeOwner)
         {
             ChangeOwner(flat, existingFlat);
@@ -267,8 +275,18 @@ public class BuildingLogic : IBuildingLogic
         {
             UpdateOwnerInfo(flat, existingFlat);
         }
+    }
 
-        return _iBuildingRepository.UpdateFlat(existingFlat);
+    private Flat GetFlatFromGivenBuilding(Guid buildingId, Guid flatId)
+    {
+        Flat existingFlat = _iBuildingRepository.GetAllBuildingFlats(buildingId).FirstOrDefault(f => f.Id == flatId);
+
+        if (existingFlat is null)
+        {
+            throw new BuildingException("Flat not found in building");
+        }
+
+        return existingFlat;
     }
 
     private void UpdateOwnerInfo(Flat flat, Flat existingFlat)

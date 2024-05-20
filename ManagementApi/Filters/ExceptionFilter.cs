@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace ManagementApi.Filters
 {
     public class ExceptionFilter : ExceptionFilterAttribute
-    {
+    {   
         public override void OnException(ExceptionContext context)
         {
             if (context.Exception is BusinessLogicException) 
