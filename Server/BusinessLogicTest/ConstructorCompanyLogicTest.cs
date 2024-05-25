@@ -121,5 +121,23 @@ namespace BusinessLogicTest
             Assert.AreEqual(exception.Message, "Constructor company name cannot be empty");
         }
 
+        [TestMethod]
+        public void GetConstructorCompanyByIdTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = id,
+                Name = "ConstructorCompany 1"
+            };
+
+            constructorCompanyRepositoryMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
+
+            ConstructorCompany result = constructorCompanyLogic.GetConstructorCompanyById(id);
+
+            constructorCompanyRepositoryMock.VerifyAll();
+            Assert.AreEqual(constructorCompany, result);
+        }
+
     }
 }

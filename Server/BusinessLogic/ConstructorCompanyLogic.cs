@@ -45,5 +45,10 @@ namespace BusinessLogic
         {
             return _constructorCompanyRepository.GetAllConstructorCompanies();
         }
+
+        public ConstructorCompany GetConstructorCompanyById(Guid id)
+        {
+            return _constructorCompanyRepository.GetConstructorCompanyById(id);
+        }
     }
 }
