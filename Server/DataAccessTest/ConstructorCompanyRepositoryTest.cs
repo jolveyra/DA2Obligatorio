@@ -72,5 +72,24 @@ namespace DataAccessTest
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        public void GetConstructorCompanyByIdTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = id,
+                Name = "ConstructorCompany1"
+            };
+
+            mockContext.Setup(c => c.ConstructorCompanies).ReturnsDbSet(new List<ConstructorCompany> { constructorCompany });
+
+            ConstructorCompany result = constructorCompanyRepository.GetConstructorCompanyById(id);
+
+            mockContext.Verify(c => c.ConstructorCompanies, Times.Once());
+
+            Assert.AreEqual(constructorCompany, result);
+        }
+
     }
 }

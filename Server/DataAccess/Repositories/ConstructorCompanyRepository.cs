@@ -34,7 +34,7 @@ namespace DataAccess.Repositories
 
         public ConstructorCompany GetConstructorCompanyById(Guid guid)
         {
-            throw new NotImplementedException();
+            return _context.ConstructorCompanies.FirstOrDefault(c => c.Id == guid);
         }
     }
 }
