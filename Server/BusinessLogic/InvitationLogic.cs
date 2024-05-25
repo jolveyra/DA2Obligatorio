@@ -63,22 +63,43 @@ namespace BusinessLogic
                 throw new InvitationException("The field isAccepted is missing in the body of the request");
             }
 
-            Invitation invitation = GetInvitationById(id);
-            
-            if (invitation.IsAnswered)
-            {
-                throw new InvitationException("The invitation has already been answered");
-            }
+            Invitation invitation = RetrieveUpdatableInvitation(id);
 
             invitation.IsAnswered = true;
             invitation.IsAccepted = (bool)isAccepted;
 
             if ((bool)isAccepted)
             {
-                UserLogic.CreateManager(_userRepository, _sessionRepository, new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword });
+                CreateUser(invitation);
             }
 
             return _invitationRepository.UpdateInvitation(invitation);
+        }
+
+        private void CreateUser(Invitation invitation)
+        {
+            User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
+
+            if (invitation.Role == InvitationRole.Manager)
+            {
+                UserLogic.CreateManager(_userRepository, _sessionRepository, user);
+            }
+            else
+            {
+
+            }
+        }
+
+        private Invitation RetrieveUpdatableInvitation(Guid id)
+        {
+            Invitation invitation = GetInvitationById(id);
+
+            if (invitation.IsAnswered)
+            {
+                throw new InvitationException("The invitation has already been answered");
+            }
+
+            return invitation;
         }
 
         private static void ValidateInvitation(Invitation invitation)
