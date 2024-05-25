@@ -21,7 +21,9 @@ namespace DataAccess.Repositories
 
         public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany)
         {
-            throw new NotImplementedException();
+            _context.ConstructorCompanies.Add(constructorCompany);
+            _context.SaveChanges();
+            return constructorCompany;
         }
 
         public IEnumerable<ConstructorCompany> GetAllConstructorCompanies()

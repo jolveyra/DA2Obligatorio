@@ -41,7 +41,34 @@ namespace DataAccessTest
             IEnumerable<ConstructorCompany> result = constructorCompanyRepository.GetAllConstructorCompanies();
 
             CollectionAssert.AreEqual(constructorCompanies.ToList(), result.ToList());
-        }   
+        }
+
+        [TestMethod]
+        public void CreateConstructorCompanyTestOk()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany1"
+            };
+            ConstructorCompany expected = new ConstructorCompany()
+            {
+                Id = constructorCompany.Id,
+                Name = "ConstructorCompany1"
+            };
+
+            mockContext.Setup(x => x.ConstructorCompanies).ReturnsDbSet(new List<ConstructorCompany> { });
+            mockContext.Setup(x => x.Add(constructorCompany));
+            mockContext.Setup(x => x.SaveChanges()).Returns(1);
+
+            ConstructorCompany result = constructorCompanyRepository.CreateConstructorCompany(constructorCompany);
+
+            mockContext.Verify(x => x.ConstructorCompanies, Times.Once());
+            mockContext.Verify(x => x.ConstructorCompanies.Add(constructorCompany), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+
+            Assert.AreEqual(expected, result);
+        }
 
     }
 }
