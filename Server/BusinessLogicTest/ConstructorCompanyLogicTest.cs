@@ -7,6 +7,8 @@ using Domain;
 using RepositoryInterfaces;
 using BusinessLogic;
 using Moq;
+using CustomExceptions;
+using LogicInterfaces;
 
 namespace BusinessLogicTest
 {
@@ -60,6 +62,34 @@ namespace BusinessLogicTest
             constructorCompanyRepositoryMock.VerifyAll();
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void CreateConstructorCompanyTestNameAlreadyExists()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany1"
+            };
+            constructorCompanyRepositoryMock.Setup(x => x.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { constructorCompany });
+
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.CreateConstructorCompany(constructorCompany);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            constructorCompanyRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "Constructor company with same name already exists");
         }
 
     }
