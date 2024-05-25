@@ -5,6 +5,7 @@ namespace Domain
     {
         Administrator,
         Manager,
-        MaintenanceEmployee
+        MaintenanceEmployee,
+        ConstructorCompanyAdmin
     }
 }

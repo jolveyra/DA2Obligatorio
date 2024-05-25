@@ -38,6 +38,13 @@ namespace BusinessLogic
             return CreateUser(userRepository, sessionRepository, user);
         }
 
+        public static User CreateConstructorCompanyAdmin(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
+        {
+            user.Role = Role.ConstructorCompanyAdmin;
+            user.Surname = "";
+            return CreateUser(userRepository, sessionRepository, user);
+        }
+
         private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository,User user)
         {
             ValidateUser(user);
