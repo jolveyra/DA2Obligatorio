@@ -20,6 +20,7 @@ namespace BusinessLogic
 
         public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany)
         {
+            CheckNotNullOrEmptyConstructorCompanyName(constructorCompany);
             CheckUniqueConstructorCompanyName(constructorCompany);
             return _constructorCompanyRepository.CreateConstructorCompany(constructorCompany);
         }
@@ -29,6 +30,14 @@ namespace BusinessLogic
             if (GetAllConstructorCompanies().Any(c => c.Name == constructorCompany.Name))
             {
                 throw new ConstructorCompanyException("Constructor company with same name already exists");
+            }
+        }
+
+        private void CheckNotNullOrEmptyConstructorCompanyName(ConstructorCompany constructorCompany)
+        {
+            if (string.IsNullOrEmpty(constructorCompany.Name))
+            {
+                throw new ConstructorCompanyException("Constructor company name cannot be empty");
             }
         }
 

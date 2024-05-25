@@ -55,6 +55,9 @@ namespace BusinessLogicTest
                 Id = constructorCompany.Id,
                 Name = "ConstructorCompany1"
             };
+
+            constructorCompanyRepositoryMock.Setup(x => x.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { });
+
             constructorCompanyRepositoryMock.Setup(x => x.CreateConstructorCompany(It.IsAny<ConstructorCompany>())).Returns(expected);
 
             ConstructorCompany result = constructorCompanyLogic.CreateConstructorCompany(constructorCompany);
@@ -90,6 +93,32 @@ namespace BusinessLogicTest
 
             Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
             Assert.AreEqual(exception.Message, "Constructor company with same name already exists");
+        }
+
+        [TestMethod]
+        public void CreateConstructorCompanyTestNullName()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = null
+            };
+
+            constructorCompanyRepositoryMock.Setup(x => x.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { constructorCompany });
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.CreateConstructorCompany(constructorCompany);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "Constructor company name cannot be empty");
         }
 
     }
