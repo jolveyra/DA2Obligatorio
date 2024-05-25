@@ -13,6 +13,7 @@ namespace DataAccess.Context
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
+        public virtual DbSet<ConstructorCompany> ConstructorCompanies { get; set; }
 
         public BuildingBossContext() { }
 
