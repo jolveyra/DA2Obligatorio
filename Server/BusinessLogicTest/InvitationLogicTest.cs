@@ -351,5 +351,24 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("The Role field cannot be empty"));
         }
+
+        [TestMethod]
+        public void CreateInvitationWithNonExistingRoleTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation, "This role does not exist");
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The Role field must be either 'ConstructorCompanyAdmin' or 'Manager'"));
+        }
     }
 }

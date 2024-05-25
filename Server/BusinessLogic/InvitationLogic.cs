@@ -113,6 +113,22 @@ namespace BusinessLogic
             {
                 throw new InvitationException("The Role field cannot be empty");
             }
+
+            role = role.ToLower();
+
+            if (role != "constructorcompanyadmin" && role != "manager")
+            {
+                throw new InvitationException("The Role field must be either 'ConstructorCompanyAdmin' or 'Manager'");
+            }
+
+            if (role == "constructorcompanyadmin")
+            {
+                invitation.Role = InvitationRole.ConstructorCompanyAdmin;
+            }
+            else
+            {
+                invitation.Role = InvitationRole.Manager;
+            }
         }
     }
 }
