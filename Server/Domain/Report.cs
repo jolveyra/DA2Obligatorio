@@ -16,5 +16,15 @@
             Completed = 0;
             AvgTimeToComplete = 0;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Report report && 
+                   Filter == report.Filter && 
+                   Pending == report.Pending && 
+                   InProgress == report.InProgress && 
+                   Completed == report.Completed && 
+                   AvgTimeToComplete == report.AvgTimeToComplete;
+        }
     }
 }

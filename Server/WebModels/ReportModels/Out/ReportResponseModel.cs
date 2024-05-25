@@ -1,4 +1,6 @@
-﻿namespace WebModels.ReportModels
+﻿using Domain;
+
+namespace WebModels.ReportModels
 {
     public class ReportResponseModel
     {
@@ -8,13 +10,13 @@
         public int CompletedRequests { get; set; }
         public double AverageCompletionTime { get; set; }
 
-        public ReportResponseModel((string, int, int, int, double) tuple)
+        public ReportResponseModel(Report report)
         {
-            FilterName = tuple.Item1;
-            PendingRequests = tuple.Item2;
-            InProgressRequests = tuple.Item3;
-            CompletedRequests = tuple.Item4;
-            AverageCompletionTime = tuple.Item5;
+            FilterName = report.Filter;
+            PendingRequests = report.Pending;
+            InProgressRequests = report.InProgress;
+            CompletedRequests = report.Completed;
+            AverageCompletionTime = report.AvgTimeToComplete;
         }
 
         public override bool Equals(object? obj)

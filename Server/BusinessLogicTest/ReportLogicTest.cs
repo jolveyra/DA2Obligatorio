@@ -121,13 +121,13 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.Setup(r => r.GetAllRequestsWithBuilding()).Returns(requests);
 
-            List<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
+            List<Report> expectedReport = new List<Report>
             {
-                ("Building1", 2, 1, 0, 0),
-                ("Building2", 1, 0, 1, 2)
+                new Report ("Building1") { Pending = 2, InProgress = 1 },
+                new Report ("Building2") { Pending = 1, InProgress = 0, Completed = 1, AvgTimeToComplete = 2 },
             };
 
-            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(manager.Id, filter);
+            IEnumerable<Report> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
@@ -220,13 +220,13 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(u => u.GetUserById(employee2.Id)).Returns(employee2);
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<(string, int, int, int, double)> expectedReport = new List<(string, int, int, int, double)>
+            IEnumerable<Report> expectedReport = new List<Report>
             {
-                ("Employee1 Employee1", 2, 1, 0, 0),
-                ("Employee2 Employee2", 1, 0, 1, 2)
+                new Report ("Employee1 Employee1") { Pending = 2, InProgress = 1 },
+                new Report ("Employee2 Employee2") { Pending = 1, InProgress = 0, Completed = 1, AvgTimeToComplete = 2 }
             };
 
-            IEnumerable<(string, int, int, int, double)> actualReport = reportLogic.GetReport(manager.Id, filter);
+            IEnumerable<Report> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
