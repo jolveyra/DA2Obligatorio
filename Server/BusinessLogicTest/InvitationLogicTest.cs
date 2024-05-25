@@ -109,7 +109,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation, "manager");
+                invitationLogic.CreateInvitation(invitation, "constructorcompanyadmin");
             }
             catch (Exception e)
             {
@@ -157,8 +157,8 @@ namespace BusinessLogicTest
         public void UpdateInvitationStatusTest()
         {
             Guid id = Guid.NewGuid();
-            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
-            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false, IsAnswered = false, Role = InvitationRole.Manager };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.Manager  };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
             userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
