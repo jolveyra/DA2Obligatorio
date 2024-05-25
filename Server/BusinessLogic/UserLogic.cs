@@ -38,6 +38,13 @@ namespace BusinessLogic
             return CreateUser(userRepository, sessionRepository, user);
         }
 
+        public static User CreateConstructorCompanyAdmin(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
+        {
+            user.Role = Role.ConstructorCompanyAdmin;
+            user.Surname = "";
+            return CreateUser(userRepository, sessionRepository, user);
+        }
+
         private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository,User user)
         {
             ValidateUser(user);
@@ -80,7 +87,7 @@ namespace BusinessLogic
                 throw new UserException("The Name field cannot be empty");
             }
 
-            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager)
+            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager && user.Role != Role.ConstructorCompanyAdmin)
             {
                 throw new UserException("The Surname field cannot be empty for non manager users");
             }

@@ -69,10 +69,10 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateInvitationTestCreated()
         {
-            CreateInvitationRequestModel createInvitationRequest = new CreateInvitationRequestModel() { Name = "Juan", Email = "juan@gmail.com", DaysToExpiration = 7 };
+            CreateInvitationRequestModel createInvitationRequest = new CreateInvitationRequestModel() { Name = "Juan", Email = "juan@gmail.com", DaysToExpiration = 7, Role = InvitationRole.Manager.ToString() };
             Invitation expected = new Invitation() { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com" };
 
-            invitationLogicMock.Setup(i => i.CreateInvitation(It.IsAny<Invitation>())).Returns(expected);
+            invitationLogicMock.Setup(i => i.CreateInvitation(It.IsAny<Invitation>(), It.IsAny<string>())).Returns(expected);
 
             InvitationResponseModel expectedResult = new InvitationResponseModel(expected);
             CreatedAtActionResult expectedObjectResult = new CreatedAtActionResult("CreateInvitation", "CreateInvitation", new { Id = expected.Id }, expectedResult);

@@ -8,6 +8,7 @@ namespace WebModels.InvitationModels
         public string Name { get; set; }
         public string Email { get; set; }
         public string ExpirationDate { get; set; }
+        public string Role { get; set; }
         public bool IsAccepted { get; set; }
         public bool IsAnswered { get; set; }
 
@@ -17,6 +18,7 @@ namespace WebModels.InvitationModels
             Name = invitation.Name;
             Email = invitation.Email;
             ExpirationDate = invitation.ExpirationDate.ToString("d/M/yyyy");
+            Role = invitation.Role.ToString();
             IsAccepted = invitation.IsAccepted;
             IsAnswered = invitation.IsAnswered;
         }

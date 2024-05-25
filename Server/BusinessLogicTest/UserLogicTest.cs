@@ -416,7 +416,23 @@ namespace BusinessLogicTest
                 Assert.IsInstanceOfType(e, typeof(UserException));
                 Assert.AreEqual("Invalid email or password", e.Message);
             }
+        }
 
+        [TestMethod]
+        public void CreateConstructorCompanyAdminTest()
+        {
+            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin };
+            Session session = new Session() { UserId = user.Id };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+            sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
+
+            user.Id = Guid.NewGuid();
+            User result = _userLogic.CreateAdministrator(user);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(user, result);
         }
     }
 }

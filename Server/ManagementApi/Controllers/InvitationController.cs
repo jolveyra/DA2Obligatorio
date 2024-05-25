@@ -34,7 +34,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Administrator"])]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequestModel createInvitationRequestModel)
         {
-            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity()));
+            InvitationResponseModel response = new InvitationResponseModel(_invitationLogic.CreateInvitation(createInvitationRequestModel.ToEntity(), createInvitationRequestModel.Role));
             return CreatedAtAction("CreateInvitation", new { Id = response.Id }, response);
         }
 

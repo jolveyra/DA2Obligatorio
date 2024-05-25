@@ -7,6 +7,7 @@ namespace WebModels.InvitationModels
         public string Name { get; set; }
         public string Email { get; set; }
         public uint DaysToExpiration { get; set; }
+        public string Role { get; set; }
 
         public Invitation ToEntity()
         {

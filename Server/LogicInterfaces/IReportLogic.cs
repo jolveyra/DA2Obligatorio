@@ -1,7 +1,9 @@
-﻿namespace LogicInterfaces
+﻿using Domain;
+
+namespace LogicInterfaces
 {
     public interface IReportLogic
     {
-        public IEnumerable<(string, int, int, int, double)> GetReport(Guid managerId, string filter);
+        public IEnumerable<Report> GetReport(Guid managerId, string filter);
     }
 }

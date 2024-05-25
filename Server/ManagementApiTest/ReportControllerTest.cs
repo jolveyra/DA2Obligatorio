@@ -1,4 +1,5 @@
-﻿using LogicInterfaces;
+﻿using Domain;
+using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace ManagementApiTest
         public void GetReportTestOk()
         {
             Guid managerId = Guid.NewGuid();
-            IEnumerable<(string, int, int, int, double)> report = new List<(string, int, int, int, double)>
+            IEnumerable<Report> report = new List<Report>
             {
-                ("Building1", 1, 1, 1, 1),
-                ("Building2", 0, 0, 1, 5)
+                new Report("Building1") { Pending = 1, InProgress = 1, Completed = 1, AvgTimeToComplete = 1 },
+                new Report("Building2") { Completed = 1, AvgTimeToComplete = 5 }
             };
             IEnumerable<ReportResponseModel> expected = new List<ReportResponseModel>
             {

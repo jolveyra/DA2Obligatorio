@@ -44,14 +44,16 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateInvitationTest()
         {
-            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6)};
 
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
 
             invitation.Id = Guid.NewGuid();
+            Invitation result = invitationLogic.CreateInvitation(invitation, "manager");
+
+            invitation.Role = InvitationRole.Manager;
             Invitation expected = invitation;
-            Invitation result = invitationLogic.CreateInvitation(invitation);
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
@@ -68,7 +70,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -88,7 +90,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -107,7 +109,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "constructorcompanyadmin");
             }
             catch (Exception e)
             {
@@ -126,7 +128,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -155,8 +157,8 @@ namespace BusinessLogicTest
         public void UpdateInvitationStatusTest()
         {
             Guid id = Guid.NewGuid();
-            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
-            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true };
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false, IsAnswered = false, Role = InvitationRole.Manager };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.Manager  };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
             userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
@@ -329,6 +331,65 @@ namespace BusinessLogicTest
 
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("The field isAccepted is missing in the body of the request"));
+        }
+
+        [TestMethod]
+        public void CreateInvitationWithEmptyRoleTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation, "");
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The Role field cannot be empty"));
+        }
+
+        [TestMethod]
+        public void CreateInvitationWithNonExistingRoleTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation, "This role does not exist");
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The Role field must be either 'ConstructorCompanyAdmin' or 'Manager'"));
+        }
+
+        [TestMethod]
+        public void UpdateInvitationStatusToConstructorCompanyTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false, IsAnswered = false, Role = InvitationRole.ConstructorCompanyAdmin };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.ConstructorCompanyAdmin };
+
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
+            sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
+
+            Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+
+            invitationRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
         }
     }
 }
