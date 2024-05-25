@@ -370,5 +370,26 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("The Role field must be either 'ConstructorCompanyAdmin' or 'Manager'"));
         }
+
+        [TestMethod]
+        public void UpdateInvitationStatusToConstructorCompanyTest()
+        {
+            Guid id = Guid.NewGuid();
+            Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false, IsAnswered = false, Role = InvitationRole.ConstructorCompanyAdmin };
+            Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.ConstructorCompanyAdmin };
+
+            userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
+            userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
+            sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
+            invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
+
+            Invitation result = invitationLogic.UpdateInvitationStatus(id, true);
+
+            invitationRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            Assert.IsTrue(expected.Equals(result));
+        }
     }
 }

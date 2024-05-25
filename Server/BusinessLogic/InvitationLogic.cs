@@ -86,7 +86,7 @@ namespace BusinessLogic
             }
             else
             {
-
+                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, user);
             }
         }
 

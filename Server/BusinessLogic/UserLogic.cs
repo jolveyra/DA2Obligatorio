@@ -87,7 +87,7 @@ namespace BusinessLogic
                 throw new UserException("The Name field cannot be empty");
             }
 
-            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager)
+            if (string.IsNullOrEmpty(user.Surname) && user.Role != Role.Manager && user.Role != Role.ConstructorCompanyAdmin)
             {
                 throw new UserException("The Surname field cannot be empty for non manager users");
             }
