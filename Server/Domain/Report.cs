@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public class RequestReport
+    public class Report
     {
         public string Filter { get; set; }
         public int Pending { get; set; }
@@ -8,7 +8,7 @@
         public int Completed { get; set; }
         public double AvgTimeToComplete { get; set; }
 
-        public RequestReport(string filter)
+        public Report(string filter)
         {
             Filter = filter;
             Pending = 0;

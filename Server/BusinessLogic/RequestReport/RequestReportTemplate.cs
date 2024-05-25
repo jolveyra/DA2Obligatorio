@@ -4,10 +4,10 @@ namespace BusinessLogic
 {
     internal abstract class RequestReportTemplate
     {
-        protected List<RequestReport> requestsReports;
+        protected List<Report> requestsReports;
         protected List<List<Request>> requestsPerFilter;
 
-        public IEnumerable<RequestReport> GenerateReport(IEnumerable<Request> requests)
+        public IEnumerable<Report> GenerateReport(IEnumerable<Request> requests)
         {
             FilterRequests(requests);
             GatherRequestsAmountByState();
@@ -26,7 +26,7 @@ namespace BusinessLogic
 
         private void IterateThroughListOfRequestByFilter(int indexOfReportFilter)
         {
-            RequestReport report = requestsReports[indexOfReportFilter];
+            Report report = requestsReports[indexOfReportFilter];
 
             for (int j = 0; j < requestsPerFilter[indexOfReportFilter].Count; j++)
             {
@@ -40,7 +40,7 @@ namespace BusinessLogic
 
         }
 
-        private void IterateThroughRequests(RequestReport report, Request request)
+        private void IterateThroughRequests(Report report, Request request)
         {
             if (request.Status == RequestStatus.Pending)
             {

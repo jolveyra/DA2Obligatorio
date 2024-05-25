@@ -6,17 +6,17 @@ namespace BusinessLogic
     {
         protected override void FilterRequests(IEnumerable<Request> requests)
         {
-            requestsReports = new List<RequestReport>();
+            requestsReports = new List<Report>();
             requestsPerFilter = new List<List<Request>>();
 
             foreach (Request request in requests)
             {
                 string employeeName = request.AssignedEmployeeId.ToString();
-                RequestReport? report = requestsReports.Find(report => report.Filter == employeeName);
+                Report? report = requestsReports.Find(report => report.Filter == employeeName);
 
                 if (report is null)
                 {
-                    report = new RequestReport(employeeName);
+                    report = new Report(employeeName);
                     requestsReports.Add(report);
                     requestsPerFilter.Add(new List<Request>());
                 }
