@@ -44,14 +44,16 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateInvitationTest()
         {
-            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6)};
 
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
 
             invitation.Id = Guid.NewGuid();
+            Invitation result = invitationLogic.CreateInvitation(invitation, "manager");
+
+            invitation.Role = InvitationRole.Manager;
             Invitation expected = invitation;
-            Invitation result = invitationLogic.CreateInvitation(invitation);
 
             invitationRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
@@ -68,7 +70,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -88,7 +90,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -107,7 +109,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {
@@ -126,7 +128,7 @@ namespace BusinessLogicTest
 
             try
             {
-                invitationLogic.CreateInvitation(invitation);
+                invitationLogic.CreateInvitation(invitation, "manager");
             }
             catch (Exception e)
             {

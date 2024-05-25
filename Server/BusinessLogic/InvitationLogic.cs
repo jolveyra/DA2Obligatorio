@@ -18,8 +18,9 @@ namespace BusinessLogic
             _sessionRepository = sessionRepository;
         }
 
-        public Invitation CreateInvitation(Invitation invitation)
+        public Invitation CreateInvitation(Invitation invitation, string role)
         {
+            //ValidateRole(invitation, role);
             ValidateInvitation(invitation);
             ValidateInvitationEmail(invitation.Email);
 
@@ -105,5 +106,29 @@ namespace BusinessLogic
                 throw new InvitationException("There is already a user with the same email");
             }
         }
+
+        //private void ValidateRole(Invitation invitation, string role)
+        //{
+        //    if (string.IsNullOrEmpty(role))
+        //    {
+        //        throw new InvitationException("The Role field cannot be empty");
+        //    }
+
+        //    role = role.ToLower();
+
+        //    if (role != "constructorcompanyadmin" && role != "manager")
+        //    {
+        //        throw new InvitationException("The Role field must be either 'ConstructorCompanyAdmin' or 'Manager'");
+        //    }
+
+        //    if (role == "constructorcompanyadmin")
+        //    {
+        //        invitation.Role = InvitationRole.ConstructorCompanyAdmin;
+        //    }
+        //    else
+        //    {
+        //        invitation.Role = InvitationRole.Manager;
+        //    }
+        //}
     }
 }

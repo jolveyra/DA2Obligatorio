@@ -18,8 +18,7 @@ namespace WebModels.InvitationModels
                 ExpirationDate = new DateTime(
                     DateTime.Now.Year,
                     DateTime.Now.Month,
-                    DateTime.Now.Day).AddDays(DaysToExpiration < 1 ? 1 : DaysToExpiration),
-                Role = (InvitationRole)Enum.Parse(typeof(InvitationRole), Role) 
+                    DateTime.Now.Day).AddDays(DaysToExpiration < 1 ? 1 : DaysToExpiration)
             };
         }
     }
