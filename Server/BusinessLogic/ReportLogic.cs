@@ -41,9 +41,8 @@ namespace BusinessLogic
             throw new ReportException("Invalid filter");
         }
 
-        private static IEnumerable<(string, int, int, int, double)> GenerateReport(IEnumerable<Request> requests, RequestReport requestReport)
+        private static IEnumerable<(string, int, int, int, double)> GenerateReport(IEnumerable<Request> requests, RequestReportTemplate requestReport)
         {
-
             return requestReport.GenerateReport(requests);
         }
     }

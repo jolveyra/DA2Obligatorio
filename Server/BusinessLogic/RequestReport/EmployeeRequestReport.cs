@@ -2,23 +2,26 @@
 
 namespace BusinessLogic
 {
-    internal class EmployeeRequestReport : RequestReport
+    internal class EmployeeRequestReport : RequestReportTemplate
     {
         protected override void FilterRequests(IEnumerable<Request> requests)
         {
-            requestsFilter = new List<string>();
+            requestsReports = new List<RequestReport>();
             requestsPerFilter = new List<List<Request>>();
 
             foreach (Request request in requests)
             {
                 string employeeName = request.AssignedEmployeeId.ToString();
-                if (!requestsFilter.Contains(employeeName))
+                RequestReport? report = requestsReports.Find(report => report.Filter == employeeName);
+
+                if (report is null)
                 {
-                    requestsFilter.Add(employeeName);
+                    report = new RequestReport(employeeName);
+                    requestsReports.Add(report);
                     requestsPerFilter.Add(new List<Request>());
                 }
 
-                requestsPerFilter[requestsFilter.IndexOf(employeeName)].Add(request);
+                requestsPerFilter[requestsReports.IndexOf(report)].Add(request);
             }
         }
     }
