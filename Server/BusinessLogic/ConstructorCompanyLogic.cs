@@ -17,6 +17,11 @@ namespace BusinessLogic
             _constructorCompanyRepository = constructorCompanyRepository;
         }
 
+        public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany)
+        {
+            return _constructorCompanyRepository.CreateConstructorCompany(constructorCompany);
+        }
+
         public IEnumerable<ConstructorCompany> GetAllConstructorCompanies()
         {
             return _constructorCompanyRepository.GetAllConstructorCompanies();

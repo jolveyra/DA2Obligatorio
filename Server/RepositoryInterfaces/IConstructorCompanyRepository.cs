@@ -9,6 +9,7 @@ namespace RepositoryInterfaces
 {
     public interface IConstructorCompanyRepository
     {
+        ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
         IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
 
     }

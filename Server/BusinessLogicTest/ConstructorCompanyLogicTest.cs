@@ -40,5 +40,27 @@ namespace BusinessLogicTest
             CollectionAssert.AreEqual(constructorCompanies.ToList(), result.ToList());
         }
 
+        [TestMethod]
+        public void CreateConstructorCompanyTestOk()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany1"
+            };
+            ConstructorCompany expected = new ConstructorCompany()
+            {
+                Id = constructorCompany.Id,
+                Name = "ConstructorCompany1"
+            };
+            constructorCompanyRepositoryMock.Setup(x => x.CreateConstructorCompany(It.IsAny<ConstructorCompany>())).Returns(expected);
+
+            ConstructorCompany result = constructorCompanyLogic.CreateConstructorCompany(constructorCompany);
+
+            constructorCompanyRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(expected, result);
+        }
+
     }
 }
