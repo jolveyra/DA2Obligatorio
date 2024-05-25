@@ -2,11 +2,14 @@
 using LogicInterfaces;
 using WebModels.ConstructorCompanyModels;
 using Domain;
+using ManagementApi.Filters;
 
 namespace ManagementApi.Controllers
 {
     [Route("api/v2/constructorCompanies")]
+
     [ApiController]
+    [ExceptionFilter]
     public class ConstructorCompanyController : ControllerBase
     {
 
@@ -18,6 +21,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult CreateConstructorCompany(CreateConstructorCompanyRequestModel constructorCompanyRequestModel)
         {
             ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
@@ -25,12 +29,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult GetAllConstructorCompanies()
         {
             return Ok(_iConstructorCompanyLogic.GetAllConstructorCompanies().Select(constructorCompany => new ConstructorCompanyResponseModel(constructorCompany)).ToList());
         }
 
         [HttpGet("{id}")]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult GetConstructorCompanyById(Guid id)
         {
             return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.GetConstructorCompanyById(id)));
