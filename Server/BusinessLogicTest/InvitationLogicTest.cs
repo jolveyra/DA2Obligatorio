@@ -332,5 +332,24 @@ namespace BusinessLogicTest
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("The field isAccepted is missing in the body of the request"));
         }
+
+        [TestMethod]
+        public void CreateInvitationWithEmptyRoleTest()
+        {
+            Invitation invitation = new Invitation() { Name = "Juan", Email = "", ExpirationDate = DateTime.Now.AddDays(6) };
+            Exception exception = null;
+
+            try
+            {
+                invitationLogic.CreateInvitation(invitation, "");
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvitationException));
+            Assert.IsTrue(exception.Message.Equals("The Role field cannot be empty"));
+        }
     }
 }
