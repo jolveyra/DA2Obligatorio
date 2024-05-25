@@ -74,6 +74,29 @@ namespace ManagementApiTest
             Assert.AreEqual(expectedObject.StatusCode, result.StatusCode);
             Assert.AreEqual(expectedConstructorCompanyResponseModel, resultConstructorCompanyResponseModel);
         }
+
+        [TestMethod]
+        public void GetConstrucorCompanyByIdTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = id,
+                Name = "ConstructorCompany 1"
+            };
+
+            constructorCompanyLogicMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
+
+            OkObjectResult expected = new OkObjectResult(new ConstructorCompanyResponseModel(constructorCompany));
+            OkObjectResult result = constructorCompanyController.GetConstructorCompanyById(id) as OkObjectResult;
+
+            ConstructorCompanyResponseModel expectedObject = expected.Value as ConstructorCompanyResponseModel;
+            ConstructorCompanyResponseModel objectResult = result.Value as ConstructorCompanyResponseModel;
+
+            constructorCompanyLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObject, objectResult);
+        }
     }
 
 }

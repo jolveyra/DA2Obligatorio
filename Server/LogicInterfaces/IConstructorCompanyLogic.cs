@@ -6,5 +6,6 @@ namespace LogicInterfaces
     {
         ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
         public IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
+        ConstructorCompany GetConstructorCompanyById(Guid guid);
     }
 }

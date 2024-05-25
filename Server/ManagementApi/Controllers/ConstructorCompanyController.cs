@@ -17,7 +17,7 @@ namespace ManagementApi.Controllers
             _iConstructorCompanyLogic = iConstructorCompanyLogic;
         }
 
-        public OkObjectResult CreateConstructorCompany(CreateConstructorCompanyRequestModel constructorCompanyRequestModel)
+        public IActionResult CreateConstructorCompany(CreateConstructorCompanyRequestModel constructorCompanyRequestModel)
         {
             ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
             return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.CreateConstructorCompany(constructorCompany)));
@@ -26,6 +26,11 @@ namespace ManagementApi.Controllers
         public IActionResult GetAllConstructorCompanies()
         {
             return Ok(_iConstructorCompanyLogic.GetAllConstructorCompanies().Select(constructorCompany => new ConstructorCompanyResponseModel(constructorCompany)).ToList());
+        }
+
+        public IActionResult GetConstructorCompanyById(Guid id)
+        {
+            return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.GetConstructorCompanyById(id)));
         }
     }
 }
