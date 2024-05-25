@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LogicInterfaces;
 using WebModels.ConstructorCompanyModels;
-
+using Domain;
 
 namespace ManagementApi.Controllers
 {
@@ -15,6 +15,12 @@ namespace ManagementApi.Controllers
         public ConstructorCompanyController(IConstructorCompanyLogic iConstructorCompanyLogic)
         {
             _iConstructorCompanyLogic = iConstructorCompanyLogic;
+        }
+
+        public OkObjectResult CreateConstructorCompany(CreateConstructorCompanyRequestModel constructorCompanyRequestModel)
+        {
+            ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
+            return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.CreateConstructorCompany(constructorCompany)));
         }
 
         public IActionResult GetAllConstructorCompanies()
