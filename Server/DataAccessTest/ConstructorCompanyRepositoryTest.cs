@@ -40,6 +40,8 @@ namespace DataAccessTest
 
             IEnumerable<ConstructorCompany> result = constructorCompanyRepository.GetAllConstructorCompanies();
 
+            mockContext.Verify(c => c.ConstructorCompanies, Times.Once());
+
             CollectionAssert.AreEqual(constructorCompanies.ToList(), result.ToList());
         }
 
