@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export interface AuthResponseData {
   // name: string; // FIXME: Add name to response from API so we show it up front
   token: string;
+  // role: string; // FIXME: Add role to response from API so we can choose what to show
 }
 
 @Injectable({
