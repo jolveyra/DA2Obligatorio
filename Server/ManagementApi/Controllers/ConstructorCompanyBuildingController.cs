@@ -2,6 +2,7 @@
 using LogicInterfaces;
 using WebModels.BuildingModels;
 using ManagementApi.Filters;
+using WebModels.ConstructorCompanyBuildingModels;
 
 
 namespace ManagementApi.Controllers
@@ -35,11 +36,19 @@ namespace ManagementApi.Controllers
                 .Select(constructorCompanyBuilding => new BuildingResponseModel(constructorCompanyBuilding)).ToList());
         }
 
-        [HttpGet]
+        [HttpGet("{buildingId}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetConstructorCompanyBuildingById(Guid buildingId)
+        public OkObjectResult GetConstructorCompanyBuildingById([FromRoute] Guid buildingId)
         {
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.GetConstructorCompanyBuildingById(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string))));
+        }
+
+        [HttpPut("{buildingId}")]
+        
+        public OkObjectResult UpdateConstructorCompanyBuilding([FromRoute] Guid buildingId, UpdateConstructorCompanyBuildingRequestModel request)
+        {
+            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.UpdateConstructorCompanyBuilding(request.ToEntity(), buildingId,
+                Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
     }
 }

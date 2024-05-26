@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using WebModels.BuildingModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using WebModels.ConstructorCompanyBuildingModels;
 
 namespace ManagementApiTest
 {
@@ -174,6 +174,58 @@ namespace ManagementApiTest
             Assert.AreEqual(expectedObject.Value, result.Value);
         }
 
+        [TestMethod]
+        public void UpdateConstructorCompanyBuildingTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            ConstructorCompany constructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Constructor Company 1" };
 
+            User newManager = new User() { Id = Guid.NewGuid(), Name = "Manager 2", Role = Role.Manager };
+
+            Building building = new Building()
+            {
+                Id = id,
+                Name = "Building 1",
+                ConstructorCompany = constructorCompany,
+                Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
+                SharedExpenses = 13,
+                MaintenanceEmployees = new List<Guid>(),
+                Manager = newManager
+            };
+
+
+            UpdateConstructorCompanyBuildingRequestModel updateConstructorCompanyBuildingRequestModel = new UpdateConstructorCompanyBuildingRequestModel()
+            {
+                Name = "Building 1",
+                ManagerId = newManager.Id
+            };
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Administrator 1",
+                ConstructorCompany = constructorCompany
+            };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            constructorCompanyBuildingLogicMock.Setup(c => c.UpdateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(building);
+
+            OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
+
+            ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkObjectResult result = anotherConstructorCompanyBuildingController.UpdateConstructorCompanyBuilding(id, updateConstructorCompanyBuildingRequestModel) as OkObjectResult;
+
+            constructorCompanyBuildingLogicMock.VerifyAll();
+            Assert.AreEqual(expectedObject.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObject.Value, result.Value);
+        }
     }
 }
