@@ -14,7 +14,7 @@ export class AuthComponent {
 
   constructor(private authService: AuthService) {}
 
-  onSubmit(form: NgForm) {
+  onSubmit(form: NgForm): void {
     this.error = "";
 
     if (!form.valid) {
