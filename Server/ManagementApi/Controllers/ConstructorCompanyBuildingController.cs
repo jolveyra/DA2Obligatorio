@@ -34,5 +34,12 @@ namespace ManagementApi.Controllers
                 Guid.Parse(HttpContext.Items["UserId"] as string))
                 .Select(constructorCompanyBuilding => new BuildingResponseModel(constructorCompanyBuilding)).ToList());
         }
+
+        [HttpGet]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
+        public OkObjectResult GetConstructorCompanyBuildingById(Guid buildingId)
+        {
+            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.GetConstructorCompanyBuildingById(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string))));
+        }
     }
 }
