@@ -15,6 +15,16 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddServices();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("ClientPermission", policy =>
+            {
+                policy.AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod();
+            });
+        });
         
         builder.Services.AddConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
 
@@ -28,6 +38,8 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        
+        app.UseCors("ClientPermission");
 
         app.UseAuthorization();
 
