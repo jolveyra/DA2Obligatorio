@@ -92,7 +92,6 @@ namespace ManagementApiTest
             User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
 
             BuildingRequestModel buildingRequest = new BuildingRequestModel() { Name = "Mirador", 
-                ConstructorCompany = "ConstructorCompany", 
                 CornerStreet = "CornerStreet", 
                 DoorNumber = 12, 
                 Flats = 1,

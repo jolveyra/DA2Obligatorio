@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WebModels.BuildingModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace ManagementApiTest
 {
@@ -64,6 +66,52 @@ namespace ManagementApiTest
             CollectionAssert.AreEqual(expectedObject, objectResult);
         }
 
+        [TestMethod]
+        public void CreateConstructorCompanyBuildingTestOk()
+        {
+
+            BuildingRequestModel buildingRequestModel = new BuildingRequestModel()
+            {
+                Name = "Building 1",
+                Flats = 12,
+                DoorNumber = 21,
+                CornerStreet = "Street 1",
+                Street = "Street 2",
+                Latitude = 23,
+                Longitude = 24,
+                SharedExpenses = 13
+            };
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Administrator 1",
+                ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A Constructor Company" }
+            };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            Building building = buildingRequestModel.ToEntity();
+            building.Id = Guid.NewGuid();
+            building.ConstructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+
+            constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<Guid>())).Returns(building);
+
+            OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
+
+            ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkObjectResult result = anotherConstructorCompanyBuildingController.CreateConstructorCompanyBuilding(buildingRequestModel) as OkObjectResult;
+
+            constructorCompanyBuildingLogicMock.VerifyAll();
+            Assert.AreEqual(expectedObject.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObject.Value, result.Value);
+        }
 
 
 
