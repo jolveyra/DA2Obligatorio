@@ -9,5 +9,10 @@
         {
             return obj is ConstructorCompany constructorCompany && Id == constructorCompany.Id;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

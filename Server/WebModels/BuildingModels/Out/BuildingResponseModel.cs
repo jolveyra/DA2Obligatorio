@@ -22,7 +22,7 @@ namespace WebModels.BuildingModels
             Id = building.Id;
             Name = building.Name;
             SharedExpenses = building.SharedExpenses;
-            ConstructorCompany = building.ConstructorCompany;
+            ConstructorCompany = building.ConstructorCompany.ToString();
             Street = building.Address.Street;
             DoorNumber = building.Address.DoorNumber;
             CornerStreet = building.Address.CornerStreet;

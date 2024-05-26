@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public float SharedExpenses { get; set; }
         public Address Address { get; set; }
-        public string ConstructorCompany { get; set; }
+        public ConstructorCompany ConstructorCompany { get; set; }
         public User Manager { get; set; }
         public List<Guid> MaintenanceEmployees { get; set; } = new List<Guid>();
 

@@ -80,7 +80,7 @@ public class BuildingLogic : IBuildingLogic
         CheckNotEmptyBuildingName(building);
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
-        CheckConstructorCompany(building);
+        CheckConstructorCompanyName(building);
         CheckValidCoordinates(building);
     }
 
@@ -97,13 +97,13 @@ public class BuildingLogic : IBuildingLogic
         }
     }
 
-    private void CheckConstructorCompany(Building building)
+    private void CheckConstructorCompanyName(Building building)
     {
-        if (string.IsNullOrEmpty(building.ConstructorCompany))
+        if (string.IsNullOrEmpty(building.ConstructorCompany.Name))
         {
             throw new BuildingException("Building constructor company cannot be empty");
         }
-        else if (building.ConstructorCompany.Length > maximumCharactersForConstructorCompany)
+        else if (building.ConstructorCompany.Name.Length > maximumCharactersForConstructorCompany)
         {
             throw new BuildingException("Building constructor company cannot be longer than 100 characters");
         }
@@ -217,7 +217,6 @@ public class BuildingLogic : IBuildingLogic
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
         building.SharedExpenses = buildingData.SharedExpenses;
-        building.ConstructorCompany = buildingData.ConstructorCompany;
 
         CheckMaintenanceEmployeeList(building, buildingData.MaintenanceEmployees);
 

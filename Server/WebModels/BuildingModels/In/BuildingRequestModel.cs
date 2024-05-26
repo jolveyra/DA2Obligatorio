@@ -21,7 +21,7 @@ namespace WebModels.BuildingModels
             return new Building
             {
                 Name = Name,
-                ConstructorCompany = ConstructorCompany,
+                ConstructorCompany = new ConstructorCompany { Name = ConstructorCompany },
                 SharedExpenses = SharedExpenses,
                 Address = new Address
                 {

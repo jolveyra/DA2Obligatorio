@@ -29,7 +29,7 @@ public class BuildingLogicTest
     public void CreateBuildingTestOk()
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             SharedExpenses = 100,
             Address = new Address()
             {
@@ -42,7 +42,7 @@ public class BuildingLogicTest
         };
         Building expected = new Building() { Id = building.Id, 
             Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = building.Address,
             SharedExpenses = 100
         };
@@ -63,7 +63,7 @@ public class BuildingLogicTest
     public void CreateBuildingTestBuildingWithEmptyName()
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             SharedExpenses = 100,
             Address = new Address()
             {
@@ -96,7 +96,7 @@ public class BuildingLogicTest
     public void CreateBuildingTestBuildingWithNegativeSharedExpenses()
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             SharedExpenses = -100,
             Address = new Address()
             {
@@ -129,7 +129,7 @@ public class BuildingLogicTest
     public void CreateBuildingTestBuildingWithAlreadyExistingName()
     {
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             SharedExpenses = 100,
             Address = new Address()
             {
@@ -141,7 +141,7 @@ public class BuildingLogicTest
             }
         };
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Id = Guid.NewGuid(), Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             SharedExpenses = 100,
             Address = new Address()
             {
@@ -174,7 +174,7 @@ public class BuildingLogicTest
     public void CreateBuildingTestBuildingWithEmptyStreetName()
     {
         Building building = new Building() { Address = new Address() {Street = ""},
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Name = "A name",
             SharedExpenses = 100
         };
@@ -199,7 +199,7 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyConstructorCompany()
     {
-        Building building = new Building() { ConstructorCompany = "",
+        Building building = new Building() { ConstructorCompany = new ConstructorCompany(),
             Name = "A Name",
             Address = new Address() {
             Street = "Street", 
@@ -231,7 +231,7 @@ public class BuildingLogicTest
     {
         Building building = new Building()
         {
-            ConstructorCompany = "12345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "12345678911234567891123456789112345678911234567891123456789112345678911234567891123456789112345678911" },
             Name = "A Name",
             Address = new Address()
             {
@@ -288,7 +288,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
                 Street = "Street",
@@ -299,7 +299,7 @@ public class BuildingLogicTest
         };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
                 Street = "Street",
@@ -332,7 +332,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address() {
             Street = "Street",
             DoorNumber = 12,
@@ -344,7 +344,7 @@ public class BuildingLogicTest
         };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Name = "Mirador",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
             Street = "Street",
@@ -380,7 +380,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
                 Street = "Street",
@@ -415,7 +415,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
             Street = "Street",
@@ -450,7 +450,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
                 Street = "Street",
@@ -485,7 +485,7 @@ public class BuildingLogicTest
         Building building = new Building()
         {
             Name = "Mirador2",
-            ConstructorCompany = "A Company",
+            ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "A Company" },
             Address = new Address()
             {
             Street = "Street",
@@ -547,8 +547,11 @@ public class BuildingLogicTest
     public void UpdateBuildingTestOk()
     {
         Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
-        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim" };
-        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = "Saciim" };
+
+        ConstructorCompany constructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "Saciim" };
+
+        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = constructorCompany };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = constructorCompany };
         
         List<Guid> guids = new List<Guid> { Guid.NewGuid() };
 
@@ -570,8 +573,9 @@ public class BuildingLogicTest
     public void UpdateBuildingTestNotAMaintenanceEmployeeInList()
     {
         Building building = new Building() { Name = "Mirador", SharedExpenses = 200 };
-        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim", MaintenanceEmployees = new List<Guid>() { Guid.NewGuid() } };
-        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = "Saciim" };
+        ConstructorCompany constructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "Saciim" };
+        Building toUpdateBuilding = new Building() { SharedExpenses = 200, ConstructorCompany = constructorCompany, MaintenanceEmployees = new List<Guid>() { Guid.NewGuid() } };
+        Building expected = new Building() { Name = "Mirador", SharedExpenses = 300, ConstructorCompany = constructorCompany };
 
         userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Id = toUpdateBuilding.MaintenanceEmployees.First(), Role = Role.Administrator });
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
@@ -618,7 +622,7 @@ public class BuildingLogicTest
     public void UpdateBuildingTestRepeatedIdInList()
     {
         Guid id = Guid.NewGuid();
-        Building building = new Building() { SharedExpenses = 200, ConstructorCompany = "Saciim", MaintenanceEmployees = new List<Guid>() { id, id }};
+        Building building = new Building() { SharedExpenses = 200, ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "Saciim" }, MaintenanceEmployees = new List<Guid>() { id, id }};
         
         try
         {

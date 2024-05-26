@@ -30,8 +30,8 @@ namespace DataAccessTest
         {
             List<Building> buildings = new List<Building>()
             {
-                new Building() { Id = Guid.NewGuid(), Name = "Building 1", ConstructorCompany = "City 1", SharedExpenses = 150 },
-                new Building() {Id = Guid.NewGuid(), Name = "Building 2", ConstructorCompany = "City 2", SharedExpenses = 152}
+                new Building() { Id = Guid.NewGuid(), Name = "Building 1", ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" }, SharedExpenses = 150 },
+                new Building() {Id = Guid.NewGuid(), Name = "Building 2", ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 2" }, SharedExpenses = 152}
 
             };
 
@@ -48,7 +48,7 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateBuildingTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Address = new Address() {Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", Latitude = -34.88449565, Longitude = -56.1587038155517}, ConstructorCompany = "City 1", SharedExpenses = 150 };
+            Building building = new Building() { Id = Guid.NewGuid(), Name = "Building 1", Address = new Address() {Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", Latitude = -34.88449565, Longitude = -56.1587038155517}, ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" }, SharedExpenses = 150 };
 
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { });
 
@@ -67,10 +67,10 @@ namespace DataAccessTest
         [TestMethod]
         public void UpdateBuildingTestOk()
         {
-            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", ConstructorCompany = "City 1", SharedExpenses = 200 };
+            Building expected = new Building() { Id = Guid.NewGuid(), Name = "Building 1", ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" }, SharedExpenses = 200 };
 
 
-            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", ConstructorCompany = "City 1", SharedExpenses = 150 } });
+            mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { new Building() { Id = expected.Id, Name = "Building 1", ConstructorCompany = expected.ConstructorCompany, SharedExpenses = 150 } });
             mockContext.Setup(x => x.Update(expected));
             mockContext.Setup(x => x.SaveChanges()).Returns(1);
 
@@ -87,7 +87,7 @@ namespace DataAccessTest
         {
             Guid id = Guid.NewGuid();
 
-            Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Address = new Address() { Street = "Street", DoorNumber = 12, CornerStreet = "Another Street" }, ConstructorCompany = "City 1", SharedExpenses = 150 };
+            Building toDeleteBuilding = new Building() { Id = id, Name = "Building 1", Address = new Address() { Street = "Street", DoorNumber = 12, CornerStreet = "Another Street" }, ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" }, SharedExpenses = 150 };
 
             mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { new Flat() { Building = toDeleteBuilding } });
             mockContext.Setup(x => x.Buildings).ReturnsDbSet(new List<Building>() { toDeleteBuilding });
@@ -109,7 +109,7 @@ namespace DataAccessTest
             {
                 Id = id,
                 Name = "Building 1",
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
@@ -155,7 +155,7 @@ namespace DataAccessTest
                 Name = "Building 1",
                 Address = new Address() { 
                     Street = "Street", DoorNumber = 12, CornerStreet = "Another Street", },
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
@@ -195,7 +195,7 @@ namespace DataAccessTest
                 Id = buildingId,
                 Name = "Building 1",
                 Address = new Address() { Street = "Street", DoorNumber = 12, CornerStreet = "Another Street" },
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
@@ -229,7 +229,7 @@ namespace DataAccessTest
                     DoorNumber = 12, 
                     CornerStreet = "Another Street",
                 },
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
@@ -281,7 +281,7 @@ namespace DataAccessTest
                     DoorNumber = 12,
                     CornerStreet = "Another Street",
                 },
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
@@ -326,7 +326,7 @@ namespace DataAccessTest
                     DoorNumber = 12,
                     CornerStreet = "Another Street",
                 },
-                ConstructorCompany = "City 1",
+                ConstructorCompany = new ConstructorCompany { Id = Guid.NewGuid(), Name = "City 1" },
                 SharedExpenses = 150
             };
 
