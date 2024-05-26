@@ -48,7 +48,25 @@ namespace ManagementApiTest
                 }
             };
 
-            constructorCompanyBuildingLogicMock.Setup(c => c.GetAllConstructorCompanyBuildings()).Returns(constructorCompanyBuildings);
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Administrator 1",
+                ConstructorCompany = constructorCompany
+            };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            constructorCompanyBuildingLogicMock.Setup(c => c.GetAllConstructorCompanyBuildings(It.IsAny<Guid>())).Returns(constructorCompanyBuildings);
 
             OkObjectResult expected = new OkObjectResult(new List<BuildingResponseModel>
             {
@@ -58,7 +76,7 @@ namespace ManagementApiTest
 
             List<BuildingResponseModel> expectedObject = expected.Value as List<BuildingResponseModel>;
 
-            OkObjectResult result = constructorCompanyBuildingController.GetAllConstructorCompanyBuildings() as OkObjectResult;
+            OkObjectResult result = anotherConstructorCompanyBuildingController.GetAllConstructorCompanyBuildings() as OkObjectResult;
             List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
 
             constructorCompanyBuildingLogicMock.VerifyAll();

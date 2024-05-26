@@ -30,7 +30,9 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public OkObjectResult GetAllConstructorCompanyBuildings()
         {
-            return Ok(_iConstructorCompanyBuildingLogic.GetAllConstructorCompanyBuildings().Select(constructorCompanyBuilding => new BuildingResponseModel(constructorCompanyBuilding)).ToList());
+            return Ok(_iConstructorCompanyBuildingLogic.GetAllConstructorCompanyBuildings(
+                Guid.Parse(HttpContext.Items["UserId"] as string))
+                .Select(constructorCompanyBuilding => new BuildingResponseModel(constructorCompanyBuilding)).ToList());
         }
     }
 }
