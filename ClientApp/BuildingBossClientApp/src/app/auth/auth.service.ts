@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { UserLogged } from './userLogged.model';
 
 export interface AuthResponseData {
@@ -14,7 +14,8 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  userLogged = new Subject<UserLogged>();
+  userLogged = new BehaviorSubject<UserLogged>(new UserLogged('', '', ''));
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -26,5 +27,10 @@ export class AuthService {
         password
       }
     )
+  }
+
+  logout(): void {
+    this.userLogged.next(new UserLogged('', '', ''));
+    this.router.navigate(['/auth'])
   }
 }

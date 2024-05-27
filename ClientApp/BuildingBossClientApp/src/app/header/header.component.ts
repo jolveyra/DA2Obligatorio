@@ -16,11 +16,10 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.authService.userLogged.next(new UserLogged('', '', ''));
-    this.router.navigate(['auth']);
+    this.authService.logout();
   }
 
   onUserSettings(): void {
-    
+    this.router.navigate(['userSettings'])
   }
 }

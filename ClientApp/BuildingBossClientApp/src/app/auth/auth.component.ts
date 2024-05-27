@@ -32,7 +32,12 @@ export class AuthComponent {
       },
       error => {
         console.log(error);
-        this.error = error; // FIXME: Check for all cases
+        let errorMessage = "An error has occured"
+        if (error.error) {
+          this.error = error.error.errorMessage; // FIXME: Check for all cases
+        } else {
+          this.error = errorMessage;
+        }
         this.isLoading = false;
       }
     )

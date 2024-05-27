@@ -9,16 +9,13 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   userLoggedSub: Subscription = new Subscription();
-  userLoggedName: string = '';
   isAuthenticated: boolean = true; // FIXME: change to false
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.userLoggedSub.unsubscribe();
     this.userLoggedSub = this.authService.userLogged
       .subscribe(userLogged => {
-        this.userLoggedName = userLogged.name;
         this.isAuthenticated = userLogged.token === '' ? false : true;
       });
   }

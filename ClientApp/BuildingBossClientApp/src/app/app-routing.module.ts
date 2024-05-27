@@ -7,8 +7,7 @@ import { AdministratorListComponent } from './administrators/administrator-list/
 import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'auth', component: AuthComponent },
+  { path: '', component: AuthComponent, pathMatch: 'full' },
   { path: 'home', component: HomeComponent }, //FIXME: User guards to protect this route
   { path: 'administrators', component: AdministratorsComponent, children: [ //FIXME: User guards to protect this route from auth and role
     { path: '', component: AdministratorListComponent },

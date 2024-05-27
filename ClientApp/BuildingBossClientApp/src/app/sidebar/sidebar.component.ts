@@ -14,9 +14,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.userLoggedSub.unsubscribe();
-    this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => this.userRole = userLogged.role); // FIXME: Doesnt update correctly
-    console.log(this.userRole);
+    this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => {
+      this.userRole = userLogged.role;
+    });
   }
 
   ngOnDestroy() {
