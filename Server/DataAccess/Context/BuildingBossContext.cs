@@ -26,6 +26,7 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

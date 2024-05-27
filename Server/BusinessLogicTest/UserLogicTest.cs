@@ -12,7 +12,6 @@ namespace BusinessLogicTest
 
         private Mock<ISessionRepository> sessionRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
-        private Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
         private UserLogic _userLogic;
 
         [TestInitialize]
@@ -20,8 +19,7 @@ namespace BusinessLogicTest
         {
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
             sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
-            constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
-            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
+            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -449,11 +447,11 @@ namespace BusinessLogicTest
                 ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A Constructor Company" } 
             };
 
-            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
             ConstructorCompany result = _userLogic.GetConstructorCompanyByUserId(userId);
 
-            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
 
             Assert.AreEqual(user.ConstructorCompany, result);
 
