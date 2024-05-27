@@ -11,6 +11,7 @@ import { InvitationsComponent } from './invitations/invitations.component';
 import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
 import { InvitationListComponent } from './invitations/invitation-list/invitation-list.component';
 import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
+import { invitationGuard } from './invitations/invitation.guard';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full' },
@@ -19,7 +20,7 @@ const routes: Routes = [
     { path: '', component: AdministratorListComponent },
     { path: 'new', component: AdministratorNewComponent }
   ] },
-  { path: 'invitations', component: InvitationsComponent, children: [ // FIXME: add canActivate: [authGuard] and create the InvitationGuard
+  { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, invitationGuard], children: [
     { path: '', component: InvitationListComponent },
     { path: 'new', component: InvitationNewComponent },
     { path: ':id/edit', component: InvitationEditComponent }
