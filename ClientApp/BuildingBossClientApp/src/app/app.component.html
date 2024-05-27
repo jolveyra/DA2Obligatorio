@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<div *ngIf="isAuthenticated" class="d-flex flex-column vh-100">
+    <app-header></app-header>
+    <div class="container-fluid flex-grow-1 d-flex">
+        <div class="row flex-grow-1">
+            <div class="col-md-3 border-end border-primary-subtle d-flex flex-column">
+                <app-sidebar class="flex-grow-1"></app-sidebar>
+            </div>
+            <div class="col-md-9">
+                <div class="justify-content-center">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!isAuthenticated" class="vh-100 d-flex align-items-center justify-content-center">
+    <router-outlet></router-outlet>
+</div>
