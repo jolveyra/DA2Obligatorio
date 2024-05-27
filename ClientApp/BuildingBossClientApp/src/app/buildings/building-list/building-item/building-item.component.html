@@ -1,0 +1,13 @@
+<!-- FIXME: take cursor out -->
+<a
+    [routerLink]="[building.id]"
+    class="list-group-item d-flex justify-content-between align-items-center custom-hover">
+    <div>
+        <h4 class="list-group-item-heading">{{ building.name }}</h4>
+        <p class="list-group-item-text">{{ building.street + ' ' + building.doorNumber + '. Corner ' + building.CornerStreet }}</p>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+        <p class="mb-0">Amount of flats: {{ building.amountOfFlats }}</p>
+        <p class="mb-0">Shared expenses: {{ building.sharedExpenses }}</p>
+    </div>
+</a>

@@ -20,6 +20,14 @@ import { InvitationListComponent } from './invitations/invitation-list/invitatio
 import { InvitationItemComponent } from './invitations/invitation-list/invitation-item/invitation-item.component';
 import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
 import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
+import { BuildingsComponent } from './buildings/buildings.component';
+import { BuildingListComponent } from './buildings/building-list/building-list.component';
+import { BuildingItemComponent } from './buildings/building-list/building-item/building-item.component';
+import { BuildingEditComponent } from './buildings/building-edit/building-edit.component';
+import { BuildingNewComponent } from './buildings/building-new/building-new.component';
+import { BuildingFlatsComponent } from './buildings/building-flats/building-flats.component';
+import { BuildingFlatEditComponent } from './buildings/building-flat-edit/building-flat-edit.component';
+import { FlatItemComponent } from './buildings/building-flats/flat-item/flat-item.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +46,15 @@ import { InvitationEditComponent } from './invitations/invitation-edit/invitatio
     InvitationListComponent,
     InvitationItemComponent,
     InvitationNewComponent,
-    InvitationEditComponent
+    InvitationEditComponent,
+    BuildingsComponent,
+    BuildingListComponent,
+    BuildingItemComponent,
+    BuildingEditComponent,
+    BuildingNewComponent,
+    BuildingFlatsComponent,
+    BuildingFlatEditComponent,
+    FlatItemComponent
   ],
   imports: [
     BrowserModule,

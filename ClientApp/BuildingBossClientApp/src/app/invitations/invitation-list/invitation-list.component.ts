@@ -12,13 +12,13 @@ export class InvitationListComponent {
   invitations: Invitation[] = [];
 
   constructor(
-    private administratorService: InvitationService,
+    private invitationService: InvitationService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.invitations = this.administratorService.getInvitations(); // FIXME: Add a loading spinner for when it's fetching the administrators
+    this.invitations = this.invitationService.getInvitations(); // FIXME: Add a loading spinner for when it's fetching the administrators
   }
 
   onNewInvitation(): void {

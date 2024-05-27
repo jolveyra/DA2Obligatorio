@@ -12,6 +12,12 @@ import { InvitationEditComponent } from './invitations/invitation-edit/invitatio
 import { InvitationListComponent } from './invitations/invitation-list/invitation-list.component';
 import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
 import { invitationGuard } from './invitations/invitation.guard';
+import { BuildingsComponent } from './buildings/buildings.component';
+import { BuildingListComponent } from './buildings/building-list/building-list.component';
+import { BuildingNewComponent } from './buildings/building-new/building-new.component';
+import { BuildingFlatsComponent } from './buildings/building-flats/building-flats.component';
+import { BuildingEditComponent } from './buildings/building-edit/building-edit.component';
+import { BuildingFlatEditComponent } from './buildings/building-flat-edit/building-flat-edit.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full' },
@@ -23,7 +29,14 @@ const routes: Routes = [
   { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, invitationGuard], children: [
     { path: '', component: InvitationListComponent },
     { path: 'new', component: InvitationNewComponent },
-    { path: ':id/edit', component: InvitationEditComponent }
+    { path: ':id', component: InvitationEditComponent } // FIXME: not implemented, should be the one that anyone can accept or reject, but I think it should be in a different module maybe
+  ] },
+  { path: 'buildings', component: BuildingsComponent, children: [ // FIXME: add Guards
+    { path: '', component: BuildingListComponent },
+    { path: 'new', component: BuildingNewComponent },
+    { path: ':buildingId', component: BuildingFlatsComponent },
+    { path: ':buildingId/edit', component: BuildingEditComponent },
+    { path: ':buildingId/flat/:flatId', component: BuildingFlatEditComponent }
   ] },
   { path: '**', redirectTo: '/home' }
 ];
