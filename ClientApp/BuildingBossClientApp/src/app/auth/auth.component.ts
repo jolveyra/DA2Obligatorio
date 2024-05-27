@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -12,7 +13,7 @@ export class AuthComponent {
   isLoading: boolean = false;
   error: string = "";
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(form: NgForm): void {
     this.error = "";
@@ -34,5 +35,6 @@ export class AuthComponent {
     //   this.isLoading = false;
     // }
     this.isLoading = false; // Delete when fixed whats above
+    this.router.navigate(['/home']);  // FIXME: Add to successful case
   }
 }
