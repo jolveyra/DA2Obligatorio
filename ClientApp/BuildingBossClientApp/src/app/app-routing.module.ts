@@ -5,12 +5,13 @@ import { HomeComponent } from './home/home.component';
 import { AdministratorsComponent } from './administrators/administrators.component';
 import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
 import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
+import { administratorGuard } from './administrators/administrator.guard';
 import { authGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] }, 
-  { path: 'administrators', component: AdministratorsComponent, canActivate: [authGuard], children: [ //FIXME: User guards to protect this route from auth and role
+  { path: 'administrators', component: AdministratorsComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: AdministratorListComponent },
     { path: 'new', component: AdministratorNewComponent }
   ] },
