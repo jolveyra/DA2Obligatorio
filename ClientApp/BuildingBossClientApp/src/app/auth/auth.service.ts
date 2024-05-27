@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { User } from './user.model';
+import { UserLogged } from './userLogged.model';
 
 export interface AuthResponseData {
   // name: string; // FIXME: Add name to response from API so we show it up front
@@ -14,7 +14,7 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user = new Subject<User>();
+  user = new Subject<UserLogged>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
