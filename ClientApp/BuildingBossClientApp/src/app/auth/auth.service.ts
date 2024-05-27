@@ -31,6 +31,6 @@ export class AuthService {
 
   logout(): void {
     this.userLogged.next(new UserLogged('', '', ''));
-    this.router.navigate(['/auth'])
+    this.router.navigate([''])
   }
 }

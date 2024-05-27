@@ -18,7 +18,7 @@ export class AdministratorListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.administrators = this.administratorService.getAdministrators();
+    this.administrators = this.administratorService.getAdministrators(); // FIXME: Add a loading spinner for when it's fetching the administrators
   }
 
   onNewRecipe(): void {
