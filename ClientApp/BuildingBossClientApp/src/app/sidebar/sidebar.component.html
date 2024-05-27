@@ -1,7 +1,8 @@
 <div class="list-group list-group-flush"> <!--FIXME: add routerLinkActive to show in which option the user is standing-->
     <a
         class="list-group-item border-primary-subtle" 
-        routerLink="/adminsitrators"
+        routerLink="/administrators"
+        routerLinkActive="active"
         *ngIf="userRole === 'Administrator'">Administrators</a>
     <a
         class="list-group-item border-primary-subtle"

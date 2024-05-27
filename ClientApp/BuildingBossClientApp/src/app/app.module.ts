@@ -10,6 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AdministratorsComponent } from './administrators/administrators.component';
+import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
+import { AdministratorItemComponent } from './administrators/administrator-list/administrator-item/administrator-item.component';
+import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
+import { BackIconComponent } from './shared/back-icon/back-icon.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,12 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     LoadingSpinnerComponent,
     HeaderComponent,
     HomeComponent,
-    SidebarComponent
+    SidebarComponent,
+    AdministratorsComponent,
+    AdministratorListComponent,
+    AdministratorItemComponent,
+    AdministratorNewComponent,
+    BackIconComponent
   ],
   imports: [
     BrowserModule,
