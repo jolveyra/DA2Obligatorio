@@ -12,6 +12,6 @@ export class InvitationNewComponent {
   roles = ['Manager', 'Constructor company administrator'];
 
   onSubmit(form: NgForm): void {
-
+    // FIXME: Implement this method
   }
 }

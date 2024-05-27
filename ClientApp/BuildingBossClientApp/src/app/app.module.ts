@@ -20,7 +20,6 @@ import { InvitationListComponent } from './invitations/invitation-list/invitatio
 import { InvitationItemComponent } from './invitations/invitation-list/invitation-item/invitation-item.component';
 import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
 import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
-import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { DatepickerComponent } from './shared/datepicker/datepicker.component';
     InvitationListComponent,
     InvitationItemComponent,
     InvitationNewComponent,
-    InvitationEditComponent,
-    DatepickerComponent
+    InvitationEditComponent
   ],
   imports: [
     BrowserModule,

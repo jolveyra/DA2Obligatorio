@@ -1,6 +1,6 @@
 <div class="container">
     <div class="d-flex justify-content-start mb-3">
-        <a routerLink="/administrators">
+        <a routerLink="/invitations">
             <app-back-icon></app-back-icon>
         </a>
     </div>
@@ -49,15 +49,18 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group mb-3">
-                <label for="expDate">Expiration date (dd/mm/yyyy):</label>
+            <div class="form-group mb-3"> <!-- FIXME: put it in the same line -->
+                <label for="expDate">Available for (in days)</label>
                 <input
-                    type="text"
-                    id="expDate"
-                    class="form-control"
+                    type="number"
+                    id="expDays"
+                    class="form-control days"
                     ngModel
-                    name="expDate"
-                    required>
+                    name="expDays"
+                    required
+                    min="1"
+                    max="100">
+                <p>days</p>
             </div>
             <div class="text-center">
                 <button
