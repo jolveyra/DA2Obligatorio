@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="d-flex justify-content-start mb-3">
+        <a routerLink="/administrators">
+            <app-back-icon></app-back-icon>
+        </a>
+    </div>
+    <h2 class="text-center text-primary-emphasis fw-semibold mb-4">New Invitation</h2>
+    <div class="alert alert-danger" *ngIf="error !== ''">
+        <p>{{ error }}</p>
+    </div>
+    <div *ngIf="isLoading" class="text-center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form class="w-50" (ngSubmit)="onSubmit(newAdminForm)" #newAdminForm="ngForm" *ngIf="!isLoading">
+            <div class="form-group mb-2">
+                <label for="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    ngModel
+                    name="name"
+                    required
+                    minlength="2">
+            </div>
+            <div class="form-group mb-2">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    ngModel
+                    name="email"
+                    required
+                    email>
+            </div>
+            <div class="form-group my-3">
+                <label for="role">Role</label>
+                <div class="radio" *ngFor="let role of roles">
+                    <label>
+                        <input
+                            type="radio"
+                            name="role"
+                            ngModel
+                            [value]="role"
+                            required>
+                        {{ role }}
+                    </label>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="expDate">Expiration date (dd/mm/yyyy):</label>
+                <input
+                    type="text"
+                    id="expDate"
+                    class="form-control"
+                    ngModel
+                    name="expDate"
+                    required>
+            </div>
+            <div class="text-center">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    [disabled]="!newAdminForm.valid">Create administrator</button>
+            </div>
+        </form>
+    </div>
+</div>

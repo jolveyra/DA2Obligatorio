@@ -21,7 +21,7 @@ export class AdministratorListComponent implements OnInit {
     this.administrators = this.administratorService.getAdministrators(); // FIXME: Add a loading spinner for when it's fetching the administrators
   }
 
-  onNewRecipe(): void {
+  onNewAdministrator(): void {
     this.router.navigate(['new'], {relativeTo: this.route});
   }
 }

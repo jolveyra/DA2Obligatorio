@@ -15,6 +15,12 @@ import { AdministratorListComponent } from './administrators/administrator-list/
 import { AdministratorItemComponent } from './administrators/administrator-list/administrator-item/administrator-item.component';
 import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
 import { BackIconComponent } from './shared/back-icon/back-icon.component';
+import { InvitationsComponent } from './invitations/invitations.component';
+import { InvitationListComponent } from './invitations/invitation-list/invitation-list.component';
+import { InvitationItemComponent } from './invitations/invitation-list/invitation-item/invitation-item.component';
+import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
+import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
+import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +34,13 @@ import { BackIconComponent } from './shared/back-icon/back-icon.component';
     AdministratorListComponent,
     AdministratorItemComponent,
     AdministratorNewComponent,
-    BackIconComponent
+    BackIconComponent,
+    InvitationsComponent,
+    InvitationListComponent,
+    InvitationItemComponent,
+    InvitationNewComponent,
+    InvitationEditComponent,
+    DatepickerComponent
   ],
   imports: [
     BrowserModule,
