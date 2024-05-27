@@ -13,6 +13,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AdministratorsComponent } from './administrators/administrators.component';
 import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
 import { AdministratorItemComponent } from './administrators/administrator-list/administrator-item/administrator-item.component';
+import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
+import { BackIconComponent } from './shared/back-icon/back-icon.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { AdministratorItemComponent } from './administrators/administrator-list/
     SidebarComponent,
     AdministratorsComponent,
     AdministratorListComponent,
-    AdministratorItemComponent
+    AdministratorItemComponent,
+    AdministratorNewComponent,
+    BackIconComponent
   ],
   imports: [
     BrowserModule,

@@ -4,13 +4,15 @@ import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
 import { AdministratorsComponent } from './administrators/administrators.component';
 import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
+import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'auth', component: AuthComponent },
   { path: 'home', component: HomeComponent }, //FIXME: User guards to protect this route
-  { path: 'administrators', component: AdministratorsComponent, children: [
-    { path: '', component: AdministratorListComponent }
+  { path: 'administrators', component: AdministratorsComponent, children: [ //FIXME: User guards to protect this route from auth and role
+    { path: '', component: AdministratorListComponent },
+    { path: 'new', component: AdministratorNewComponent }
   ] },
   { path: '**', redirectTo: '/home' }
 ];

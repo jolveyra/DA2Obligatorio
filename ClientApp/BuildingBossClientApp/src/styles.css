@@ -2,21 +2,3 @@
 html, body, .container-fluid, .row {
     height: 100%;
 }
-
-.container-fluid {
-    display: flex;
-}
-
-.row {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-}
-
-.col-md-3 {
-    flex: 0 0 200px; /* o el ancho que desees para la barra lateral */
-}
-
-.col-md-9 {
-    flex: 1;
-}
