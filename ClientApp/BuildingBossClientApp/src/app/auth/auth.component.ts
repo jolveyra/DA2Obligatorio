@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthResponseData, AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrl: './auth.component.css'
 })
 export class AuthComponent {
+  authSub = Subscription;
   isLoading: boolean = false;
   error: string = "";
 
@@ -24,17 +25,17 @@ export class AuthComponent {
 
     this.isLoading = true;
     // FIXME: Call the AuthService to login, correct whats after
-    // try {
-    //   const response = this.authService.login(form.value.email, form.value.password);
-    //   response.subscribe(response => {
-    //       console.log(response);
-    //   });
-    //   this.isLoading = false;
-    // } catch (error) {
-    //   console.log(error);
-    //   this.isLoading = false;
-    // }
-    this.isLoading = false; // Delete when fixed whats above
-    this.router.navigate(['/home']);  // FIXME: Add to successful case
+    this.authService.login(form.value.email, form.value.password).subscribe(
+      responseData => {
+        console.log(responseData);
+        this.isLoading = false;
+      },
+      error => {
+        console.log(error);
+        this.error = error;
+        this.isLoading = false;
+        // this.router.navigate(['/home']);  // FIXME: Add to successful case
+      }
+    )
   }
 }

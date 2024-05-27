@@ -16,16 +16,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddServices();
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("ClientPermission", policy =>
-            {
-                policy.AllowAnyHeader()
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod();
-            });
-        });
-        
+
         builder.Services.AddConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
 
         var app = builder.Build();
@@ -37,9 +28,13 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseCors(
+            builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
         app.UseHttpsRedirection();
-        
-        app.UseCors("ClientPermission");
 
         app.UseAuthorization();
 
