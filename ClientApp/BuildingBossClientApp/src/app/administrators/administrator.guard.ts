@@ -10,7 +10,7 @@ export const administratorGuard: CanActivateFn = (route, state) => {
   return authService.userLogged.pipe(
     take(1),
     map(user => {
-      if (user.token !== '' && user.role === 'Administrator') {
+      if (user.role === 'Administrator') {
         return true;
       }
       return router.createUrlTree(['/home']);
