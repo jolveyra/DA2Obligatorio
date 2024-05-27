@@ -5,16 +5,16 @@ import { Observable, Subject } from 'rxjs';
 import { UserLogged } from './userLogged.model';
 
 export interface AuthResponseData {
-  // name: string; // FIXME: Add name to response from API so we show it up front
+  name: string;
   token: string;
-  // role: string; // FIXME: Add role to response from API so we can choose what to show
+  role: string; 
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user = new Subject<UserLogged>();
+  userLogged = new Subject<UserLogged>();
 
   constructor(private http: HttpClient, private router: Router) { }
 

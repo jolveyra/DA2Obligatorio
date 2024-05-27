@@ -9,15 +9,17 @@ import { Subscription } from 'rxjs';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   userRole: string = 'Administrator'; //FIXME: Change this to empty string
-  // userSub: Subscription;
+  userLoggedSub: Subscription = new Subscription();
   
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    // this.userSub = this.authService.user.subscribe(user => this.userRole = user.role);
+    this.userLoggedSub.unsubscribe();
+    this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => this.userRole = userLogged.role); // FIXME: Doesnt update correctly
+    console.log(this.userRole);
   }
 
   ngOnDestroy() {
-    // this.userSub.unsubscribe();
+    this.userLoggedSub.unsubscribe();
   }
 }

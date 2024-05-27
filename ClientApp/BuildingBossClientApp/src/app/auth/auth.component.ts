@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthResponseData, AuthService } from './auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserLogged } from './userLogged.model';
 
 @Component({
   selector: 'app-auth',
@@ -10,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrl: './auth.component.css'
 })
 export class AuthComponent {
-  authSub = Subscription;
   isLoading: boolean = false;
   error: string = "";
 
@@ -24,17 +24,16 @@ export class AuthComponent {
     }
 
     this.isLoading = true;
-    // FIXME: Call the AuthService to login, correct whats after
     this.authService.login(form.value.email, form.value.password).subscribe(
-      responseData => {
-        console.log(responseData);
+      (responseData: AuthResponseData)  => {
         this.isLoading = false;
+        this.authService.userLogged.next(new UserLogged(responseData.name, responseData.token, responseData.role));
+        this.router.navigate(['/home']);
       },
       error => {
         console.log(error);
-        this.error = error;
+        this.error = error; // FIXME: Check for all cases
         this.isLoading = false;
-        // this.router.navigate(['/home']);  // FIXME: Add to successful case
       }
     )
   }
