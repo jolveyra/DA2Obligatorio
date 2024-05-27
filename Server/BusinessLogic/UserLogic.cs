@@ -10,13 +10,15 @@ namespace BusinessLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IConstructorCompanyAdministratorRepository _constructorCompanyAdministratorRepository;
 
         private const int minPasswordLength = 6;
 
-        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository)
+        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
         {
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
+            _constructorCompanyAdministratorRepository = constructorCompanyAdministratorRepository;
         }
 
         public User CreateAdministrator(User user)
@@ -145,6 +147,11 @@ namespace BusinessLogic
         public IEnumerable<User> GetAllManagers()
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
+        }
+
+        public ConstructorCompany GetConstructorCompanyByUserId(Guid userId)
+        {
+            return _constructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompany;
         }
     }
 }

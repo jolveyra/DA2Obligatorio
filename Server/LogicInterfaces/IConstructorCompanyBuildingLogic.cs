@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace ManagementApi.Controllers
+namespace LogicInterfaces
 {
     public interface IConstructorCompanyBuildingLogic
     {

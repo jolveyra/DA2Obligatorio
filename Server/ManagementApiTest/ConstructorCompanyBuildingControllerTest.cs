@@ -1,5 +1,6 @@
 ﻿using Domain;
 using ManagementApi.Controllers;
+using LogicInterfaces;
 using Moq;
 using System;
 using System.Collections.Generic;

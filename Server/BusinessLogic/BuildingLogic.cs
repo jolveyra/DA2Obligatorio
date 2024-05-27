@@ -5,7 +5,7 @@ using Domain;
 
 namespace BusinessLogic;
 
-public class BuildingLogic : IBuildingLogic
+public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 {
     private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
@@ -418,5 +418,25 @@ public class BuildingLogic : IBuildingLogic
     public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
     {
         return _iBuildingRepository.GetAllBuildingFlats(buildingId);
+    }
+
+    public Building CreateConstructorCompanyBuilding(Building building, Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
+    {
+        throw new NotImplementedException();
     }
 }

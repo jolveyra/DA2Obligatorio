@@ -12,6 +12,7 @@ namespace BusinessLogicTest
 
         private Mock<ISessionRepository> sessionRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
+        private Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
         private UserLogic _userLogic;
 
         [TestInitialize]
@@ -19,7 +20,8 @@ namespace BusinessLogicTest
         {
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
             sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
-            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object);
+            constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
+            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -433,6 +435,28 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
+        public void GetConstructorCompanyByUserIdTestOk()
+        {
+            Guid userId = Guid.NewGuid();
+            ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Id = userId, 
+                Name = "Juan", 
+                Surname = "Perez", 
+                Email = "", 
+                Role = Role.ConstructorCompanyAdmin,
+                ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A Constructor Company" } 
+            };
+
+            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+
+            ConstructorCompany result = _userLogic.GetConstructorCompanyByUserId(userId);
+
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(user.ConstructorCompany, result);
+
         }
     }
 }
