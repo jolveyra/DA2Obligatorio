@@ -43,6 +43,12 @@ export class BuildingFlatEditComponent implements OnInit {
   }
 
   onBackIcon(): void {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
+    // const buildingId = this.route.snapshot.params['buildingId'];
+    // if (buildingId) {
+    //   this.router.navigate([`/buildings/${buildingId}`]);
+    // } else {
+    //   this.router.navigate(['/home']);
+    // }
   }
 }

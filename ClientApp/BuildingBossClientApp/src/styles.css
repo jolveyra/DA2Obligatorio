@@ -2,3 +2,7 @@
 html, body, .container-fluid, .row {
     height: 100%;
 }
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+  }

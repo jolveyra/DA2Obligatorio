@@ -1,6 +1,6 @@
 <div class="container">
     <div class="d-flex justify-content-start mb-3">
-        <a (click)="onBackIcon()"> <!-- FIXME: correct behavior to go back to buildings/id/flats -->
+        <a (click)="onBackIcon()">
             <app-back-icon></app-back-icon>
         </a>
     </div>
@@ -13,7 +13,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <form class="w-50" (ngSubmit)="onSubmit(flatEditForm)" #flatEditForm="ngForm" *ngIf="!isLoading">
-            <div class="form-group row d-flex mb-2"> <!-- FIXME: fix column height -->
+            <div class="form-group row mb-2">
                 <div class="col">
                     <label for="doorNumber">Door number</label>
                     <input
@@ -38,7 +38,7 @@
                         max="100">
                 </div>
             </div>
-            <div class="form-group row d-flex mb-2"> <!-- FIXME: fix column height -->
+            <div class="form-group row mb-2">
                 <div class="col">
                     <label for="rooms">Rooms</label>
                     <input
@@ -48,7 +48,7 @@
                         ngModel
                         name="rooms"
                         required
-                        min="100">
+                        min="1">
                 </div>
                 <div class="col">
                     <label for="bathrooms">Bathrooms</label>
@@ -63,7 +63,7 @@
                         max="100">
                 </div>
             </div>
-            <div class="form-group row py-0 mb-0"> <!-- FIXME: fix column height -->
+            <div class="form-group row mb-2">
                 <div class="col-8">
                     <label for="street">Street</label>
                     <input
@@ -88,10 +88,11 @@
             </div>
             <div class="form-group my-3">
                 <label for="role">Does it have a balcony?</label>
-                <div class="radio">
-                    <label>
+                <div class="form-check">
+                    <label class="form-check-label">
                         <input
                             type="radio"
+                            class="form-check-input"
                             name="role"
                             ngModel
                             [value]="true"
@@ -99,10 +100,11 @@
                         Yes
                     </label>
                 </div>
-                <div class="radio">
-                    <label>
+                <div class="form-check">
+                    <label class="form-check-label">
                         <input
                             type="radio"
+                            class="form-check-input"
                             name="role"
                             ngModel
                             [value]="false"

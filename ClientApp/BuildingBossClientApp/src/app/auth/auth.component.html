@@ -18,7 +18,9 @@
             ngModel
             name="email"
             required
-            email>
+            email
+            #email="ngModel">
+            <span class="text-danger" *ngIf="!email.valid && email.touched">Please enter a valid email</span>
         </div>
         <div class="form-group mb-3">
           <label for="password">Password</label>
@@ -29,7 +31,9 @@
             ngModel
             name="password"
             required
-            minlength="6">
+            minlength="6"
+            #password="ngModel">
+            <span class="text-danger" *ngIf="!password.valid && password.touched">Please enter at least 6 characters</span>
         </div>
         <div class="text-center">
           <button

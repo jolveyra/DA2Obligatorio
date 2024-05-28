@@ -20,9 +20,10 @@ import { BuildingFlatEditComponent } from './buildings/building-flat-edit/buildi
 import { buildingGuard } from './buildings/building.guard';
 import { managerGuard } from './shared/manager.guard';
 import { constructorCompanyAdminGuard } from './shared/constructor-company-admin.guard';
+import { loggedGuard } from './auth/logged.guard';
 
 const routes: Routes = [
-  { path: '', component: AuthComponent, pathMatch: 'full' },
+  { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] }, 
   { path: 'administrators', component: AdministratorsComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: AdministratorListComponent },

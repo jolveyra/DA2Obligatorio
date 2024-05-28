@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogged } from './userLogged.model';
 
 export interface AuthResponseData {
@@ -26,10 +26,32 @@ export class AuthService {
         email,
         password
       }
-    )
+    ).pipe(
+      tap(user => {
+        this.userLogged.next(new UserLogged(user.name, user.token, user.role));
+        localStorage.setItem('user', JSON.stringify(user));
+      })
+    );
+  }
+
+  autoLogin(): void {
+    const userInStorage = localStorage.getItem('user');
+
+    if (!userInStorage) {
+      return;
+    }
+
+    const user: {
+      name: string;
+      token: string;
+      role: string;
+    } = JSON.parse(userInStorage);
+    
+    this.userLogged.next(new UserLogged(user.name, user.token, user.role));
   }
 
   logout(): void {
+    localStorage.removeItem('user');
     this.userLogged.next(new UserLogged('', '', ''));
     this.router.navigate([''])
   }
