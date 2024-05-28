@@ -12,7 +12,7 @@
         <app-loading-spinner></app-loading-spinner>
     </div>
     <div class="d-flex justify-content-center">
-        <form class="w-50" (ngSubmit)="onSubmit(newAdminForm)" #newAdminForm="ngForm" *ngIf="!isLoading">
+        <form class="w-50" (ngSubmit)="onSubmit(newInvitationForm)" #newInvitationForm="ngForm" *ngIf="!isLoading">
             <div class="form-group mb-2">
                 <label for="name">Name</label>
                 <input
@@ -66,7 +66,7 @@
                 <button
                     class="btn btn-primary"
                     type="submit"
-                    [disabled]="!newAdminForm.valid">Create invitation</button>
+                    [disabled]="!newInvitationForm.valid">Create invitation</button>
             </div>
         </form>
     </div>

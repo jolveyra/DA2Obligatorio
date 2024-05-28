@@ -5,19 +5,21 @@ import { HomeComponent } from './home/home.component';
 import { AdministratorsComponent } from './administrators/administrators.component';
 import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
 import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
-import { administratorGuard } from './administrators/administrator.guard';
+import { administratorGuard } from './shared/administrator.guard';
 import { authGuard } from './auth/auth.guard';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
 import { InvitationListComponent } from './invitations/invitation-list/invitation-list.component';
 import { InvitationNewComponent } from './invitations/invitation-new/invitation-new.component';
-import { invitationGuard } from './invitations/invitation.guard';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { BuildingListComponent } from './buildings/building-list/building-list.component';
 import { BuildingNewComponent } from './buildings/building-new/building-new.component';
 import { BuildingFlatsComponent } from './buildings/building-flats/building-flats.component';
 import { BuildingEditComponent } from './buildings/building-edit/building-edit.component';
 import { BuildingFlatEditComponent } from './buildings/building-flat-edit/building-flat-edit.component';
+import { buildingGuard } from './buildings/building.guard';
+import { managerGuard } from './shared/manager.guard';
+import { constructorCompanyAdminGuard } from './shared/constructor-company-admin.guard';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full' },
@@ -26,17 +28,17 @@ const routes: Routes = [
     { path: '', component: AdministratorListComponent },
     { path: 'new', component: AdministratorNewComponent }
   ] },
-  { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, invitationGuard], children: [
+  { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: InvitationListComponent },
     { path: 'new', component: InvitationNewComponent },
     { path: ':id', component: InvitationEditComponent } // FIXME: not implemented, should be the one that anyone can accept or reject, but I think it should be in a different module maybe
   ] },
-  { path: 'buildings', component: BuildingsComponent, children: [ // FIXME: add Guards
-    { path: '', component: BuildingListComponent },
-    { path: 'new', component: BuildingNewComponent },
-    { path: ':buildingId', component: BuildingFlatsComponent },
-    { path: ':buildingId/edit', component: BuildingEditComponent },
-    { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent }
+  { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
+    { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
+    { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
+    { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] },
+    { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: '**', redirectTo: '/home' }
 ];
