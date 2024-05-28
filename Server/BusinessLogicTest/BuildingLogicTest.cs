@@ -1483,4 +1483,23 @@ public class BuildingLogicTest
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Another owner with same email already exists");
     }
+
+    [TestMethod]
+    public void GetAllConstructorCompanyBuildingsTestOk()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId };
+        IEnumerable<Building> buildings = new List<Building> { new Building() { ConstructorCompany = constructorCompany } };
+
+        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompany = constructorCompany };
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
+        
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+
+        IEnumerable<Building> result = buildingLogic.GetAllConstructorCompanyBuildings(user.Id);
+
+        buildingRepositoryMock.VerifyAll();
+
+        CollectionAssert.AreEqual(buildings.ToList(), result.ToList());
+    }
 }

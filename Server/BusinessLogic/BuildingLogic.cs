@@ -427,7 +427,11 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
     {
-        throw new NotImplementedException();
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        ConstructorCompany constructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.ConstructorCompany.Id.Equals(constructorCompany.Id));
     }
 
     public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
