@@ -28,6 +28,11 @@ import { BuildingNewComponent } from './buildings/building-new/building-new.comp
 import { BuildingFlatsComponent } from './buildings/building-flats/building-flats.component';
 import { BuildingFlatEditComponent } from './buildings/building-flat-edit/building-flat-edit.component';
 import { FlatItemComponent } from './buildings/building-flats/flat-item/flat-item.component';
+import { RequestsComponent } from './requests/requests.component';
+import { RequestListComponent } from './requests/request-list/request-list.component';
+import { RequestItemComponent } from './requests/request-list/request-item/request-item.component';
+import { RequestNewComponent } from './requests/request-new/request-new.component';
+import { RequestEditComponent } from './requests/request-edit/request-edit.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +59,12 @@ import { FlatItemComponent } from './buildings/building-flats/flat-item/flat-ite
     BuildingNewComponent,
     BuildingFlatsComponent,
     BuildingFlatEditComponent,
-    FlatItemComponent
+    FlatItemComponent,
+    RequestsComponent,
+    RequestListComponent,
+    RequestItemComponent,
+    RequestNewComponent,
+    RequestEditComponent
   ],
   imports: [
     BrowserModule,

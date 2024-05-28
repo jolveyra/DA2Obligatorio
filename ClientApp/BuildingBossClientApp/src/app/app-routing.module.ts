@@ -21,6 +21,10 @@ import { buildingGuard } from './buildings/building.guard';
 import { managerGuard } from './shared/manager.guard';
 import { constructorCompanyAdminGuard } from './shared/constructor-company-admin.guard';
 import { loggedGuard } from './auth/logged.guard';
+import { RequestsComponent } from './requests/requests.component';
+import { RequestListComponent } from './requests/request-list/request-list.component';
+import { RequestNewComponent } from './requests/request-new/request-new.component';
+import { RequestEditComponent } from './requests/request-edit/request-edit.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -37,9 +41,14 @@ const routes: Routes = [
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
-    { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
-    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] },
+    { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] }, // FIXME: not finished, have to check whether user is manager or admin
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] }, // FIXME: not finished, have to check whether managers are allowed to edit
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
+  ] },
+  { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [
+    { path: '', component: RequestListComponent },
+    { path: 'new', component: RequestNewComponent },
+    { path: ':id', component: RequestEditComponent }
   ] },
   { path: '**', redirectTo: '/home' }
 ];
