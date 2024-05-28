@@ -1,1 +1,24 @@
-<p>request-item works!</p>
+<div
+    class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+        <h4 class="list-group-item-heading">{{ request.description }}</h4>
+        <p class="list-group-item-text mb-0">Flat: {{ request.flatId }}</p> <!-- FIXME: It should show flat and building -->
+        <p class="list-group-item-text mb-0">Employee assigned: {{ request.assignedEmployeeId }}</p> <!-- FIXME: It should show employees name or email -->
+        <p class="list-group-item-text mb-0">Category: {{ request.categoryId }}</p>
+    </div>
+    <div class="d-flex flex-column align-items-end" *ngIf="userRole === 'Manager'">
+        <p class="mb-0">Status: {{ request.status }}</p>
+        <button class="btn btn-success" [routerLink]="[request.id]">Edit</button>
+    </div>
+    <div class="dropdown" *ngIf="userRole === 'MaintenanceEmployee'">
+        <!-- FIXME: doesnt work dropdown, tried with a button also but didnt work -->
+        <a class="btn btn-secondary dropdown-toggle bg-light text-dark" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ status }}
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item">Pending</a></li>
+            <li><a class="dropdown-item">In progress</a></li>
+            <li><a class="dropdown-item">Completed</a></li>
+        </ul>
+    </div>
+</div>
