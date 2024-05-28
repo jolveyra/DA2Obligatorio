@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Building } from './building.model';
+import { BuildingFlats } from './building-flats/buildingFlats.model';
+import { Flat } from './building-flats/flat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +15,19 @@ export class BuildingService {
     new Building('5', 'B5', 5000, 6, 'Calle 9', 5, 'Calle 10', 40.416500, -3.702560),
     new Building('6', 'B6', 6000, 7, 'Calle 11', 6, 'Calle 12', 40.416500, -3.702560)
   ];
+  private buildingFlats: BuildingFlats = new BuildingFlats('1', 'B1', 1000, [
+    new Flat('1', 1, 1, 'Owner 1', 'Surname 1', 'owner1@mail.com', 2, 1, true),
+    new Flat('1', 1, 1, 'Owner 2', 'Surname 1', 'owner1@mail.com', 2, 1, true),
+    new Flat('1', 1, 1, 'Owner 1', 'Surname 1', 'owner1@mail.com', 2, 1, true)
+  ], 'Calle 1', 1, 'Calle 2', '', 40.416500, -3.702560);
 
   constructor() { }
 
   getBuildings(): Building[] {
     return this.buildings.slice();
+  }
+
+  getBuildingFlats(id: string): BuildingFlats {
+    return this.buildingFlats;
   }
 }

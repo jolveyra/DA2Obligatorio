@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Flat } from '../flat.model';
 
 @Component({
   selector: 'app-flat-item',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './flat-item.component.css'
 })
 export class FlatItemComponent {
+  @Input() flat: Flat = new Flat('', 0, 0, '', '', '', 0, 0, false);
+
 
 }

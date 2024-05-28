@@ -14,8 +14,20 @@
         routerLink="/buildings"
         routerLinkActive="active"
         *ngIf="userRole === 'Manager' || userRole === 'ConstructorCompanyAdmin'">Buildings</a>
-    <a class="list-group-item border-primary-subtle" routerLink="/requests">Requests</a>
-    <a class="list-group-item border-primary-subtle" routerLink="/maintenanceEmployees">Maintenance Employees</a>
-    <a class="list-group-item border-primary-subtle" routerLink="/reports">Reports</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/requests"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager' || userRole === 'MaintenanceEmployee'">Requests</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/maintenanceEmployees"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager'">Maintenance Employees</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/reports"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager'">Reports</a>
     <!--TODO: check if there should be more sites-->
 </div>

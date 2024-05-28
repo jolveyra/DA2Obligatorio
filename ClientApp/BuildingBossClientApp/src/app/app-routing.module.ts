@@ -36,7 +36,7 @@ const routes: Routes = [
     { path: 'new', component: BuildingNewComponent },
     { path: ':buildingId', component: BuildingFlatsComponent },
     { path: ':buildingId/edit', component: BuildingEditComponent },
-    { path: ':buildingId/flat/:flatId', component: BuildingFlatEditComponent }
+    { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent }
   ] },
   { path: '**', redirectTo: '/home' }
 ];

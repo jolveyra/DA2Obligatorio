@@ -1,1 +1,23 @@
-<p>building-flats works!</p>
+<div class="container">
+    <div class="d-flex justify-content-start mb-3">
+        <a routerLink="/buildings">
+            <app-back-icon></app-back-icon>
+        </a>
+    </div>
+    <div *ngIf="isLoading" class="text-center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="d-flex justify-content-center" *ngIf="!isLoading">
+        <div class="list-group w-50">
+            <!-- FIXME: form to edit building -->
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center" *ngIf="!isLoading">
+        <div class="list-group w-50">
+            <app-flat-item
+                *ngFor="let flatElem of building.flats"
+                [flat]="flatElem"></app-flat-item>
+        </div>
+    </div>
+</div>
