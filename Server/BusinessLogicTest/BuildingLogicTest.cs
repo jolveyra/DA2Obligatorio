@@ -904,7 +904,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Invalid flat number, first digit must be floor number");
+        Assert.AreEqual(exception.Message, "Invalid flat number, first digit must be same as in floor number");
     }
 
 

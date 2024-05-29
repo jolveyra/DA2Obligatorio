@@ -8,11 +8,13 @@ namespace BusinessLogic
     public class RequestLogic : IManagerRequestLogic, IEmployeeRequestLogic
     {
         private readonly IRequestRepository _requestRepository;
+        private readonly IBuildingRepository _buildingRepository;
         private readonly IUserRepository _userRepository;
 
-        public RequestLogic(IRequestRepository requestRepository, IUserRepository userRepository)
+        public RequestLogic(IRequestRepository requestRepository, IBuildingRepository buildingRepository, IUserRepository userRepository)
         {
             _requestRepository = requestRepository;
+            _buildingRepository = buildingRepository;
             _userRepository = userRepository;
         }
 
@@ -86,6 +88,11 @@ namespace BusinessLogic
             {
                 throw new RequestException("Flat cannot be empty or null");
             }
+            if (request.BuildingId == Guid.Empty)
+            {
+                throw new RequestException("BuildingId cannot be empty or null");
+            }
+            // TODO: check if flat belongs to building
             if (request.AssignedEmployeeId == Guid.Empty)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");
