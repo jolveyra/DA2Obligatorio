@@ -422,7 +422,13 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building CreateConstructorCompanyBuilding(Building building, Guid userId)
     {
-        throw new NotImplementedException();
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        ConstructorCompany constructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+
+        building.ConstructorCompany = constructorCompany;
+
+        return _iBuildingRepository.CreateBuilding(building);
     }
 
     public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
