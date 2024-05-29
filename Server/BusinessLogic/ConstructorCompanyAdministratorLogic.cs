@@ -19,6 +19,9 @@ namespace BusinessLogic
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorById(userId);
 
+            if (constructorCompanyAdministrator.ConstructorCompany is null)
+                throw new ConstructorCompanyAdministratorException("Administrator is not a member from a constructor company");
+
             return constructorCompanyAdministrator.ConstructorCompany;
         }
 

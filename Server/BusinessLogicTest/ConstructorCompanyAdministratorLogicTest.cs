@@ -140,5 +140,39 @@ namespace BusinessLogicTest
             Assert.AreEqual(constructorCompany, result);
 
         }
+
+        [TestMethod]
+        public void GetAdminConstructorCompanyTestUserDoesNotHaveAConstructorCompany()
+        {
+            Guid userId = Guid.NewGuid();
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Surname = "Surname",
+                Email = "mail@mail.com",
+                Password = "passworD123",
+                Role = Role.ConstructorCompanyAdmin
+            };
+
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyAdministratorLogic.GetAdminConstructorCompany(userId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyAdministratorException));
+            Assert.AreEqual(exception.Message, "Administrator is not a member from a constructor company");
+        }
     }
 }
