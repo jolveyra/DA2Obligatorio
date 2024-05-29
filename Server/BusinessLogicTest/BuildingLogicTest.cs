@@ -1556,15 +1556,43 @@ public class BuildingLogicTest
     public void CreateConstructorCompanyBuildingTestOk()
     {
         Guid constructorCompanyId = Guid.NewGuid();
-        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId };
-        Building building = new Building() { ConstructorCompany = constructorCompany };
+        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "A Constructor Company" };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+        Building expected = new Building()
+        {
+            Id = building.Id,
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = 100
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
+        buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
+        buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
+        userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Role = Role.Manager });
 
         ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompany = constructorCompany };
         buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(building);
 
         userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
-        Building result = buildingLogic.CreateConstructorCompanyBuilding(building, user.Id);
+        Building result = buildingLogic.CreateConstructorCompanyBuilding(building, 1, user.Id);
 
         buildingRepositoryMock.VerifyAll();
 

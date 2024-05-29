@@ -23,7 +23,8 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public OkObjectResult CreateConstructorCompanyBuilding(BuildingRequestModel buildingRequestModel)
         {
-            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(),
+            int amountOfFlats = buildingRequestModel.Flats;
+            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(), amountOfFlats,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 

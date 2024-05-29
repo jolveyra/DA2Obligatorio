@@ -119,7 +119,7 @@ namespace ManagementApiTest
             building.Id = Guid.NewGuid();
             building.ConstructorCompany = constructorCompanyAdministrator.ConstructorCompany;
 
-            constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<Guid>())).Returns(building);
+            constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(building);
 
             OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
 

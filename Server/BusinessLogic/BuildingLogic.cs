@@ -420,7 +420,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         return _iBuildingRepository.GetAllBuildingFlats(buildingId);
     }
 
-    public Building CreateConstructorCompanyBuilding(Building building, Guid userId)
+    public Building CreateConstructorCompanyBuilding(Building building, int amountOfFlats, Guid userId)
     {
         ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
@@ -428,7 +428,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
         building.ConstructorCompany = constructorCompany;
 
-        return _iBuildingRepository.CreateBuilding(building);
+        return CreateBuilding(building, amountOfFlats, userId);
     }
 
     public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
