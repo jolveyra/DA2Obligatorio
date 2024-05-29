@@ -37,6 +37,7 @@ import { MaintenanceEmployeesComponent } from './maintenance-employees/maintenan
 import { EmployeeListComponent } from './maintenance-employees/employee-list/employee-list.component';
 import { EmployeeItemComponent } from './maintenance-employees/employee-list/employee-item/employee-item.component';
 import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { EmployeeNewComponent } from './maintenance-employees/employee-new/emplo
     MaintenanceEmployeesComponent,
     EmployeeListComponent,
     EmployeeItemComponent,
-    EmployeeNewComponent
+    EmployeeNewComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,7 @@ import { requestGuard } from './requests/request.guard';
 import { MaintenanceEmployeesComponent } from './maintenance-employees/maintenance-employees.component';
 import { EmployeeListComponent } from './maintenance-employees/employee-list/employee-list.component';
 import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
+import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -58,6 +59,7 @@ const routes: Routes = [
     { path: '', component: EmployeeListComponent, canActivate: [managerGuard] },
     { path: 'new', component: EmployeeNewComponent, canActivate: [managerGuard] },
   ] },
+  { path: 'reports', component: ReportsComponent, canActivate: [authGuard, managerGuard] },
   { path: '**', redirectTo: '/home' }
 ];
 
