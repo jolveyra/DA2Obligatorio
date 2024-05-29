@@ -11,7 +11,7 @@ import { RequestService } from '../../services/request.service';
   styleUrl: './request-edit.component.css'
 })
 export class RequestEditComponent implements OnInit {
-  request: Request = new Request('', '', '', '', '', '');
+  request: Request = new Request('', '', 0, '', '', '', '');
   isLoading: boolean = false;
   error: string = '';
   categories = ['Category 1', 'Category 2', 'Category 3'];
@@ -32,7 +32,7 @@ export class RequestEditComponent implements OnInit {
       this.request = request;
       this.selectedCategory = this.request.categoryName;
       this.description = this.request.description;
-      this.selectedEmployee = this.request.assignedEmployeeId;
+      this.selectedEmployee = this.request.assignedEmployee;
     } else {
       this.error = 'Request not found';
     }

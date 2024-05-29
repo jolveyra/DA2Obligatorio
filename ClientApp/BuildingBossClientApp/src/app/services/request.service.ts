@@ -7,6 +7,7 @@ export interface RequestResponseData {
   id: string;
   description: string;
   flatId: string;
+  buildingId: string,
   categoryName: string;
   assignedEmployeeId: string;
   status: string;
@@ -17,9 +18,9 @@ export interface RequestResponseData {
 })
 export class RequestService {
   private requests: Request[] = [ // FIXME: leave empty and make a request for real data
-    new Request('1', 'Plumbing job', '3', '2', '1', 'Pending'),
-    new Request('2', 'Electrical job', '4', '3', '2', 'In progress'),
-    new Request('3', 'Roofing job', '5', '4', '3', 'Completed')
+    new Request('1', 'Plumbing job', 4, '3', '2', '1', 'Pending'),
+    new Request('2', 'Electrical job', 4, '4', '3', '2', 'In progress'),
+    new Request('3', 'Roofing job', 4, '5', '4', '3', 'Completed')
   ];
 
   constructor(
@@ -36,7 +37,7 @@ export class RequestService {
     if (request) {
       return request;
     } else {
-      return new Request('', '', '', '', '', '');
+      return new Request('', '', 0, '', '', '', '');
     }
   }
 }

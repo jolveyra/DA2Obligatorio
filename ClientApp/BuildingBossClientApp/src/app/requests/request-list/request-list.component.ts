@@ -34,9 +34,9 @@ export class RequestListComponent implements OnInit, OnDestroy {
     this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => this.userRole = userLogged.role);
     this.requestService.fetchRequests().subscribe(
       (response: RequestResponseData[]) => {
-        this.buildingService.fetchBuildings()
-        .subscribe();
-        this.requests = response.map(request => new Request);
+        // this.buildingService.fetchBuildings().subscribe(); 
+        // this.employeeService.fetchMaintenanceEmployees().subscribe(); // FIXME: have to make it reactive to which employees could it be assigned depending on the building
+        // this.requests = response.map(request => new Request());
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."
