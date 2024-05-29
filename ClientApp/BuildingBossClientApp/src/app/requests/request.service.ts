@@ -16,4 +16,14 @@ export class RequestService {
   getRequests(): Request[] {
     return this.requests.slice();
   }
+
+  getRequest(id: string): Request {
+    const request: Request | undefined = this.requests.find(request => request.id === id);
+
+    if (request) {
+      return request;
+    } else {
+      return new Request('', '', '', '', '', '');
+    }
+  }
 }

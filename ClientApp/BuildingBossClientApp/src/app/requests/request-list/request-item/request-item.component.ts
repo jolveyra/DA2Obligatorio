@@ -15,4 +15,6 @@ export class RequestItemComponent implements OnInit {
   ngOnInit(): void {
     this.status = this.request.status;
   }
+
+  updateStatus(status: string): void {}
 }

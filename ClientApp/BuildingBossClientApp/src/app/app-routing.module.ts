@@ -25,6 +25,7 @@ import { RequestsComponent } from './requests/requests.component';
 import { RequestListComponent } from './requests/request-list/request-list.component';
 import { RequestNewComponent } from './requests/request-new/request-new.component';
 import { RequestEditComponent } from './requests/request-edit/request-edit.component';
+import { requestGuard } from './requests/request.guard';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -46,9 +47,9 @@ const routes: Routes = [
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [
-    { path: '', component: RequestListComponent },
-    { path: 'new', component: RequestNewComponent },
-    { path: ':id', component: RequestEditComponent }
+    { path: '', component: RequestListComponent, canActivate: [requestGuard] },
+    { path: 'new', component: RequestNewComponent, canActivate: [managerGuard] },
+    { path: ':id', component: RequestEditComponent, canActivate: [managerGuard] }
   ] },
   { path: '**', redirectTo: '/home' }
 ];
