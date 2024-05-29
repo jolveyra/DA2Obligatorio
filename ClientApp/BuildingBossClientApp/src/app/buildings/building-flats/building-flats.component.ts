@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Flat } from './flat.model';
+import { Flat } from '../../shared/flat.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingFlats } from './buildingFlats.model';
+import { BuildingFlats } from '../../shared/buildingFlats.model';
 import { BuildingService } from '../../services/building.service';
 
 @Component({

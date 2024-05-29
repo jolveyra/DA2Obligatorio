@@ -16,7 +16,6 @@ export interface AuthResponseData {
 export class AuthService {
   userLogged = new BehaviorSubject<UserLogged>(new UserLogged('', '', ''));
 
-
   constructor(private http: HttpClient, private router: Router) { }
 
   login(email: string, password: string): Observable<AuthResponseData> {
@@ -48,6 +47,10 @@ export class AuthService {
     } = JSON.parse(userInStorage);
     
     this.userLogged.next(new UserLogged(user.name, user.token, user.role));
+  }
+
+  getAuthToken(): string {
+    return this.userLogged.value.token;
   }
 
   logout(): void {

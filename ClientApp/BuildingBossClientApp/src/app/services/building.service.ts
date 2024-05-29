@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Building } from './building.model';
-import { BuildingFlats } from './building-flats/buildingFlats.model';
-import { Flat } from './building-flats/flat.model';
+import { Building } from '../shared/building.model';
+import { Flat } from '../shared/flat.model';
+import { BuildingFlats } from '../shared/buildingFlats.model';
 
 @Injectable({
   providedIn: 'root'

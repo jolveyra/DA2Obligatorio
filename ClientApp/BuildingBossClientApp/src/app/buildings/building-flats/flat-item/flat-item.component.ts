@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Flat } from '../flat.model';
+import { Flat } from '../../../shared/flat.model';
 
 @Component({
   selector: 'app-flat-item',

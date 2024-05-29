@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Flat } from '../building-flats/flat.model';
-import { BuildingFlats } from '../building-flats/buildingFlats.model';
+import { Flat } from '../../shared/flat.model';
+import { BuildingFlats } from '../../shared/buildingFlats.model';
 import { BuildingService } from '../../services/building.service';
 
 @Component({

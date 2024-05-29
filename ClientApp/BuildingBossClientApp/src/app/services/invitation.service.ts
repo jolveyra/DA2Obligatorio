@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Invitation } from './invitation.model';
+import { Invitation } from '../invitations/invitation.model';
 
 @Injectable({
   providedIn: 'root'

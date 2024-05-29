@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Building } from '../../building.model';
+import { Building } from '../../../shared/building.model';
 
 @Component({
   selector: 'app-building-item',
