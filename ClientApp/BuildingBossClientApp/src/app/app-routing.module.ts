@@ -30,6 +30,8 @@ import { MaintenanceEmployeesComponent } from './maintenance-employees/maintenan
 import { EmployeeListComponent } from './maintenance-employees/employee-list/employee-list.component';
 import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
 import { ReportsComponent } from './reports/reports.component';
+import { User } from './shared/user.model';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -60,6 +62,7 @@ const routes: Routes = [
     { path: 'new', component: EmployeeNewComponent, canActivate: [managerGuard] },
   ] },
   { path: 'reports', component: ReportsComponent, canActivate: [authGuard, managerGuard] },
+  { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
 
