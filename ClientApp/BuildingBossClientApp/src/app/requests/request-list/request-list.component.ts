@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 
 import { Request } from '../request.model';
 import { AuthService } from '../../services/auth.service';
-import { RequestService } from '../../services/request.service';
+import { RequestResponseData, RequestService } from '../../services/request.service';
+import { BuildingService } from '../../services/building.service';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-request-list',
@@ -22,15 +24,30 @@ export class RequestListComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private requestService: RequestService,
+    private buildingService: BuildingService,
+    private employeeService: EmployeeService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => this.userRole = userLogged.role);
-    this.requests = this.requestService.getRequests();
-    this.isLoading = false;
+    this.requestService.fetchRequests().subscribe(
+      (response: RequestResponseData[]) => {
+        this.buildingService.fetchBuildings()
+        .subscribe();
+        this.requests = response.map(request => new Request);
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    
+    );
   }
 
   ngOnDestroy(): void {

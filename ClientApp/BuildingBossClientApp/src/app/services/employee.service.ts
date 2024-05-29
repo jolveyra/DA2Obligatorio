@@ -1,20 +1,45 @@
 import { Injectable } from '@angular/core';
 import { User } from '../shared/user.model';
+import { Observable, map } from 'rxjs';
+import { UserResponseData } from './userResponseData.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  private maintenanceEmployees: User[] = [ // FIXME: leave empty and make a request for real data
-    new User('4321431', 'Joaquin', 'Garcia', 'joaco@gmail.com'),
-    new User('143214321', 'Juan', 'Gaboto', 'juan@gmail.com'),
-    new User('43214123', 'Javier', 'Gomez', 'javier@gmail.com'),
-    new User('431432143214', 'Jose', 'Gonzalez', 'jose@gmail.com')
-  ];
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
-  getMaintenanceEmployees(): User[] {
-    return this.maintenanceEmployees.slice();
+  fetchMaintenanceEmployees(): Observable<User[]> {
+    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v1/maintenanceEmployees')
+      .pipe(
+        map((response: UserResponseData[]) => response.map(employee => new User(
+            employee.id,
+            employee.name,
+            employee.surname,
+            employee.email
+        )))
+      );
+  }
+
+  createMaintenanceEmployee(employee: User, password: string): Observable<User> {
+    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v1/maintenanceEmployees',
+    {
+      name: employee.name,
+      surname: employee.surname,
+      email: employee.email,
+      password: password
+    })
+      .pipe(
+        map((response: UserResponseData) => new User(
+            response.id,
+            response.name,
+            response.surname,
+            response.email
+        ))
+      );
   }
 }

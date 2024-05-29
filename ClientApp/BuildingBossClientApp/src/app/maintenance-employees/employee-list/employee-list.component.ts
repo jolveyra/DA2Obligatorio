@@ -10,6 +10,7 @@ import { EmployeeService } from '../../services/employee.service';
 })
 export class EmployeeListComponent {
   maintenanceEmployees: User[] = [];
+  error: string = '';
 
   constructor(
     private employeeService: EmployeeService,
@@ -18,7 +19,20 @@ export class EmployeeListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.maintenanceEmployees = this.employeeService.getMaintenanceEmployees(); // FIXME: Add a loading spinner for when it's fetching the maintenanceEmployees
+    this.employeeService.fetchMaintenanceEmployees()
+      .subscribe(
+        response => {
+          this.maintenanceEmployees = response;
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 
   onNewMaintenanceEmployee(): void {

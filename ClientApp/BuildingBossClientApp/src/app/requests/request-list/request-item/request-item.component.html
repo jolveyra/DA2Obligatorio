@@ -1,7 +1,7 @@
 <div
     class="list-group-item d-flex justify-content-between align-items-center">
     <div>
-        <h4 class="list-group-item-heading">{{ request.categoryId }}</h4>
+        <h4 class="list-group-item-heading">{{ request.categoryName }}</h4>
         <p class="list-group-item-text mb-0">Flat: {{ request.flatId }}</p> <!-- FIXME: It should show flat and building -->
         <p class="list-group-item-text mb-0">Employee assigned: {{ request.assignedEmployeeId }}</p> <!-- FIXME: It should show employees name or email -->
         <p class="list-group-item-text mb-0">Description: {{ request.description }}</p>
@@ -11,7 +11,7 @@
         <button
             class="btn btn-success" 
             [routerLink]="[request.id]" 
-            *ngIf="request.status !== 'Completed'">Edit</button> // TODO: shouldnt be that if its in progress couldnt be edit either?
+            *ngIf="request.status !== 'Completed'">Edit</button> <!-- TODO: shouldnt be that if its in progress couldnt be edit either? --> 
     </div>
     <div *ngIf="userRole === 'MaintenanceEmployee'">
         <label for="status">Status</label>

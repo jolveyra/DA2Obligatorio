@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Request } from '../requests/request.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+export interface RequestResponseData {
+  id: string;
+  description: string;
+  flatId: string;
+  categoryName: string;
+  assignedEmployeeId: string;
+  status: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +22,12 @@ export class RequestService {
     new Request('3', 'Roofing job', '5', '4', '3', 'Completed')
   ];
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
-  getRequests(): Request[] {
-    return this.requests.slice();
+  fetchRequests(): Observable<RequestResponseData[]> {
+    return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/requests');
   }
 
   getRequest(id: string): Request {

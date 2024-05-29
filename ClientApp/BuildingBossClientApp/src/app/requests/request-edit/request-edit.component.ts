@@ -30,7 +30,7 @@ export class RequestEditComponent implements OnInit {
     
     if (request.id !== '') {
       this.request = request;
-      this.selectedCategory = this.request.categoryId;
+      this.selectedCategory = this.request.categoryName;
       this.description = this.request.description;
       this.selectedEmployee = this.request.assignedEmployeeId;
     } else {
