@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-new',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './employee-new.component.css'
 })
 export class EmployeeNewComponent {
+  isLoading: boolean = false;
+  error: string = '';
 
+  onSubmit(form: NgForm): void {
+
+  }
 }

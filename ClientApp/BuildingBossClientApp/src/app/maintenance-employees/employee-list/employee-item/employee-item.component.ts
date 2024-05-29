@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from '../../../shared/user.model';
 
 @Component({
   selector: 'app-employee-item',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './employee-item.component.css'
 })
 export class EmployeeItemComponent {
-
+  @Input() maintenanceEmployee: User = new User('', '', '', '');
 }
