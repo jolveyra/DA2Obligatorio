@@ -21,16 +21,24 @@ namespace ManagementApi.Controllers
 
         [HttpPost]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult CreateConstructorCompanyBuilding(BuildingRequestModel buildingRequestModel)
+        public IActionResult CreateConstructorCompanyBuilding(BuildingRequestModel buildingRequestModel)
         {
             int amountOfFlats = buildingRequestModel.Flats;
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(), amountOfFlats,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
+        [HttpDelete("{buildingId}")]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
+        public IActionResult DeleteConstructorCompanyBuilding([FromRoute] Guid buildingId)
+        {
+            _iConstructorCompanyBuildingLogic.DeleteConstructorCompanyBuilding(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string));
+            return Ok();
+        }
+
         [HttpGet]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetAllConstructorCompanyBuildings()
+        public IActionResult GetAllConstructorCompanyBuildings()
         {
             return Ok(_iConstructorCompanyBuildingLogic.GetAllConstructorCompanyBuildings(
                 Guid.Parse(HttpContext.Items["UserId"] as string))
@@ -39,14 +47,14 @@ namespace ManagementApi.Controllers
 
         [HttpGet("{buildingId}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetConstructorCompanyBuildingById([FromRoute] Guid buildingId)
+        public IActionResult GetConstructorCompanyBuildingById([FromRoute] Guid buildingId)
         {
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.GetConstructorCompanyBuildingById(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
         [HttpPut("{buildingId}")]
         
-        public OkObjectResult UpdateConstructorCompanyBuilding([FromRoute] Guid buildingId, UpdateConstructorCompanyBuildingRequestModel request)
+        public IActionResult UpdateConstructorCompanyBuilding([FromRoute] Guid buildingId, UpdateConstructorCompanyBuildingRequestModel request)
         {
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.UpdateConstructorCompanyBuilding(request.ToEntity(), buildingId,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));

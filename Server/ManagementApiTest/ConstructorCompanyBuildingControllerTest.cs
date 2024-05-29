@@ -228,5 +228,47 @@ namespace ManagementApiTest
             Assert.AreEqual(expectedObject.StatusCode, result.StatusCode);
             Assert.AreEqual(expectedObject.Value, result.Value);
         }
+
+        [TestMethod]
+        public void DeleteConstructorCompanyBuildingTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            ConstructorCompany constructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Constructor Company 1" };
+            Building building = new Building()
+            {
+                Id = id,
+                Name = "Building 1",
+                ConstructorCompany = constructorCompany,
+                Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
+                SharedExpenses = 13,
+                MaintenanceEmployees = new List<Guid>()
+            };
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Administrator 1",
+                ConstructorCompany = constructorCompany
+            };
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            constructorCompanyBuildingLogicMock.Setup(c => c.DeleteConstructorCompanyBuilding(It.IsAny<Guid>(), It.IsAny<Guid>()));
+
+            OkResult expectedObject = new OkResult();
+
+            ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkResult result = anotherConstructorCompanyBuildingController.DeleteConstructorCompanyBuilding(id) as OkResult;
+
+            constructorCompanyBuildingLogicMock.VerifyAll();
+            Assert.AreEqual(expectedObject.StatusCode, result.StatusCode);
+        }
     }
 }

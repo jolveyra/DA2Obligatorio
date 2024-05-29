@@ -486,4 +486,9 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
             throw new BuildingException("User to update must be a manager");
         }
     }
+
+    public void DeleteConstructorCompanyBuilding(Guid guid1, Guid guid2)
+    {
+        throw new NotImplementedException();
+    }
 }
