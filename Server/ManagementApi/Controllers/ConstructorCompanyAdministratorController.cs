@@ -17,6 +17,16 @@ namespace ManagementApi.Controllers
             _iConstructorCompanyAdministratorLogic = iConstructorCompanyAdministratorLogic;
         }
 
+        [HttpGet]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
+        public OkObjectResult GetAdminConstructorCompany()
+        {
+            return Ok(new ConstructorCompanyResponseModel(
+                               _iConstructorCompanyAdministratorLogic.
+                                              GetAdminConstructorCompany(Guid.Parse(HttpContext.Items["UserId"] as string)
+                                                             )));
+        }
+
         [HttpPut]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult SetConstructorCompanyAdministrator([FromBody] SetConstructorCompanyAdministratorRequestModel setConstructorCompanyAdministratorRequestModel)
