@@ -136,5 +136,20 @@ namespace DataAccessTest
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("Constructor company administrator not found", exception.Message);
         }
+
+        [TestMethod]
+        public void SetConstructorCompanyAdministratorTest()
+        {
+            ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator { Id = Guid.NewGuid() };
+
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators.Update(administrator));
+            _contextMock.Setup(context => context.SaveChanges()).Returns(1);
+
+            ConstructorCompanyAdministrator result = _userRepository.SetConstructorCompanyAdministrator(administrator);
+
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators.Update(administrator), Times.Once());
+            _contextMock.Verify(context => context.SaveChanges(), Times.Once());
+            Assert.AreEqual(administrator, result);
+        }
     }
 }

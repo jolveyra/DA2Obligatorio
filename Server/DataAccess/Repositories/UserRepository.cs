@@ -4,7 +4,7 @@ using RepositoryInterfaces;
 
 namespace DataAccess.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IConstructorCompanyAdministratorRepository
     {
         private readonly BuildingBossContext _context;
 
@@ -24,6 +24,11 @@ namespace DataAccess.Repositories
         public IEnumerable<User> GetAllUsers()
         {
             return _context.Users;
+        }
+
+        public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorById(Guid userId)
+        {
+            throw new NotImplementedException();
         }
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
@@ -48,6 +53,14 @@ namespace DataAccess.Repositories
             }
 
             return user;
+        }
+
+        public ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator)
+        {
+            _context.ConstructorCompanyAdministrators.Update(constructorCompanyAdministrator);
+            _context.SaveChanges();
+
+            return constructorCompanyAdministrator;
         }
 
         public User UpdateUser(User user)

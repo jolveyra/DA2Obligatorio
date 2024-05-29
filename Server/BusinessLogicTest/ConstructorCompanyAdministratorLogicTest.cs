@@ -16,6 +16,7 @@ namespace BusinessLogicTest
     {
         Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
         Mock<IConstructorCompanyRepository> constructorCompanyRepositoryMock;
+        Mock<IUserRepository> userRepositoryMock;
         ConstructorCompanyAdministratorLogic constructorCompanyAdministratorLogic;
 
         [TestInitialize]
@@ -23,7 +24,8 @@ namespace BusinessLogicTest
         {
             constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
             constructorCompanyRepositoryMock = new Mock<IConstructorCompanyRepository>(MockBehavior.Strict);
-            constructorCompanyAdministratorLogic = new ConstructorCompanyAdministratorLogic(constructorCompanyAdministratorRepositoryMock.Object, constructorCompanyRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            constructorCompanyAdministratorLogic = new ConstructorCompanyAdministratorLogic(constructorCompanyAdministratorRepositoryMock.Object, constructorCompanyRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -59,7 +61,7 @@ namespace BusinessLogicTest
             };
 
 
-            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
             constructorCompanyRepositoryMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
             constructorCompanyAdministratorRepositoryMock.Setup(c => c.SetConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(resultConstructorCompanyAdministrator);
 
@@ -91,7 +93,7 @@ namespace BusinessLogicTest
                 ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid() }
             };
 
-            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
             Exception exception = null;
 
@@ -133,7 +135,7 @@ namespace BusinessLogicTest
                 ConstructorCompany = constructorCompany
             };
 
-            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
             ConstructorCompany result = constructorCompanyAdministratorLogic.GetAdminConstructorCompany(userId);
 
@@ -156,7 +158,7 @@ namespace BusinessLogicTest
                 Role = Role.ConstructorCompanyAdmin
             };
 
-            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
             Exception exception = null;
 
