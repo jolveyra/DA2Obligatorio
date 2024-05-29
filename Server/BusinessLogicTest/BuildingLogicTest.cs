@@ -1502,4 +1502,23 @@ public class BuildingLogicTest
 
         CollectionAssert.AreEqual(buildings.ToList(), result.ToList());
     }
+
+    [TestMethod]
+    public void GetConstructorCompanyBuildingByIdTestOk()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId };
+        Building building = new Building() { ConstructorCompany = constructorCompany };
+
+        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompany = constructorCompany };
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+
+        Building result = buildingLogic.GetConstructorCompanyBuildingById(user.Id, building.Id);
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(building, result);
+    }
 }

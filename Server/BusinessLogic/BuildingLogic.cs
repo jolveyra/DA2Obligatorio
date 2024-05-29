@@ -436,7 +436,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
     {
-        throw new NotImplementedException();
+        return _iBuildingRepository.GetBuildingById(buildingId);
     }
 
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
