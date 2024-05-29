@@ -114,5 +114,27 @@ namespace DataAccessTest
 
             Assert.AreEqual(administrator, result);
         }
+
+        [TestMethod]
+        public void GetNonExistingConstructorCompanyAdministratorByUserIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(new List<ConstructorCompanyAdministrator>());
+
+            Exception exception = null;
+
+            try
+            {
+                _userRepository.GetConstructorCompanyAdministratorByUserId(userId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Constructor company administrator not found", exception.Message);
+        }
     }
 }

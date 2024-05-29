@@ -28,7 +28,14 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
-            return _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == userId);
+            ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == userId);
+
+            if (administrator == null)
+            {
+                throw new ArgumentException("Constructor company administrator not found");
+            }
+
+            return administrator;
         }
 
         public User GetUserById(Guid id)
