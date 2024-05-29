@@ -464,8 +464,12 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
     {
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
         Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
-        
+
+        CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompany, existingBuilding);
+
         existingBuilding.Manager = _iUserRepository.GetUserById(building.Manager.Id);
 
         return _iBuildingRepository.UpdateBuilding(building);

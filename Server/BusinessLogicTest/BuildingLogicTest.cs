@@ -1678,4 +1678,67 @@ public class BuildingLogicTest
         Assert.AreEqual(expected, result);
 
     }
+
+    [TestMethod]
+    public void UpdateConstructorCompanyBuildingTestBuildingNotFromConstructorCompany()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany()
+        {
+            Id = constructorCompanyId,
+            Name = "A Constructor Company"
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid() },
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        Building toUpdateBuilding = new Building()
+        {
+            Id = building.Id,
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = 100
+        };
+
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.UpdateConstructorCompanyBuilding(toUpdateBuilding, toUpdateBuilding.Id, constructorCompanyAdministrator.Id);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building does not belong to user's constructor company");
+
+    }
 }
