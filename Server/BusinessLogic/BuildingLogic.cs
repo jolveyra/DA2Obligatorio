@@ -436,7 +436,24 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
     {
-        return _iBuildingRepository.GetBuildingById(buildingId);
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        ConstructorCompany constructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+
+        Building building = _iBuildingRepository.GetBuildingById(buildingId);
+
+        CheckUserIsFromUsersConstructorCompany(constructorCompany, building);
+
+        return building;
+    }
+
+    private static void CheckUserIsFromUsersConstructorCompany(ConstructorCompany constructorCompany, Building building)
+    {
+        if (!building.ConstructorCompany.Id.Equals(constructorCompany.Id))
+        {
+            throw new BuildingException("Building does not belong to user's constructor company");
+        }
     }
 
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)

@@ -1521,4 +1521,34 @@ public class BuildingLogicTest
 
         Assert.AreEqual(building, result);
     }
+
+    [TestMethod]
+    public void GetConstructorCompanyBuildingByIdTestBuildingNotFromConstructorCompany()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId };
+        Building building = new Building() { ConstructorCompany = constructorCompany };
+
+        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid() } };
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.GetConstructorCompanyBuildingById(user.Id, building.Id);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building does not belong to user's constructor company");
+
+    }
 }
