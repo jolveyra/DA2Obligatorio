@@ -1,5 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Observable, map } from 'rxjs';
+
 import { Invitation } from '../invitations/invitation.model';
+
+interface InvitationResponseData {
+  id: string,
+  name: string,
+  email: string,
+  expirationDate: Date,
+  role: string,
+  isAccepted: boolean,
+  isAnswered: boolean
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +28,33 @@ export class InvitationService {
     new Invitation('1', 'Juan', 'juan@mail.com', new Date(2024, 2), 'Constructor company administrator', false, false),
   ];
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
-  getInvitations(): Invitation[] {
-    return this.invitations.slice();
+  fetchInvitations(): Observable<InvitationResponseData[]> {
+    return this.httpClient.get<InvitationResponseData[]>('https://localhost:7122/api/v1/invitations')
+      .pipe(
+        map((response: InvitationResponseData[]) => response.map(invitation => new Invitation(
+          invitation.id,
+          invitation.name,
+          invitation.email,
+          new Date(invitation.expirationDate),
+          invitation.role,
+          invitation.isAccepted,
+          invitation.isAnswered
+        )))
+      );
+  }
+
+  createInvitation(invitation: Invitation, expDays: number) {
+    return this.httpClient.post<InvitationResponseData>('https://localhost:7122/api/v1/invitations',
+      {
+        name: invitation.name,
+        email: invitation.email,
+        daysToExpire: expDays,
+        role: invitation.role
+      }
+    )
   }
 }

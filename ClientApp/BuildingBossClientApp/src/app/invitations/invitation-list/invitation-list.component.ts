@@ -11,6 +11,7 @@ import { InvitationService } from '../../services/invitation.service';
 })
 export class InvitationListComponent {
   invitations: Invitation[] = [];
+  error: string = '';
 
   constructor(
     private invitationService: InvitationService,
@@ -19,7 +20,20 @@ export class InvitationListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.invitations = this.invitationService.getInvitations(); // FIXME: Add a loading spinner for when it's fetching the administrators
+    this.invitationService.fetchInvitations()
+      .subscribe(
+        response => {
+          this.invitations = response;
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 
   onNewInvitation(): void {
