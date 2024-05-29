@@ -470,8 +470,20 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
         CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompany, existingBuilding);
 
-        existingBuilding.Manager = _iUserRepository.GetUserById(building.Manager.Id);
+        User existingManager = _iUserRepository.GetUserById(building.Manager.Id);
+
+        CheckNewManagerIsAManager(existingManager);
+
+        existingBuilding.Manager = existingManager;
 
         return _iBuildingRepository.UpdateBuilding(building);
+    }
+
+    private static void CheckNewManagerIsAManager(User existingManager)
+    {
+        if (existingManager.Role != Role.Manager)
+        {
+            throw new BuildingException("User to update must be a manager");
+        }
     }
 }

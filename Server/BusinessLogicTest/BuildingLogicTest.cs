@@ -1667,6 +1667,7 @@ public class BuildingLogicTest
             Manager = newManager
         };
 
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
         userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetUserById(It.IsAny<Guid>())).Returns(newManager);
@@ -1739,6 +1740,100 @@ public class BuildingLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Building does not belong to user's constructor company");
+
+    }
+
+    [TestMethod]
+    public void UpdateConstructorCompanyBuildingTestManagerToUpdateIsNotAManager()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany()
+        {
+            Id = constructorCompanyId,
+            Name = "A Constructor Company"
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        User newManager = new User()
+        {
+            Id = Guid.NewGuid(),
+            Role = Role.MaintenanceEmployee,
+            Name = "New Manager",
+            Email = "newmanager@mail.com",
+            Password = "Password12345",
+            Surname = "Surname"
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            },
+            Manager = newManager
+        };
+
+        Building toUpdateBuilding = new Building()
+        {
+            Id = building.Id,
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = 100,
+            Manager = new User()
+            {
+                Id = Guid.NewGuid(),
+                Role = Role.Manager,
+                Name = "Manager2",
+                Email = "manager@mail.com",
+                Password = "Password12345",
+                Surname = "Surname2"
+            }
+        };
+
+        Building expected = new Building()
+        {
+            Id = building.Id,
+            Name = building.Name,
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = building.SharedExpenses,
+            Manager = newManager
+        };
+
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetUserById(It.IsAny<Guid>())).Returns(newManager);
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.UpdateConstructorCompanyBuilding(toUpdateBuilding, toUpdateBuilding.Id, constructorCompanyAdministrator.Id);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "User to update must be a manager");
 
     }
 }
