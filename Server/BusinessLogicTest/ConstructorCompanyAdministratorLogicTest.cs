@@ -7,6 +7,7 @@ using Moq;
 using BusinessLogic;
 using RepositoryInterfaces;
 using Domain;
+using CustomExceptions;
 
 namespace BusinessLogicTest
 {
@@ -66,6 +67,48 @@ namespace BusinessLogicTest
 
             constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.AreEqual(constructorCompanyAdministrator, result);
+        }
+
+        [TestMethod]
+        public void SetConstructorCompanyAdministratorTestUserAlreadyHasAConstructorCompany()
+        {
+            Guid userId = Guid.NewGuid();
+            Guid constructorCompanyId = Guid.NewGuid();
+
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = constructorCompanyId
+            };
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Surname = "Surname",
+                Email = "email@mail.com",
+                Password = "passworD123",
+                Role = Role.ConstructorCompanyAdmin,
+                ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid() }
+            };
+
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompanyAdministrator result = constructorCompanyAdministratorLogic.SetConstructorCompanyAdministrator(userId, constructorCompanyId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyAdministratorException));
+            Assert.AreEqual(exception.Message, "Administrator is already a member from a constructor company");
+
         }
     }
 }

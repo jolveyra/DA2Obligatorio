@@ -1,5 +1,6 @@
 ﻿using RepositoryInterfaces;
 using Domain;
+using CustomExceptions;
 
 namespace BusinessLogic
 {
@@ -17,6 +18,9 @@ namespace BusinessLogic
         public ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorById(userId);
+
+            if (constructorCompanyAdministrator.ConstructorCompany is not null)
+                throw new ConstructorCompanyAdministratorException("Administrator is already a member from a constructor company");
 
             ConstructorCompany constructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
 
