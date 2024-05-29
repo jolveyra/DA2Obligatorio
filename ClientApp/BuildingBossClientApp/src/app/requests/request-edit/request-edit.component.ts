@@ -26,17 +26,7 @@ export class RequestEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let request: Request = this.requestService.getRequest(this.route.snapshot.params['id']);
     
-    if (request.id !== '') {
-      this.request = request;
-      this.selectedCategory = this.request.categoryName;
-      this.description = this.request.description;
-      this.selectedEmployee = this.request.assignedEmployee;
-    } else {
-      this.error = 'Request not found';
-    }
-
   }
 
   selectCategory(category: string) {

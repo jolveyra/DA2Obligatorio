@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Request } from '../requests/request.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface RequestResponseData {
   id: string;
@@ -17,27 +18,19 @@ export interface RequestResponseData {
   providedIn: 'root'
 })
 export class RequestService {
-  private requests: Request[] = [ // FIXME: leave empty and make a request for real data
-    new Request('1', 'Plumbing job', 4, '3', '2', '1', 'Pending'),
-    new Request('2', 'Electrical job', 4, '4', '3', '2', 'In progress'),
-    new Request('3', 'Roofing job', 4, '5', '4', '3', 'Completed')
-  ];
+  private requests: Request[] = [];
 
   constructor(
+    private authService: AuthService,
     private httpClient: HttpClient
   ) { }
 
   fetchRequests(): Observable<RequestResponseData[]> {
-    return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/requests');
-  }
-
-  getRequest(id: string): Request {
-    const request: Request | undefined = this.requests.find(request => request.id === id);
-
-    if (request) {
-      return request;
+    let userRole = this.authService.userLogged.value.role;
+    if (userRole === 'MaintenanceEmployee') {
+      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/employeeRequests');
     } else {
-      return new Request('', '', 0, '', '', '', '');
+      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/requests');
     }
   }
 }

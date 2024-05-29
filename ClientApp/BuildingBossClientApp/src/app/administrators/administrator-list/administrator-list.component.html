@@ -3,6 +3,11 @@
         <button class="btn btn-success" (click)="onNewAdministrator()">New administrator</button>
     </div>
     <div class="d-flex justify-content-center">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
         <div class="list-group w-50">
             <app-administrator-item
                 *ngFor="let admin of administrators"

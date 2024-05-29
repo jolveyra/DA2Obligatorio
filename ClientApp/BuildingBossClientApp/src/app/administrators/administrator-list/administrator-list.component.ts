@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AdministratorListComponent implements OnInit {
   administrators: User[] = [];
+  error: string = '';
 
   constructor(
     private administratorService: AdministratorService,
@@ -18,7 +19,20 @@ export class AdministratorListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.administrators = this.administratorService.getAdministrators(); // FIXME: Add a loading spinner for when it's fetching the administrators
+    this.administratorService.fetchAdministrators()
+      .subscribe(
+        response => {
+          this.administrators = response;
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 
   onNewAdministrator(): void {

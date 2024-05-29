@@ -5,8 +5,10 @@
         </a>
     </div>
     <h2 class="text-center text-primary-emphasis fw-semibold mb-4">New Administrator</h2>
-    <div class="alert alert-danger" *ngIf="error !== ''">
-        <p>{{ error }}</p>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
     </div>
     <div *ngIf="isLoading" class="text-center">
         <app-loading-spinner></app-loading-spinner>
@@ -22,7 +24,9 @@
                     ngModel
                     name="email"
                     required
-                    email>
+                    email
+                    #email="ngModel">
+                <span class="text-danger" *ngIf="!email.valid && email.touched">Please enter a valid email</span>
             </div>
             <div class="form-group mb-2">
                 <label for="name">Name</label>
@@ -33,7 +37,8 @@
                     ngModel
                     name="name"
                     required
-                    minlength="2">
+                    #name="ngModel">
+                <span class="text-danger" *ngIf="!name.valid && name.touched">Please enter a name</span>
             </div>
             <div class="form-group mb-2">
                 <label for="surname">Surname</label>
@@ -44,7 +49,8 @@
                     ngModel
                     name="surname"
                     required
-                    minlength="2">
+                    #surname="ngModel">
+                <span class="text-danger" *ngIf="!surname.valid && surname.touched">Please enter a surname</span>
             </div>
             <div class="form-group mb-3">
                 <label for="password">Password</label>
@@ -55,7 +61,9 @@
                     ngModel
                     name="password"
                     required
-                    minlength="6">
+                    minlength="6"
+                    #password="ngModel">
+                <span class="text-danger" *ngIf="!password.valid && password.touched">The password must have at least 6 characters</span>
             </div>
             <div class="text-center">
                 <button
