@@ -15,6 +15,13 @@ namespace BusinessLogic
             _iConstructorCompanyRepository = iConstructorCompanyRepository;
         }
 
+        public ConstructorCompany GetAdminConstructorCompany(Guid userId)
+        {
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorById(userId);
+
+            return constructorCompanyAdministrator.ConstructorCompany;
+        }
+
         public ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorById(userId);

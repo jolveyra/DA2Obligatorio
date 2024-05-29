@@ -110,5 +110,35 @@ namespace BusinessLogicTest
             Assert.AreEqual(exception.Message, "Administrator is already a member from a constructor company");
 
         }
+
+        [TestMethod]
+        public void GetAdminConstructorCompanyTestOk()
+        {
+            Guid userId = Guid.NewGuid();
+            Guid constructorCompanyId = Guid.NewGuid();
+
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = constructorCompanyId
+            };
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Surname = "Surname",
+                Email = "mail@mail.com",
+                Password = "passworD123",
+                Role = Role.ConstructorCompanyAdmin,
+                ConstructorCompany = constructorCompany
+            };
+
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorById(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+
+            ConstructorCompany result = constructorCompanyAdministratorLogic.GetAdminConstructorCompany(userId);
+
+            Assert.AreEqual(constructorCompany, result);
+
+        }
     }
 }
