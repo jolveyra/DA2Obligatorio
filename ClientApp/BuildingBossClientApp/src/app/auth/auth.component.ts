@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthResponseData, AuthService } from './auth.service';
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { UserLogged } from './userLogged.model';
+
+import { UserLogged } from '../services/userLogged.model';
+import { AuthResponseData, AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-auth',

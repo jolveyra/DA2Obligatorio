@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Invitation } from '../invitation.model';
-import { InvitationService } from '../invitation.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Invitation } from '../invitation.model';
+import { InvitationService } from '../../services/invitation.service';
 
 @Component({
   selector: 'app-invitation-list',

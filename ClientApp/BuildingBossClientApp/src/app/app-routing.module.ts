@@ -6,7 +6,7 @@ import { AdministratorsComponent } from './administrators/administrators.compone
 import { AdministratorListComponent } from './administrators/administrator-list/administrator-list.component';
 import { AdministratorNewComponent } from './administrators/administrator-new/administrator-new.component';
 import { administratorGuard } from './shared/administrator.guard';
-import { authGuard } from './auth/auth.guard';
+import { authGuard } from './shared/auth.guard';
 import { InvitationsComponent } from './invitations/invitations.component';
 import { InvitationEditComponent } from './invitations/invitation-edit/invitation-edit.component';
 import { InvitationListComponent } from './invitations/invitation-list/invitation-list.component';

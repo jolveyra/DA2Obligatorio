@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Request } from '../request.model';
-import { Subscription } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
-import { RequestService } from '../request.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Subscription } from 'rxjs';
+
+import { Request } from '../request.model';
+import { AuthService } from '../../services/auth.service';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-request-list',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ConstructorCompaniesService } from './constructor-company.service';
+import { ConstructorCompanyService } from '../services/constructor-company.service';
 
 @Component({
   selector: 'app-constructor-companies',
@@ -11,8 +11,8 @@ export class ConstructorCompaniesComponent {
   error: string = '';
 
   constructor(
-    private constructorCompaniesService: ConstructorCompaniesService
+    private constructorCompanyService: ConstructorCompanyService
   ) {}
 
-  
+
 }

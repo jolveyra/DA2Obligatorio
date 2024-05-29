@@ -6,9 +6,9 @@
         <div *ngIf="isLoading" class="text-center">
             <app-loading-spinner></app-loading-spinner>
         </div>
-        <div *ngIf="">
+        <div *ngIf=""> <!-- FIXME: when it doesnt have a constructor company assigned, problem is that we need to create a new model and check -->
         </div>
-        <div *ngIf="">
+        <div *ngIf=""> <!-- FIXME: when it does have a constructor company assigned -->
         </div>
     </div>    
 </div>

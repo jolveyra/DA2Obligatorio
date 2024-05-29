@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Flat } from './flat.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuildingFlats } from './buildingFlats.model';
-import { BuildingService } from '../building.service';
+import { BuildingService } from '../../services/building.service';
 
 @Component({
   selector: 'app-building-flats',

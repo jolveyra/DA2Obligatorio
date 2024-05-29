@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { RequestService } from '../request.service';
 import { ActivatedRoute } from '@angular/router';
+
 import { Request } from '../request.model';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-request-edit',

@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Building } from '../building.model';
-import { BuildingService } from '../building.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
+
+import { AuthService } from '../../services/auth.service';
+import { BuildingService } from '../../services/building.service';
+import { Building } from '../../shared/building.model';
 
 @Component({
   selector: 'app-building-list',

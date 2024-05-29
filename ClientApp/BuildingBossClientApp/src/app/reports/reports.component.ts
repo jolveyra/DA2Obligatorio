@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ReportsService } from './report.service';
+
 import { Report } from './report.model';
+import { ReportsService } from '../services/report.service';
 
 @Component({
   selector: 'app-reports',

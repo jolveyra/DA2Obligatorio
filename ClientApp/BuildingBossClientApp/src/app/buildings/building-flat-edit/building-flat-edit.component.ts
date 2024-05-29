@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Flat } from '../building-flats/flat.model';
-import { BuildingService } from '../building.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Flat } from '../building-flats/flat.model';
 import { BuildingFlats } from '../building-flats/buildingFlats.model';
+import { BuildingService } from '../../services/building.service';
 
 @Component({
   selector: 'app-building-flat-edit',
