@@ -15,8 +15,8 @@ import { Building } from '../../shared/building.model';
 export class BuildingListComponent implements OnInit, OnDestroy {
   userLoggedSub: Subscription = new Subscription();
   userRole: string = '';
-  isLoading = false;
   error: string = '';
+  noBuildings: boolean = false;
   buildings: Building[] = [];
 
   constructor(
@@ -30,10 +30,10 @@ export class BuildingListComponent implements OnInit, OnDestroy {
     this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
     this.buildingService.fetchBuildings().subscribe(
       response => {
-        console.log(response);
-        this.buildingService.setBuildings(response);
-        this.buildings = this.buildingService.getBuildings();
-        this.isLoading = false;
+        this.buildings = response;
+        if (this.buildings.length === 0) {
+          this.noBuildings = true;
+        }
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."
@@ -42,7 +42,6 @@ export class BuildingListComponent implements OnInit, OnDestroy {
         } else {
           this.error = errorMessage;
         }
-        this.isLoading = false;
       }
     );
   }

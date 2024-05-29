@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Flat } from '../../shared/flat.model';
-import { BuildingFlats } from '../../shared/buildingFlats.model';
 import { BuildingService } from '../../services/building.service';
 
 @Component({
@@ -15,6 +14,7 @@ export class BuildingFlatEditComponent implements OnInit {
   flat: Flat = new Flat('', 0, 0, '', '', '', 0, 0, false);
   isLoading: boolean = false;
   error: string = '';
+  isChangingOwner: boolean = false;
 
   constructor(
     private buildingService: BuildingService,
@@ -23,33 +23,62 @@ export class BuildingFlatEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
-    let building: BuildingFlats = this.buildingService.getBuildingFlats(this.route.snapshot.params['buildingId']);
-    if (!building) {
-      this.error = 'Building not found';
-      return;
-    } else {
-      let buildingFlat = building.flats.find(f => f.id == this.route.snapshot.params['flatId']);
-      this.flat = buildingFlat ? buildingFlat : new Flat('', 0, 0, '', '', '', 0, 0, false);
-      if (!this.flat) {
-        this.error = 'Flat not found';
-        this.router.navigate(['../'], { relativeTo: this.route });
-      }
-      this.isLoading = false;
-    }
+    this.buildingService.fetchFlat(this.route.snapshot.params['buildingId'], this.route.snapshot.params['flatId'])
+      .subscribe(
+        response => {
+          this.flat = response;
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 
   onSubmit(form: NgForm): void {
-    // FIXME: Implement this method
+    if (!form.valid) { // Another check just in case
+      return;
+    }
+
+    let updatedFlat = new Flat(
+      '',
+      form.value.doorNumber,
+      form.value.floor,
+      this.flat.ownerName,
+      this.flat.ownerSurname,
+      this.flat.ownerEmail,
+      form.value.rooms,
+      form.value.bathrooms,
+      form.value.hasBalcony
+    );
+
+    this.isLoading = true;
+    this.buildingService.updateFlat(
+      this.route.snapshot.params['buildingId'],
+      this.route.snapshot.params['flatId'],
+      updatedFlat,
+      form.value.changeOwner).subscribe(
+        response => {
+          this.isLoading = false;
+          this.router.navigate(['../../'], { relativeTo: this.route });
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+          this.isLoading = false;
+        }
+      );
   }
 
   onBackIcon(): void {
     this.router.navigate(['../../'], { relativeTo: this.route });
-    // const buildingId = this.route.snapshot.params['buildingId'];
-    // if (buildingId) {
-    //   this.router.navigate([`/buildings/${buildingId}`]);
-    // } else {
-    //   this.router.navigate(['/home']);
-    // }
   }
 }

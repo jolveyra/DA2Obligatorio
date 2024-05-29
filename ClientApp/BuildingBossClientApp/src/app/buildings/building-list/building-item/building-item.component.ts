@@ -7,5 +7,5 @@ import { Building } from '../../../shared/building.model';
   styleUrl: './building-item.component.css'
 })
 export class BuildingItemComponent {
-  @Input() building: Building = new Building('', '', 0, 0, '', 0, '', 0, 0);
+  @Input() building: Building = new Building('', '', 0, 0, '', 0, '', '', 0, 0);
 }

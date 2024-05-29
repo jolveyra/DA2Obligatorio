@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Flat } from '../../shared/flat.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuildingFlats } from '../../shared/buildingFlats.model';
 import { BuildingService } from '../../services/building.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-building-flats',
@@ -11,7 +11,8 @@ import { BuildingService } from '../../services/building.service';
 })
 export class BuildingFlatsComponent {
   building: BuildingFlats = new BuildingFlats('', '', 0, [], '', 0, '', '', 0, 0);
-  isLoading = false;
+  isLoading: boolean = false;
+  error: string = '';
 
   constructor(
     private buildingService: BuildingService,
@@ -20,8 +21,23 @@ export class BuildingFlatsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
-    this.building = this.buildingService.getBuildingFlats(this.route.snapshot.params['buildingId']); // FIXME: Add a loading spinner for when it's fetching the administrators
-    this.isLoading = false;
+    this.buildingService.fetchBuildingFlats(this.route.snapshot.params['buildingId']).subscribe(
+      response => {
+        this.building = response;
+        // this.buildingService.setBuildingFlats(response);
+        // this.building = this.buildingService.getBuildingFlats();
+      },
+      error => {
+        console.log(error);
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );;
   }
+
+  onSubmit(form: NgForm) {}
 }

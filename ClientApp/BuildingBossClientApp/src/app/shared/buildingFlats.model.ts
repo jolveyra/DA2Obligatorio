@@ -10,7 +10,7 @@ export class BuildingFlats {
         public doorNumber: number,
         public cornerStreet: string,
         public constructorCompany: string, // FIXME: check if this is correct when merging with new version of api
-        public Latitude: number,
-        public Longitude: number
+        public latitude: number,
+        public longitude: number
     ) {}
 }

@@ -13,17 +13,19 @@
     </div>
     <div class="d-flex justify-content-center">
         <form class="w-50" (ngSubmit)="onSubmit(flatEditForm)" #flatEditForm="ngForm" *ngIf="!isLoading">
-            <div class="form-group row mb-2">
+            <div class="form-group mb-2">
                 <div class="col">
-                    <label for="doorNumber">Door number</label>
+                    <label for="doorNumber">Flat number</label>
                     <input
                         type="number"
                         id="doorNumber"
                         class="form-control"
-                        ngModel
+                        [(ngModel)]="flat.number"
                         name="doorNumber"
                         required
-                        min="1">
+                        min="1"
+                        #doorNumber="ngModel">
+                <span class="text-danger" *ngIf="!doorNumber.valid && doorNumber.touched">Door number must be at least 1</span>
                 </div>
                 <div class="col">
                     <label for="floor">Floor</label>
@@ -31,11 +33,13 @@
                         type="number"
                         id="floor"
                         class="form-control"
-                        ngModel
+                        [(ngModel)]="flat.floor"
                         name="floor"
                         required
                         min="1"
-                        max="100">
+                        max="100"
+                        #floor="ngModel">
+                <span class="text-danger" *ngIf="!floor.valid && floor.touched">Floor number must be at least 1 and less than 100</span>
                 </div>
             </div>
             <div class="form-group row mb-2">
@@ -45,10 +49,13 @@
                         type="number"
                         id="rooms"
                         class="form-control"
-                        ngModel
+                        [(ngModel)]="flat.rooms"
                         name="rooms"
                         required
-                        min="1">
+                        min="1"
+                        max="100"
+                        #rooms="ngModel">
+                <span class="text-danger" *ngIf="!rooms.valid && rooms.touched">Rooms number must be at least 1 and less than 100</span>
                 </div>
                 <div class="col">
                     <label for="bathrooms">Bathrooms</label>
@@ -56,45 +63,24 @@
                         type="number"
                         id="bathrooms"
                         class="form-control"
-                        ngModel
+                        [(ngModel)]="flat.bathrooms"
                         name="bathrooms"
                         required
                         min="1"
-                        max="100">
-                </div>
-            </div>
-            <div class="form-group row mb-2">
-                <div class="col-8">
-                    <label for="street">Street</label>
-                    <input
-                        type="text"
-                        id="street"
-                        class="form-control"
-                        ngModel
-                        name="street"
-                        required>
-                </div>
-                <div class="col-4">
-                    <label for="doorNumber">Door Number</label>
-                    <input
-                        type="number"
-                        id="doorNumber"
-                        class="form-control"
-                        ngModel
-                        name="doorNumber"
-                        required
-                        min="1">
+                        max="100"
+                        #bathrooms="ngModel">
+                <span class="text-danger" *ngIf="!bathrooms.valid && bathrooms.touched">Bathrooms number must be at least 1 and less than 100</span>
                 </div>
             </div>
             <div class="form-group my-3">
-                <label for="role">Does it have a balcony?</label>
+                <label for="hasBalcony">Does it have a balcony?</label>
                 <div class="form-check">
                     <label class="form-check-label">
                         <input
                             type="radio"
                             class="form-check-input"
-                            name="role"
-                            ngModel
+                            name="hasBalcony"
+                            [(ngModel)]="flat.hasBalcony"
                             [value]="true"
                             required>
                         Yes
@@ -105,13 +91,79 @@
                         <input
                             type="radio"
                             class="form-check-input"
-                            name="role"
-                            ngModel
+                            name="hasBalcony"
+                            [(ngModel)]="flat.hasBalcony"
                             [value]="false"
                             required>
                         No
                     </label>
                 </div>
+            </div>
+            <hr>
+            <div class="form-group my-3">
+                <!-- FIXME: how do we create new ones without editing old ones, how are we checking in the database, because I get a Person not found error -->
+                <label for="changeOwner">Are you changing this flat's owner or editing? (if you're not performing either or changing it for the first time, select editing)</label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input
+                            type="radio"
+                            class="form-check-input"
+                            name="changeOwner"
+                            [(ngModel)]="isChangingOwner"
+                            [value]="true"
+                            required>
+                        Changing
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input
+                            type="radio"
+                            class="form-check-input"
+                            name="changeOwner"
+                            [(ngModel)]="isChangingOwner"
+                            [value]="false"
+                            required>
+                        Editing
+                    </label>
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <label for="ownerName">Owner's name</label>
+                <input
+                    type="text"
+                    id="ownerName"
+                    class="form-control"
+                    [(ngModel)]="flat.ownerName"
+                    name="ownerName"
+                    required
+                    #ownerName="ngModel">
+                <span class="text-danger" *ngIf="!ownerName.valid && ownerName.touched">Owner's name must not be empty</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="ownerSurname">Owner's surname</label>
+                <input
+                    type="text"
+                    id="ownerSurname"
+                    class="form-control"
+                    [(ngModel)]="flat.ownerSurname"
+                    name="ownerSurname"
+                    required
+                    #ownerSurname="ngModel">
+                <span class="text-danger" *ngIf="!ownerSurname.valid && ownerSurname.touched">Owner's surname must not be empty</span>
+            </div>
+            <div class="form-group mb-2">
+                <label for="ownerEmail">Owner's email</label>
+                <input
+                    type="email"
+                    id="ownerEmail"
+                    class="form-control"
+                    [(ngModel)]="flat.ownerEmail"
+                    name="ownerEmail"
+                    required
+                    email
+                    #ownerEmail="ngModel">
+                <span class="text-danger" *ngIf="!ownerEmail.valid && ownerEmail.touched">Please enter a valid email</span>
             </div>
             <div class="text-center mt-4">
                 <button
