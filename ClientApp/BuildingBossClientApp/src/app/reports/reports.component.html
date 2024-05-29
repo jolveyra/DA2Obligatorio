@@ -1,61 +1,66 @@
 <div class="mt-4">
     <div class="container">
         <div class="d-flex justify-content-center mb-3">
-            <button class="btn btn-success mx-3" (click)="onBuildingReport()">Show building report</button>
-            <button class="btn btn-success" (click)="onEmployeeReport()">Show maintenance employee report</button>
+            <button
+                class="btn btn-success mx-3"
+                (click)="onReport()"
+                [routerLink]="['/reports']"
+                [queryParams]="{filter:'building'}">Show building report</button>
+            <button
+                class="btn btn-success"
+                (click)="onReport()"
+                [routerLink]="['/reports']"
+                [queryParams]="{filter:'employee'}">Show maintenance employee report</button>
         </div>
-        <div class="alert alert-danger" *ngIf="error !== ''">
+        <div class="alert alert-danger d-flex justify-content-center" *ngIf="error !== ''">
             <p>{{ error }}</p>
         </div>
-        <div *ngIf="isLoading" class="text-center">
-            <app-loading-spinner></app-loading-spinner>
-        </div>
-        <div class="d-flex justify-content-center mt-5" *ngIf="!isLoading">
+        <div class="d-flex justify-content-center mt-5" *ngIf="error === ''">
             <div class="w-75" *ngIf="showBuildingReport">
                 <h3 class="text-primary-emphasis fw-semibold mb-4">Building report</h3>
                 <table class="table table-striped">
                     <thead>
-                      <tr>
-                        <th scope="col">Building</th>
-                        <th scope="col">Pending</th>
-                        <th scope="col">In progress</th>
-                        <th scope="col">Completed</th>
-                        <th scope="col">Average completion time</th>
-                      </tr>
+                        <tr>
+                            <th scope="col">Building</th>
+                            <th scope="col">Pending</th>
+                            <th scope="col">In progress</th>
+                            <th scope="col">Completed</th>
+                            <th scope="col">Average completion time</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let report of buildingReports">
-                        <th scope="row">{{ report.filterName }}</th>
-                        <td>{{ report.pendingRequests }}</td>
-                        <td>{{ report.inProgressRequests }}</td>
-                        <td>{{ report.completedRequests }}</td>
-                        <td>{{ report.avgCompletionTime }}</td>
-                      </tr>
+                        <tr *ngFor="let report of buildingReports">
+                            <th scope="row">{{ report.filterName }}</th>
+                            <td>{{ report.pendingRequests }}</td>
+                            <td>{{ report.inProgressRequests }}</td>
+                            <td>{{ report.completedRequests }}</td>
+                            <td>{{ report.avgCompletionTime }}</td>
+                        </tr>
                     </tbody>
-                  </table>
+                </table>
             </div>
             <div class="w-75" *ngIf="showEmployeeReport">
                 <h3 class="text-primary-emphasis fw-semibold mb-4">Maintenance employee report</h3>
                 <table class="table table-striped">
                     <thead>
-                      <tr>
-                        <th scope="col">Employee</th>
-                        <th scope="col">Pending</th>
-                        <th scope="col">In progress</th>
-                        <th scope="col">Completed</th>
-                        <th scope="col">Average completion time</th>
-                      </tr>
+                        <tr>
+                            <th scope="col">Employee</th>
+                            <th scope="col">Pending</th>
+                            <th scope="col">In progress</th>
+                            <th scope="col">Completed</th>
+                            <th scope="col">Average completion time</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let report of employeeReports">
-                        <th scope="row">{{ report.filterName }}</th>
-                        <td>{{ report.pendingRequests }}</td>
-                        <td>{{ report.inProgressRequests }}</td>
-                        <td>{{ report.completedRequests }}</td>
-                        <td>{{ report.avgCompletionTime }}</td>
-                      </tr>
+                        <tr *ngFor="let report of employeeReports">
+                            <th scope="row">{{ report.filterName }}</th>
+                            <td>{{ report.pendingRequests }}</td>
+                            <td>{{ report.inProgressRequests }}</td>
+                            <td>{{ report.completedRequests }}</td>
+                            <td>{{ report.avgCompletionTime }}</td>
+                        </tr>
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
     </div>    

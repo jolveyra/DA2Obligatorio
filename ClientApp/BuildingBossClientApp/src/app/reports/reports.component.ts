@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Report } from './report.model';
 import { ReportsService } from '../services/report.service';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
@@ -9,7 +10,6 @@ import { ReportsService } from '../services/report.service';
   styleUrl: './reports.component.css'
 })
 export class ReportsComponent {
-  isLoading: boolean = false;
   error: string = '';
   showBuildingReport: boolean = false;
   showEmployeeReport: boolean = false;
@@ -17,18 +17,28 @@ export class ReportsComponent {
   employeeReports: Report[] = [];
 
   constructor(
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private route: ActivatedRoute
   ) { }
 
-  onBuildingReport(): void {
+  onReport(): void {
+    this.error = '';
+    let filter = this.route.snapshot.queryParams['filter'];
     this.showEmployeeReport = false;
     this.showBuildingReport = true;
-    this.buildingReports = this.reportsService.getBuildingReports();
-  }
-
-  onEmployeeReport(): void {
-    this.showBuildingReport = false;
-    this.showEmployeeReport = true;
-    this.employeeReports = this.reportsService.getEmployeeReports();
+    this.reportsService.fetchReports(filter).subscribe(
+      reports => {
+        console.log(reports); // FIXME: fix why pending to complete arent showing, just undefined, remove line when fixed
+        this.buildingReports = reports;
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
   }
 }

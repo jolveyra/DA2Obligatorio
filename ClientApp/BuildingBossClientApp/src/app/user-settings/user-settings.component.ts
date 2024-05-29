@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../shared/user.model';
 import { UserSettingsService } from '../services/user-settings.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-settings',
@@ -12,20 +13,44 @@ export class UserSettingsComponent implements OnInit {
   isLoading: boolean = false;
   error: string = '';
   user: User = new User('', '', '', '');
-  tempSurname: string = '';
-  tempName: string = '';
 
   constructor(
-    private userService: UserSettingsService
+    private userService: UserSettingsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.user = this.userService.getUser();
-    this.tempName = this.user.name;
-    this.tempSurname = this.user.surname;
+    this.userService.fetchUser()
+      .subscribe(
+        reponse => {
+          this.user = reponse;
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 
   onSubmit(form: NgForm): void {
-    this.userService.updateUser(form.value.name, form.value.surname, form.value.password);
+    this.userService.updateUser(form.value.name, form.value.surname, form.value.password)
+      .subscribe(
+        response => {
+          this.isLoading = false;
+          this.router.navigate(['/home']);
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 }

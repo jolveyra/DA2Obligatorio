@@ -1,22 +1,48 @@
 import { Injectable } from '@angular/core';
 import { User } from '../shared/user.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+interface UserResponseData {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSettingsService {
-  user: User = new User('id1', 'nombre', 'apellido', 'contraseña'); // FIXME: leave it blank when request done
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
-  getUser(): User {
-    return this.user;
+  fetchUser(): Observable<User> {
+    return this.httpClient.get<UserResponseData>('https://localhost:7122/api/v1/userSettings')
+      .pipe(
+        map((response: UserResponseData) => new User(
+          response.id,
+          response.name,
+          response.surname,
+          response.email
+        ))
+      );
   }
 
-  updateUser(name: string, surname: string, password: string): void {
-    // FIXME: change whats under this line and replace it with a request to the server wth these values in the body
-    this.user.name = name;
-    this.user.surname = surname;
-    this.user.password = password;
+  updateUser(name: string, surname: string, password: string): Observable<User> {
+    return this.httpClient.put<UserResponseData>('https://localhost:7122/api/v1/userSettings', {
+      name,
+      surname,
+      password
+    }).pipe(
+      map((response: UserResponseData) => new User(
+        response.id,
+        response.name,
+        response.surname,
+        response.email
+      ))
+    );
   }
 }

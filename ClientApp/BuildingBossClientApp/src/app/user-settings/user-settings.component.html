@@ -14,7 +14,7 @@
                     type="text"
                     id="name"
                     class="form-control"
-                    [(ngModel)]="tempName"
+                    [(ngModel)]="user.name"
                     name="name"
                     required
                     #name="ngModel">
@@ -27,7 +27,7 @@
                     id="surname"
                     class="form-control"
                     name="surname"
-                    [(ngModel)]="tempSurname"
+                    [(ngModel)]="user.surname"
                     required
                     #surname="ngModel">
                 <span class="text-danger" *ngIf="!surname.valid && surname.touched">Please enter a valid surname</span>
