@@ -28,7 +28,7 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
-            throw new NotImplementedException();
+            return _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == userId);
         }
 
         public User GetUserById(Guid id)

@@ -98,5 +98,21 @@ namespace DataAccessTest
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(user, result);
         }
+
+        [TestMethod]
+        public void GetConstructorCompanyAdministratorByUserIdTest()
+        {
+            Guid userId = Guid.NewGuid();
+
+            ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator { Id = userId };
+
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(new List<ConstructorCompanyAdministrator>() { administrator });
+
+            ConstructorCompanyAdministrator result = _userRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators, Times.Once());
+
+            Assert.AreEqual(administrator, result);
+        }
     }
 }

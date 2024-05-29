@@ -14,6 +14,7 @@ namespace DataAccess.Context
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<ConstructorCompany> ConstructorCompanies { get; set; }
+        public virtual DbSet<ConstructorCompanyAdministrator> ConstructorCompanyAdministrators { get; set; }
 
         public BuildingBossContext() { }
 
