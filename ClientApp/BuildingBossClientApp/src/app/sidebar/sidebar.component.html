@@ -29,5 +29,9 @@
         routerLink="/reports"
         routerLinkActive="active"
         *ngIf="userRole === 'Manager'">Reports</a>
-    <!--TODO: check if there should be more sites-->
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/constructorCompanies"
+        routerLinkActive="active"
+        *ngIf="userRole === 'ConstructorCompanyAdmin'">Constructor company</a>
 </div>

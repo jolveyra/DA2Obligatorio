@@ -39,6 +39,7 @@ import { EmployeeItemComponent } from './maintenance-employees/employee-list/emp
 import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
 import { ReportsComponent } from './reports/reports.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { ConstructorCompaniesComponent } from './constructor-companies/constructor-companies.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     EmployeeItemComponent,
     EmployeeNewComponent,
     ReportsComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
+    ConstructorCompaniesComponent
   ],
   imports: [
     BrowserModule,

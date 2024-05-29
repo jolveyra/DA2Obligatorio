@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  userRole: string = 'Administrator'; //FIXME: Change this to empty string
+  userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
   
   constructor(private authService: AuthService) { }
