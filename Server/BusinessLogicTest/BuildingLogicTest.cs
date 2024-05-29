@@ -1836,4 +1836,47 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "User to update must be a manager");
 
     }
+
+    [TestMethod]
+    public void DeleteConstructorCompanyBuildingTestOk()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany()
+        {
+            Id = constructorCompanyId,
+            Name = "A Constructor Company"
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { building });
+        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>());
+        buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
+
+        buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
+
+        buildingRepositoryMock.VerifyAll();
+    }
 }

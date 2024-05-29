@@ -487,8 +487,8 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         }
     }
 
-    public void DeleteConstructorCompanyBuilding(Guid guid1, Guid guid2)
+    public void DeleteConstructorCompanyBuilding(Guid buildingId, Guid userId)
     {
-        throw new NotImplementedException();
+        DeleteBuilding(buildingId);
     }
 }
