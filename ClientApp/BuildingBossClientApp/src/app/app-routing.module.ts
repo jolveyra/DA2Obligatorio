@@ -26,6 +26,9 @@ import { RequestListComponent } from './requests/request-list/request-list.compo
 import { RequestNewComponent } from './requests/request-new/request-new.component';
 import { RequestEditComponent } from './requests/request-edit/request-edit.component';
 import { requestGuard } from './requests/request.guard';
+import { MaintenanceEmployeesComponent } from './maintenance-employees/maintenance-employees.component';
+import { EmployeeListComponent } from './maintenance-employees/employee-list/employee-list.component';
+import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -50,6 +53,10 @@ const routes: Routes = [
     { path: '', component: RequestListComponent, canActivate: [requestGuard] },
     { path: 'new', component: RequestNewComponent, canActivate: [managerGuard] },
     { path: ':id', component: RequestEditComponent, canActivate: [managerGuard] }
+  ] },
+  { path: 'maintenanceEmployees', component: MaintenanceEmployeesComponent, canActivate: [authGuard], children: [
+    { path: '', component: EmployeeListComponent, canActivate: [managerGuard] },
+    { path: 'new', component: EmployeeNewComponent, canActivate: [managerGuard] },
   ] },
   { path: '**', redirectTo: '/home' }
 ];

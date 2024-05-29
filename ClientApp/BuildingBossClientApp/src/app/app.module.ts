@@ -33,6 +33,10 @@ import { RequestListComponent } from './requests/request-list/request-list.compo
 import { RequestItemComponent } from './requests/request-list/request-item/request-item.component';
 import { RequestNewComponent } from './requests/request-new/request-new.component';
 import { RequestEditComponent } from './requests/request-edit/request-edit.component';
+import { MaintenanceEmployeesComponent } from './maintenance-employees/maintenance-employees.component';
+import { EmployeeListComponent } from './maintenance-employees/employee-list/employee-list.component';
+import { EmployeeItemComponent } from './maintenance-employees/employee-list/employee-item/employee-item.component';
+import { EmployeeNewComponent } from './maintenance-employees/employee-new/employee-new.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,11 @@ import { RequestEditComponent } from './requests/request-edit/request-edit.compo
     RequestListComponent,
     RequestItemComponent,
     RequestNewComponent,
-    RequestEditComponent
+    RequestEditComponent,
+    MaintenanceEmployeesComponent,
+    EmployeeListComponent,
+    EmployeeItemComponent,
+    EmployeeNewComponent
   ],
   imports: [
     BrowserModule,
