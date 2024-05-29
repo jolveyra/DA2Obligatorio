@@ -92,7 +92,11 @@ namespace BusinessLogic
             {
                 throw new RequestException("BuildingId cannot be empty or null");
             }
-            // TODO: check if flat belongs to building
+
+            if (!FlatBelongsToBuilding(request.BuildingId, request.Flat))
+            {
+                throw new RequestException("Flat does not belong to building");
+            }
             if (request.AssignedEmployeeId == Guid.Empty)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");
@@ -101,6 +105,10 @@ namespace BusinessLogic
             {
                 throw new RequestException("Category cannot be null");
             }
+        }
+        private bool FlatBelongsToBuilding(Guid buildingId, Flat flat)
+        {
+            return _buildingRepository.GetAllBuildingFlats(buildingId).Any(f => f.Id == flat.Id);
         }
     }
 }
