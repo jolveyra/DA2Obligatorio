@@ -2,6 +2,7 @@
 using LogicInterfaces;
 using CustomExceptions;
 using Domain;
+using System;
 
 namespace BusinessLogic;
 
@@ -141,29 +142,6 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         }
     }
 
-    public void DeleteBuilding(Guid guid)
-    {
-        Building building = _iBuildingRepository.GetAllBuildings().ToList().FirstOrDefault(b => b.Id == guid);
-
-        if(building is null)
-        {
-            throw new DeleteException();
-        }
-
-        DeleteFlatsFromBuilding(building);
-        _iBuildingRepository.DeleteBuilding(building);
-    }
-
-    private void DeleteFlatsFromBuilding(Building building)
-    {
-        List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
-
-        List<Guid> ownersToDelete = new List<Guid>();
-        GetOwnersToDeleteIds(flats, ownersToDelete);
-
-        _iBuildingRepository.DeleteFlats(flats);
-        DeleteOwners(ownersToDelete);
-    }
 
     private static void GetOwnersToDeleteIds(List<Flat> flats, List<Guid> ownersToDelete)
     {
@@ -489,6 +467,43 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public void DeleteConstructorCompanyBuilding(Guid buildingId, Guid userId)
     {
-        DeleteBuilding(buildingId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        Building building = _iBuildingRepository.GetAllBuildings().ToList().FirstOrDefault(b => b.Id == buildingId);
+
+        if (building is null)
+        {
+            throw new DeleteException();
+        }
+
+        if (building.ConstructorCompany.Id != constructorCompanyAdministrator.ConstructorCompany.Id)
+        {
+            throw new BuildingException("Building does not belong to user's constructor company");
+        }
+
+        DeleteFlatsFromBuilding(building);
+        _iBuildingRepository.DeleteBuilding(building);
+    }
+
+
+    //public void DeleteBuilding(Guid guid)
+    //{
+    //    Building building = _iBuildingRepository.GetAllBuildings().ToList().FirstOrDefault(b => b.Id == guid);
+
+    //    if (building is null)
+    //    {
+    //        throw new DeleteException();
+    //    }
+    //}
+
+    private void DeleteFlatsFromBuilding(Building building)
+    {
+        List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
+
+        List<Guid> ownersToDelete = new List<Guid>();
+        GetOwnersToDeleteIds(flats, ownersToDelete);
+
+        _iBuildingRepository.DeleteFlats(flats);
+        DeleteOwners(ownersToDelete);
     }
 }

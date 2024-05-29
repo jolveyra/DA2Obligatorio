@@ -67,15 +67,6 @@ namespace ManagementApi.Controllers
             
         }
 
-        [HttpDelete("{id}")]
-        [AuthenticationFilter(["Manager"])]
-        public IActionResult DeleteBuilding([FromRoute] Guid id)
-        {
-            _iBuildingLogic.DeleteBuilding(id);
-            return Ok();
-         
-        }
-
         [HttpPut("{buildingId}/flats/{flatId}")]
         [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateFlatByFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)

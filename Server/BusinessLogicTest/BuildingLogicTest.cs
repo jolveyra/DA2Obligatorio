@@ -639,28 +639,16 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void DeleteBuildingTestOk()
-    {
-        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { new Building() });
-        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() }); 
-        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
-        buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
-        peopleRepositoryMock.Setup(x=>x.DeletePerson(It.IsAny<Guid>()));
-
-        buildingLogic.DeleteBuilding(It.IsAny<Guid>());
-
-        buildingRepositoryMock.VerifyAll();
-        peopleRepositoryMock.VerifyAll();
-    }
-
-    [TestMethod]
     public void DeleteBuildingNonExistingTest()
     {
+        
+        userRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(new ConstructorCompanyAdministrator() { Role = Role.ConstructorCompanyAdmin, Id = Guid.NewGuid() });
+
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { });
 
         try
         {
-            buildingLogic.DeleteBuilding(It.IsAny<Guid>());
+            buildingLogic.DeleteConstructorCompanyBuilding(It.IsAny<Guid>(), It.IsAny<Guid>());
         }
         catch(Exception e)
         {
@@ -1874,9 +1862,64 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>());
         buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
         buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
 
         buildingRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void DeleteConstructorCompanyBuildingTestBuildingNotFromConstructorCompany()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany()
+        {
+            Id = constructorCompanyId,
+            Name = "A Constructor Company"
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid() },
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { building });
+
+        userRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+
+        Exception exception = null;
+
+        try
+        {
+            buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building does not belong to user's constructor company");
     }
 }

@@ -230,19 +230,6 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void DeleteBuildingTestOk()
-        {
-            buildingLogicMock.Setup(x => x.DeleteBuilding(It.IsAny<Guid>()));
-
-            OkResult result = buildingController.DeleteBuilding(It.IsAny<Guid>()) as OkResult;
-            OkResult expectedResult = new OkResult();
-
-            buildingLogicMock.VerifyAll();
-
-            Assert.IsTrue(result.StatusCode.Equals(expectedResult.StatusCode));
-        }
-
-        [TestMethod]
         public void GetFlatByBuildingAndFlatIdTestOk()
         {
             Flat expected = new Flat()
