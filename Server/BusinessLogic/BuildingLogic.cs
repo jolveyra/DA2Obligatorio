@@ -449,12 +449,12 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
-        CheckUserIsFromUsersConstructorCompany(constructorCompany, building);
+        CheckBuildingIsFromUsersConstructorCompany(constructorCompany, building);
 
         return building;
     }
 
-    private static void CheckUserIsFromUsersConstructorCompany(ConstructorCompany constructorCompany, Building building)
+    private static void CheckBuildingIsFromUsersConstructorCompany(ConstructorCompany constructorCompany, Building building)
     {
         if (!building.ConstructorCompany.Id.Equals(constructorCompany.Id))
         {
@@ -464,6 +464,10 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
     {
-        throw new NotImplementedException();
+        Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
+        
+        existingBuilding.Manager = _iUserRepository.GetUserById(building.Manager.Id);
+
+        return _iBuildingRepository.UpdateBuilding(building);
     }
 }

@@ -1598,4 +1598,84 @@ public class BuildingLogicTest
 
         Assert.AreEqual(building, result);
     }
+
+    [TestMethod]
+    public void UpdateConstructorCompanyBuildingTestOk()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany() { 
+            Id = constructorCompanyId, 
+            Name = "A Constructor Company" 
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        User newManager = new User() { Id = Guid.NewGuid(), 
+            Role = Role.Manager, 
+            Name = "New Manager", 
+            Email = "newmanager@mail.com", 
+            Password = "Password12345", 
+            Surname = "Surname"
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            },
+            Manager = newManager
+        };
+
+        Building toUpdateBuilding = new Building()
+        {
+            Id = building.Id,
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = 100,
+            Manager = new User() { 
+                Id = Guid.NewGuid(),
+                Role = Role.Manager,
+                Name = "Manager2",
+                Email = "manager@mail.com",
+                Password = "Password12345",
+                Surname = "Surname2"
+            }
+        };
+
+        Building expected = new Building()
+        {
+            Id = building.Id,
+            Name = building.Name,
+            ConstructorCompany = constructorCompany,
+            Address = building.Address,
+            SharedExpenses = building.SharedExpenses,
+            Manager = newManager
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
+        buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetUserById(It.IsAny<Guid>())).Returns(newManager);
+
+        Building result = buildingLogic.UpdateConstructorCompanyBuilding(building, toUpdateBuilding.Id, constructorCompanyAdministrator.Id);
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.AreEqual(expected, result);
+
+    }
 }
