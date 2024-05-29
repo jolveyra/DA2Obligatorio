@@ -13,10 +13,11 @@ import { Building } from '../../shared/building.model';
   styleUrl: './building-list.component.css'
 })
 export class BuildingListComponent implements OnInit, OnDestroy {
-  buildings: Building[] = [];
-  isLoading = false;
   userLoggedSub: Subscription = new Subscription();
   userRole: string = '';
+  isLoading = false;
+  error: string = '';
+  buildings: Building[] = [];
 
   constructor(
     private authService: AuthService,
@@ -26,10 +27,24 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
-    this.buildings = this.buildingService.getBuildings(); // FIXME: Add a loading spinner for when it's fetching the administrators
-    this.isLoading = false;
+    this.buildingService.fetchBuildings().subscribe(
+      response => {
+        console.log(response);
+        this.buildingService.setBuildings(response);
+        this.buildings = this.buildingService.getBuildings();
+        this.isLoading = false;
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+        this.isLoading = false;
+      }
+    );
   }
 
   ngOnDestroy(): void {
