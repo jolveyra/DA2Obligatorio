@@ -28,7 +28,8 @@ interface BuildingFlatsResponseData {
   cornerStreet: string,
   constructorCompany: string, // FIXME: check if this is correct when merging with new version of api
   latitude: number,
-  longitude: number
+  longitude: number,
+  maintenanceEmployeeIds: string[]
 }
 
 interface FlatResponseData {
@@ -93,7 +94,8 @@ export class BuildingService {
           response.cornerStreet,
           response.constructorCompany,
           response.latitude,
-          response.longitude
+          response.longitude,
+          response.maintenanceEmployeeIds
         );
         buildingWithFlats.flats.sort(flat => flat.number);
         return buildingWithFlats;
@@ -115,6 +117,15 @@ export class BuildingService {
           response.bathrooms,
           response.hasBalcony))
       );
+  }
+
+  updateBuilding(buildingId: string, sharedExpenses: number, maintenanceEmployeeIds: string[]): Observable<BuildingResponseData> {
+    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v1/buildings/${buildingId}`, // 
+      {
+        sharedExpenses,
+        maintenanceEmployeeIds
+      }
+    );
   }
 
   updateFlat(buildingId: string, flatId: string, flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {

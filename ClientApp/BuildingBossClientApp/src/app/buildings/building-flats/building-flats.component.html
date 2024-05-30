@@ -4,25 +4,64 @@
             <app-back-icon></app-back-icon>
         </a>
     </div>
+    <h2 class="text-center text-primary-emphasis fw-semibold mb-4">Building {{ building.name }}</h2>
     <div class="alert alert-danger" *ngIf="error !== ''">
         <p>{{ error }}</p>
     </div>
     <div *ngIf="isLoading" class="text-center">
         <app-loading-spinner></app-loading-spinner>
     </div>
-    <div *ngIf="!isLoading">
-        <div class="d-flex justify-content-center">
-            <div class="list-group w-50">
-                <!-- FIXME: form to edit building -->
+    <div class="d-flex justify-content-center">
+        <form class="w-75" (ngSubmit)="onSubmit(managerEditForm)" #managerEditForm="ngForm" *ngIf="!isLoading">
+            <div class="form-group mb-2 ">
+                <label for="sharedExpenses">Shared Expenses</label>
+                <input
+                    type="number"
+                    id="sharedExpenses"
+                    class="form-control"
+                    [(ngModel)]="building.sharedExpenses"
+                    name="sharedExpenses"
+                    required
+                    min="1"
+                    #sharedExpenses="ngModel">
+                <span class="text-danger" *ngIf="!sharedExpenses.valid && sharedExpenses.touched">Shared expenses must be at least 1</span>
             </div>
-        </div>
-        <hr>
-        <div class="d-flex justify-content-center">
-            <div class="list-group w-75">
-                <app-flat-item
-                    *ngFor="let flatElem of building.flats"
-                    [flat]="flatElem"></app-flat-item>
+            <div class="form-group mb-2">
+                <label for="activeEmployees">Maintenance employees on building</label>
+                <ul class="list-group list-with-overflow" name="activeEmployees">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let employee of employeesOnBuilding">
+                        <span>
+                            {{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}
+                        </span>
+                        <button class="btn btn-danger p-1" (click)="onDiscard(employee)">Discard</button>
+                    </li>
+                </ul>
             </div>
+            <div class="form-group mb-2">
+                <label for="activeEmployees">Maintenance employees not currently on building</label>
+                <ul class="list-group list-with-overflow" name="activeEmployees">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let employee of employeesNotOnBuilding">
+                        <span>
+                            {{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}
+                        </span>
+                        <button class="btn btn-success p-1 ml-auto" (click)="onAdd(employee)">Add</button>
+                    </li>
+                </ul>
+            </div>            
+            <div class="text-center mt-4">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    [disabled]="!managerEditForm.valid">Edit building</button>
+            </div>
+        </form>
+    </div>
+    <hr class="my-5">
+    <div class="d-flex justify-content-center">
+        <div class="list-group w-75">
+            <app-flat-item
+                *ngFor="let flatElem of building.flats"
+                [flat]="flatElem"></app-flat-item>
         </div>
     </div>
 </div>
