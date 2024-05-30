@@ -1,10 +1,11 @@
 ﻿using RepositoryInterfaces;
 using Domain;
 using CustomExceptions;
+using LogicInterfaces;
 
 namespace BusinessLogic
 {
-    public class ConstructorCompanyAdministratorLogic
+    public class ConstructorCompanyAdministratorLogic: IConstructorCompanyAdministratorLogic
     {
         private readonly IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
         private readonly IConstructorCompanyRepository _iConstructorCompanyRepository;

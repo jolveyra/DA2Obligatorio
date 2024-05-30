@@ -26,11 +26,6 @@ namespace DataAccess.Repositories
             return _context.Users;
         }
 
-        public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorById(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
             ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == userId);

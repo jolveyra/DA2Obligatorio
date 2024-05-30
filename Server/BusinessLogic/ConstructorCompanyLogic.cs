@@ -1,6 +1,7 @@
 ﻿using Domain;
 using RepositoryInterfaces;
 using CustomExceptions;
+using LogicInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
-    public class ConstructorCompanyLogic
+    public class ConstructorCompanyLogic: IConstructorCompanyLogic
     {
         private IConstructorCompanyRepository _constructorCompanyRepository;
 

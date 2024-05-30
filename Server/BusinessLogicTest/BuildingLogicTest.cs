@@ -1869,6 +1869,53 @@ public class BuildingLogicTest
         buildingRepositoryMock.VerifyAll();
     }
 
+
+
+    [TestMethod]
+    public void DeleteConstructorCompanyBuildingWithFlatsTestOk()
+    {
+        Guid constructorCompanyId = Guid.NewGuid();
+
+        ConstructorCompany constructorCompany = new ConstructorCompany()
+        {
+            Id = constructorCompanyId,
+            Name = "A Constructor Company"
+        };
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+        {
+            Id = Guid.NewGuid(),
+            ConstructorCompany = constructorCompany
+        };
+
+        Building building = new Building()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Mirador",
+            ConstructorCompany = constructorCompany,
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>() { building });
+        buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
+        buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Owner = new Person() { Id = Guid.NewGuid() } } });
+        buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
+        peopleRepositoryMock.Setup(p => p.DeletePerson(It.IsAny<Guid>()));
+        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+
+        buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
+
+        buildingRepositoryMock.VerifyAll();
+    }
+
     [TestMethod]
     public void DeleteConstructorCompanyBuildingTestBuildingNotFromConstructorCompany()
     {

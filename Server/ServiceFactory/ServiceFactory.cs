@@ -24,6 +24,8 @@ namespace ServiceFactory
             services.AddScoped<IBuildingLogic, BuildingLogic>();
             services.AddScoped<ICategoryLogic, CategoryLogic>();
             services.AddScoped<IReportLogic, ReportLogic>();
+            services.AddScoped<IConstructorCompanyAdministratorLogic, ConstructorCompanyAdministratorLogic>();
+            services.AddScoped<IConstructorCompanyBuildingLogic, BuildingLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -32,6 +34,8 @@ namespace ServiceFactory
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPeopleRepository, PeopleRepository>();
+            services.AddScoped<IConstructorCompanyAdministratorRepository, UserRepository>();
+            services.AddScoped<IConstructorCompanyRepository, ConstructorCompanyRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

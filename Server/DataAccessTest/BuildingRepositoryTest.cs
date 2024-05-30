@@ -407,5 +407,22 @@ namespace DataAccessTest
             mockContext.Verify(x=>x.Flats.RemoveRange(flats), Times.Once());
             mockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
+
+
+        [TestMethod]
+        public void DeleteFlatsWithOwnersTestOk()
+        {
+            List<Flat> flats = new List<Flat> { new Flat() { Id = Guid.NewGuid(), Owner = new Person() { Id = Guid.NewGuid() }, OwnerId = Guid.NewGuid() } };
+
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { new Flat(), flats[0] });
+            mockContext.Setup(x => x.Flats.RemoveRange(flats));
+            mockContext.Setup(x => x.SaveChanges());
+
+            buildingRepository.DeleteFlats(flats);
+
+            mockContext.Verify(x => x.Flats, Times.Once());
+            mockContext.Verify(x => x.Flats.RemoveRange(flats), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+        }
     }
 }

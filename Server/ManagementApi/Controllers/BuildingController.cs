@@ -17,20 +17,6 @@ namespace ManagementApi.Controllers
             _iBuildingLogic = iBuildingLogic;
         }
 
-        [HttpPost]
-        [AuthenticationFilter(["Manager"])]
-        public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
-        {
-
-            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), 
-                buildingRequest.Flats, 
-                Guid.Parse(HttpContext.Items["UserId"] as string)));
-
-            response.Flats = _iBuildingLogic.GetAllBuildingFlats(response.Id).Select(flat => new FlatResponseModel(flat)).ToList();
-
-            return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
-        }
-
         [HttpGet]
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
