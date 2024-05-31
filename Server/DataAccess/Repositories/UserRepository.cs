@@ -1,6 +1,7 @@
 ﻿using DataAccess.Context;
 using Domain;
 using RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
@@ -28,7 +29,9 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
-            ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == userId);
+            ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators
+                .Include(c => c.ConstructorCompany)
+                .FirstOrDefault(u => u.Id == userId);
 
             if (administrator == null)
             {

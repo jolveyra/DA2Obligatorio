@@ -39,7 +39,9 @@ namespace DataAccess.Repositories
 
         public ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany)
         {
-            throw new NotImplementedException();
+            _context.ConstructorCompanies.Update(constructorCompany);
+            _context.SaveChanges();
+            return constructorCompany;
         }
     }
 }

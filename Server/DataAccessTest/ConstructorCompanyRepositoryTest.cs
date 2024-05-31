@@ -91,5 +91,32 @@ namespace DataAccessTest
             Assert.AreEqual(constructorCompany, result);
         }
 
+        [TestMethod]
+        public void UpdateConstructorCompanyTestOk()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany1"
+            };
+            ConstructorCompany expected = new ConstructorCompany()
+            {
+                Id = constructorCompany.Id,
+                Name = "ConstructorCompany1"
+            };
+
+            mockContext.Setup(x => x.ConstructorCompanies).ReturnsDbSet(new List<ConstructorCompany> { constructorCompany });
+            mockContext.Setup(x => x.Update(It.IsAny<ConstructorCompany>));
+            mockContext.Setup(x => x.SaveChanges()).Returns(1);
+
+            ConstructorCompany result = constructorCompanyRepository.UpdateConstructorCompany(constructorCompany);
+
+            mockContext.Verify(x => x.ConstructorCompanies, Times.Once());
+            mockContext.Verify(x => x.ConstructorCompanies.Update(constructorCompany), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+
+            Assert.AreEqual(expected, result);
+        }
+
     }
 }
