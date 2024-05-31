@@ -51,5 +51,10 @@ namespace BusinessLogic
         {
             return _constructorCompanyRepository.GetConstructorCompanyById(id);
         }
+
+        public ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany, Guid userId, Guid constructoCompanyId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

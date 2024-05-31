@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.ConstructorCompanyModels;
@@ -89,6 +90,49 @@ namespace ManagementApiTest
 
             OkObjectResult expected = new OkObjectResult(new ConstructorCompanyResponseModel(constructorCompany));
             OkObjectResult result = constructorCompanyController.GetConstructorCompanyById(id) as OkObjectResult;
+
+            ConstructorCompanyResponseModel expectedObject = expected.Value as ConstructorCompanyResponseModel;
+            ConstructorCompanyResponseModel objectResult = result.Value as ConstructorCompanyResponseModel;
+
+            constructorCompanyLogicMock.VerifyAll();
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+            Assert.AreEqual(expectedObject, objectResult);
+        }
+
+        [TestMethod]
+        public void UpdateConstructorCompanyTestOk()
+        {
+            Guid id = Guid.NewGuid();
+            UpdateConstructorCompanyRequestModel request = new UpdateConstructorCompanyRequestModel()
+            {
+                Name = "ConstructorCompany 1"
+            };
+            ConstructorCompany constructorCompany = request.ToEntity();
+
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                ConstructorCompany = new ConstructorCompany()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "ConstructorCompany 2"
+                }
+            };
+
+            constructorCompanyLogicMock.Setup(c => c.UpdateConstructorCompany(It.IsAny<ConstructorCompany>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(constructorCompany);
+
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ConstructorCompanyController anotherConstructorCompanyController = new ConstructorCompanyController(constructorCompanyLogicMock.Object) { ControllerContext = controllerContext };
+
+            OkObjectResult expected = new OkObjectResult(new ConstructorCompanyResponseModel(constructorCompany));
+            OkObjectResult result = anotherConstructorCompanyController.UpdateConstructorCompany(request, id) as OkObjectResult;
 
             ConstructorCompanyResponseModel expectedObject = expected.Value as ConstructorCompanyResponseModel;
             ConstructorCompanyResponseModel objectResult = result.Value as ConstructorCompanyResponseModel;

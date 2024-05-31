@@ -41,5 +41,15 @@ namespace ManagementApi.Controllers
         {
             return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.GetConstructorCompanyById(id)));
         }
+
+        [HttpPut("{constructorCompanyId}")]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
+        public OkObjectResult UpdateConstructorCompany([FromBody] UpdateConstructorCompanyRequestModel request, [FromRoute] Guid constructorCompanyId)
+        {
+            return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.
+                UpdateConstructorCompany(request.ToEntity(),
+                Guid.Parse(HttpContext.Items["UserId"] as string),
+                constructorCompanyId)));
+        }
     }
 }
