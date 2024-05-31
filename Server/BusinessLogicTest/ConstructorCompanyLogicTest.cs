@@ -9,6 +9,7 @@ using BusinessLogic;
 using Moq;
 using CustomExceptions;
 using LogicInterfaces;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace BusinessLogicTest
 {
@@ -16,13 +17,15 @@ namespace BusinessLogicTest
     public class ConstructorCompanyLogicTest
     {
         private Mock<IConstructorCompanyRepository> constructorCompanyRepositoryMock;
+        private Mock<IUserRepository> userRepositoryMock;
         private ConstructorCompanyLogic constructorCompanyLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             constructorCompanyRepositoryMock = new Mock<IConstructorCompanyRepository>(MockBehavior.Strict);
-            constructorCompanyLogic = new ConstructorCompanyLogic(constructorCompanyRepositoryMock.Object);
+            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            constructorCompanyLogic = new ConstructorCompanyLogic(constructorCompanyRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -137,6 +140,153 @@ namespace BusinessLogicTest
 
             constructorCompanyRepositoryMock.VerifyAll();
             Assert.AreEqual(constructorCompany, result);
+        }
+
+        [TestMethod]
+        public void UpdateConstructorCompanyTestOk()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany 1"
+            };
+
+            ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                ConstructorCompany = new ConstructorCompany() { Id = constructorCompany.Id, Name = "Const" }
+            };
+
+            constructorCompanyRepositoryMock
+                .Setup(c => c.UpdateConstructorCompany(It.IsAny<ConstructorCompany>()))
+                .Returns(constructorCompany);
+            
+            userRepositoryMock
+                .Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
+                .Returns(user);
+            
+            constructorCompanyRepositoryMock
+                .Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies())
+                .Returns(new List<ConstructorCompany> { user.ConstructorCompany });
+
+            ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, user.Id, constructorCompany.Id);
+
+            constructorCompanyRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(constructorCompany, result);
+        }
+
+        [TestMethod]
+        public void UpdateConstructorCopmanyTestConstructorCompanyNotFromUser()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany 1"
+            };
+
+            Guid userId = Guid.NewGuid();
+            Guid constructorCompanyId = Guid.NewGuid();
+
+            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
+                .Returns(new ConstructorCompanyAdministrator()
+                {
+                    Id = userId,
+                    ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Const" }
+                });
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "User is not an administrator of the constructor company");
+        }
+
+        [TestMethod]
+        public void UpdateConstructorCompanyTestEmptyName()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = ""
+            };
+
+            Guid userId = Guid.NewGuid();
+            Guid constructorCompanyId = Guid.NewGuid();
+
+            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
+                .Returns(new ConstructorCompanyAdministrator()
+                {
+                    Id = userId,
+                    ConstructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "Const" }
+                });
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            userRepositoryMock.VerifyAll();
+            constructorCompanyRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "Constructor company name cannot be empty");
+        }
+
+        [TestMethod]
+        public void UpdateConstructorCompanyTestAlreadyExistingName()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompany 1"
+            };
+
+            Guid userId = Guid.NewGuid();
+            Guid constructorCompanyId = Guid.NewGuid();
+
+            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
+                .Returns(new ConstructorCompanyAdministrator()
+                {
+                    Id = userId,
+                    ConstructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "Const" }
+                });
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 1" } });
+
+            constructorCompanyRepositoryMock.Setup(c => c.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { constructorCompany });
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            constructorCompanyRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "Constructor company with same name already exists");
         }
 
     }

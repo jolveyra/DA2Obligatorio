@@ -12,5 +12,6 @@ namespace RepositoryInterfaces
         ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
         IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
         ConstructorCompany GetConstructorCompanyById(Guid guid);
+        ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany);
     }
 }

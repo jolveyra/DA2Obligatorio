@@ -36,5 +36,10 @@ namespace DataAccess.Repositories
         {
             return _context.ConstructorCompanies.FirstOrDefault(c => c.Id == guid);
         }
+
+        public ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
