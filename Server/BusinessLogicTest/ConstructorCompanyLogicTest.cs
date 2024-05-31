@@ -177,7 +177,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void UpdateConstructorCopmanyTestConstructorCompanyNotFromUser()
+        public void UpdateConstructorCompanyTestConstructorCompanyNotFromUser()
         {
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
