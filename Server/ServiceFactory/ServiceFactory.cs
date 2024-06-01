@@ -26,6 +26,7 @@ namespace ServiceFactory
             services.AddScoped<IReportLogic, ReportLogic>();
             services.AddScoped<IConstructorCompanyAdministratorLogic, ConstructorCompanyAdministratorLogic>();
             services.AddScoped<IConstructorCompanyBuildingLogic, BuildingLogic>();
+            services.AddScoped<IConstructorCompanyLogic, ConstructorCompanyLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
