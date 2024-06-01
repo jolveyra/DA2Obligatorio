@@ -5,7 +5,7 @@ using WebModels.UserModels;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/managers")]
+    [Route("api/v2/managers")]
     [ExceptionFilter]
     [ApiController]
     public class ManagerController : ControllerBase

@@ -5,7 +5,7 @@ using WebModels.InvitationModels;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/invitations")]
+    [Route("api/v2/invitations")]
     [ExceptionFilter]
     [ApiController]
     public class InvitationController : ControllerBase

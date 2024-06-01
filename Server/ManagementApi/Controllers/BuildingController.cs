@@ -5,7 +5,7 @@ using ManagementApi.Filters;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/buildings")]
+    [Route("api/v2/buildings")]
     [ApiController]
     [ExceptionFilter]
     public class BuildingController : ControllerBase

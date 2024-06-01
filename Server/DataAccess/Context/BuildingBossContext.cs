@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Data;
+using System.Diagnostics.Metrics;
 
 namespace DataAccess.Context
 {
@@ -27,6 +30,20 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Building>()
+                .HasOne(b => b.Manager)
+                .WithMany()
+                .HasForeignKey(b => b.ManagerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Building>()
+                .HasOne(b => b.Manager)
+                .WithMany()
+                .HasForeignKey(b => b.ManagerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
 
         }
     }

@@ -5,7 +5,7 @@ using WebModels.ReportModels;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/reports")]
+    [Route("api/v2/reports")]
     [ExceptionFilter]
     [ApiController]
     public class ReportController : ControllerBase
