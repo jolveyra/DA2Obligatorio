@@ -38,9 +38,9 @@ namespace DataAccess.Context
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Building>()
-                .HasOne(b => b.Manager)
+                .HasOne(b => b.ConstructorCompany)
                 .WithMany()
-                .HasForeignKey(b => b.ManagerId)
+                .HasForeignKey(b => b.ConstructorCompanyId)
                 .OnDelete(DeleteBehavior.NoAction);
 
 
