@@ -32,8 +32,8 @@ namespace ManagementApiTest
         {
             IEnumerable<ConstructorCompany> constructorCompanies = new List<ConstructorCompany>
             {
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 1" },
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 2" }
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" },
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 2" }
             };
 
             constructorCompanyLogicMock.Setup(c => c.GetAllConstructorCompanies()).Returns(constructorCompanies);
@@ -59,7 +59,7 @@ namespace ManagementApiTest
         {
             CreateConstructorCompanyRequestModel constructorCompanyRequestModel = new CreateConstructorCompanyRequestModel()
             {
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
             ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
 
@@ -83,7 +83,7 @@ namespace ManagementApiTest
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
                 Id = id,
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
 
             constructorCompanyLogicMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
@@ -105,18 +105,14 @@ namespace ManagementApiTest
             Guid id = Guid.NewGuid();
             UpdateConstructorCompanyRequestModel request = new UpdateConstructorCompanyRequestModel()
             {
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
             ConstructorCompany constructorCompany = request.ToEntity();
 
             ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
             {
                 Id = Guid.NewGuid(),
-                ConstructorCompany = new ConstructorCompany()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "ConstructorCompany 2"
-                }
+                ConstructorCompanyId = Guid.NewGuid()
             };
 
             constructorCompanyLogicMock.Setup(c => c.UpdateConstructorCompany(It.IsAny<ConstructorCompany>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(constructorCompany);

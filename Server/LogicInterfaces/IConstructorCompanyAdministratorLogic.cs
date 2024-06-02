@@ -5,7 +5,7 @@ namespace LogicInterfaces
 {
     public interface IConstructorCompanyAdministratorLogic
     {
-        ConstructorCompany GetAdminConstructorCompany(Guid userId);
-        ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId);
+        ConstructorCompanyAdministrator GetConstructorCompanyAdministrator(Guid userId);
+        ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId);
     }
 }

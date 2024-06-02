@@ -33,8 +33,8 @@ namespace BusinessLogicTest
         {
             IEnumerable<ConstructorCompany> constructorCompanies = new List<ConstructorCompany>
             {
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 1" },
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 2" }
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" },
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 2" }
             };
 
             constructorCompanyRepositoryMock.Setup(c => c.GetAllConstructorCompanies()).Returns(constructorCompanies);
@@ -131,7 +131,7 @@ namespace BusinessLogicTest
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
                 Id = id,
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
 
             constructorCompanyRepositoryMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
@@ -148,13 +148,13 @@ namespace BusinessLogicTest
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
                 Id = Guid.NewGuid(),
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
 
             ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator()
             {
                 Id = Guid.NewGuid(),
-                ConstructorCompany = new ConstructorCompany() { Id = constructorCompany.Id, Name = "Const" }
+                ConstructorCompanyId = constructorCompany.Id
             };
 
             constructorCompanyRepositoryMock
@@ -167,7 +167,7 @@ namespace BusinessLogicTest
             
             constructorCompanyRepositoryMock
                 .Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies())
-                .Returns(new List<ConstructorCompany> { user.ConstructorCompany });
+                .Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = constructorCompany.Id, Name = "asdasd" } });
 
             ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, user.Id, constructorCompany.Id);
 
@@ -182,7 +182,7 @@ namespace BusinessLogicTest
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
                 Id = Guid.NewGuid(),
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
 
             Guid userId = Guid.NewGuid();
@@ -192,7 +192,7 @@ namespace BusinessLogicTest
                 .Returns(new ConstructorCompanyAdministrator()
                 {
                     Id = userId,
-                    ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Const" }
+                    ConstructorCompanyId = Guid.NewGuid()
                 });
 
             Exception exception = null;
@@ -228,7 +228,7 @@ namespace BusinessLogicTest
                 .Returns(new ConstructorCompanyAdministrator()
                 {
                     Id = userId,
-                    ConstructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "Const" }
+                    ConstructorCompanyId = constructorCompanyId
                 });
 
             Exception exception = null;
@@ -255,7 +255,7 @@ namespace BusinessLogicTest
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
                 Id = Guid.NewGuid(),
-                Name = "ConstructorCompany 1"
+                Name = "ConstructorCompanyId 1"
             };
 
             Guid userId = Guid.NewGuid();
@@ -265,9 +265,9 @@ namespace BusinessLogicTest
                 .Returns(new ConstructorCompanyAdministrator()
                 {
                     Id = userId,
-                    ConstructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "Const" }
+                    ConstructorCompanyId = constructorCompanyId
                 });
-            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 1" } });
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" } });
 
             constructorCompanyRepositoryMock.Setup(c => c.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { constructorCompany });
 

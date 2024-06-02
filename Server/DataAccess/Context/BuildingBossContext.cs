@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Data;
-using System.Diagnostics.Metrics;
 
 namespace DataAccess.Context
 {
@@ -17,7 +14,6 @@ namespace DataAccess.Context
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<ConstructorCompany> ConstructorCompanies { get; set; }
-        public virtual DbSet<ConstructorCompanyAdministrator> ConstructorCompanyAdministrators { get; set; }
 
         public BuildingBossContext() { }
 
@@ -30,20 +26,6 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Building>()
-                .HasOne(b => b.Manager)
-                .WithMany()
-                .HasForeignKey(b => b.ManagerId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Building>()
-                .HasOne(b => b.ConstructorCompany)
-                .WithMany()
-                .HasForeignKey(b => b.ConstructorCompanyId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<User>().ToTable("Users");
         }
     }
 }

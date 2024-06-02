@@ -50,6 +50,8 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.Setup(repository => repository.CreateInvitation(invitation)).Returns(invitation);
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
+            constructorCompanyAdministratorRepositoryMock
+                .Setup(repository => repository.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
 
             invitation.Id = Guid.NewGuid();
             Invitation result = invitationLogic.CreateInvitation(invitation, "manager");
@@ -381,7 +383,7 @@ namespace BusinessLogicTest
             Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.ConstructorCompanyAdmin };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
-            constructorCompanyAdministratorRepositoryMock.Setup(repository => repository.CreateConstructorCompanyAdministrator(It.IsAny<User>())).Returns(new ConstructorCompanyAdministrator());
+            constructorCompanyAdministratorRepositoryMock.Setup(repository => repository.CreateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(new ConstructorCompanyAdministrator());
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);

@@ -8,6 +8,6 @@ namespace Domain
 {
     public class ConstructorCompanyAdministrator: User
     {
-        public ConstructorCompany ConstructorCompany { get; set; }
+        public Guid ConstructorCompanyId { get; set; }
     }
 }

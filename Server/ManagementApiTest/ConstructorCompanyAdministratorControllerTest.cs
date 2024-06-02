@@ -29,19 +29,19 @@ namespace ManagementApiTest
         [TestMethod]
         public void SetConstructorCompanyAdministratorTestOk()
         {
-            SetConstructorCompanyAdministratorRequestModel setConstructorCompanyAdministratorRequestModel = new SetConstructorCompanyAdministratorRequestModel()
+            UpdateConstructorCompanyAdministratorRequestModel UpdateConstructorCompanyAdministratorRequestModel = new UpdateConstructorCompanyAdministratorRequestModel()
             {
                 ConstructorCompanyId = Guid.NewGuid()
             };
 
             ConstructorCompany constructorCompany = new ConstructorCompany()
             {
-                Id = setConstructorCompanyAdministratorRequestModel.ConstructorCompanyId
+                Id = UpdateConstructorCompanyAdministratorRequestModel.ConstructorCompanyId
             };
 
             ConstructorCompanyAdministrator admin = new ConstructorCompanyAdministrator()
             {
-                ConstructorCompany = constructorCompany,
+                ConstructorCompanyId = constructorCompany.Id,
                 Id = Guid.NewGuid()
             };
 
@@ -56,13 +56,13 @@ namespace ManagementApiTest
                 HttpContext = httpContext
             };
 
-            constructorCompanyAdministratorLogicMock.Setup(c => c.SetConstructorCompanyAdministrator(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(admin);
+            constructorCompanyAdministratorLogicMock.Setup(c => c.UpdateConstructorCompanyAdministrator(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(admin);
 
             OkObjectResult expected = new OkObjectResult(constructorCompanyAdministratorResponseModel);
 
             ConstructorCompanyAdministratorController anotherConstructorCompanyAdministratorController = new ConstructorCompanyAdministratorController(constructorCompanyAdministratorLogicMock.Object) { ControllerContext = controllerContext };
 
-            OkObjectResult result = anotherConstructorCompanyAdministratorController.SetConstructorCompanyAdministrator(setConstructorCompanyAdministratorRequestModel) as OkObjectResult;
+            OkObjectResult result = anotherConstructorCompanyAdministratorController.UpdateConstructorCompanyAdministrator(UpdateConstructorCompanyAdministratorRequestModel) as OkObjectResult;
 
             constructorCompanyAdministratorLogicMock.VerifyAll();
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -70,21 +70,16 @@ namespace ManagementApiTest
         }
 
         [TestMethod]
-        public void GetAdminConstructorCompanyTestOk()
+        public void GetConstructorCompanyAdministratorTestOk()
         {
             Guid constructorCompanyId = Guid.NewGuid();
 
             ConstructorCompanyAdministrator admin = new ConstructorCompanyAdministrator()
             {
-                ConstructorCompany = new ConstructorCompany()
-                {
-                    Name = "ConstructorCompany",
-                    Id = constructorCompanyId
-                },
-                Id = Guid.NewGuid()
+                ConstructorCompanyId = Guid.NewGuid()
             };
 
-            ConstructorCompanyResponseModel response = new ConstructorCompanyResponseModel(admin.ConstructorCompany);
+            ConstructorCompanyAdministratorResponseModel response = new ConstructorCompanyAdministratorResponseModel(admin);
 
             HttpContext httpContext = new DefaultHttpContext();
             httpContext.Items.Add("UserId", admin.Id.ToString());
@@ -94,13 +89,13 @@ namespace ManagementApiTest
                 HttpContext = httpContext
             };
 
-            constructorCompanyAdministratorLogicMock.Setup(c => c.GetAdminConstructorCompany(It.IsAny<Guid>())).Returns(admin.ConstructorCompany);
+            constructorCompanyAdministratorLogicMock.Setup(c => c.GetConstructorCompanyAdministrator(It.IsAny<Guid>())).Returns(admin);
 
             OkObjectResult expected = new OkObjectResult(response);
 
             ConstructorCompanyAdministratorController anotherConstructorCompanyAdministratorController = new ConstructorCompanyAdministratorController(constructorCompanyAdministratorLogicMock.Object) { ControllerContext = controllerContext };
 
-            OkObjectResult result = anotherConstructorCompanyAdministratorController.GetAdminConstructorCompany() as OkObjectResult;
+            OkObjectResult result = anotherConstructorCompanyAdministratorController.GetConstructorCompanyAdministrator() as OkObjectResult;
 
             constructorCompanyAdministratorLogicMock.VerifyAll();
             Assert.AreEqual(expected.StatusCode, result.StatusCode);

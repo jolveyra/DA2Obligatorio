@@ -80,15 +80,16 @@ namespace BusinessLogic
 
         private void CreateUser(Invitation invitation)
         {
-            User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
 
             if (invitation.Role == InvitationRole.Manager)
             {
+                User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
                 UserLogic.CreateManager(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
             }
             else
             {
-                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
+                ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
+                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, administrator);
             }
         }
 
@@ -124,7 +125,7 @@ namespace BusinessLogic
 
         private void ValidateInvitationEmail(string email)
         {
-            if (UserLogic.ExistsUserEmail(_userRepository, _constructorCompanyAdministratorRepository, email))
+            if (UserLogic.ExistsUserEmail(_userRepository, email))
             {
                 throw new InvitationException("There is already a user with the same email");
             }

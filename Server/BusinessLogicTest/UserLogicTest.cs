@@ -476,16 +476,16 @@ namespace BusinessLogicTest
                 Surname = "Perez", 
                 Email = "", 
                 Role = Role.ConstructorCompanyAdmin,
-                ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A Constructor Company" } 
+                ConstructorCompanyId = Guid.NewGuid() 
             };
 
             userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
-            ConstructorCompany result = _userLogic.GetConstructorCompanyByUserId(userId);
+            Guid result = _userLogic.GetConstructorCompanyByUserId(userId);
 
             userRepositoryMock.VerifyAll();
 
-            Assert.AreEqual(user.ConstructorCompany, result);
+            Assert.AreEqual(user.ConstructorCompanyId, result);
 
         }
     }

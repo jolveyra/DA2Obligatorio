@@ -32,8 +32,8 @@ namespace DataAccessTest
         {
             IEnumerable<ConstructorCompany> constructorCompanies = new List<ConstructorCompany>
             {
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 1" },
-                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompany 2" }
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" },
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 2" }
             };
 
             mockContext.Setup(c => c.ConstructorCompanies).ReturnsDbSet(constructorCompanies);

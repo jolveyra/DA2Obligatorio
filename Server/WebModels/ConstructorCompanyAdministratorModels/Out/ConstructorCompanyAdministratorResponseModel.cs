@@ -22,7 +22,7 @@ namespace WebModels.ConstructorCompanyAdministratorModels
             Name = admin.Name;
             Surname = admin.Surname;
             Email = admin.Email;
-            ConstructorCompanyId = admin.ConstructorCompany.Id;
+            ConstructorCompanyId = admin.ConstructorCompanyId;
         }
 
         public override bool Equals(object? obj)

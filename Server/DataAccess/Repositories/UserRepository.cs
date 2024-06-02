@@ -14,9 +14,12 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(User user)
+        public ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(ConstructorCompanyAdministrator administrator)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(administrator);
+            _context.SaveChanges();
+
+            return administrator;
         }
 
         public User CreateUser(User user)
@@ -29,7 +32,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators()
         {
-            throw new NotImplementedException();
+            return _context.Users.OfType<ConstructorCompanyAdministrator>();
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -39,8 +42,8 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
-            ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators
-                .Include(c => c.ConstructorCompany)
+            ConstructorCompanyAdministrator? administrator = _context.Users
+                .OfType<ConstructorCompanyAdministrator>()
                 .FirstOrDefault(u => u.Id == userId);
 
             if (administrator == null)
@@ -63,9 +66,9 @@ namespace DataAccess.Repositories
             return user;
         }
 
-        public ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator)
+        public ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator)
         {
-            _context.ConstructorCompanyAdministrators.Update(constructorCompanyAdministrator);
+            _context.Users.Update(constructorCompanyAdministrator);
             _context.SaveChanges();
 
             return constructorCompanyAdministrator;

@@ -71,7 +71,7 @@ namespace BusinessLogic
 
         private void CheckUserIsConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
-            if (!(_userRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompany.Id == constructorCompanyId))
+            if (!(_userRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId == constructorCompanyId))
             {
                 throw new ConstructorCompanyException("User is not an administrator of the constructor company");
             }

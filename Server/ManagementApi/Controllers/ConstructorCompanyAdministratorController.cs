@@ -19,21 +19,18 @@ namespace ManagementApi.Controllers
 
         [HttpGet]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetAdminConstructorCompany()
+        public OkObjectResult GetConstructorCompanyAdministrator()
         {
-            return Ok(new ConstructorCompanyResponseModel(
-                               _iConstructorCompanyAdministratorLogic.
-                                              GetAdminConstructorCompany(Guid.Parse(HttpContext.Items["UserId"] as string)
-                                                             )));
+            return Ok(new ConstructorCompanyAdministratorResponseModel(_iConstructorCompanyAdministratorLogic.GetConstructorCompanyAdministrator(Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
         [HttpPut]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public IActionResult SetConstructorCompanyAdministrator([FromBody] SetConstructorCompanyAdministratorRequestModel setConstructorCompanyAdministratorRequestModel)
+        public IActionResult UpdateConstructorCompanyAdministrator([FromBody] UpdateConstructorCompanyAdministratorRequestModel updateConstructorCompanyAdministratorRequestModel)
         {
             return Ok(new ConstructorCompanyAdministratorResponseModel(
                 _iConstructorCompanyAdministratorLogic.
-                SetConstructorCompanyAdministrator(Guid.Parse(HttpContext.Items["UserId"] as string), setConstructorCompanyAdministratorRequestModel.ConstructorCompanyId)
+                UpdateConstructorCompanyAdministrator(Guid.Parse(HttpContext.Items["UserId"] as string), updateConstructorCompanyAdministratorRequestModel.ConstructorCompanyId)
                 ));
         }
     }

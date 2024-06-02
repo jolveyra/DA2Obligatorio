@@ -1,6 +1,6 @@
 ﻿namespace WebModels.ConstructorCompanyAdministratorModels
 {
-    public class SetConstructorCompanyAdministratorRequestModel
+    public class UpdateConstructorCompanyAdministratorRequestModel
     {
         public Guid ConstructorCompanyId { get; set; }
     }

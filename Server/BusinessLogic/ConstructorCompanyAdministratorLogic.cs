@@ -7,40 +7,36 @@ namespace BusinessLogic
 {
     public class ConstructorCompanyAdministratorLogic: IConstructorCompanyAdministratorLogic
     {
-        private readonly IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
-        private readonly IConstructorCompanyRepository _iConstructorCompanyRepository;
         private readonly IUserRepository _iUserRepository;
+        private readonly IConstructorCompanyRepository _iConstructorCompanyRepository;
+        private readonly IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
 
-        public ConstructorCompanyAdministratorLogic(IConstructorCompanyAdministratorRepository iConstructorCompanyAdministratorRepository, IConstructorCompanyRepository iConstructorCompanyRepository, IUserRepository iUserRepository)
+        public ConstructorCompanyAdministratorLogic(IUserRepository iUserRepository, IConstructorCompanyRepository iConstructorCompanyRepository, IConstructorCompanyAdministratorRepository iConstructorCompanyAdministrator)
         {
-            _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministratorRepository;
-            _iConstructorCompanyRepository = iConstructorCompanyRepository;
             _iUserRepository = iUserRepository;
+            _iConstructorCompanyRepository = iConstructorCompanyRepository;
+            _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministrator;
         }
 
-        public ConstructorCompany GetAdminConstructorCompany(Guid userId)
+        public ConstructorCompanyAdministrator GetConstructorCompanyAdministrator(Guid userId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
-            if (constructorCompanyAdministrator.ConstructorCompany is null)
-                throw new ConstructorCompanyAdministratorException("Administrator is not a member from a constructor company");
-
-            return constructorCompanyAdministrator.ConstructorCompany;
+            return constructorCompanyAdministrator;
         }
 
-        public ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
+        public ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
-            if (constructorCompanyAdministrator.ConstructorCompany is not null)
+            if (constructorCompanyAdministrator.ConstructorCompanyId != Guid.Empty)
                 throw new ConstructorCompanyAdministratorException("Administrator is already a member from a constructor company");
 
             ConstructorCompany constructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
 
-            constructorCompanyAdministrator.ConstructorCompany = constructorCompany;
+            constructorCompanyAdministrator.ConstructorCompanyId = constructorCompany.Id;
 
-            return _iConstructorCompanyAdministratorRepository.SetConstructorCompanyAdministrator(constructorCompanyAdministrator);
+            return _iConstructorCompanyAdministratorRepository.UpdateConstructorCompanyAdministrator(constructorCompanyAdministrator);
         }
-
     }
 }

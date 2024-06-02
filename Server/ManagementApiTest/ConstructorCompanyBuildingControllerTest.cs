@@ -37,12 +37,12 @@ namespace ManagementApiTest
                 new Building() {
                     Id = Guid.NewGuid(),
                     Name = "Building 1",
-                    ConstructorCompany = constructorCompany,
+                    ConstructorCompanyId = constructorCompany.Id,
                     Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                     SharedExpenses = 13,
                     MaintenanceEmployees = new List<Guid>()
                 },
-                new Building() { Id = Guid.NewGuid(), Name = "Building 2", ConstructorCompany = constructorCompany,
+                new Building() { Id = Guid.NewGuid(), Name = "Building 2", ConstructorCompanyId = constructorCompany.Id,
                     Address = new Address { DoorNumber = 22, CornerStreet = "Street 2", Id = Guid.NewGuid(), Latitude = 25, Longitude = 26, Street = "Street 3" },
                     SharedExpenses = 14,
                     MaintenanceEmployees = new List<Guid>()
@@ -54,7 +54,7 @@ namespace ManagementApiTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Administrator 1",
-                ConstructorCompany = constructorCompany
+                ConstructorCompanyId = constructorCompany.Id
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -104,7 +104,7 @@ namespace ManagementApiTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Administrator 1",
-                ConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A Constructor Company" }
+                ConstructorCompanyId = Guid.NewGuid()
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -117,7 +117,7 @@ namespace ManagementApiTest
 
             Building building = buildingRequestModel.ToEntity();
             building.Id = Guid.NewGuid();
-            building.ConstructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+            building.ConstructorCompanyId = constructorCompanyAdministrator.ConstructorCompanyId;
 
             constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(building);
 
@@ -141,7 +141,7 @@ namespace ManagementApiTest
             {
                 Id = id,
                 Name = "Building 1",
-                ConstructorCompany = constructorCompany,
+                ConstructorCompanyId = constructorCompany.Id,
                 Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                 SharedExpenses = 13,
                 MaintenanceEmployees = new List<Guid>()
@@ -151,7 +151,7 @@ namespace ManagementApiTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Administrator 1",
-                ConstructorCompany = constructorCompany
+                ConstructorCompanyId = constructorCompany.Id
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -187,11 +187,11 @@ namespace ManagementApiTest
             {
                 Id = id,
                 Name = "Building 1",
-                ConstructorCompany = constructorCompany,
+                ConstructorCompanyId = constructorCompany.Id,
                 Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                 SharedExpenses = 13,
                 MaintenanceEmployees = new List<Guid>(),
-                Manager = newManager
+                ManagerId = newManager.Id
             };
 
 
@@ -205,7 +205,7 @@ namespace ManagementApiTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Administrator 1",
-                ConstructorCompany = constructorCompany
+                ConstructorCompanyId = constructorCompany.Id
             };
 
             HttpContext httpContext = new DefaultHttpContext();
@@ -238,7 +238,7 @@ namespace ManagementApiTest
             {
                 Id = id,
                 Name = "Building 1",
-                ConstructorCompany = constructorCompany,
+                ConstructorCompanyId = constructorCompany.Id,
                 Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                 SharedExpenses = 13,
                 MaintenanceEmployees = new List<Guid>()
@@ -248,7 +248,7 @@ namespace ManagementApiTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Administrator 1",
-                ConstructorCompany = constructorCompany
+                ConstructorCompanyId = constructorCompany.Id
             };
 
             HttpContext httpContext = new DefaultHttpContext();

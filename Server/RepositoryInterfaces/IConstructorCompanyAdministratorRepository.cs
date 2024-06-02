@@ -4,8 +4,8 @@ namespace RepositoryInterfaces
 {
     public interface IConstructorCompanyAdministratorRepository
     {
-        ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(User user);
+        ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator);
         IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators();
-        ConstructorCompanyAdministrator SetConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator);
+        ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator);
     }
 }
