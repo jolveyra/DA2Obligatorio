@@ -9,6 +9,6 @@ namespace Domain
     public class ConstructorCompanyAdministrator: User
     {
         public Guid ConstructorCompanyId { get; set; }
-        public ConstructorCompany ConstructorCompany { get; set; } = new ConstructorCompany();
+        public ConstructorCompany ConstructorCompany { get; set; } = new ConstructorCompany() { Name = "" };
     }
 }

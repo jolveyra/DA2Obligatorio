@@ -56,6 +56,7 @@ namespace BusinessLogic
             }
 
             ConstructorCompanyAdministrator newUser = constructorCompanyAdministratorRepository.CreateConstructorCompanyAdministrator(constructorCompanyAdministrator);
+
             sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
 
             return newUser;

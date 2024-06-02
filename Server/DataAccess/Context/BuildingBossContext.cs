@@ -26,11 +26,10 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<ConstructorCompanyAdministrator>()
-                .HasOne<ConstructorCompany>()
+                .HasOne(c => c.ConstructorCompany)
                 .WithMany()
-                .HasForeignKey(ca => ca.ConstructorCompanyId)
+                .HasForeignKey(c => c.ConstructorCompanyId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
