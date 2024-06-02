@@ -43,8 +43,7 @@ namespace DataAccess.Context
                 .HasForeignKey(b => b.ConstructorCompanyId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
-
+            modelBuilder.Entity<User>().ToTable("Users");
         }
     }
 }

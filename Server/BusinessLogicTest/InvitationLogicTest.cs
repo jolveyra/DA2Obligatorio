@@ -13,6 +13,7 @@ namespace BusinessLogicTest
         private Mock<IInvitationRepository> invitationRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<ISessionRepository> sessionRepositoryMock;
+        private Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
         private InvitationLogic invitationLogic;
 
         [TestInitialize]
@@ -21,7 +22,8 @@ namespace BusinessLogicTest
             invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
             sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
-            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object, userRepositoryMock.Object, sessionRepositoryMock.Object);
+            constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
+            invitationLogic = new InvitationLogic(invitationRepositoryMock.Object, userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -379,7 +381,7 @@ namespace BusinessLogicTest
             Invitation expected = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = true, IsAnswered = true, Role = InvitationRole.ConstructorCompanyAdmin };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
-            userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
+            constructorCompanyAdministratorRepositoryMock.Setup(repository => repository.CreateConstructorCompanyAdministrator(It.IsAny<User>())).Returns(new ConstructorCompanyAdministrator());
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);

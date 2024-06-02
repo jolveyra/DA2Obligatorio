@@ -14,12 +14,22 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
+        public ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         public User CreateUser(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
 
             return user;
+        }
+
+        public IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators()
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetAllUsers()

@@ -10,12 +10,14 @@ namespace BusinessLogic
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISessionRepository _sessionRepository;
+        private readonly IConstructorCompanyAdministratorRepository _constructorCompanyAdministratorRepository;
 
-        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository, ISessionRepository sessionRepository)
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
         {
             _invitationRepository = invitationRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
+            _constructorCompanyAdministratorRepository = constructorCompanyAdministratorRepository;
         }
 
         public Invitation CreateInvitation(Invitation invitation, string role)
@@ -82,11 +84,11 @@ namespace BusinessLogic
 
             if (invitation.Role == InvitationRole.Manager)
             {
-                UserLogic.CreateManager(_userRepository, _sessionRepository, user);
+                UserLogic.CreateManager(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
             }
             else
             {
-                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, user);
+                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
             }
         }
 
@@ -122,7 +124,7 @@ namespace BusinessLogic
 
         private void ValidateInvitationEmail(string email)
         {
-            if (UserLogic.ExistsUserEmail(_userRepository, email))
+            if (UserLogic.ExistsUserEmail(_userRepository, _constructorCompanyAdministratorRepository, email))
             {
                 throw new InvitationException("There is already a user with the same email");
             }

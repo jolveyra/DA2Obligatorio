@@ -12,6 +12,7 @@ namespace BusinessLogicTest
 
         private Mock<ISessionRepository> sessionRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
+        private Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
         private UserLogic _userLogic;
 
         [TestInitialize]
@@ -19,7 +20,8 @@ namespace BusinessLogicTest
         {
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
             sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
-            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object);
+            constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
+            _userLogic = new UserLogic(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -309,6 +311,7 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            userRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
@@ -372,7 +375,7 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(expected);
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
 
-            User result = UserLogic.CreateManager(userRepositoryMock.Object, sessionRepositoryMock.Object, user);
+            User result = UserLogic.CreateManager(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object, user);
 
             userRepositoryMock.VerifyAll();
             sessionRepositoryMock.VerifyAll();
@@ -421,18 +424,47 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateConstructorCompanyAdminTest()
         {
-            User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin };
+            ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin,  };
             Session session = new Session() { UserId = user.Id };
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
-            userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
+            constructorCompanyAdministratorRepositoryMock.Setup(u => u.CreateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(user);
             sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
 
             user.Id = Guid.NewGuid();
-            User result = _userLogic.CreateAdministrator(user);
+            User result = UserLogic.CreateConstructorCompanyAdmin(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object, user);
 
             userRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
+        }
+
+        [TestMethod]
+        public void CreateConstructorCompanyAdminWithAlreadyExistingEmailTest()
+        {
+            ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin, };
+            Session session = new Session() { UserId = user.Id };
+
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
+
+            user.Id = Guid.NewGuid();
+
+            Exception exception = null;
+
+            try
+            {
+                User result = UserLogic.CreateConstructorCompanyAdmin(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object, user);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(UserException));
+            Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
 
         [TestMethod]
