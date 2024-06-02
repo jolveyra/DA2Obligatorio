@@ -38,5 +38,29 @@ namespace BusinessLogic
 
             return _iConstructorCompanyAdministratorRepository.UpdateConstructorCompanyAdministrator(constructorCompanyAdministrator);
         }
+
+        public static ConstructorCompanyAdministrator CreateConstructorCompanyAdmin(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, ConstructorCompanyAdministrator constructorCompanyAdministrator)
+        {
+            constructorCompanyAdministrator.Role = Role.ConstructorCompanyAdmin;
+            constructorCompanyAdministrator.Surname = "";
+            UserLogic.ValidateUser(constructorCompanyAdministrator);
+
+            if (UserLogic.ExistsUserEmail(userRepository, constructorCompanyAdministrator.Email))
+            {
+                throw new UserException("A user with the same email already exists");
+            }
+
+            ConstructorCompanyAdministrator newUser = constructorCompanyAdministratorRepository.CreateConstructorCompanyAdministrator(constructorCompanyAdministrator);
+            sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
+
+            return newUser;
+
+        }
+
+        public Guid GetConstructorCompanyByUserId(Guid userId)
+        {
+            return _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId;
+        }
+
     }
 }

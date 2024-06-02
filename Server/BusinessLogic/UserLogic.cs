@@ -40,24 +40,6 @@ namespace BusinessLogic
             return CreateUser(userRepository, sessionRepository, constructorCompanyAdministratorRepository, user);
         }
 
-        public static ConstructorCompanyAdministrator CreateConstructorCompanyAdmin(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, ConstructorCompanyAdministrator constructorCompanyAdministrator)
-        {
-            constructorCompanyAdministrator.Role = Role.ConstructorCompanyAdmin;
-            constructorCompanyAdministrator.Surname = "";
-            ValidateUser(constructorCompanyAdministrator);
-
-            if (ExistsUserEmail(userRepository, constructorCompanyAdministrator.Email))
-            {
-                throw new UserException("A user with the same email already exists");
-            }
-
-            ConstructorCompanyAdministrator newUser = constructorCompanyAdministratorRepository.CreateConstructorCompanyAdministrator(constructorCompanyAdministrator);
-            sessionRepository.CreateSession(new Session() { UserId = newUser.Id });
-
-            return newUser;
-
-        }
-
         private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, User user)
         {
             ValidateUser(user);
@@ -159,12 +141,6 @@ namespace BusinessLogic
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
         }
-
-        public Guid GetConstructorCompanyByUserId(Guid userId)
-        {
-            return _userRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId;
-        }
-
         private static IEnumerable<User> GetAllUsers(IUserRepository userRepository)
         {
             return userRepository.GetAllUsers();

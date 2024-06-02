@@ -89,7 +89,7 @@ namespace BusinessLogic
             else
             {
                 ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
-                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, administrator);
+                ConstructorCompanyAdministratorLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, administrator);
             }
         }
 
