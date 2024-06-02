@@ -115,7 +115,7 @@ namespace ManagementApiTest
                 ConstructorCompanyId = Guid.NewGuid()
             };
 
-            constructorCompanyLogicMock.Setup(c => c.UpdateConstructorCompany(It.IsAny<ConstructorCompany>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(constructorCompany);
+            constructorCompanyLogicMock.Setup(c => c.UpdateConstructorCompany(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(constructorCompany);
 
             HttpContext httpContext = new DefaultHttpContext();
             httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());

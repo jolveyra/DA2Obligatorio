@@ -23,7 +23,7 @@ namespace BusinessLogic
 
         public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany)
         {
-            CheckNotNullOrEmptyConstructorCompanyName(constructorCompany);
+            CheckNotNullOrEmptyConstructorCompanyName(constructorCompany.Name);
             CheckUniqueConstructorCompanyName(constructorCompany);
             return _constructorCompanyRepository.CreateConstructorCompany(constructorCompany);
         }
@@ -36,9 +36,9 @@ namespace BusinessLogic
             }
         }
 
-        private void CheckNotNullOrEmptyConstructorCompanyName(ConstructorCompany constructorCompany)
+        private void CheckNotNullOrEmptyConstructorCompanyName(string name)
         {
-            if (string.IsNullOrEmpty(constructorCompany.Name))
+            if (string.IsNullOrEmpty(name))
             {
                 throw new ConstructorCompanyException("Constructor company name cannot be empty");
             }
@@ -54,15 +54,13 @@ namespace BusinessLogic
             return _constructorCompanyRepository.GetConstructorCompanyById(id);
         }
 
-        public ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany, Guid userId, Guid constructoCompanyId)
+        public ConstructorCompany UpdateConstructorCompany(string newName, Guid userId, Guid constructoCompanyId)
         {
             CheckUserIsConstructorCompanyAdministrator(userId, constructoCompanyId);
-            CheckNotNullOrEmptyConstructorCompanyName(constructorCompany);
+            CheckNotNullOrEmptyConstructorCompanyName(newName);
 
-            if (GetAllConstructorCompanies().Any(c => c.Name == constructorCompany.Name && c.Id != constructorCompany.Id))
-            {
-                throw new ConstructorCompanyException("Constructor company with same name already exists");
-            }
+            ConstructorCompany constructorCompany = GetConstructorCompanyById(constructoCompanyId);
+            constructorCompany.Name = newName;
 
             CheckUniqueConstructorCompanyName(constructorCompany);
 

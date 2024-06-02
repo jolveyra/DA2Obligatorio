@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
 using RepositoryInterfaces;
 using BusinessLogic;
 using Moq;
 using CustomExceptions;
-using LogicInterfaces;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace BusinessLogicTest
 {
@@ -165,11 +158,13 @@ namespace BusinessLogicTest
                 .Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
                 .Returns(user);
             
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock =>
+                constructorCompanyRepositoryMock.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
             constructorCompanyRepositoryMock
                 .Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies())
                 .Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = constructorCompany.Id, Name = "asdasd" } });
 
-            ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, user.Id, constructorCompany.Id);
+            ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany.Name, user.Id, constructorCompany.Id);
 
             constructorCompanyRepositoryMock.VerifyAll();
 
@@ -199,7 +194,7 @@ namespace BusinessLogicTest
 
             try
             {
-                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany.Name, userId, constructorCompanyId);
             }
             catch (Exception e)
             {
@@ -235,7 +230,7 @@ namespace BusinessLogicTest
 
             try
             {
-                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany.Name, userId, constructorCompanyId);
             }
             catch (Exception e)
             {
@@ -267,15 +262,15 @@ namespace BusinessLogicTest
                     Id = userId,
                     ConstructorCompanyId = constructorCompanyId
                 });
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock =>
+                constructorCompanyRepositoryMock.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
             constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" } });
-
-            constructorCompanyRepositoryMock.Setup(c => c.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany> { constructorCompany });
 
             Exception exception = null;
 
             try
             {
-                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany, userId, constructorCompanyId);
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany.Name, userId, constructorCompanyId);
             }
             catch (Exception e)
             {
@@ -289,5 +284,46 @@ namespace BusinessLogicTest
             Assert.AreEqual(exception.Message, "Constructor company with same name already exists");
         }
 
+        [TestMethod]
+        public void UpdateConstructorCompanyWithNameAlreadyUsedTest()
+        {
+            ConstructorCompany constructorCompany = new ConstructorCompany()
+            {
+                Id = Guid.NewGuid(),
+                Name = "ConstructorCompanyId 1"
+            };
+
+            Guid userId = Guid.NewGuid();
+
+            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>()))
+                .Returns(new ConstructorCompanyAdministrator()
+                {
+                    Id = userId,
+                    ConstructorCompanyId = constructorCompany.Id
+                });
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock =>constructorCompanyRepositoryMock.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
+            constructorCompanyRepositoryMock.Setup(constructorCompanyRepositoryMock => constructorCompanyRepositoryMock.GetAllConstructorCompanies()).Returns(new List<ConstructorCompany>
+            {
+                new ConstructorCompany() { Id = Guid.NewGuid(), Name = "ConstructorCompanyId 1" },
+                new ConstructorCompany() { Id = constructorCompany.Id, Name = "ConstructorCompanyId 2" },
+            });
+
+            Exception exception = null;
+
+            try
+            {
+                ConstructorCompany result = constructorCompanyLogic.UpdateConstructorCompany(constructorCompany.Name, userId, constructorCompany.Id);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            constructorCompanyRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
+
+            Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyException));
+            Assert.AreEqual(exception.Message, "Constructor company with same name already exists");
+        }
     }
 }

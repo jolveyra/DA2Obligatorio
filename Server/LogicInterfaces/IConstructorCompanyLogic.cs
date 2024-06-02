@@ -7,6 +7,6 @@ namespace LogicInterfaces
         ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
         public IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
         ConstructorCompany GetConstructorCompanyById(Guid guid);
-        ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany, Guid userId, Guid constructoCompanyId);
+        ConstructorCompany UpdateConstructorCompany(string newName, Guid userId, Guid constructoCompanyId);
     }
 }
