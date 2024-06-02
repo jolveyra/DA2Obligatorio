@@ -29,12 +29,17 @@ namespace BusinessLogic
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
-            if (constructorCompanyAdministrator.ConstructorCompanyId != Guid.Empty)
+            if (!String.IsNullOrEmpty(constructorCompanyAdministrator.ConstructorCompany.Name))
                 throw new ConstructorCompanyAdministratorException("Administrator is already a member from a constructor company");
 
             ConstructorCompany constructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
 
+            ConstructorCompany toDeleteConstructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+
             constructorCompanyAdministrator.ConstructorCompanyId = constructorCompany.Id;
+            constructorCompanyAdministrator.ConstructorCompany = constructorCompany;
+
+            _iConstructorCompanyRepository.DeleteConstructorCompany(toDeleteConstructorCompany);
 
             return _iConstructorCompanyAdministratorRepository.UpdateConstructorCompanyAdministrator(constructorCompanyAdministrator);
         }

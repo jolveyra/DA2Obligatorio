@@ -10,6 +10,7 @@ namespace RepositoryInterfaces
     public interface IConstructorCompanyRepository
     {
         ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
+        void DeleteConstructorCompany(ConstructorCompany constructorCompany);
         IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
         ConstructorCompany GetConstructorCompanyById(Guid guid);
         ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany);

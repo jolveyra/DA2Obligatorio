@@ -26,6 +26,12 @@ namespace DataAccess.Repositories
             return constructorCompany;
         }
 
+        public void DeleteConstructorCompany(ConstructorCompany constructorCompany)
+        {
+            _context.ConstructorCompanies.Remove(constructorCompany);
+            _context.SaveChanges();
+        }
+
         public IEnumerable<ConstructorCompany> GetAllConstructorCompanies()
         {
             return _context.ConstructorCompanies;

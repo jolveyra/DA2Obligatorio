@@ -118,5 +118,24 @@ namespace DataAccessTest
             Assert.AreEqual(expected, result);
         }
 
+
+        [TestMethod]
+        public void DeleteBuildingTestOk()
+        {
+            Guid id = Guid.NewGuid();
+
+            ConstructorCompany toDeleteConstructorCompany = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "A ConstructorCompany"};
+
+            mockContext.Setup(x => x.ConstructorCompanies).ReturnsDbSet(new List<ConstructorCompany>() { toDeleteConstructorCompany });
+            mockContext.Setup(mockContext => mockContext.SaveChanges()).Returns(1);
+
+            constructorCompanyRepository.DeleteConstructorCompany(toDeleteConstructorCompany);
+
+            mockContext.Verify(x => x.SaveChanges(), Times.Exactly(1));
+            mockContext.Verify(x => x.ConstructorCompanies.Remove(toDeleteConstructorCompany), Times.Once());
+            mockContext.Verify(mockContext => mockContext.ConstructorCompanies, Times.Exactly(1));
+        }
+
+
     }
 }
