@@ -51,7 +51,7 @@ namespace BusinessLogic
             constructorCompanyAdministrator.Surname = "";
             UserLogic.ValidateUser(constructorCompanyAdministrator);
 
-            if (UserLogic.ExistsUserEmail(userRepository, constructorCompanyAdministratorRepository, constructorCompanyAdministrator.Email))
+            if (UserLogic.ExistsUserEmail(userRepository, constructorCompanyAdministrator.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }

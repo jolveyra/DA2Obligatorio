@@ -179,7 +179,6 @@ namespace BusinessLogicTest
             ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin, };
             Session session = new Session() { UserId = user.Id };
 
-            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             constructorCompanyAdministratorRepositoryMock.Setup(u => u.CreateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(user);
             sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
@@ -197,10 +196,8 @@ namespace BusinessLogicTest
         public void CreateConstructorCompanyAdminWithAlreadyExistingEmailTest()
         {
             ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin, };
-            Session session = new Session() { UserId = user.Id };
-
-            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>() { new ConstructorCompanyAdministrator() { Email = "juan@gmail.com" } });
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
 
             user.Id = Guid.NewGuid();
 

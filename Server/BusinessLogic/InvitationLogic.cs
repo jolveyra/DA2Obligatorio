@@ -84,7 +84,7 @@ namespace BusinessLogic
             if (invitation.Role == InvitationRole.Manager)
             {
                 User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
-                UserLogic.CreateManager(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
+                UserLogic.CreateManager(_userRepository, _sessionRepository, user);
             }
             else
             {
@@ -125,7 +125,7 @@ namespace BusinessLogic
 
         private void ValidateInvitationEmail(string email)
         {
-            if (UserLogic.ExistsUserEmail(_userRepository, _constructorCompanyAdministratorRepository, email))
+            if (UserLogic.ExistsUserEmail(_userRepository, email))
             {
                 throw new InvitationException("There is already a user with the same email");
             }

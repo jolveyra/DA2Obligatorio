@@ -23,7 +23,7 @@ namespace DataAccess.Repositories
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users;
+            return _context.Users.Concat(_context.ConstructorCompanyAdministrators);
         }
 
         public User GetUserById(Guid id)

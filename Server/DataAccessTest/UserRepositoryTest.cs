@@ -26,13 +26,20 @@ namespace DataAccessTest
             {
                 new User { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" }
             };
+            
+            List<ConstructorCompanyAdministrator> administrators = new List<ConstructorCompanyAdministrator>
+            {
+                new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), Email = "juan2@gmail.com", Name = "Juan2" }
+            };
 
             _contextMock.Setup(context => context.Users).ReturnsDbSet(users);
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(administrators);
 
             IEnumerable<User> result = _userRepository.GetAllUsers();
 
             _contextMock.Verify(context => context.Users, Times.Once());
-            Assert.IsTrue(result.SequenceEqual(users));
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators, Times.Once());
+            Assert.IsTrue(result.SequenceEqual(users.Concat(administrators)));
         }
 
         [TestMethod]

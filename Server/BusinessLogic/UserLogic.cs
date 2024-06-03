@@ -10,41 +10,39 @@ namespace BusinessLogic
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IConstructorCompanyAdministratorRepository _constructorCompanyAdministratorRepository;
 
         private const int minPasswordLength = 6;
 
-        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
+        public UserLogic(IUserRepository userRepository, ISessionRepository sessionRepository)
         {
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
-            _constructorCompanyAdministratorRepository = constructorCompanyAdministratorRepository;
         }
 
         public User CreateAdministrator(User user)
         {
             user.Role = Role.Administrator;
-            return CreateUser(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
         public User CreateMaintenanceEmployee(User user)
         {
             user.Role = Role.MaintenanceEmployee;
-            return CreateUser(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, user);
+            return CreateUser(_userRepository, _sessionRepository, user);
         }
 
-        public static User CreateManager(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, User user)
+        public static User CreateManager(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
         {
             user.Role = Role.Manager;
             user.Surname = "";
-            return CreateUser(userRepository, sessionRepository, constructorCompanyAdministratorRepository, user);
+            return CreateUser(userRepository, sessionRepository, user);
         }
 
-        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, User user)
+        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
         {
             ValidateUser(user);
 
-            if (ExistsUserEmail(userRepository, constructorCompanyAdministratorRepository, user.Email))
+            if (ExistsUserEmail(userRepository, user.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
@@ -100,9 +98,9 @@ namespace BusinessLogic
             return email.Contains("@") && email.Contains(".") && email.Length > 5;
         }
 
-        public static bool ExistsUserEmail(IUserRepository userRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository, string email)
+        public static bool ExistsUserEmail(IUserRepository userRepository, string email)
         {
-            return GetAllUsers(userRepository, constructorCompanyAdministratorRepository).Any(u => u.Email.ToLower().Equals(email.ToLower()));
+            return GetAllUsers(userRepository).Any(u => u.Email.ToLower().Equals(email.ToLower()));
         }
 
         public User GetUserById(Guid userId)
@@ -141,9 +139,9 @@ namespace BusinessLogic
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
         }
-        private static IEnumerable<User> GetAllUsers(IUserRepository userRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
+        private static IEnumerable<User> GetAllUsers(IUserRepository userRepository)
         {
-            return userRepository.GetAllUsers().Concat(constructorCompanyAdministratorRepository.GetAllConstructorCompanyAdministrators());
+            return userRepository.GetAllUsers();
         }
     }
 }
