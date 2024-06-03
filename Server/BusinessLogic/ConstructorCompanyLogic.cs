@@ -24,8 +24,10 @@ namespace BusinessLogic
         public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany, Guid administratorId)
         {
             ConstructorCompanyAdministrator administrator = _userRepository.GetConstructorCompanyAdministratorByUserId(administratorId);
+            ConstructorCompany administratorConstructorCompany = _constructorCompanyRepository.GetConstructorCompanyById(administrator.ConstructorCompanyId);
 
-            if (!string.IsNullOrEmpty(administrator.ConstructorCompany.Name))
+
+            if (!string.IsNullOrEmpty(administratorConstructorCompany.Name))
             {
                 throw new ConstructorCompanyException("Administrator already belongs to a constructor company");
             }

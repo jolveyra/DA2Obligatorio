@@ -28,16 +28,19 @@ namespace BusinessLogic
         public ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+            ConstructorCompany administratorConstructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyAdministrator.ConstructorCompanyId);
 
-            if (!String.IsNullOrEmpty(constructorCompanyAdministrator.ConstructorCompany.Name))
+            if (!string.IsNullOrEmpty(administratorConstructorCompany.Name))
+            {
                 throw new ConstructorCompanyAdministratorException("Administrator already belongs to a constructor company");
+            }
 
-            ConstructorCompany constructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
+            ConstructorCompany constructorCompanyToBeAssigned = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
 
-            ConstructorCompany toDeleteConstructorCompany = constructorCompanyAdministrator.ConstructorCompany;
+            ConstructorCompany toDeleteConstructorCompany = administratorConstructorCompany;
 
-            constructorCompanyAdministrator.ConstructorCompanyId = constructorCompany.Id;
-            constructorCompanyAdministrator.ConstructorCompany = constructorCompany;
+            constructorCompanyAdministrator.ConstructorCompanyId = constructorCompanyToBeAssigned.Id;
+            constructorCompanyAdministrator.ConstructorCompany = constructorCompanyToBeAssigned;
 
             _iConstructorCompanyRepository.DeleteConstructorCompany(toDeleteConstructorCompany);
 
