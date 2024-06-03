@@ -2,7 +2,7 @@
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/teapot")]
+    [Route("api/v2/teapot")]
     [ApiController]
     public class TeapotController : ControllerBase
     {

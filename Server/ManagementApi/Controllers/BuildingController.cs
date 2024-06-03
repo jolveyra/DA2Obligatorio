@@ -5,7 +5,7 @@ using ManagementApi.Filters;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/buildings")]
+    [Route("api/v2/buildings")]
     [ApiController]
     [ExceptionFilter]
     public class BuildingController : ControllerBase
@@ -15,20 +15,6 @@ namespace ManagementApi.Controllers
         public BuildingController(IBuildingLogic iBuildingLogic)
         {
             _iBuildingLogic = iBuildingLogic;
-        }
-
-        [HttpPost]
-        [AuthenticationFilter(["Manager"])]
-        public IActionResult CreateBuilding([FromBody] BuildingRequestModel buildingRequest)
-        {
-
-            BuildingResponseModel response = new BuildingResponseModel(_iBuildingLogic.CreateBuilding(buildingRequest.ToEntity(), 
-                buildingRequest.Flats, 
-                Guid.Parse(HttpContext.Items["UserId"] as string)));
-
-            response.Flats = _iBuildingLogic.GetAllBuildingFlats(response.Id).Select(flat => new FlatResponseModel(flat)).ToList();
-
-            return CreatedAtAction("CreateBuilding", new { Id = response.Id }, response);
         }
 
         [HttpGet]
@@ -65,15 +51,6 @@ namespace ManagementApi.Controllers
                 Flats = _iBuildingLogic.GetAllBuildingFlats(id).Select(f => new FlatResponseModel(f)).ToList()
             });
             
-        }
-
-        [HttpDelete("{id}")]
-        [AuthenticationFilter(["Manager"])]
-        public IActionResult DeleteBuilding([FromRoute] Guid id)
-        {
-            _iBuildingLogic.DeleteBuilding(id);
-            return Ok();
-         
         }
 
         [HttpPut("{buildingId}/flats/{flatId}")]

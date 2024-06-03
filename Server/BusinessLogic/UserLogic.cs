@@ -38,14 +38,7 @@ namespace BusinessLogic
             return CreateUser(userRepository, sessionRepository, user);
         }
 
-        public static User CreateConstructorCompanyAdmin(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
-        {
-            user.Role = Role.ConstructorCompanyAdmin;
-            user.Surname = "";
-            return CreateUser(userRepository, sessionRepository, user);
-        }
-
-        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository,User user)
+        private static User CreateUser(IUserRepository userRepository, ISessionRepository sessionRepository, User user)
         {
             ValidateUser(user);
 
@@ -107,7 +100,7 @@ namespace BusinessLogic
 
         public static bool ExistsUserEmail(IUserRepository userRepository, string email)
         {
-            return userRepository.GetAllUsers().Any(u => u.Email.ToLower().Equals(email.ToLower()));
+            return GetAllUsers(userRepository).Any(u => u.Email.ToLower().Equals(email.ToLower()));
         }
 
         public User GetUserById(Guid userId)
@@ -145,6 +138,10 @@ namespace BusinessLogic
         public IEnumerable<User> GetAllManagers()
         {
             return _userRepository.GetAllUsers().Where(u => u.Role == Role.Manager);
+        }
+        private static IEnumerable<User> GetAllUsers(IUserRepository userRepository)
+        {
+            return userRepository.GetAllUsers();
         }
     }
 }

@@ -20,7 +20,7 @@ export class UserSettingsService {
   ) { }
 
   fetchUser(): Observable<User> {
-    return this.httpClient.get<UserResponseData>('https://localhost:7122/api/v1/userSettings')
+    return this.httpClient.get<UserResponseData>('https://localhost:7122/api/v2/userSettings')
       .pipe(
         map((response: UserResponseData) => new User(
           response.id,
@@ -31,8 +31,8 @@ export class UserSettingsService {
       );
   }
 
-  updateUser(name: string, surname: string, password: string): Observable<User> {
-    return this.httpClient.put<UserResponseData>('https://localhost:7122/api/v1/userSettings', {
+  updateUser(name: string, surname: string, password: string): Observable<User> { // FIXME: check if user is constructor admin
+    return this.httpClient.put<UserResponseData>('https://localhost:7122/api/v2/userSettings', {
       name,
       surname,
       password

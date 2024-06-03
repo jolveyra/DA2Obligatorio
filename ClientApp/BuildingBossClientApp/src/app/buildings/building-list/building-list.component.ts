@@ -28,7 +28,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
-    this.buildingService.fetchBuildings().subscribe(
+    this.buildingService.fetchManagerBuildings().subscribe(
       response => {
         this.buildings = response;
         if (this.buildings.length === 0) {

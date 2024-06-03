@@ -33,7 +33,7 @@ export class InvitationService {
   ) { }
 
   fetchInvitations(): Observable<InvitationResponseData[]> {
-    return this.httpClient.get<InvitationResponseData[]>('https://localhost:7122/api/v1/invitations')
+    return this.httpClient.get<InvitationResponseData[]>('https://localhost:7122/api/v2/invitations')
       .pipe(
         map((response: InvitationResponseData[]) => response.map(invitation => new Invitation(
           invitation.id,
@@ -48,7 +48,7 @@ export class InvitationService {
   }
 
   createInvitation(invitation: Invitation, expDays: number) {
-    return this.httpClient.post<InvitationResponseData>('https://localhost:7122/api/v1/invitations',
+    return this.httpClient.post<InvitationResponseData>('https://localhost:7122/api/v2/invitations',
       {
         name: invitation.name,
         email: invitation.email,

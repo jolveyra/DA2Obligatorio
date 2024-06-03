@@ -8,7 +8,7 @@ using WebModels.CategoryModels;
 namespace ManagementApi.Controllers
 {
 
-    [Route("api/v1/categories")]
+    [Route("api/v2/categories")]
     [ApiController]
     [ExceptionFilter]
     public class CategoryController : ControllerBase

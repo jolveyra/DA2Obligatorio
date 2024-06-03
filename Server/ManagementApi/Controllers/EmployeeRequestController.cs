@@ -5,7 +5,7 @@ using WebModels.RequestsModels;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/employeeRequests")]
+    [Route("api/v2/employeeRequests")]
     [ExceptionFilter]
     [ApiController]
     public class EmployeeRequestController : ControllerBase

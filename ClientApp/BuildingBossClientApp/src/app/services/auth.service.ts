@@ -20,7 +20,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
-      'https://localhost:7122/api/v1/login',
+      'https://localhost:7122/api/v2/login',
       {
         email,
         password

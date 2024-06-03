@@ -14,7 +14,7 @@ export class EmployeeService {
   ) { }
 
   fetchMaintenanceEmployees(): Observable<User[]> {
-    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v1/maintenanceEmployees')
+    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v2/maintenanceEmployees')
       .pipe(
         map((response: UserResponseData[]) => response.map(employee => new User(
             employee.id,
@@ -26,7 +26,7 @@ export class EmployeeService {
   }
 
   createMaintenanceEmployee(employee: User, password: string): Observable<User> {
-    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v1/maintenanceEmployees',
+    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v2/maintenanceEmployees',
     {
       name: employee.name,
       surname: employee.surname,

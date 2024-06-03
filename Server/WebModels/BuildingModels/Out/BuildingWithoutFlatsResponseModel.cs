@@ -12,7 +12,7 @@ namespace WebModels.BuildingModels
         public string Street { get; set; }
         public int DoorNumber { get; set; }
         public string CornerStreet { get; set; }
-        public string ConstructorCompany { get; set; }
+        public Guid ConstructorCompanyId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
@@ -22,7 +22,7 @@ namespace WebModels.BuildingModels
             Id = building.Id;
             Name = building.Name;
             SharedExpenses = building.SharedExpenses;
-            ConstructorCompany = building.ConstructorCompany;
+            ConstructorCompanyId = building.ConstructorCompanyId;
             Street = building.Address.Street;
             DoorNumber = building.Address.DoorNumber;
             CornerStreet = building.Address.CornerStreet;

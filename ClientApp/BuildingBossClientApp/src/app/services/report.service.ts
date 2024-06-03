@@ -33,7 +33,7 @@ export class ReportsService {
   ) { }
 
   fetchReports(filter: string): Observable<Report[]> {
-    return this.httpClient.get<ReportData[]>(`https://localhost:7122/api/v1/reports?filter=${filter}`)
+    return this.httpClient.get<ReportData[]>(`https://localhost:7122/api/v2/reports?filter=${filter}`)
       .pipe(
         map((response: ReportData[]) => response.map(report => new Report(
           report.filterName,
