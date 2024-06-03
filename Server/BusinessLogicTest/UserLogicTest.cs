@@ -360,10 +360,10 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
             sessionRepositoryMock.Setup(s => s.GetSessionByUserId(It.IsAny<Guid>())).Returns(session);
 
-            Guid result = _userLogic.Login(users.First());
+            UserLogged result = _userLogic.Login(users.First());
 
             sessionRepositoryMock.VerifyAll();
-            Assert.AreEqual(token, result);
+            Assert.AreEqual(token, result.Token);
         }
 
         [TestMethod]
@@ -413,7 +413,7 @@ namespace BusinessLogicTest
 
             try
             {
-                Guid result = _userLogic.Login(users.First());
+                UserLogged result = _userLogic.Login(users.First());
             }catch(Exception e)
             {
                 sessionRepositoryMock.VerifyAll();

@@ -19,12 +19,14 @@ namespace ManagementApiTest
                 Password = "test"
             };
 
+            
             Guid token = Guid.NewGuid();
+            UserLogged userLogged = new UserLogged() { Token = Guid.NewGuid(), Name = "Name", Role = Role.Administrator };
 
-            LoginResponseModel expected = new LoginResponseModel(token);
+            LoginResponseModel expected = new LoginResponseModel(userLogged);
 
             Mock<ILoginLogic> loginLogic = new Mock<ILoginLogic>(MockBehavior.Strict);
-            loginLogic.Setup(x => x.Login(It.IsAny<User>())).Returns(token);
+            loginLogic.Setup(x => x.Login(It.IsAny<User>())).Returns(userLogged);
             LoginController controller = new LoginController(loginLogic.Object);
 
             OkObjectResult result = controller.Login(request) as OkObjectResult;

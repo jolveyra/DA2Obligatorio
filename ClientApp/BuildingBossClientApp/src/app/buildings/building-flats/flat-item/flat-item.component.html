@@ -1,0 +1,15 @@
+<a
+    [routerLink]="['flats/' + flat.id]"
+    class="list-group-item d-flex justify-content-between align-items-center custom-hover">
+    <div>
+        <h4 class="list-group-item-heading">{{ flat.number }}</h4>
+        <p class="list-group-item-text mb-0">Floor: {{ flat.floor }}</p>
+        <p class="list-group-item-text mb-0">Amount of rooms: {{ flat.rooms }}</p>
+        <p class="list-group-item-text mb-0">Amount of bathrooms: {{ flat.bathrooms }}</p>
+        <p class="list-group-item-text mb-0">{{ flat.hasBalcony ? 'It has a balcony' : "It does't have a balcony" }}</p>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+        <p class="mb-0">Owner's name: {{ flat.ownerName + ' ' + flat.ownerSurname }}</p>
+        <p class="mb-0">Owner's email: {{ flat.ownerEmail }}</p>
+    </div>
+</a>

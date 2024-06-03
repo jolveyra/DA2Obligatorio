@@ -1,0 +1,37 @@
+<div class="list-group list-group-flush"> <!--FIXME: add routerLinkActive to show in which option the user is standing-->
+    <a
+        class="list-group-item border-primary-subtle" 
+        routerLink="/administrators"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Administrator'">Administrators</a>
+    <a
+        class="list-group-item border-primary-subtle"
+        routerLink="/invitations"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Administrator'">Invitations</a>
+    <a
+        class="list-group-item border-primary-subtle"
+        routerLink="/buildings"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager' || userRole === 'ConstructorCompanyAdmin'">Buildings</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/requests"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager' || userRole === 'MaintenanceEmployee'">Requests</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/maintenanceEmployees"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager'">Maintenance Employees</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/reports"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Manager'">Reports</a>
+    <a 
+        class="list-group-item border-primary-subtle"
+        routerLink="/constructorCompanies"
+        routerLinkActive="active"
+        *ngIf="userRole === 'ConstructorCompanyAdmin'">Constructor company</a>
+</div>

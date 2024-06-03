@@ -121,7 +121,7 @@ namespace BusinessLogic
             return _userRepository.UpdateUser(userToUpdate);
         }
 
-        public Guid Login(User user)
+        public UserLogged Login(User user)
         {
             User? existingUser = _userRepository.GetAllUsers().FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
 
@@ -132,7 +132,7 @@ namespace BusinessLogic
 
             Session session = _sessionRepository.GetSessionByUserId(existingUser.Id);
 
-            return session.Id;
+            return new UserLogged() { Token = session.Id, Name = existingUser.Name, Role = existingUser.Role };
         }
 
         public IEnumerable<User> GetAllManagers()

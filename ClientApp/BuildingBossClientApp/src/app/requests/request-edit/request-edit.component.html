@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="d-flex justify-content-start mb-3">
+        <a routerLink="/requests">
+            <app-back-icon></app-back-icon>
+        </a>
+    </div>
+    <h2 class="text-center text-primary-emphasis fw-semibold mb-4">Edit Request</h2>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    <div *ngIf="isLoading" class="text-center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form class="w-50" (ngSubmit)="onSubmit(editRequestForm)" #editRequestForm="ngForm" *ngIf="!isLoading">
+            <div class="form-group mb-3">
+                <label for="category">Category</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <div class="dropdown">
+                    <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button" id="categoryDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ selectedCategory }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <li *ngFor="let category of categories">
+                            <a class="dropdown-item" (click)="selectCategory(category)">{{ category }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="3"
+                    class="form-control"
+                    [(ngModel)]="description"
+                    required
+                    minlength="5"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="category">Maintenance employee</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <div class="dropdown">
+                    <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button" id="categoryDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ selectedEmployee }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <li *ngFor="let employee of employees">
+                            <a class="dropdown-item" (click)="selectEmployee(employee)">{{ employee }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
+            </div>
+            <div class="text-center">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    [disabled]="!editRequestForm.valid">Edit request</button>
+            </div>
+        </form>
+    </div>
+</div>

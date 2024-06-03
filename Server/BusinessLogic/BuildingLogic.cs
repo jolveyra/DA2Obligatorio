@@ -370,7 +370,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     {
         if (!flat.Number.ToString().StartsWith(flat.Floor.ToString()))
         {
-            throw new BuildingException("Invalid flat number, first digit must be floor number");
+            throw new BuildingException("Invalid flat number, first digit must be same as in floor number");
         }
     }
 

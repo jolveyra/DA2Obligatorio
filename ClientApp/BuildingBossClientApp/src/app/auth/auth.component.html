@@ -1,0 +1,47 @@
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <div class="bg-white p-5 rounded shadow login-box">
+      <h1 class="text-center text-primary-emphasis fw-semibold mb-4">BuildingBoss</h1>
+      <h3 class="text-center text-primary-emphasis mb-4">Login</h3>
+      <div class="alert alert-danger" *ngIf="error !== ''">
+        <p>{{ error }}</p>
+      </div>
+      <div *ngIf="isLoading" class="text-center">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <form (ngSubmit)="onSubmit(authForm)" #authForm="ngForm" *ngIf="!isLoading">
+        <div class="form-group mb-2">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            ngModel
+            name="email"
+            required
+            email
+            #email="ngModel">
+            <span class="text-danger" *ngIf="!email.valid && email.touched">Please enter a valid email</span>
+        </div>
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            ngModel
+            name="password"
+            required
+            minlength="6"
+            #password="ngModel">
+            <span class="text-danger" *ngIf="!password.valid && password.touched">Please enter at least 6 characters</span>
+        </div>
+        <div class="text-center">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!authForm.valid">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

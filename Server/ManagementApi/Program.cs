@@ -15,7 +15,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddServices();
-        
+
+
         builder.Services.AddConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
 
         var app = builder.Build();
@@ -26,6 +27,12 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors(
+            builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
         app.UseHttpsRedirection();
 

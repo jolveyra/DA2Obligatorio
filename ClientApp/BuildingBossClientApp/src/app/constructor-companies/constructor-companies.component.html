@@ -1,0 +1,14 @@
+<div class="mt-4">
+    <div class="container">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
+        <div *ngIf="isLoading" class="text-center">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <div *ngIf=""> <!-- FIXME: when it doesnt have a constructor company assigned, problem is that we need to create a new model and check -->
+        </div>
+        <div *ngIf=""> <!-- FIXME: when it does have a constructor company assigned -->
+        </div>
+    </div>    
+</div>

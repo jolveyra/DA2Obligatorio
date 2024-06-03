@@ -1,0 +1,22 @@
+<nav class="navbar sticky-top bg-primary-subtle">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a routerLink="/home" class="navbar-brand text-primary-emphasis fw-bold fs-3">BuildingBoss</a> <!-- FIXME: goes to auth and not home, dont know why -->
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link mx-2" routerLink="/userSettings"> <!--FIXME: check if this route is correct in api-->
+                        <svg width="auto" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#052C65" stroke-width="1.416" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </a>
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link mx-2" (click)="onLogout()">
+                        <svg width="auto" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.2429 22 18.8286 22 16.0002 22H15.0002C12.1718 22 10.7576 22 9.87889 21.1213C9.11051 20.3529 9.01406 19.175 9.00195 17" stroke="#052C65" stroke-width="1.5" stroke-linecap="round"></path> <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="#052C65" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

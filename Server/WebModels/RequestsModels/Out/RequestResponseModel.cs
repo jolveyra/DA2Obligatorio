@@ -7,6 +7,7 @@ namespace WebModels.RequestsModels
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Guid FlatId { get; set; }
+        public Guid BuildingId { get; set; }
         public string CategoryName { get; set; }
         public Guid AssignedEmployeeId { get; set; }
         public string Status { get; set; }
@@ -16,6 +17,7 @@ namespace WebModels.RequestsModels
             Id = request.Id;
             Description = request.Description;
             FlatId = request.Flat.Id;
+            BuildingId = request.BuildingId;
             CategoryName = request.Category.Name;
             AssignedEmployeeId = request.AssignedEmployeeId;
             Status = request.Status.ToString();

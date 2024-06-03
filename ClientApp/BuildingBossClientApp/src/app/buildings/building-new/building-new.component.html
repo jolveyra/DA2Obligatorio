@@ -1,0 +1,119 @@
+<div class="container">
+    <div class="d-flex justify-content-start mb-3">
+        <a routerLink="/buildings">
+            <app-back-icon></app-back-icon>
+        </a>
+    </div>
+    <h2 class="text-center text-primary-emphasis fw-semibold mb-4">New Building</h2>
+    <div class="alert alert-danger" *ngIf="error !== ''">
+        <p>{{ error }}</p>
+    </div>
+    <div *ngIf="isLoading" class="text-center">
+        <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form class="w-50" (ngSubmit)="onSubmit(newBuildingForm)" #newBuildingForm="ngForm" *ngIf="!isLoading">
+            <div class="form-group mb-2">
+                <label for="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    ngModel
+                    name="name"
+                    required
+                    minlength="2">
+            </div>
+            <div class="form-group row d-flex mb-2"> <!-- FIXME: fix column height -->
+                <div class="col">
+                    <label for="sharedExpenses">Shared Expenses</label>
+                    <input
+                        type="number"
+                        id="sharedExpenses"
+                        class="form-control"
+                        ngModel
+                        name="sharedExpenses"
+                        required
+                        min="1">
+                </div>
+                <div class="col">
+                    <label for="amountFlats">Amount of flats</label>
+                    <input
+                        type="number"
+                        id="amountFlats"
+                        class="form-control"
+                        ngModel
+                        name="amountFlats"
+                        required
+                        min="1"
+                        max="100">
+                </div>
+            </div>
+            <div class="form-group row py-0 mb-0"> <!-- FIXME: fix column height -->
+                <div class="col-8">
+                    <label for="street">Street</label>
+                    <input
+                        type="text"
+                        id="street"
+                        class="form-control"
+                        ngModel
+                        name="street"
+                        required>
+                </div>
+                <div class="col-4">
+                    <label for="doorNumber">Door Number</label>
+                    <input
+                        type="number"
+                        id="doorNumber"
+                        class="form-control"
+                        ngModel
+                        name="doorNumber"
+                        required
+                        min="1">
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <label for="cornerStreet">Corner street</label>
+                <input
+                    type="text"
+                    id="cornerStreet"
+                    class="form-control"
+                    ngModel
+                    name="cornerStreet"
+                    required>
+            </div>
+            <div class="form-group row mb-2"> <!-- FIXME: fix column height -->
+                <div class="col">
+                    <label for="latitude">Latitude</label>
+                    <input
+                        type="number"
+                        id="latitude"
+                        class="form-control"
+                        ngModel
+                        name="latitude"
+                        required
+                        min="-90"
+                        max="90">
+                </div>
+                <div class="col">
+                    <label for="longitude">Longitude</label>
+                    <input
+                        type="number"
+                        id="longitude"
+                        class="form-control"
+                        ngModel
+                        name="longitude"
+                        required
+                        min="-90"
+                        max="90">
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    [disabled]="!newBuildingForm.valid">Create building</button>
+            </div>
+        </form>
+    </div>
+</div>
