@@ -11,7 +11,7 @@ import { RequestService } from '../../services/request.service';
   styleUrl: './request-edit.component.css'
 })
 export class RequestEditComponent implements OnInit {
-  request: Request = new Request('', '', 0, '', '', '', '');
+  request: Request = new Request('', '', '', '', '', '', '', new Date(), new Date());
   isLoading: boolean = false;
   error: string = '';
   categories = ['Category 1', 'Category 2', 'Category 3'];

@@ -27,6 +27,16 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.Building)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.AssignedEmployee)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<ConstructorCompanyAdministrator>().ToTable("ConstructorCompanyAdministrators");

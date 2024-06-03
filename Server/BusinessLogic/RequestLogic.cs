@@ -9,13 +9,15 @@ namespace BusinessLogic
     {
         private readonly IRequestRepository _requestRepository;
         private readonly IBuildingRepository _buildingRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IUserRepository _userRepository;
 
-        public RequestLogic(IRequestRepository requestRepository, IBuildingRepository buildingRepository, IUserRepository userRepository)
+        public RequestLogic(IRequestRepository requestRepository, IBuildingRepository buildingRepository, IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
             _requestRepository = requestRepository;
             _buildingRepository = buildingRepository;
             _userRepository = userRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public Request CreateRequest(Request request, Guid userId)
@@ -28,13 +30,12 @@ namespace BusinessLogic
 
         public IEnumerable<Request> GetAllManagerRequests(Guid userId)
         {
-            User manager = _userRepository.GetUserById(userId);
             return _requestRepository.GetAllRequests().Where(r => r.ManagerId == userId);
         }
 
         public IEnumerable<Request> GetAllRequestsByEmployeeId(Guid userId)
         {
-            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployeeId == userId);
+            return _requestRepository.GetAllRequests().Where(r => r.AssignedEmployee.Id == userId);
         }
 
         public Request GetRequestById(Guid id)
@@ -48,12 +49,14 @@ namespace BusinessLogic
 
             if (existingRequest.Status != RequestStatus.Pending)
                 throw new RequestException("Cannot update a started request");
+            
+            ValidateRequest(existingRequest);
 
-            existingRequest.AssignedEmployeeId = request.AssignedEmployeeId;
+            User maintenanceEmployee = _userRepository.GetUserById(request.AssignedEmployee.Id);
+
+            existingRequest.AssignedEmployee = maintenanceEmployee;
             existingRequest.Category = request.Category;
             existingRequest.Description = request.Description;
-
-            ValidateRequest(existingRequest);
 
             return _requestRepository.UpdateRequest(existingRequest);
         }
@@ -88,22 +91,32 @@ namespace BusinessLogic
             {
                 throw new RequestException("Flat cannot be empty or null");
             }
-            if (request.BuildingId == Guid.Empty)
+            if (request.Building == null)
             {
                 throw new RequestException("BuildingId cannot be empty or null");
             }
 
-            if (!FlatBelongsToBuilding(request.BuildingId, request.Flat))
+            if (!FlatBelongsToBuilding(request.Building.Id, request.Flat))
             {
                 throw new RequestException("Flat does not belong to building");
             }
-            if (request.AssignedEmployeeId == Guid.Empty)
+            if (request.AssignedEmployee == null)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");
             }
             if (request.Category == null)
             {
                 throw new RequestException("Category cannot be null");
+            }
+
+            Category? category = _categoryRepository.GetAllCategories().FirstOrDefault(c => c.Name == request.Category.Name);
+            if (category is null)
+            {
+                throw new RequestException("Category does not exist");
+            }
+            else
+            {
+                request.Category = category;
             }
         }
         private bool FlatBelongsToBuilding(Guid buildingId, Flat flat)

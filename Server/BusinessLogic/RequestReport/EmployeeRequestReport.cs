@@ -11,7 +11,7 @@ namespace BusinessLogic
 
             foreach (Request request in requests)
             {
-                string employeeName = request.AssignedEmployeeId.ToString();
+                string employeeName = request.AssignedEmployee.Name + " " + request.AssignedEmployee.Surname + " - " + request.AssignedEmployee.Email;
                 Report? report = requestsReports.Find(report => report.Filter == employeeName);
 
                 if (report is null)

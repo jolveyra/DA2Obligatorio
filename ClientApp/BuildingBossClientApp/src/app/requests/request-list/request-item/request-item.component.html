@@ -2,8 +2,8 @@
     class="list-group-item d-flex justify-content-between align-items-center">
     <div>
         <h4 class="list-group-item-heading">{{ request.categoryName }}</h4>
-        <p class="list-group-item-text mb-0">Flat: {{ request.flat }}</p> <!-- FIXME: It should show flat and building -->
-        <p class="list-group-item-text mb-0">Employee assigned: {{ request.assignedEmployee }}</p> <!-- FIXME: It should show employees name or email -->
+        <p class="list-group-item-text mb-0">Flat: {{ request.flatId }}</p> <!-- FIXME: It should show flat and building -->
+        <p class="list-group-item-text mb-0">Employee assigned: {{ request.assignedEmployeeId }}</p> <!-- FIXME: It should show employees name or email -->
         <p class="list-group-item-text mb-0">Description: {{ request.description }}</p>
     </div>
     <div class="d-flex flex-column align-items-end" *ngIf="userRole === 'Manager'">

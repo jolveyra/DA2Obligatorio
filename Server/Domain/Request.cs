@@ -6,9 +6,9 @@
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Flat Flat { get; set; }
-        public Guid BuildingId { get; set; }
+        public Building Building { get; set; }
         public Category Category { get; set; }
-        public Guid AssignedEmployeeId { get; set; }
+        public User AssignedEmployee { get; set; }
         public Guid ManagerId { get; set; }
         public RequestStatus Status { get; set; }
         public DateTime StartingDate { get; set; }

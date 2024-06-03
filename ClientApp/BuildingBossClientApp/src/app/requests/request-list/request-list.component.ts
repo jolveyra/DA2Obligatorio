@@ -5,9 +5,12 @@ import { Subscription } from 'rxjs';
 
 import { Request } from '../request.model';
 import { AuthService } from '../../services/auth.service';
-import { RequestResponseData, RequestService } from '../../services/request.service';
+import { RequestService } from '../../services/request.service';
 import { BuildingService } from '../../services/building.service';
 import { EmployeeService } from '../../services/employee.service';
+import { User } from '../../shared/user.model';
+import { BuildingFlats } from '../../shared/buildingFlats.model';
+import { Building } from '../../shared/building.model';
 
 @Component({
   selector: 'app-request-list',
@@ -19,7 +22,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
   error: string = '';
   noRequests: boolean = false;
   requests: Request[] = [];
-  maintenanceEmployees: string[] = [];
   userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
 
@@ -27,7 +29,6 @@ export class RequestListComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private requestService: RequestService,
     private buildingService: BuildingService,
-    private employeeService: EmployeeService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -35,13 +36,21 @@ export class RequestListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => this.userRole = userLogged.role);
     this.requestService.fetchRequests().subscribe(
-      (response: RequestResponseData[]) => {
-        // this.buildingService.fetchBuildings().subscribe(); 
-        // this.employeeService.fetchMaintenanceEmployees().subscribe(); // FIXME: have to make it reactive to which employees could it be assigned depending on the building
-        // this.requests = response.map(request => new Request());
-        // if (this.requests.length === 0) {
-        //   this.noRequests = true;
-        // }
+      requestsResponse => {
+        this.requests = requestsResponse.map(request => {
+          return new Request(
+            request.id,
+            request.description,
+            request.flatNumber,
+            request.buildingName,
+            request.categoryName,
+            request.assignedEmployee,
+            request.status,
+          );
+        });
+        if (this.requests.length === 0) {
+          this.noRequests = true;
+        }
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."

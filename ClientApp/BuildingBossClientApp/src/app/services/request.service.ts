@@ -12,6 +12,8 @@ export interface RequestResponseData {
   categoryName: string;
   assignedEmployeeId: string;
   status: string;
+  startingDate: string;
+  completionDate: string;
 }
 
 @Injectable({

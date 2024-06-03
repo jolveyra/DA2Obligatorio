@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './request-item.component.css'
 })
 export class RequestItemComponent implements OnInit {
-  @Input() request: Request = new Request('', '', 0, '', '', '', '', );
+  @Input() request: Request = new Request('', '', '', '', '', '', '', new Date(), new Date());
   @Input() userRole: string = '';
   status: string = '';
 

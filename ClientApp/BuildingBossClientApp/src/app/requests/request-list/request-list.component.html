@@ -2,6 +2,7 @@
     <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-success" (click)="onNewRequest()" *ngIf="userRole === 'Manager'">New request</button>
     </div>
+    <!-- TODO: users should be able to filter requests by category -->
     <div class="d-flex justify-content-center mt-5" *ngIf="noRequests">
         <h2 class="text-primary-emphasis">{{userRole === 'Manager' ? "You haven't created any requests yet" : "You haven't been assigned to any requests yet"}}</h2>
     </div>

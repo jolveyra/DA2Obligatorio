@@ -1,4 +1,6 @@
 ﻿using Domain;
+using WebModels.BuildingModels;
+using WebModels.UserModels;
 
 namespace WebModels.RequestsModels
 {
@@ -6,20 +8,18 @@ namespace WebModels.RequestsModels
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public Guid FlatId { get; set; }
-        public Guid BuildingId { get; set; }
+        public FlatResponseModel Flat { get; set; }
+        public BuildingWithoutFlatsResponseModel Building { get; set; }
         public string CategoryName { get; set; }
-        public Guid AssignedEmployeeId { get; set; }
+        public UserResponseModel AssignedEmployee { get; set; }
         public string Status { get; set; }
 
         public RequestResponseModel(Request request)
         {
             Id = request.Id;
             Description = request.Description;
-            FlatId = request.Flat.Id;
-            BuildingId = request.BuildingId;
+            Flat = new FlatResponseModel(request.Flat);
             CategoryName = request.Category.Name;
-            AssignedEmployeeId = request.AssignedEmployeeId;
             Status = request.Status.ToString();
         }
 

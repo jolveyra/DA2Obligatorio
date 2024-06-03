@@ -1,11 +1,15 @@
+import { Building } from "../shared/building.model";
+import { Flat } from "../shared/flat.model";
+import { User } from "../shared/user.model";
+
 export class Request {
     constructor(
         public id: string,
         public description: string,
-        public flat: number,
-        public building: string,
+        public flat: Flat,
+        public building: Building,
         public categoryName: string,
-        public assignedEmployee: string,
+        public assignedEmployee: User,
         public status: string,
     ) {}
 }

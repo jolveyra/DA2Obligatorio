@@ -70,6 +70,7 @@ const routes: Routes = [
     { path: 'new', component: EmployeeNewComponent, canActivate: [managerGuard] },
   ] },
   { path: 'reports', component: ReportsComponent, canActivate: [authGuard, managerGuard] },
+  // { path: 'categories', component: CategoriesComponent, canActivate: [authGuard, administratorGuard] },
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
