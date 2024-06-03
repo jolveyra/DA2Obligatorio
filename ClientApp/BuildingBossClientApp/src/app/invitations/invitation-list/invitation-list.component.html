@@ -11,6 +11,7 @@
         <div class="list-group w-75">
             <app-invitation-item
                 *ngFor="let invite of invitations"
+                (invitationToDelete)="onDeleteInvitation($event)"
                 [invite]="invite"></app-invitation-item>
         </div>
     </div>

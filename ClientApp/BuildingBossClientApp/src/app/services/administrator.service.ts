@@ -25,4 +25,15 @@ export class AdministratorService {
         )))
       );
   }
+
+  createAdministrator(administrator: User, password: string) {
+    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v2/administrators',
+      {
+        name: administrator.name,
+        surname: administrator.surname,
+        email: administrator.email,
+        password
+      }
+    )
+  }
 }

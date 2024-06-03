@@ -5,6 +5,16 @@
         routerLinkActive="active"
         *ngIf="userRole === 'Administrator'">Administrators</a>
     <a
+        class="list-group-item border-primary-subtle" 
+        routerLink="/managers"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Administrator'">Managers</a>
+    <a
+        class="list-group-item border-primary-subtle" 
+        routerLink="/constructorCompanyAdministrators"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Administrator'">Constructor Company Administrators</a>
+    <a
         class="list-group-item border-primary-subtle"
         routerLink="/invitations"
         routerLinkActive="active"

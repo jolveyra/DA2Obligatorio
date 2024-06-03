@@ -52,9 +52,15 @@ export class InvitationService {
       {
         name: invitation.name,
         email: invitation.email,
-        daysToExpire: expDays,
+        daysToExpiration: expDays,
         role: invitation.role
       }
     )
+  }
+
+  // TODO: implement updateInvitation method
+  
+  deleteInvitation(id: string) {
+    return this.httpClient.delete(`https://localhost:7122/api/v2/invitations/${id}`);
   }
 }

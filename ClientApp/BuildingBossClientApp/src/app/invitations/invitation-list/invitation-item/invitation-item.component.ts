@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Invitation } from '../../invitation.model';
 
 @Component({
@@ -9,6 +9,9 @@ import { Invitation } from '../../invitation.model';
 export class InvitationItemComponent {
   @Input() invite: Invitation = new Invitation('', '', '', new Date(), '', false, false);
   today: Date = new Date();
+  @Output() invitationToDelete: EventEmitter<string> = new EventEmitter<string>();
 
-  onDelete(id: string): void {}
+  onDelete(id: string): void {
+    this.invitationToDelete.emit(id);
+  }
 }

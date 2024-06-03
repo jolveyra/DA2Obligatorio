@@ -34,9 +34,27 @@ export class InvitationListComponent {
           }
         }
       );
+    
   }
 
   onNewInvitation(): void {
     this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onDeleteInvitation(id: string): void {
+    this.invitationService.deleteInvitation(id)
+      .subscribe(
+        () => {
+          this.invitations = this.invitations.filter(invitation => invitation.id !== id);
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 }
