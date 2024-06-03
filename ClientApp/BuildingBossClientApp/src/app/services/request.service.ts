@@ -28,9 +28,9 @@ export class RequestService {
   fetchRequests(): Observable<RequestResponseData[]> {
     let userRole = this.authService.userLogged.value.role;
     if (userRole === 'MaintenanceEmployee') {
-      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/employeeRequests');
+      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v2/employeeRequests');
     } else {
-      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v1/requests');
+      return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v2/requests');
     }
   }
 }

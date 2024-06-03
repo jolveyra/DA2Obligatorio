@@ -53,8 +53,8 @@ export class BuildingService {
     private httpClient: HttpClient
   ) { }
 
-  fetchBuildings(): Observable<BuildingResponseData[]> {
-    return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v1/buildings')
+  fetchManagerBuildings(): Observable<BuildingResponseData[]> {
+    return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v2/buildings')
       .pipe(
         map((response: BuildingResponseData[]) => response.map(building => new Building(
             building.id,
@@ -72,7 +72,7 @@ export class BuildingService {
   }
 
   fetchBuildingFlats(id: string): Observable<BuildingFlatsResponseData> {
-    return this.httpClient.get<BuildingFlats>(`https://localhost:7122/api/v1/buildings/${id}`)
+    return this.httpClient.get<BuildingFlats>(`https://localhost:7122/api/v2/buildings/${id}`)
       .pipe(
         map((response: BuildingFlatsResponseData) => {
           const buildingWithFlats = new BuildingFlats(
@@ -104,7 +104,7 @@ export class BuildingService {
   }
 
   fetchFlat(buildingId: string, flatId: string): Observable<FlatResponseData> {
-    return this.httpClient.get<FlatResponseData>(`https://localhost:7122/api/v1/buildings/${buildingId}/flats/${flatId}`)
+    return this.httpClient.get<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}/flats/${flatId}`)
       .pipe(
         map((response: FlatResponseData) => new Flat(
           response.id,
@@ -120,7 +120,7 @@ export class BuildingService {
   }
 
   updateBuilding(buildingId: string, sharedExpenses: number, maintenanceEmployeeIds: string[]): Observable<BuildingResponseData> {
-    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v1/buildings/${buildingId}`, // 
+    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}`, // 
       {
         sharedExpenses,
         maintenanceEmployeeIds
@@ -129,7 +129,7 @@ export class BuildingService {
   }
 
   updateFlat(buildingId: string, flatId: string, flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {
-    return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v1/buildings/${buildingId}/flats/${flatId}`,
+    return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}/flats/${flatId}`,
       {
         floor: flat.floor,
         number: flat.number,

@@ -15,7 +15,7 @@ export class AdministratorService {
   ) { }
 
   fetchAdministrators(): Observable<User[]> {
-    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v1/administrators')
+    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v2/administrators')
       .pipe(
         map((response: UserResponseData[]) => response.map(administrator => new User(
           administrator.id,
