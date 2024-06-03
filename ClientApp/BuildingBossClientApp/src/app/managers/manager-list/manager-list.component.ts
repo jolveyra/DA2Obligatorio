@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class ManagerListComponent implements OnInit {
   managers: User[] = [];
   error: string = '';
+  noManagers: boolean = false;
 
   constructor(
     private managerService: ManagerService
@@ -21,6 +22,9 @@ export class ManagerListComponent implements OnInit {
       .subscribe(
         response => {
           this.managers = response;
+          if (this.managers.length === 0) {
+            this.noManagers = true;
+          }
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

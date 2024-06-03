@@ -13,8 +13,8 @@ export class ReportsComponent {
   error: string = '';
   showBuildingReport: boolean = false;
   showEmployeeReport: boolean = false;
-  buildingReports: Report[] = [];
-  employeeReports: Report[] = [];
+  reports: Report[] = [];
+  noReports: boolean = false;
 
   constructor(
     private reportsService: ReportsService,
@@ -30,12 +30,20 @@ export class ReportsComponent {
       queryParams: newParams,
       queryParamsHandling: 'merge'
     });
-    this.showEmployeeReport = false;
-    this.showBuildingReport = true;
     this.reportsService.fetchReports(filter).subscribe(
       reports => {
         console.log(reports); // FIXME: fix why pending to complete arent showing, just undefined, remove line when fixed
-        this.buildingReports = reports;
+        this.reports = reports;
+        
+        if (this.reports.length === 0) {
+          this.noReports = true;
+        } else if (filter === 'employee') {
+          this.showEmployeeReport = true;
+          this.showBuildingReport = false;
+        } else if (filter === 'building') {
+          this.showEmployeeReport = false;
+          this.showBuildingReport = true;
+        }
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."

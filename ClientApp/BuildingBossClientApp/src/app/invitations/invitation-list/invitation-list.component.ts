@@ -12,6 +12,7 @@ import { InvitationService } from '../../services/invitation.service';
 export class InvitationListComponent {
   invitations: Invitation[] = [];
   error: string = '';
+  noInvitations: boolean = false;
 
   constructor(
     private invitationService: InvitationService,
@@ -24,6 +25,9 @@ export class InvitationListComponent {
       .subscribe(
         response => {
           this.invitations = response;
+          if (this.invitations.length === 0) {
+            this.noInvitations = true;
+          }
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

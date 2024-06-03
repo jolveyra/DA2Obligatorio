@@ -10,6 +10,9 @@
                 class="btn btn-success"
                 (click)="onReport('employee')">Show maintenance employee report</button>
         </div>
+        <div class="d-flex justify-content-center mt-5" *ngIf="noReports">
+            <h2 class="text-primary-emphasis">There are no requests in any of your buildings yet</h2>
+        </div>
         <div class="d-flex justify-content-center">
             <div class="alert alert-danger" *ngIf="error !== ''">
                 <p>{{ error }}</p>
@@ -29,7 +32,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of buildingReports">
+                        <tr *ngFor="let report of reports">
                             <th scope="row">{{ report.filterName }}</th>
                             <td>{{ report.pendingRequests }}</td>
                             <td>{{ report.inProgressRequests }}</td>
@@ -52,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let report of employeeReports">
+                        <tr *ngFor="let report of reports">
                             <th scope="row">{{ report.filterName }}</th>
                             <td>{{ report.pendingRequests }}</td>
                             <td>{{ report.inProgressRequests }}</td>

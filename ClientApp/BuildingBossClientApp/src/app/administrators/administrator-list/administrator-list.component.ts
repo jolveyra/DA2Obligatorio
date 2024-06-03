@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdministratorListComponent implements OnInit {
   administrators: User[] = [];
   error: string = '';
+  noAdministrators: boolean = false;
 
   constructor(
     private administratorService: AdministratorService,
@@ -23,6 +24,9 @@ export class AdministratorListComponent implements OnInit {
       .subscribe(
         response => {
           this.administrators = response;
+          if (this.administrators.length === 0) {
+            this.noAdministrators = true;
+          }
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

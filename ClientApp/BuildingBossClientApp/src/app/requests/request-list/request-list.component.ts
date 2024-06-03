@@ -17,6 +17,7 @@ import { EmployeeService } from '../../services/employee.service';
 export class RequestListComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   error: string = '';
+  noRequests: boolean = false;
   requests: Request[] = [];
   maintenanceEmployees: string[] = [];
   userRole: string = '';
@@ -38,6 +39,9 @@ export class RequestListComponent implements OnInit, OnDestroy {
         // this.buildingService.fetchBuildings().subscribe(); 
         // this.employeeService.fetchMaintenanceEmployees().subscribe(); // FIXME: have to make it reactive to which employees could it be assigned depending on the building
         // this.requests = response.map(request => new Request());
+        // if (this.requests.length === 0) {
+        //   this.noRequests = true;
+        // }
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."

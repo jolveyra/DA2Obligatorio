@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-success" (click)="onNewMaintenanceEmployee()">New maintenance employee</button>
     </div>
-    <div class="d-flex justify-content-center mt-5" *ngIf="maintenanceEmployees.length === 0">
+    <div class="d-flex justify-content-center mt-5" *ngIf="noMaintenanceEmployees">
         <h2 class="text-primary-emphasis">There are no maintenance employees logged yet</h2>
     </div>
     <div class="d-flex justify-content-center">

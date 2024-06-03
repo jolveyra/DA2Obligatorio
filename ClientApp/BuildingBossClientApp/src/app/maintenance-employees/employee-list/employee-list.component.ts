@@ -11,6 +11,7 @@ import { EmployeeService } from '../../services/employee.service';
 export class EmployeeListComponent {
   maintenanceEmployees: User[] = [];
   error: string = '';
+  noMaintenanceEmployees: boolean = false;
 
   constructor(
     private employeeService: EmployeeService,
@@ -23,6 +24,9 @@ export class EmployeeListComponent {
       .subscribe(
         response => {
           this.maintenanceEmployees = response;
+          if (this.maintenanceEmployees.length === 0) {
+            this.noMaintenanceEmployees = true;
+          }
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."
