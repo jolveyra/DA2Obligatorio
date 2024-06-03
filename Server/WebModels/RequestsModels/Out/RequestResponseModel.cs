@@ -19,8 +19,10 @@ namespace WebModels.RequestsModels
             Id = request.Id;
             Description = request.Description;
             Flat = new FlatResponseModel(request.Flat);
+            Building = new BuildingWithoutFlatsResponseModel(request.Building);
             CategoryName = request.Category.Name;
             Status = request.Status.ToString();
+            AssignedEmployee = new UserResponseModel(request.AssignedEmployee);
         }
 
         public override bool Equals(object obj)
