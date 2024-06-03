@@ -23,12 +23,14 @@ namespace DataAccess.Repositories
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.Concat(_context.ConstructorCompanyAdministrators);
+            IEnumerable<User> users = _context.Users;
+            IEnumerable<ConstructorCompanyAdministrator> administrators = _context.ConstructorCompanyAdministrators;
+            return users.Concat(administrators);
         }
 
         public User GetUserById(Guid id)
         {
-            User? user = _context.Users.Concat(_context.ConstructorCompanyAdministrators).FirstOrDefault(u => u.Id == id);
+            User? user = _context.Users.FirstOrDefault(u => u.Id == id) ?? _context.ConstructorCompanyAdministrators.FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
