@@ -8,11 +8,13 @@ namespace DataAccess.Context
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Flat> Flats { get; set; }
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<User> Users { get; set; } 
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ConstructorCompanyAdministrator> ConstructorCompanyAdministrators { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
+        public virtual DbSet<ConstructorCompany> ConstructorCompanies { get; set; }
 
         public BuildingBossContext() { }
 
@@ -25,6 +27,9 @@ namespace DataAccess.Context
                 .WithMany()
                 .HasForeignKey(f => f.OwnerId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<ConstructorCompanyAdministrator>().ToTable("ConstructorCompanyAdministrators");
         }
     }
 }

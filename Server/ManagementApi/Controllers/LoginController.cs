@@ -5,7 +5,7 @@ using WebModels.LoginModels;
 
 namespace ManagementApi.Controllers
 {
-    [Route("api/v1/login")]
+    [Route("api/v2/login")]
     [ExceptionFilter]
     [ApiController]
     public class LoginController : ControllerBase

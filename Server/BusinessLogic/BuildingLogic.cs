@@ -2,19 +2,22 @@
 using LogicInterfaces;
 using CustomExceptions;
 using Domain;
+using System;
 
 namespace BusinessLogic;
 
-public class BuildingLogic : IBuildingLogic
+public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 {
     private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
     private IUserRepository _iUserRepository;
+    private IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
     private IPeopleRepository _iPeopleRepository;
 
-    public BuildingLogic(IBuildingRepository iBuildingRepository, IUserRepository iUserRepository, IPeopleRepository iPeopleRepository)
+    public BuildingLogic(IBuildingRepository iBuildingRepository, IConstructorCompanyAdministratorRepository iConstructorCompanyAdministratorRepository, IUserRepository iUserRepository, IPeopleRepository iPeopleRepository)
     {
         _iBuildingRepository = iBuildingRepository;
+        _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministratorRepository;
         _iUserRepository = iUserRepository;
         _iPeopleRepository = iPeopleRepository;
     }
@@ -28,7 +31,7 @@ public class BuildingLogic : IBuildingLogic
         CheckUniqueBuildingAddress(building);
         CheckUniqueBuildingCoordinates(building);
 
-        building.Manager = _iUserRepository.GetUserById(userId);
+        building.ManagerId = _iUserRepository.GetUserById(userId).Id;
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
         CreateBuildingFlats(toReturn, amountOfFlats);
@@ -80,7 +83,6 @@ public class BuildingLogic : IBuildingLogic
         CheckNotEmptyBuildingName(building);
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
-        CheckConstructorCompany(building);
         CheckValidCoordinates(building);
     }
 
@@ -94,18 +96,6 @@ public class BuildingLogic : IBuildingLogic
         if (building.Address.Longitude < -180 || building.Address.Longitude > 180)
         {
             throw new BuildingException("Invalid longitude, must be between -180 and 180 degrees");
-        }
-    }
-
-    private void CheckConstructorCompany(Building building)
-    {
-        if (string.IsNullOrEmpty(building.ConstructorCompany))
-        {
-            throw new BuildingException("Building constructor company cannot be empty");
-        }
-        else if (building.ConstructorCompany.Length > maximumCharactersForConstructorCompany)
-        {
-            throw new BuildingException("Building constructor company cannot be longer than 100 characters");
         }
     }
 
@@ -141,29 +131,6 @@ public class BuildingLogic : IBuildingLogic
         }
     }
 
-    public void DeleteBuilding(Guid guid)
-    {
-        Building building = _iBuildingRepository.GetAllBuildings().ToList().FirstOrDefault(b => b.Id == guid);
-
-        if(building is null)
-        {
-            throw new DeleteException();
-        }
-
-        DeleteFlatsFromBuilding(building);
-        _iBuildingRepository.DeleteBuilding(building);
-    }
-
-    private void DeleteFlatsFromBuilding(Building building)
-    {
-        List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
-
-        List<Guid> ownersToDelete = new List<Guid>();
-        GetOwnersToDeleteIds(flats, ownersToDelete);
-
-        _iBuildingRepository.DeleteFlats(flats);
-        DeleteOwners(ownersToDelete);
-    }
 
     private static void GetOwnersToDeleteIds(List<Flat> flats, List<Guid> ownersToDelete)
     {
@@ -186,7 +153,7 @@ public class BuildingLogic : IBuildingLogic
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
-        return _iBuildingRepository.GetAllBuildings().Where(x => x.Manager.Id.Equals(managerId));
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.ManagerId.Equals(managerId));
     }
 
     public Building GetBuildingById(Guid id)
@@ -217,7 +184,6 @@ public class BuildingLogic : IBuildingLogic
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
         building.SharedExpenses = buildingData.SharedExpenses;
-        building.ConstructorCompany = buildingData.ConstructorCompany;
 
         CheckMaintenanceEmployeeList(building, buildingData.MaintenanceEmployees);
 
@@ -419,5 +385,94 @@ public class BuildingLogic : IBuildingLogic
     public IEnumerable<Flat> GetAllBuildingFlats(Guid buildingId)
     {
         return _iBuildingRepository.GetAllBuildingFlats(buildingId);
+    }
+
+    public Building CreateConstructorCompanyBuilding(Building building, int amountOfFlats, Guid userId)
+    {
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        if (constructorCompanyAdministrator.ConstructorCompanyId == Guid.Empty)
+        {
+            throw new BuildingException("Administrator doesn't have a company assigned yet");
+        }
+
+        building.ConstructorCompanyId = constructorCompanyAdministrator.ConstructorCompanyId;
+
+        return CreateBuilding(building, amountOfFlats, userId);
+    }
+
+    public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
+    {
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.ConstructorCompanyId.Equals(constructorCompanyAdministrator.ConstructorCompanyId));
+    }
+
+    public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
+    {
+
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        Building building = _iBuildingRepository.GetBuildingById(buildingId);
+
+        CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, building);
+
+        return building;
+    }
+
+    private static void CheckBuildingIsFromUsersConstructorCompany(Guid constructorCompanyId, Building building)
+    {
+        if (!building.ConstructorCompanyId.Equals(constructorCompanyId))
+        {
+            throw new BuildingException("Building does not belong to user's constructor company");
+        }
+    }
+
+    public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
+    {
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
+
+        CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, existingBuilding);
+
+        User existingManager = _iUserRepository.GetUserById(building.ManagerId);
+
+        CheckNewManagerIsAManager(existingManager);
+
+        existingBuilding.ManagerId = existingManager.Id;
+
+        return _iBuildingRepository.UpdateBuilding(building);
+    }
+
+    private static void CheckNewManagerIsAManager(User existingManager)
+    {
+        if (existingManager.Role != Role.Manager)
+        {
+            throw new BuildingException("User to update must be a manager");
+        }
+    }
+
+    public void DeleteConstructorCompanyBuilding(Guid buildingId, Guid userId)
+    {
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
+
+        Building building = _iBuildingRepository.GetBuildingById(buildingId);
+        
+        CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, building);
+
+        DeleteFlatsFromBuilding(building);
+        _iBuildingRepository.DeleteBuilding(building);
+    }
+
+    private void DeleteFlatsFromBuilding(Building building)
+    {
+        List<Flat> flats = _iBuildingRepository.GetAllBuildingFlats(building.Id).ToList();
+
+        List<Guid> ownersToDelete = new List<Guid>();
+        GetOwnersToDeleteIds(flats, ownersToDelete);
+
+        _iBuildingRepository.DeleteFlats(flats);
+        DeleteOwners(ownersToDelete);
     }
 }

@@ -6,8 +6,8 @@
         public string Name { get; set; }
         public float SharedExpenses { get; set; }
         public Address Address { get; set; }
-        public string ConstructorCompany { get; set; }
-        public User Manager { get; set; }
+        public Guid ConstructorCompanyId { get; set; }
+        public Guid ManagerId { get; set; }
         public List<Guid> MaintenanceEmployees { get; set; } = new List<Guid>();
 
         public override bool Equals(object? obj)

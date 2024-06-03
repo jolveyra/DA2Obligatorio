@@ -10,12 +10,14 @@ namespace BusinessLogic
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISessionRepository _sessionRepository;
+        private readonly IConstructorCompanyAdministratorRepository _constructorCompanyAdministratorRepository;
 
-        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository, ISessionRepository sessionRepository)
+        public InvitationLogic(IInvitationRepository invitationRepository, IUserRepository userRepository, ISessionRepository sessionRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
         {
             _invitationRepository = invitationRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
+            _constructorCompanyAdministratorRepository = constructorCompanyAdministratorRepository;
         }
 
         public Invitation CreateInvitation(Invitation invitation, string role)
@@ -78,15 +80,16 @@ namespace BusinessLogic
 
         private void CreateUser(Invitation invitation)
         {
-            User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
 
             if (invitation.Role == InvitationRole.Manager)
             {
+                User user = new User() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
                 UserLogic.CreateManager(_userRepository, _sessionRepository, user);
             }
             else
             {
-                UserLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, user);
+                ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Name = invitation.Name, Email = invitation.Email, Password = Invitation.DefaultPassword };
+                ConstructorCompanyAdministratorLogic.CreateConstructorCompanyAdmin(_userRepository, _sessionRepository, _constructorCompanyAdministratorRepository, administrator);
             }
         }
 
