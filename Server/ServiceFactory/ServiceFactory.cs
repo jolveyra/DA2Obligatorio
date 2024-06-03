@@ -35,7 +35,7 @@ namespace ServiceFactory
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPeopleRepository, PeopleRepository>();
-            services.AddScoped<IConstructorCompanyAdministratorRepository, UserRepository>();
+            services.AddScoped<IConstructorCompanyAdministratorRepository, ConstructorCompanyAdministratorRepository>();
             services.AddScoped<IConstructorCompanyRepository, ConstructorCompanyRepository>();
         }
 

@@ -7,27 +7,25 @@ namespace BusinessLogic
 {
     public class ConstructorCompanyAdministratorLogic: IConstructorCompanyAdministratorLogic
     {
-        private readonly IUserRepository _iUserRepository;
         private readonly IConstructorCompanyRepository _iConstructorCompanyRepository;
         private readonly IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
 
-        public ConstructorCompanyAdministratorLogic(IUserRepository iUserRepository, IConstructorCompanyRepository iConstructorCompanyRepository, IConstructorCompanyAdministratorRepository iConstructorCompanyAdministrator)
+        public ConstructorCompanyAdministratorLogic(IConstructorCompanyRepository iConstructorCompanyRepository, IConstructorCompanyAdministratorRepository iConstructorCompanyAdministrator)
         {
-            _iUserRepository = iUserRepository;
             _iConstructorCompanyRepository = iConstructorCompanyRepository;
             _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministrator;
         }
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministrator(Guid userId)
         {
-            ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
             return constructorCompanyAdministrator;
         }
 
         public ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
-            ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
             ConstructorCompany administratorConstructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyAdministrator.ConstructorCompanyId);
 
             if (!string.IsNullOrEmpty(administratorConstructorCompany.Name))
@@ -53,7 +51,7 @@ namespace BusinessLogic
             constructorCompanyAdministrator.Surname = "";
             UserLogic.ValidateUser(constructorCompanyAdministrator);
 
-            if (UserLogic.ExistsUserEmail(userRepository, constructorCompanyAdministrator.Email))
+            if (UserLogic.ExistsUserEmail(userRepository, constructorCompanyAdministratorRepository, constructorCompanyAdministrator.Email))
             {
                 throw new UserException("A user with the same email already exists");
             }
@@ -68,7 +66,7 @@ namespace BusinessLogic
 
         public Guid GetConstructorCompanyByUserId(Guid userId)
         {
-            return _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId;
+            return _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId;
         }
 
     }

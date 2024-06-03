@@ -11,11 +11,13 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     private const int maximumCharactersForConstructorCompany = 100;
     private IBuildingRepository _iBuildingRepository;
     private IUserRepository _iUserRepository;
+    private IConstructorCompanyAdministratorRepository _iConstructorCompanyAdministratorRepository;
     private IPeopleRepository _iPeopleRepository;
 
-    public BuildingLogic(IBuildingRepository iBuildingRepository, IUserRepository iUserRepository, IPeopleRepository iPeopleRepository)
+    public BuildingLogic(IBuildingRepository iBuildingRepository, IConstructorCompanyAdministratorRepository iConstructorCompanyAdministratorRepository, IUserRepository iUserRepository, IPeopleRepository iPeopleRepository)
     {
         _iBuildingRepository = iBuildingRepository;
+        _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministratorRepository;
         _iUserRepository = iUserRepository;
         _iPeopleRepository = iPeopleRepository;
     }
@@ -387,7 +389,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building CreateConstructorCompanyBuilding(Building building, int amountOfFlats, Guid userId)
     {
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
         if (constructorCompanyAdministrator.ConstructorCompanyId == Guid.Empty)
         {
@@ -401,7 +403,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
     {
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
         return _iBuildingRepository.GetAllBuildings().Where(x => x.ConstructorCompanyId.Equals(constructorCompanyAdministrator.ConstructorCompanyId));
     }
@@ -409,7 +411,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     public Building GetConstructorCompanyBuildingById(Guid buildingId, Guid userId)
     {
 
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
 
@@ -428,7 +430,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
     {
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
         Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
 
@@ -453,7 +455,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public void DeleteConstructorCompanyBuilding(Guid buildingId, Guid userId)
     {
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
+        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
         Building building = _iBuildingRepository.GetBuildingById(buildingId);
         

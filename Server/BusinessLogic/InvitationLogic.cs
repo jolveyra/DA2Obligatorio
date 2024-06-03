@@ -125,7 +125,7 @@ namespace BusinessLogic
 
         private void ValidateInvitationEmail(string email)
         {
-            if (UserLogic.ExistsUserEmail(_userRepository, email))
+            if (UserLogic.ExistsUserEmail(_userRepository, _constructorCompanyAdministratorRepository, email))
             {
                 throw new InvitationException("There is already a user with the same email");
             }

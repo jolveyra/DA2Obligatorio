@@ -12,6 +12,7 @@ public class BuildingLogicTest
 {
 
     private Mock<IBuildingRepository> buildingRepositoryMock;
+    private Mock<IConstructorCompanyAdministratorRepository> constructorCompanyAdministratorRepositoryMock;
     private Mock<IUserRepository> userRepositoryMock;
     private Mock<IPeopleRepository> peopleRepositoryMock;
     private BuildingLogic buildingLogic;
@@ -20,9 +21,10 @@ public class BuildingLogicTest
     public void Initialize()
     {
         buildingRepositoryMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
+        constructorCompanyAdministratorRepositoryMock = new Mock<IConstructorCompanyAdministratorRepository>(MockBehavior.Strict);
         userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
         peopleRepositoryMock = new Mock<IPeopleRepository>(MockBehavior.Strict);
-        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object, userRepositoryMock.Object, peopleRepositoryMock.Object);
+        buildingLogic = new BuildingLogic(buildingRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object, userRepositoryMock.Object, peopleRepositoryMock.Object);
     }
 
     [TestMethod]
@@ -1399,7 +1401,7 @@ public class BuildingLogicTest
         ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id };
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
         
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+        constructorCompanyAdministratorRepositoryMock.Setup(x=> x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
         IEnumerable<Building> result = buildingLogic.GetAllConstructorCompanyBuildings(user.Id);
 
@@ -1418,7 +1420,7 @@ public class BuildingLogicTest
         ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id };
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+        constructorCompanyAdministratorRepositoryMock.Setup(x=> x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
         Building result = buildingLogic.GetConstructorCompanyBuildingById(user.Id, building.Id);
 
@@ -1437,7 +1439,7 @@ public class BuildingLogicTest
         ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = Guid.NewGuid() };
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
         Exception exception = null;
 
@@ -1495,7 +1497,7 @@ public class BuildingLogicTest
         ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id };
         buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(building);
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
         Building result = buildingLogic.CreateConstructorCompanyBuilding(building, 1, user.Id);
 
@@ -1565,7 +1567,7 @@ public class BuildingLogicTest
             ManagerId = newManager.Id
         };
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         buildingRepositoryMock.Setup(x => x.UpdateBuilding(It.IsAny<Building>())).Returns(expected);
         userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetUserById(It.IsAny<Guid>())).Returns(newManager);
@@ -1620,7 +1622,7 @@ public class BuildingLogicTest
             SharedExpenses = 100
         };
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
 
         Exception exception = null;
@@ -1705,7 +1707,7 @@ public class BuildingLogicTest
             ManagerId = newManager.Id
         };
 
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
         userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetUserById(It.IsAny<Guid>())).Returns(newManager);
 
@@ -1764,7 +1766,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.DeleteBuilding(It.IsAny<Building>()));
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>());
         buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
         buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
 
@@ -1811,7 +1813,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { new Flat() { Owner = new Person() { Id = Guid.NewGuid() } } });
         buildingRepositoryMock.Setup(x => x.DeleteFlats(It.IsAny<List<Flat>>()));
         peopleRepositoryMock.Setup(p => p.DeletePerson(It.IsAny<Guid>()));
-        userRepositoryMock.Setup(userRepositoryMock => userRepositoryMock.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
         buildingLogic.DeleteConstructorCompanyBuilding(building.Id, constructorCompanyAdministrator.Id);
 
@@ -1852,7 +1854,7 @@ public class BuildingLogicTest
         };
 
         buildingRepositoryMock.Setup(x => x.GetBuildingById(It.IsAny<Guid>())).Returns(building);
-        userRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
         Exception exception = null;
 
@@ -1893,7 +1895,7 @@ public class BuildingLogicTest
             }
         };
 
-        userRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
         Exception exception = null;
 

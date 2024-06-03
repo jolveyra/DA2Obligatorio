@@ -2,28 +2,23 @@
 using RepositoryInterfaces;
 using CustomExceptions;
 using LogicInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
     public class ConstructorCompanyLogic: IConstructorCompanyLogic
     {
         private IConstructorCompanyRepository _constructorCompanyRepository;
-        private IUserRepository _userRepository;
+        private IConstructorCompanyAdministratorRepository _constructorCompanyAdministratorRepository;
 
-        public ConstructorCompanyLogic(IConstructorCompanyRepository constructorCompanyRepository, IUserRepository userRepository)
+        public ConstructorCompanyLogic(IConstructorCompanyRepository constructorCompanyRepository, IConstructorCompanyAdministratorRepository constructorCompanyAdministratorRepository)
         {
             _constructorCompanyRepository = constructorCompanyRepository;
-            _userRepository = userRepository;
+            _constructorCompanyAdministratorRepository = constructorCompanyAdministratorRepository;
         }
 
         public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany, Guid administratorId)
         {
-            ConstructorCompanyAdministrator administrator = _userRepository.GetConstructorCompanyAdministratorByUserId(administratorId);
+            ConstructorCompanyAdministrator administrator = _constructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(administratorId);
             ConstructorCompany administratorConstructorCompany = _constructorCompanyRepository.GetConstructorCompanyById(administrator.ConstructorCompanyId);
 
 
@@ -80,7 +75,7 @@ namespace BusinessLogic
 
         private void CheckUserIsConstructorCompanyAdministrator(Guid userId, Guid constructorCompanyId)
         {
-            if (!(_userRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId == constructorCompanyId))
+            if (!(_constructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId == constructorCompanyId))
             {
                 throw new ConstructorCompanyException("User is not an administrator of the constructor company");
             }

@@ -65,6 +65,7 @@ namespace BusinessLogicTest
             Session session = new Session() { UserId = user.Id };
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
             sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
 
@@ -72,6 +73,8 @@ namespace BusinessLogicTest
             User result = _userLogic.CreateAdministrator(user);
 
             userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
         }
 
@@ -82,6 +85,7 @@ namespace BusinessLogicTest
             Session session = new Session() { UserId = user.Id };
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(user);
             sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
 
@@ -89,6 +93,8 @@ namespace BusinessLogicTest
             User result = _userLogic.CreateMaintenanceEmployee(user);
 
             userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
         }
 
@@ -98,6 +104,7 @@ namespace BusinessLogicTest
             User user = new User { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.Administrator };
             IEnumerable<User> users = new List<User> { user };
 
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
             Exception exception = null;
 
@@ -110,6 +117,8 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
@@ -300,6 +309,7 @@ namespace BusinessLogicTest
             IEnumerable<User> users = new List<User> { user };
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(users);
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             Exception exception = null;
 
             try
@@ -312,6 +322,7 @@ namespace BusinessLogicTest
             }
 
             userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
@@ -372,6 +383,7 @@ namespace BusinessLogicTest
             User expected = new User { Id = Guid.NewGuid(), Name = "Juan", Email = "juan@gmail.com", Role = Role.Manager, Password = Invitation.DefaultPassword };
 
             userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             userRepositoryMock.Setup(u => u.CreateUser(It.IsAny<User>())).Returns(expected);
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
 
@@ -379,6 +391,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
             sessionRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
 

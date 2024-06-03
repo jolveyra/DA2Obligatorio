@@ -8,6 +8,5 @@ namespace RepositoryInterfaces
         IEnumerable<User> GetAllUsers();
         User CreateUser(User user);
         User UpdateUser(User user);
-        ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId);
     }
 }

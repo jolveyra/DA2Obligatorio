@@ -23,7 +23,7 @@ namespace BusinessLogicTest
             constructorCompanyRepositoryMock = new Mock<IConstructorCompanyRepository>(MockBehavior.Strict);
             sessionRepositoryMock = new Mock<ISessionRepository>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-            constructorCompanyAdministratorLogic = new ConstructorCompanyAdministratorLogic(userRepositoryMock.Object,  constructorCompanyRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
+            constructorCompanyAdministratorLogic = new ConstructorCompanyAdministratorLogic(constructorCompanyRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace BusinessLogicTest
             };
 
 
-            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
             constructorCompanyRepositoryMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(constructorCompany);
             constructorCompanyRepositoryMock.Setup(c => c.DeleteConstructorCompany(It.IsAny<ConstructorCompany>()));
             constructorCompanyAdministratorRepositoryMock.Setup(c => c.UpdateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(resultConstructorCompanyAdministrator);
@@ -75,11 +75,6 @@ namespace BusinessLogicTest
         {
             Guid userId = Guid.NewGuid();
             Guid constructorCompanyId = Guid.NewGuid();
-
-            ConstructorCompany constructorCompany = new ConstructorCompany()
-            {
-                Id = constructorCompanyId
-            };
 
             ConstructorCompany adminConstructorCompany = new ConstructorCompany()
             {
@@ -99,8 +94,9 @@ namespace BusinessLogicTest
                 ConstructorCompanyId = adminConstructorCompany.Id
             };
 
-            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
-
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            constructorCompanyRepositoryMock.Setup(c => c.GetConstructorCompanyById(It.IsAny<Guid>())).Returns(adminConstructorCompany);
+            
             Exception exception = null;
 
             try
@@ -113,7 +109,7 @@ namespace BusinessLogicTest
             }
 
             constructorCompanyAdministratorRepositoryMock.VerifyAll();
-
+            constructorCompanyRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyAdministratorException));
             Assert.AreEqual(exception.Message, "Administrator already belongs to a constructor company");
 
@@ -141,7 +137,7 @@ namespace BusinessLogicTest
                 ConstructorCompanyId = constructorCompany.Id
             };
 
-            userRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
 
             ConstructorCompanyAdministrator result = constructorCompanyAdministratorLogic.GetConstructorCompanyAdministrator(userId);
 
@@ -165,11 +161,11 @@ namespace BusinessLogicTest
                 ConstructorCompanyId = Guid.NewGuid()
             };
 
-            userRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
+            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
 
             Guid result = constructorCompanyAdministratorLogic.GetConstructorCompanyByUserId(userId);
 
-            userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
 
             Assert.AreEqual(user.ConstructorCompanyId, result);
 
@@ -183,16 +179,17 @@ namespace BusinessLogicTest
             ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin, };
             Session session = new Session() { UserId = user.Id };
 
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
+            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             constructorCompanyAdministratorRepositoryMock.Setup(u => u.CreateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(user);
             sessionRepositoryMock.Setup(s => s.CreateSession(It.IsAny<Session>())).Returns(session);
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
 
             user.Id = Guid.NewGuid();
             ConstructorCompanyAdministrator result = ConstructorCompanyAdministratorLogic.CreateConstructorCompanyAdmin(userRepositoryMock.Object, sessionRepositoryMock.Object, constructorCompanyAdministratorRepositoryMock.Object, user);
 
-            userRepositoryMock.VerifyAll();
-            sessionRepositoryMock.VerifyAll();
             constructorCompanyAdministratorRepositoryMock.VerifyAll();
+            sessionRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
             Assert.AreEqual(user, result);
         }
 
@@ -202,7 +199,8 @@ namespace BusinessLogicTest
             ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator { Name = "Juan", Surname = "Perez", Email = "juan@gmail.com", Password = "Juan1234", Role = Role.ConstructorCompanyAdmin, };
             Session session = new Session() { UserId = user.Id };
 
-            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
+            constructorCompanyAdministratorRepositoryMock.Setup(u => u.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>() { new ConstructorCompanyAdministrator() { Email = "juan@gmail.com" } });
+            userRepositoryMock.Setup(u => u.GetAllUsers()).Returns(new List<User>());
 
             user.Id = Guid.NewGuid();
 
@@ -217,8 +215,8 @@ namespace BusinessLogicTest
                 exception = e;
             }
 
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
-
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }

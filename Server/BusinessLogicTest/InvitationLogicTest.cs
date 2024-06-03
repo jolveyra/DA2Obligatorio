@@ -70,6 +70,7 @@ namespace BusinessLogicTest
             Invitation invitation = new Invitation() { Name = "Juan", Email = "juan123@gmail.com", ExpirationDate = DateTime.Now.AddDays(6) };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>() { user });
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             Exception exception = null;
 
             try
@@ -82,6 +83,7 @@ namespace BusinessLogicTest
             }
 
             userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(InvitationException));
             Assert.IsTrue(exception.Message.Equals("There is already a user with the same email"));
         }
@@ -166,6 +168,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
             userRepositoryMock.Setup(repository => repository.CreateUser(It.IsAny<User>())).Returns(new User());
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
@@ -175,6 +178,7 @@ namespace BusinessLogicTest
             invitationRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
             sessionRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
 
@@ -185,6 +189,7 @@ namespace BusinessLogicTest
             Invitation invitation = new Invitation() { Id = id, Name = "Juan", Email = "juan@gmail.com", IsAccepted = false };
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>() { new User() { Email = "juan@gmail.com" } });
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             Exception exception = null;
 
@@ -199,6 +204,7 @@ namespace BusinessLogicTest
 
             invitationRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(UserException));
             Assert.IsTrue(exception.Message.Equals("A user with the same email already exists"));
         }
@@ -384,6 +390,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(repository => repository.GetAllUsers()).Returns(new List<User>());
             constructorCompanyAdministratorRepositoryMock.Setup(repository => repository.CreateConstructorCompanyAdministrator(It.IsAny<ConstructorCompanyAdministrator>())).Returns(new ConstructorCompanyAdministrator());
+            constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetAllConstructorCompanyAdministrators()).Returns(new List<ConstructorCompanyAdministrator>());
             sessionRepositoryMock.Setup(repository => repository.CreateSession(It.IsAny<Session>())).Returns(new Session());
             invitationRepositoryMock.Setup(repository => repository.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
             invitationRepositoryMock.Setup(repository => repository.UpdateInvitation(It.IsAny<Invitation>())).Returns(expected);
@@ -393,6 +400,7 @@ namespace BusinessLogicTest
             invitationRepositoryMock.VerifyAll();
             userRepositoryMock.VerifyAll();
             sessionRepositoryMock.VerifyAll();
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result));
         }
     }

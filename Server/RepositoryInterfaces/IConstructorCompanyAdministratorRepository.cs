@@ -6,6 +6,7 @@ namespace RepositoryInterfaces
     {
         ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator);
         IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators();
+        ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId);
         ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator);
     }
 }
