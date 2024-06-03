@@ -28,7 +28,7 @@ namespace DataAccess.Repositories
 
         public User GetUserById(Guid id)
         {
-            User? user = _context.Users.FirstOrDefault(u => u.Id == id);
+            User? user = _context.Users.Concat(_context.ConstructorCompanyAdministrators).FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
