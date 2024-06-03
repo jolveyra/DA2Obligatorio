@@ -115,7 +115,7 @@ namespace BusinessLogicTest
             constructorCompanyAdministratorRepositoryMock.VerifyAll();
 
             Assert.IsInstanceOfType(exception, typeof(ConstructorCompanyAdministratorException));
-            Assert.AreEqual(exception.Message, "Administrator is already a member from a constructor company");
+            Assert.AreEqual(exception.Message, "Administrator already belongs to a constructor company");
 
         }
 

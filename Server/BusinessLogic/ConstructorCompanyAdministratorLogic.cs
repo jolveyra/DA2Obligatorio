@@ -30,7 +30,7 @@ namespace BusinessLogic
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iUserRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
             if (!String.IsNullOrEmpty(constructorCompanyAdministrator.ConstructorCompany.Name))
-                throw new ConstructorCompanyAdministratorException("Administrator is already a member from a constructor company");
+                throw new ConstructorCompanyAdministratorException("Administrator already belongs to a constructor company");
 
             ConstructorCompany constructorCompany = _iConstructorCompanyRepository.GetConstructorCompanyById(constructorCompanyId);
 

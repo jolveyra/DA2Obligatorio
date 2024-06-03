@@ -25,7 +25,7 @@ namespace ManagementApi.Controllers
         public IActionResult CreateConstructorCompany(CreateConstructorCompanyRequestModel constructorCompanyRequestModel)
         {
             ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
-            return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.CreateConstructorCompany(constructorCompany)));
+            return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.CreateConstructorCompany(constructorCompany, Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
         [HttpGet]

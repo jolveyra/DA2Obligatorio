@@ -62,11 +62,27 @@ namespace ManagementApiTest
                 Name = "ConstructorCompanyId 1"
             };
             ConstructorCompany constructorCompany = constructorCompanyRequestModel.ToEntity();
+            
+            ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
+            {
+                Id = Guid.NewGuid(),
+                ConstructorCompanyId = Guid.NewGuid()
+            };
 
-            constructorCompanyLogicMock.Setup(c => c.CreateConstructorCompany(It.IsAny<ConstructorCompany>())).Returns(constructorCompany);
+            constructorCompanyLogicMock.Setup(c => c.CreateConstructorCompany(It.IsAny<ConstructorCompany>(), It.IsAny<Guid>())).Returns(constructorCompany);
+            
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", constructorCompanyAdministrator.Id.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            ConstructorCompanyController anotherConstructorCompanyController = new ConstructorCompanyController(constructorCompanyLogicMock.Object) { ControllerContext = controllerContext };
 
             OkObjectResult expectedObject = new OkObjectResult(new ConstructorCompanyResponseModel(constructorCompany));
-            OkObjectResult result = constructorCompanyController.CreateConstructorCompany(constructorCompanyRequestModel) as OkObjectResult;
+            OkObjectResult result = anotherConstructorCompanyController.CreateConstructorCompany(constructorCompanyRequestModel) as OkObjectResult;
 
             ConstructorCompanyResponseModel expectedConstructorCompanyResponseModel = expectedObject.Value as ConstructorCompanyResponseModel;
             ConstructorCompanyResponseModel resultConstructorCompanyResponseModel = result.Value as ConstructorCompanyResponseModel;

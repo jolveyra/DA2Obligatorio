@@ -21,16 +21,26 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
-        public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany)
+        public ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany, Guid administratorId)
         {
+            ConstructorCompanyAdministrator administrator = _userRepository.GetConstructorCompanyAdministratorByUserId(administratorId);
+
+            if (!string.IsNullOrEmpty(administrator.ConstructorCompany.Name))
+            {
+                throw new ConstructorCompanyException("Administrator already belongs to a constructor company");
+            }
+
             CheckNotNullOrEmptyConstructorCompanyName(constructorCompany.Name);
-            CheckUniqueConstructorCompanyName(constructorCompany);
+            CheckUniqueConstructorCompanyName(constructorCompany.Name);
+            
+            administrator.ConstructorCompany.Name = constructorCompany.Name;
+
             return _constructorCompanyRepository.CreateConstructorCompany(constructorCompany);
         }
 
-        private void CheckUniqueConstructorCompanyName(ConstructorCompany constructorCompany)
+        private void CheckUniqueConstructorCompanyName(string constructorCompanyName)
         {
-            if (GetAllConstructorCompanies().Any(c => c.Name == constructorCompany.Name))
+            if (GetAllConstructorCompanies().Any(c => c.Name == constructorCompanyName))
             {
                 throw new ConstructorCompanyException("Constructor company with same name already exists");
             }
@@ -58,11 +68,10 @@ namespace BusinessLogic
         {
             CheckUserIsConstructorCompanyAdministrator(userId, constructoCompanyId);
             CheckNotNullOrEmptyConstructorCompanyName(newName);
+            CheckUniqueConstructorCompanyName(newName);
 
             ConstructorCompany constructorCompany = GetConstructorCompanyById(constructoCompanyId);
             constructorCompany.Name = newName;
-
-            CheckUniqueConstructorCompanyName(constructorCompany);
 
             return _constructorCompanyRepository.UpdateConstructorCompany(constructorCompany);
         }
