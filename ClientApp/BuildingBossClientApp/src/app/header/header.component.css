@@ -1,3 +1,11 @@
 a {
     cursor: pointer;
 }
+
+.active {
+    background-color: #052C65;
+}
+
+li.active a svg path {
+    stroke: white;
+}

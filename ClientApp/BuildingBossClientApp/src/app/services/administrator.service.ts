@@ -8,8 +8,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AdministratorService {
-  private administrators: User[] = [];
-
+  
   constructor(
     private httpClient: HttpClient
   ) { }

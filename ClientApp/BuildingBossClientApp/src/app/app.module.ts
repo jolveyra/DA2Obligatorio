@@ -41,6 +41,9 @@ import { ReportsComponent } from './reports/reports.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ConstructorCompaniesComponent } from './constructor-companies/constructor-companies.component';
 import { AuthInterceptorService } from './shared/auth-interceptor.service';
+import { ManagersComponent } from './managers/managers.component';
+import { ManagerListComponent } from './managers/manager-list/manager-list.component';
+import { ManagerItemComponent } from './managers/manager-list/manager-item/manager-item.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +82,10 @@ import { AuthInterceptorService } from './shared/auth-interceptor.service';
     EmployeeNewComponent,
     ReportsComponent,
     UserSettingsComponent,
-    ConstructorCompaniesComponent
+    ConstructorCompaniesComponent,
+    ManagersComponent,
+    ManagerListComponent,
+    ManagerItemComponent
   ],
   imports: [
     BrowserModule,

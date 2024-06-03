@@ -33,6 +33,8 @@ import { EmployeeNewComponent } from './maintenance-employees/employee-new/emplo
 import { ReportsComponent } from './reports/reports.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ConstructorCompaniesComponent } from './constructor-companies/constructor-companies.component';
+import { ManagersComponent } from './managers/managers.component';
+import { ManagerListComponent } from './managers/manager-list/manager-list.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -46,7 +48,9 @@ const routes: Routes = [
     { path: 'new', component: InvitationNewComponent },
     { path: ':id', component: InvitationEditComponent } // FIXME: not implemented, should be the one that anyone can accept or reject, but I think it should be in a different module maybe
   ] },
-  // { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard] }, //FIXME: not implemented
+  { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard], children: [
+    { path: '', component: ManagerListComponent },
+  ] },
   // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
   { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [

@@ -17,7 +17,7 @@ namespace WebModels.InvitationModels
             Id = invitation.Id;
             Name = invitation.Name;
             Email = invitation.Email;
-            ExpirationDate = invitation.ExpirationDate.ToString("d/M/yyyy");
+            ExpirationDate = invitation.ExpirationDate.ToString("MM/dd/yyyy");
             Role = invitation.Role.ToString();
             IsAccepted = invitation.IsAccepted;
             IsAnswered = invitation.IsAnswered;
