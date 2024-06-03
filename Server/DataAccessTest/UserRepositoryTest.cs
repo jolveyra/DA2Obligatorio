@@ -59,7 +59,9 @@ namespace DataAccessTest
         public void GetNonExistingUserByIdTest()
         {
             Guid id = Guid.NewGuid();
+
             _contextMock.Setup(context => context.Users).ReturnsDbSet(new List<User>());
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(new List<ConstructorCompanyAdministrator>());
 
             Exception exception = null;
 
@@ -72,6 +74,8 @@ namespace DataAccessTest
                 exception = e;
             }
 
+            _contextMock.Verify(context => context.Users, Times.Once());
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators, Times.Once());
             Assert.IsInstanceOfType(exception, typeof(ArgumentException));
             Assert.AreEqual("User not found", exception.Message);
         }

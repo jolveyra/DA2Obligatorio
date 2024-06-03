@@ -34,7 +34,7 @@ export class AuthComponent {
         console.log(error);
         let errorMessage = "An error has occured"
         if (error.error && error.error.errorMessage) {
-          this.error = error.error.errorMessage; // FIXME: Check for all cases
+          this.error = error.error.errorMessage;
         } else {
           this.error = errorMessage;
         }

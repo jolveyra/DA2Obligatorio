@@ -9,7 +9,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   userLoggedSub: Subscription = new Subscription();
-  isAuthenticated: boolean = true; // FIXME: change to false
+  isAuthenticated: boolean = false;
 
   constructor(private authService: AuthService) {}
 

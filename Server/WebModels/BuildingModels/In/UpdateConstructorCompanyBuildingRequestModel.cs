@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace WebModels.ConstructorCompanyBuildingModels
+namespace WebModels.BuildingModels
 {
     public class UpdateConstructorCompanyBuildingRequestModel
     {

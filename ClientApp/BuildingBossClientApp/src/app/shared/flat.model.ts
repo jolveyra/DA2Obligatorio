@@ -1,6 +1,7 @@
 export class Flat {
     constructor(
         public id: string,
+        public buildingId: string,
         public number: number,
         public floor: number,
         public ownerName: string,

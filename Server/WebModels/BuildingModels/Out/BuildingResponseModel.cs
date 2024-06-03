@@ -14,6 +14,7 @@ namespace WebModels.BuildingModels
         public string CornerStreet { get; set; }
         public Guid ConstructorCompanyId { get; set; }
         public Guid ManagerId { get; set; }
+        public List<Guid> MaintenanceEmployeeIds { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
@@ -31,7 +32,7 @@ namespace WebModels.BuildingModels
             Latitude = building.Address.Latitude;
             Longitude = building.Address.Longitude;
             Flats = new List<FlatResponseModel>();
-
+            MaintenanceEmployeeIds = building.MaintenanceEmployees;
         }
 
         public override bool Equals(object? obj)

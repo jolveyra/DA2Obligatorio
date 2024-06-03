@@ -13,7 +13,8 @@ interface BuildingResponseData {
   street: string,
   doorNumber: number,
   cornerStreet: string,
-  constructorCompany: string, // FIXME: check if this is correct when merging with new version of api
+  constructorCompanyId: string,
+  managerId: string,
   latitude: number,
   longitude: number
 }
@@ -26,7 +27,8 @@ interface BuildingFlatsResponseData {
   street: string,
   doorNumber: number,
   cornerStreet: string,
-  constructorCompany: string, // FIXME: check if this is correct when merging with new version of api
+  constructorCompanyId: string,
+  managerId: string,
   latitude: number,
   longitude: number,
   maintenanceEmployeeIds: string[]
@@ -34,6 +36,7 @@ interface BuildingFlatsResponseData {
 
 interface FlatResponseData {
   id: string,
+  buildingId: string,
   number: number,
   floor: number,
   ownerName: string,
@@ -64,7 +67,8 @@ export class BuildingService {
             building.street,
             building.doorNumber,
             building.cornerStreet,
-            building.constructorCompany,
+            building.constructorCompanyId,
+            building.managerId,
             building.latitude,
             building.longitude
           )))
@@ -81,6 +85,7 @@ export class BuildingService {
           response.sharedExpenses,
           response.flats.map(flat => new Flat(
             flat.id,
+            flat.buildingId,
             flat.number,
             flat.floor,
             flat.ownerName,
@@ -92,7 +97,8 @@ export class BuildingService {
           response.street,
           response.doorNumber,
           response.cornerStreet,
-          response.constructorCompany,
+          response.constructorCompanyId,
+          response.managerId,
           response.latitude,
           response.longitude,
           response.maintenanceEmployeeIds
@@ -108,6 +114,7 @@ export class BuildingService {
       .pipe(
         map((response: FlatResponseData) => new Flat(
           response.id,
+          response.buildingId,
           response.number,
           response.floor,
           response.ownerName,
@@ -128,8 +135,8 @@ export class BuildingService {
     );
   }
 
-  updateFlat(buildingId: string, flatId: string, flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {
-    return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}/flats/${flatId}`,
+  updateFlat(flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {
+    return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${flat.buildingId}/flats/${flat.id}`,
       {
         floor: flat.floor,
         number: flat.number,
@@ -145,6 +152,7 @@ export class BuildingService {
       .pipe(
         map((response: FlatResponseData) => new Flat(
           response.id,
+          response.buildingId,
           response.number,
           response.floor,
           response.ownerName,

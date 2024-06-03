@@ -2,15 +2,9 @@
 using ManagementApi.Controllers;
 using LogicInterfaces;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebModels.BuildingModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using WebModels.ConstructorCompanyBuildingModels;
 
 namespace ManagementApiTest
 {

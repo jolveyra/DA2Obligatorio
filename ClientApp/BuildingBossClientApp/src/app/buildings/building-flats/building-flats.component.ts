@@ -12,7 +12,7 @@ import { EmployeeService } from '../../services/employee.service';
   styleUrl: './building-flats.component.css'
 })
 export class BuildingFlatsComponent {
-  building: BuildingFlats = new BuildingFlats('', '', 0, [], '', 0, '', '', 0, 0, []);
+  building: BuildingFlats = new BuildingFlats('', '', 0, [], '', 0, '', '', '', 0, 0, []);
   isLoading: boolean = false;
   error: string = '';
   employeesOnBuilding: User[] = [];

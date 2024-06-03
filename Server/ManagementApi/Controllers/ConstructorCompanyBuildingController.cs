@@ -2,7 +2,6 @@
 using LogicInterfaces;
 using WebModels.BuildingModels;
 using ManagementApi.Filters;
-using WebModels.ConstructorCompanyBuildingModels;
 
 
 namespace ManagementApi.Controllers

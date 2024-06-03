@@ -11,7 +11,7 @@
         <button
             class="btn btn-success" 
             [routerLink]="[request.id]" 
-            *ngIf="request.status !== 'Completed'">Edit</button> <!-- TODO: shouldnt be that if its in progress couldnt be edit either? --> 
+            *ngIf="request.status === 'Pending'">Edit</button> <!-- TODO: shouldnt be that if its in progress couldnt be edit either? --> 
     </div>
     <div *ngIf="userRole === 'MaintenanceEmployee'">
         <label for="status">Status</label>

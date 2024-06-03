@@ -7,7 +7,7 @@ import { Flat } from '../../../shared/flat.model';
   styleUrl: './flat-item.component.css'
 })
 export class FlatItemComponent {
-  @Input() flat: Flat = new Flat('', 0, 0, '', '', '', 0, 0, false);
+  @Input() flat: Flat = new Flat('', '', 0, 0, '', '', '', 0, 0, false);
 
 
 }

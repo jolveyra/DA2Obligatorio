@@ -11,7 +11,7 @@ import { BuildingService } from '../../services/building.service';
   styleUrl: './building-flat-edit.component.css'
 })
 export class BuildingFlatEditComponent implements OnInit {
-  flat: Flat = new Flat('', 0, 0, '', '', '', 0, 0, false);
+  flat: Flat = new Flat('', '', 0, 0, '', '', '', 0, 0, false);
   isLoading: boolean = false;
   error: string = '';
   isChangingOwner: boolean = false;
@@ -45,7 +45,8 @@ export class BuildingFlatEditComponent implements OnInit {
     }
 
     let updatedFlat = new Flat(
-      '',
+      this.flat.id,
+      this.flat.buildingId,
       form.value.doorNumber,
       form.value.floor,
       this.flat.ownerName,
@@ -58,8 +59,6 @@ export class BuildingFlatEditComponent implements OnInit {
 
     this.isLoading = true;
     this.buildingService.updateFlat(
-      this.route.snapshot.params['buildingId'],
-      this.route.snapshot.params['flatId'],
       updatedFlat,
       form.value.changeOwner).subscribe(
         response => {
