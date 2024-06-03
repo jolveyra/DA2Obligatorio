@@ -2,6 +2,9 @@
     <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-success" (click)="onNewRequest()" *ngIf="userRole === 'Manager'">New request</button>
     </div>
+    <div class="d-flex justify-content-center mt-5" *ngIf="requests.length === 0">
+        <h2 class="text-primary-emphasis">You haven't created any requests yet</h2>
+    </div>
     <div class="d-flex justify-content-center">
         <div class="alert alert-danger" *ngIf="error !== ''">
             <p>{{ error }}</p>

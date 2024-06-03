@@ -18,6 +18,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   error: string = '';
   requests: Request[] = [];
+  maintenanceEmployees: string[] = [];
   userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
 

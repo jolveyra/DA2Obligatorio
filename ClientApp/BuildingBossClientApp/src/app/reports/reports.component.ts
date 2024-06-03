@@ -18,12 +18,18 @@ export class ReportsComponent {
 
   constructor(
     private reportsService: ReportsService,
+    private router: Router,
     private route: ActivatedRoute
   ) { }
 
-  onReport(): void {
+  onReport(filter: string): void {
     this.error = '';
-    let filter = this.route.snapshot.queryParams['filter'];
+    const newParams = { filter: filter };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: newParams,
+      queryParamsHandling: 'merge'
+    });
     this.showEmployeeReport = false;
     this.showBuildingReport = true;
     this.reportsService.fetchReports(filter).subscribe(
