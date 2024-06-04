@@ -65,16 +65,16 @@ namespace ManagementApiTest
 
             constructorCompanyBuildingLogicMock.Setup(c => c.GetAllConstructorCompanyBuildings(It.IsAny<Guid>())).Returns(constructorCompanyBuildings);
 
-            OkObjectResult expected = new OkObjectResult(new List<BuildingResponseModel>
+            OkObjectResult expected = new OkObjectResult(new List<BuildingWithoutFlatsResponseModel>
             {
-                new BuildingResponseModel(constructorCompanyBuildings.First()),
-                new BuildingResponseModel(constructorCompanyBuildings.Last())
+                new BuildingWithoutFlatsResponseModel(constructorCompanyBuildings.First()),
+                new BuildingWithoutFlatsResponseModel(constructorCompanyBuildings.Last())
             });
 
-            List<BuildingResponseModel> expectedObject = expected.Value as List<BuildingResponseModel>;
+            List<BuildingWithoutFlatsResponseModel> expectedObject = expected.Value as List<BuildingWithoutFlatsResponseModel>;
 
             OkObjectResult result = anotherConstructorCompanyBuildingController.GetAllConstructorCompanyBuildings() as OkObjectResult;
-            List<BuildingResponseModel> objectResult = result.Value as List<BuildingResponseModel>;
+            List<BuildingWithoutFlatsResponseModel> objectResult = result.Value as List<BuildingWithoutFlatsResponseModel>;
 
             constructorCompanyBuildingLogicMock.VerifyAll();
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -119,7 +119,7 @@ namespace ManagementApiTest
 
             constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(building);
 
-            OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
+            OkObjectResult expectedObject = new OkObjectResult(new BuildingWithoutFlatsResponseModel(building));
 
             ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
 
@@ -163,7 +163,7 @@ namespace ManagementApiTest
 
             constructorCompanyBuildingLogicMock.Setup(c => c.GetConstructorCompanyBuildingById(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(building);
 
-            OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
+            OkObjectResult expectedObject = new OkObjectResult(new BuildingWithoutFlatsResponseModel(building));
 
             ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
 
@@ -217,7 +217,7 @@ namespace ManagementApiTest
 
             constructorCompanyBuildingLogicMock.Setup(c => c.UpdateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(building);
 
-            OkObjectResult expectedObject = new OkObjectResult(new BuildingResponseModel(building));
+            OkObjectResult expectedObject = new OkObjectResult(new BuildingWithoutFlatsResponseModel(building));
 
             ConstructorCompanyBuildingController anotherConstructorCompanyBuildingController = new ConstructorCompanyBuildingController(constructorCompanyBuildingLogicMock.Object) { ControllerContext = controllerContext };
 

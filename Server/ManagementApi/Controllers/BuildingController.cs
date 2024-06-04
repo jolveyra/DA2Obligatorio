@@ -21,10 +21,10 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllBuildings()
         {
-            List<BuildingWithoutFlatsResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).ToList().
-                Select(building => new BuildingWithoutFlatsResponseModel(building)
+            List<BuildingResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).ToList().
+                Select(building => new BuildingResponseModel(building)
                 {
-                    AmountOfFlats = _iBuildingLogic.GetAllBuildingFlats(building.Id).ToList().Count
+                    Flats = _iBuildingLogic.GetAllBuildingFlats(building.Id).Select(f => new FlatResponseModel(f)).ToList()
                 }).ToList();
 
             return Ok(response);

@@ -23,7 +23,7 @@ namespace ManagementApi.Controllers
         public IActionResult CreateConstructorCompanyBuilding(BuildingRequestModel buildingRequestModel)
         {
             int amountOfFlats = buildingRequestModel.AmountOfFlats;
-            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(), amountOfFlats,
+            return Ok(new BuildingWithoutFlatsResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(), amountOfFlats,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
@@ -41,21 +41,21 @@ namespace ManagementApi.Controllers
         {
             return Ok(_iConstructorCompanyBuildingLogic.GetAllConstructorCompanyBuildings(
                 Guid.Parse(HttpContext.Items["UserId"] as string))
-                .Select(constructorCompanyBuilding => new BuildingResponseModel(constructorCompanyBuilding)).ToList());
+                .Select(constructorCompanyBuilding => new BuildingWithoutFlatsResponseModel(constructorCompanyBuilding)).ToList());
         }
 
         [HttpGet("{buildingId}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult GetConstructorCompanyBuildingById([FromRoute] Guid buildingId)
         {
-            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.GetConstructorCompanyBuildingById(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string))));
+            return Ok(new BuildingWithoutFlatsResponseModel(_iConstructorCompanyBuildingLogic.GetConstructorCompanyBuildingById(buildingId, Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
         [HttpPut("{buildingId}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult UpdateConstructorCompanyBuilding([FromRoute] Guid buildingId, UpdateConstructorCompanyBuildingRequestModel request)
         {
-            return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.UpdateConstructorCompanyBuilding(request.ToEntity(), buildingId,
+            return Ok(new BuildingWithoutFlatsResponseModel(_iConstructorCompanyBuildingLogic.UpdateConstructorCompanyBuilding(request.ToEntity(), buildingId,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
     }
