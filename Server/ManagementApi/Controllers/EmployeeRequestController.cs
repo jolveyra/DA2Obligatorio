@@ -21,14 +21,14 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["MaintenanceEmployee"])]
         public IActionResult GetAllEmployeeRequests()
         {
-            return Ok(_requestLogic.GetAllRequestsByEmployeeId(Guid.Parse(HttpContext.Items["UserId"] as string)).Select(r => new RequestResponseModel(r)).ToList());
+            return Ok(_requestLogic.GetAllRequestsByEmployeeId(Guid.Parse(HttpContext.Items["UserId"] as string)).Select(r => new RequestResponseWithoutEmployeeModel(r)).ToList());
         }
 
         [HttpPut("{id}")]
         [AuthenticationFilter(["MaintenanceEmployee"])]
         public IActionResult UpdateRequestStatusById([FromRoute] Guid id, [FromBody] RequestUpdateStatusModel requestUpdateStatusModel)
         {
-            RequestResponseModel response = new RequestResponseModel(_requestLogic.UpdateRequestStatusById(id, requestUpdateStatusModel.ToEntity()));
+            RequestResponseWithoutEmployeeModel response = new RequestResponseWithoutEmployeeModel(_requestLogic.UpdateRequestStatusById(id, requestUpdateStatusModel.ToEntity()));
             return Ok(response);
         }
     }

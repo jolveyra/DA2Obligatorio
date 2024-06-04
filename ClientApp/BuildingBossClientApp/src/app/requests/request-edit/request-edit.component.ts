@@ -32,7 +32,51 @@ export class RequestEditComponent implements OnInit {
     this.requestService.fetchManagerRequest(this.route.snapshot.params['id'])
       .subscribe(
         response => {
-          
+          this.request = new ManagerRequest(
+            response.id,
+            response.description,
+            new Flat(
+              response.flat.id,
+              response.flat.buildingId,
+              response.flat.number,
+              response.flat.floor,
+              response.flat.ownerName,
+              response.flat.ownerSurname,
+              response.flat.ownerEmail,
+              response.flat.rooms,
+              response.flat.bathrooms,
+              response.flat.hasBalcony,
+            ),
+            new Building(
+              response.building.id,
+              response.building.name,
+              response.building.sharedExpenses,
+              response.building.amountOfFlats,
+              response.building.street,
+              response.building.doorNumber,
+              response.building.cornerStreet,
+              response.building.constructorCompanyId,
+              response.building.managerId,
+              response.building.latitude,
+              response.building.longitude,
+            ),
+            response.categoryName,
+            new User(
+              response.assignedEmployee.id,
+              response.assignedEmployee.name,
+              response.assignedEmployee.surname,
+              response.assignedEmployee.email,
+            ),
+            response.status,
+          );
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
         }
       );
   }
