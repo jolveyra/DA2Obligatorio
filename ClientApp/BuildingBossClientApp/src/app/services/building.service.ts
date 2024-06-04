@@ -56,6 +56,25 @@ export class BuildingService {
     private httpClient: HttpClient
   ) { }
 
+  fetchConstructorCompanyBuildings(): Observable<BuildingResponseData[]> {
+    return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v2/constructorCompanyBuildings')
+      .pipe(
+        map((response: BuildingResponseData[]) => response.map(building => new Building(
+            building.id,
+            building.name,
+            building.sharedExpenses,
+            building.amountOfFlats,
+            building.street,
+            building.doorNumber,
+            building.cornerStreet,
+            building.constructorCompanyId,
+            building.managerId,
+            building.latitude,
+            building.longitude
+          )))
+      );
+  }
+
   fetchManagerBuildings(): Observable<BuildingResponseData[]> {
     return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v2/buildings')
       .pipe(

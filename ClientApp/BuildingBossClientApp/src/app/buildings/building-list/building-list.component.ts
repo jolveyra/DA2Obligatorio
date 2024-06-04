@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { BuildingService } from '../../services/building.service';
 import { Building } from '../../shared/building.model';
+import { ManagerService } from '../../services/manager.service';
+import { User } from '../../shared/user.model';
 
 @Component({
   selector: 'app-building-list',
@@ -18,32 +20,67 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   error: string = '';
   noBuildings: boolean = false;
   buildings: Building[] = [];
+  managers: User[] = [];
 
   constructor(
     private authService: AuthService,
     private buildingService: BuildingService,
+    private managerService: ManagerService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
-    this.buildingService.fetchManagerBuildings().subscribe(
-      response => {
-        this.buildings = response;
-        if (this.buildings.length === 0) {
-          this.noBuildings = true;
+    if (this.userRole === 'Manager') {
+      this.buildingService.fetchManagerBuildings().subscribe(
+        response => {
+          this.buildings = response;
+          if (this.buildings.length === 0) {
+            this.noBuildings = true;
+          }
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
         }
-      },
-      error => {
-        let errorMessage = "An unexpected error has occured, please retry later."
-        if (error.error && error.error.errorMessage) {
-          this.error = error.error.errorMessage;
-        } else {
-          this.error = errorMessage;
+      );
+    }
+    if (this.userRole === 'ConstructorCompanyAdmin') {
+      this.buildingService.fetchConstructorCompanyBuildings().subscribe(
+        buildingsResponse => {
+          this.managerService.fetchManagers().subscribe(
+            managersResponse => {
+              this.managers = managersResponse;
+              this.buildings = buildingsResponse;
+              if (this.buildings.length === 0) {
+                this.noBuildings = true;
+              }
+            },
+            error => {
+              let errorMessage = "An unexpected error has occured, please retry later."
+              if (error.error && error.error.errorMessage) {
+                this.error = error.error.errorMessage;
+              } else {
+                this.error = errorMessage;
+              }
+            }
+          );
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   ngOnDestroy(): void {
