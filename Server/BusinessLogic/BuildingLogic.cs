@@ -457,6 +457,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     {
         ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
         Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
+        building.Id = buildingId;
 
         CheckNotEmptyBuildingName(building);
         CheckUniqueBuildingName(building);
@@ -469,7 +470,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         existingBuilding.ManagerId = existingManager.Id;
         existingBuilding.Name = building.Name;
 
-        return _iBuildingRepository.UpdateBuilding(building);
+        return _iBuildingRepository.UpdateBuilding(existingBuilding);
     }
 
     private static void CheckNewManagerIsAManager(User existingManager)
