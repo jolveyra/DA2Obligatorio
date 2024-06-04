@@ -28,17 +28,17 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetAllManagerRequestsTest()
         {
-            Guid managerId = Guid.NewGuid();
+            User manager = new User() { Id = Guid.NewGuid() };
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1", ManagerId = managerId, Flat = new Flat() { Building = new Building() { ManagerId = managerId } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2", ManagerId = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { ManagerId = Guid.NewGuid() } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3", ManagerId = managerId, Flat = new Flat() { Building = new Building() { ManagerId = managerId } } }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { Manager = manager } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", ManagerId = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { Manager = new User() { Id = Guid.NewGuid() } } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { Manager = manager } } }
             };
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
-            IEnumerable<Request> result = _requestLogic.GetAllManagerRequests(managerId);
+            IEnumerable<Request> result = _requestLogic.GetAllManagerRequests(manager.Id);
 
             requestRepositoryMock.VerifyAll();
             Assert.IsTrue(result.SequenceEqual(new List<Request>() { requests.ToList()[0], requests.ToList()[2] }));

@@ -25,7 +25,7 @@ namespace WebModels.BuildingModels
             Name = building.Name;
             SharedExpenses = building.SharedExpenses;
             ConstructorCompanyId = building.ConstructorCompanyId;
-            ManagerId = building.ManagerId;
+            ManagerId = building.Manager.Id;
             Street = building.Address.Street;
             DoorNumber = building.Address.DoorNumber;
             CornerStreet = building.Address.CornerStreet;

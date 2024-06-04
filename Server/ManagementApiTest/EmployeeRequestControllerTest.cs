@@ -25,7 +25,7 @@ namespace ManagementApiTest
         public void GetAllEmployeeRequestTestOk()
         {
             Guid employeeId = Guid.NewGuid();
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             IEnumerable<Request> requests = new List<Request>()
             {
@@ -61,7 +61,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void UpdateRequestStatusByIdTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             RequestUpdateStatusModel requestUpdateStatusModel = new RequestUpdateStatusModel() { Status = RequestStatus.InProgress.ToString() };
 

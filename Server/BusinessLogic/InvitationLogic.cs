@@ -38,7 +38,7 @@ namespace BusinessLogic
                 throw new DeleteException();
             }
 
-            if ((invitation.IsAnswered && !invitation.IsAccepted) || invitation.ExpirationDate < DateTime.Now)
+            if ((invitation.IsAnswered && !invitation.IsAccepted) || (invitation.ExpirationDate < DateTime.Now && !invitation.IsAnswered))
             {
                 _invitationRepository.DeleteInvitationById(id);
             }

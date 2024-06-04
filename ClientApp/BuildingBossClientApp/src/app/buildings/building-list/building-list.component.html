@@ -12,7 +12,8 @@
         <div class="list-group w-50">
             <app-building-item
                 *ngFor="let buildingElem of buildings"
-                [building]="buildingElem"></app-building-item>
+                [building]="buildingElem"
+                [role]="userRole"></app-building-item>
         </div>
     </div>
 </div>

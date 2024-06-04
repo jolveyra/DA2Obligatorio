@@ -34,12 +34,14 @@ namespace ManagementApiTest
                     ConstructorCompanyId = constructorCompany.Id,
                     Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                     SharedExpenses = 13,
-                    MaintenanceEmployees = new List<Guid>()
+                    MaintenanceEmployees = new List<Guid>(),
+                    Manager = new User() { Id = Guid.NewGuid(), Email = "sth", Name = "sth", Role = Role.Manager, Surname = "sth" }
                 },
                 new Building() { Id = Guid.NewGuid(), Name = "Building 2", ConstructorCompanyId = constructorCompany.Id,
                     Address = new Address { DoorNumber = 22, CornerStreet = "Street 2", Id = Guid.NewGuid(), Latitude = 25, Longitude = 26, Street = "Street 3" },
                     SharedExpenses = 14,
-                    MaintenanceEmployees = new List<Guid>()
+                    MaintenanceEmployees = new List<Guid>(),
+                    Manager = new User() { Id = Guid.NewGuid(), Email = "sth", Name = "sth", Role = Role.Manager, Surname = "sth" }
                 }
             };
 
@@ -112,6 +114,8 @@ namespace ManagementApiTest
             Building building = buildingRequestModel.ToEntity();
             building.Id = Guid.NewGuid();
             building.ConstructorCompanyId = constructorCompanyAdministrator.ConstructorCompanyId;
+            building.Manager = new User()
+                { Id = Guid.NewGuid(), Email = "sth", Name = "sth", Role = Role.Manager, Surname = "sth" };
 
             constructorCompanyBuildingLogicMock.Setup(c => c.CreateConstructorCompanyBuilding(It.IsAny<Building>(), It.IsAny<int>(), It.IsAny<Guid>())).Returns(building);
 
@@ -138,7 +142,8 @@ namespace ManagementApiTest
                 ConstructorCompanyId = constructorCompany.Id,
                 Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                 SharedExpenses = 13,
-                MaintenanceEmployees = new List<Guid>()
+                MaintenanceEmployees = new List<Guid>(),
+                Manager = new User() { Id = Guid.NewGuid(), Email = "sth", Name = "sth", Role = Role.Manager, Surname = "sth" }
             };
 
             ConstructorCompanyAdministrator constructorCompanyAdministrator = new ConstructorCompanyAdministrator()
@@ -185,7 +190,7 @@ namespace ManagementApiTest
                 Address = new Address { DoorNumber = 21, CornerStreet = "Street 1", Id = Guid.NewGuid(), Latitude = 23, Longitude = 24, Street = "Street 2" },
                 SharedExpenses = 13,
                 MaintenanceEmployees = new List<Guid>(),
-                ManagerId = newManager.Id
+                Manager = newManager
             };
 
 

@@ -9,7 +9,7 @@ namespace WebModels.BuildingModels
 
         public Building ToEntity()
         {
-            return new Building { Name = Name, ManagerId = ManagerId };
+            return new Building { Name = Name, Manager = new User() { Id = ManagerId } };
         }
     }
 }

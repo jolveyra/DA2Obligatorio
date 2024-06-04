@@ -59,7 +59,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building1",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id
@@ -71,7 +71,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building2",
-                            ManagerId = manager.Id  
+                            Manager = manager  
                         }
                     },
                     ManagerId = manager.Id
@@ -83,7 +83,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building1",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id
@@ -95,7 +95,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building2",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id,
@@ -110,7 +110,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building1",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id,
@@ -152,7 +152,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building1",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id
@@ -165,7 +165,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building2",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id
@@ -178,7 +178,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building2",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id
@@ -191,7 +191,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building1",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id,
@@ -207,7 +207,7 @@ namespace BusinessLogicTest
                         Building = new Building
                         {
                             Name = "Building2",
-                            ManagerId = manager.Id
+                            Manager = manager
                         }
                     },
                     ManagerId = manager.Id,

@@ -8,4 +8,5 @@ import { Building } from '../../../shared/building.model';
 })
 export class BuildingItemComponent {
   @Input() building: Building = new Building('', '', 0, 0, '', 0, '', '', '', 0, 0);
+  @Input() role: string = '';
 }
