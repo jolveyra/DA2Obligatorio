@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Request } from '../request.model';
+import { ManagerRequest } from '../request.model';
 import { RequestService } from '../../services/request.service';
+import { Flat } from '../../shared/flat.model';
+import { Building } from '../../shared/building.model';
+import { User } from '../../shared/user.model';
 
 @Component({
   selector: 'app-request-edit',
@@ -11,7 +14,7 @@ import { RequestService } from '../../services/request.service';
   styleUrl: './request-edit.component.css'
 })
 export class RequestEditComponent implements OnInit {
-  request: Request = new Request('', '', '', '', '', '', '', new Date(), new Date());
+  request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   isLoading: boolean = false;
   error: string = '';
   categories = ['Category 1', 'Category 2', 'Category 3'];

@@ -5,7 +5,7 @@ import { BuildingFlats } from '../shared/buildingFlats.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-interface BuildingResponseData {
+export interface BuildingResponseData {
   id: string;
   name: string,
   sharedExpenses: number,
@@ -34,7 +34,7 @@ interface BuildingFlatsResponseData {
   maintenanceEmployeeIds: string[]
 }
 
-interface FlatResponseData {
+export interface FlatResponseData {
   id: string,
   buildingId: string,
   number: number,
