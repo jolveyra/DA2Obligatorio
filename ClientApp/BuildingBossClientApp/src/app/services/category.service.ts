@@ -25,4 +25,12 @@ export class CategoryService {
         })))
       );
   }
+
+  createCategory(name: string): Observable<CategoryResponseData> {
+    return this.httpClient.post<CategoryResponseData>('https://localhost:7122/api/v2/categories',
+      {
+        name
+      }
+    );
+  }
 }
