@@ -38,11 +38,6 @@ namespace DataAccess.Context
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Building>()
-                .HasOne(r => r.Manager)
-                .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<ConstructorCompanyAdministrator>().ToTable("ConstructorCompanyAdministrators");
         }
