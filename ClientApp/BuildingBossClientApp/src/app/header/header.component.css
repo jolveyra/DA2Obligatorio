@@ -9,3 +9,20 @@ a {
 li.active a svg path {
     stroke: white;
 }
+
+li.active a p {
+    color: white;
+}
+
+li a p {
+    color: #052C65;
+}
+
+.header-hover {
+    color: inherit;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.header-hover:hover {
+    background-color: white;
+}

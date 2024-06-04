@@ -10,6 +10,6 @@
         <button
             class="btn btn-danger mt-2"
             (click)="onDelete(invite.id)"
-            *ngIf="(invite.isAnswered && !invite.isAccepted) || (invite.expirationDate < today)">Delete</button>
+            *ngIf="(invite.isAnswered && !invite.isAccepted) || (invite.expirationDate < today && !invite.isAnswered)">Delete</button>
     </div>
 </div>

@@ -44,6 +44,10 @@ import { AuthInterceptorService } from './shared/auth-interceptor.service';
 import { ManagersComponent } from './managers/managers.component';
 import { ManagerListComponent } from './managers/manager-list/manager-list.component';
 import { ManagerItemComponent } from './managers/manager-list/manager-item/manager-item.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategoryListComponent } from './categories/category-list/category-list.component';
+import { CategoryItemComponent } from './categories/category-list/category-item/category-item.component';
+import { CategoryNewComponent } from './categories/category-new/category-new.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +89,11 @@ import { ManagerItemComponent } from './managers/manager-list/manager-item/manag
     ConstructorCompaniesComponent,
     ManagersComponent,
     ManagerListComponent,
-    ManagerItemComponent
+    ManagerItemComponent,
+    CategoriesComponent,
+    CategoryListComponent,
+    CategoryItemComponent,
+    CategoryNewComponent
   ],
   imports: [
     BrowserModule,

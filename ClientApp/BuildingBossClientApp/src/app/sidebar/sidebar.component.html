@@ -44,4 +44,9 @@
         routerLink="/constructorCompanies"
         routerLinkActive="active"
         *ngIf="userRole === 'ConstructorCompanyAdmin'">Constructor company</a>
+    <a
+        class="list-group-item border-primary-subtle"
+        routerLink="/categories"
+        routerLinkActive="active"
+        *ngIf="userRole === 'Administrator'">Categories</a>
 </div>

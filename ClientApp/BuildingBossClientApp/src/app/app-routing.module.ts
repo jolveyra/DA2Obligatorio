@@ -35,6 +35,9 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ConstructorCompaniesComponent } from './constructor-companies/constructor-companies.component';
 import { ManagersComponent } from './managers/managers.component';
 import { ManagerListComponent } from './managers/manager-list/manager-list.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategoryListComponent } from './categories/category-list/category-list.component';
+import { CategoryNewComponent } from './categories/category-new/category-new.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -56,7 +59,7 @@ const routes: Routes = [
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
-    { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] }, // FIXME: not finished, have to check whether user is manager or admin
+    { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
     { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] }, // FIXME: not finished, have to check whether managers are allowed to edit
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
@@ -70,7 +73,10 @@ const routes: Routes = [
     { path: 'new', component: EmployeeNewComponent, canActivate: [managerGuard] },
   ] },
   { path: 'reports', component: ReportsComponent, canActivate: [authGuard, managerGuard] },
-  // { path: 'categories', component: CategoriesComponent, canActivate: [authGuard, administratorGuard] },
+  { path: 'categories', component: CategoriesComponent, canActivate: [authGuard, administratorGuard], children: [
+    { path: '', component: CategoryListComponent },
+    { path: 'new', component: CategoryNewComponent }
+  ] },
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
