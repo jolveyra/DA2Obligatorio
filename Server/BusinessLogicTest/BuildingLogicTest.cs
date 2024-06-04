@@ -1913,4 +1913,39 @@ public class BuildingLogicTest
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Administrator doesn't have a company assigned yet");
     }
+
+    [TestMethod]
+    public void CreateBuildingWithEmptyConstructorCompanyTest()
+    {
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        constructorCompanyAdministratorRepositoryMock
+            .Setup(ca => ca.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(new ConstructorCompanyAdministrator() { ConstructorCompanyId = Guid.NewGuid() });
+        Exception exception = null;
+
+        try
+        {
+            buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+        userRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Building's constructor company cannot be empty");
+    }
 }
