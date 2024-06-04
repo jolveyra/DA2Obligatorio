@@ -22,7 +22,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult CreateConstructorCompanyBuilding(BuildingRequestModel buildingRequestModel)
         {
-            int amountOfFlats = buildingRequestModel.Flats;
+            int amountOfFlats = buildingRequestModel.AmountOfFlats;
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(buildingRequestModel.ToEntity(), amountOfFlats,
                 Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
@@ -52,7 +52,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{buildingId}")]
-        
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult UpdateConstructorCompanyBuilding([FromRoute] Guid buildingId, UpdateConstructorCompanyBuildingRequestModel request)
         {
             return Ok(new BuildingResponseModel(_iConstructorCompanyBuildingLogic.UpdateConstructorCompanyBuilding(request.ToEntity(), buildingId,

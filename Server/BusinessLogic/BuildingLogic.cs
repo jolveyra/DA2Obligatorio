@@ -28,10 +28,6 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         ValidateBuilding(building);
         ValidateConstructorCompany(building.ConstructorCompanyId, userId);
 
-        CheckUniqueBuildingName(building);
-        CheckUniqueBuildingAddress(building);
-        CheckUniqueBuildingCoordinates(building);
-
         building.ManagerId = _iUserRepository.GetUserById(userId).Id;
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
@@ -100,6 +96,9 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
         CheckValidCoordinates(building);
+        CheckUniqueBuildingName(building);
+        CheckUniqueBuildingAddress(building);
+        CheckUniqueBuildingCoordinates(building);
     }
 
     private void CheckValidCoordinates(Building building)
@@ -141,9 +140,19 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     private void CheckUniqueBuildingName(Building building)
     {
-        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower()))
+        if (building.Id == Guid.Empty)
         {
-            throw new BuildingException("Building with same name already exists");
+            if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower()))
+            {
+                throw new BuildingException("Building with same name already exists");
+            }
+        }
+        else
+        {
+            if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower() && x.Id != building.Id))
+            {
+                throw new BuildingException("Building with same name already exists");
+            }
         }
     }
 
@@ -447,9 +456,10 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     public Building UpdateConstructorCompanyBuilding(Building building, Guid buildingId, Guid userId)
     {
         ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
-
         Building existingBuilding = _iBuildingRepository.GetBuildingById(buildingId);
 
+        CheckNotEmptyBuildingName(building);
+        CheckUniqueBuildingName(building);
         CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, existingBuilding);
 
         User existingManager = _iUserRepository.GetUserById(building.ManagerId);
@@ -457,6 +467,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         CheckNewManagerIsAManager(existingManager);
 
         existingBuilding.ManagerId = existingManager.Id;
+        existingBuilding.Name = building.Name;
 
         return _iBuildingRepository.UpdateBuilding(building);
     }

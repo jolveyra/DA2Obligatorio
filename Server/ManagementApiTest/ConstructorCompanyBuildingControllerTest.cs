@@ -86,7 +86,7 @@ namespace ManagementApiTest
             BuildingRequestModel buildingRequestModel = new BuildingRequestModel()
             {
                 Name = "Building 1",
-                Flats = 12,
+                AmountOfFlats = 12,
                 DoorNumber = 21,
                 CornerStreet = "Street 1",
                 Street = "Street 2",
