@@ -15,6 +15,7 @@ export class BuildingFlatsComponent {
   building: BuildingFlats = new BuildingFlats('', '', 0, [], '', 0, '', '', '', 0, 0, []);
   isLoading: boolean = false;
   error: string = '';
+  successMessage: boolean = false;
   employeesOnBuilding: User[] = [];
   employeesNotOnBuilding: User[] = [];
 
@@ -38,8 +39,6 @@ export class BuildingFlatsComponent {
                 this.employeesNotOnBuilding.push(element);
               }
             });
-            console.log(this.employeesOnBuilding);
-            console.log(this.employeesNotOnBuilding);
           },
           error => {
             let errorMessage = "An unexpected error has occured, please retry later."
@@ -82,7 +81,9 @@ export class BuildingFlatsComponent {
       .subscribe(
         response => {
           this.isLoading = false;
-          this.router.navigate(['../../'], { relativeTo: this.route });
+          this.building = response;
+          this.error = '';
+          this.successMessage = true;
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

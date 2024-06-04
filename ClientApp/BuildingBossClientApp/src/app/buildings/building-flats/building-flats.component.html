@@ -5,8 +5,15 @@
         </a>
     </div>
     <h2 class="text-center text-primary-emphasis fw-semibold mb-4">Building {{ building.name }}</h2>
-    <div class="alert alert-danger" *ngIf="error !== ''">
-        <p>{{ error }}</p>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-success" *ngIf="successMessage">
+            <p>Updated correctly!</p>
+        </div>
     </div>
     <div *ngIf="isLoading" class="text-center">
         <app-loading-spinner></app-loading-spinner>
@@ -28,7 +35,7 @@
             </div>
             <div class="form-group mb-2">
                 <label for="activeEmployees">Maintenance employees on building</label>
-                <ul class="list-group list-with-overflow" name="activeEmployees">
+                <ul class="list-group list-with-overflow" name="activeEmployees" *ngIf="employeesOnBuilding.length > 0">
                     <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let employee of employeesOnBuilding">
                         <span>
                             {{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}
@@ -36,10 +43,11 @@
                         <button class="btn btn-danger p-1" (click)="onDiscard(employee)">Discard</button>
                     </li>
                 </ul>
+                <p class="fst-italic px-3" *ngIf="employeesOnBuilding.length === 0">No maintenance employees on building</p>
             </div>
             <div class="form-group mb-2">
                 <label for="activeEmployees">Maintenance employees not currently on building</label>
-                <ul class="list-group list-with-overflow" name="activeEmployees">
+                <ul class="list-group list-with-overflow" name="activeEmployees" *ngIf="employeesNotOnBuilding.length > 0">
                     <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let employee of employeesNotOnBuilding">
                         <span>
                             {{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}
@@ -47,6 +55,7 @@
                         <button class="btn btn-success p-1 ml-auto" (click)="onAdd(employee)">Add</button>
                     </li>
                 </ul>
+                <p class="fst-italic px-3" *ngIf="employeesNotOnBuilding.length === 0">No maintenance employees not on building</p>
             </div>            
             <div class="text-center mt-4">
                 <button

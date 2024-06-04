@@ -126,12 +126,40 @@ export class BuildingService {
       );
   }
 
-  updateBuilding(buildingId: string, sharedExpenses: number, maintenanceEmployeeIds: string[]): Observable<BuildingResponseData> {
-    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}`, // 
+  updateBuilding(buildingId: string, sharedExpenses: number, maintenanceEmployees: string[]): Observable<BuildingFlatsResponseData> {
+    return this.httpClient.put<BuildingFlatsResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}`, // 
       {
         sharedExpenses,
-        maintenanceEmployeeIds
-      }
+        maintenanceEmployees
+      }).pipe(
+        map((response: BuildingFlatsResponseData) => {
+          const buildingWithFlats = new BuildingFlats(
+          response.id,
+          response.name,
+          response.sharedExpenses,
+          response.flats.map(flat => new Flat(
+            flat.id,
+            flat.buildingId,
+            flat.number,
+            flat.floor,
+            flat.ownerName,
+            flat.ownerSurname,
+            flat.ownerEmail,
+            flat.rooms,
+            flat.bathrooms,
+            flat.hasBalcony)),
+          response.street,
+          response.doorNumber,
+          response.cornerStreet,
+          response.constructorCompanyId,
+          response.managerId,
+          response.latitude,
+          response.longitude,
+          response.maintenanceEmployeeIds
+        );
+        buildingWithFlats.flats.sort(flat => flat.number);
+        return buildingWithFlats;
+      })
     );
   }
 
