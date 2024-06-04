@@ -29,7 +29,12 @@ export class RequestEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+    this.requestService.fetchManagerRequest(this.route.snapshot.params['id'])
+      .subscribe(
+        response => {
+          
+        }
+      );
   }
 
   selectCategory(category: string) {
