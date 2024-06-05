@@ -39,4 +39,26 @@ export class ConstructorCompanyService {
           response.name))
       );
   }
+
+  fetchConstructorCompanies(): Observable<ConstructorCompany[]> {
+    return this.httpClient.get<ConstructorCompanyResponseData[]>(`https://localhost:7122/api/v2/constructorCompanies`)
+      .pipe(
+        map((response: ConstructorCompanyResponseData[]) => response.map(constructorCompany => new ConstructorCompany(
+          constructorCompany.id,
+          constructorCompany.name)))
+      );
+  }
+
+  updateConstructorCompany(constructorCompany: ConstructorCompany): Observable<ConstructorCompanyResponseData> {
+    return this.httpClient.put<ConstructorCompanyResponseData>(`https://localhost:7122/api/v2/constructorCompanies/${constructorCompany.id}`,
+      {
+        name: constructorCompany.name
+      }
+    )
+      .pipe(
+        map((response: ConstructorCompanyResponseData) => new ConstructorCompany(
+          response.id,
+          response.name))
+      );
+  }
 }

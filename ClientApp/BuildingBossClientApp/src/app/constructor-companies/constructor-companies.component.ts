@@ -1,8 +1,8 @@
 import { ConstructorCompanyAdministrator } from './../shared/constructor-company-administrator.model';
 import { ConstructorCompany } from './../shared/constructor-company.model';
 import { Component } from '@angular/core';
-import { ConstructorCompanyService } from '../services/constructor-company.service';
 import { ConstructorCompanyAdministratorService } from '../services/constructor-company-administrator.service';
+import { ConstructorCompanyService } from '../services/constructor-company.service';
 
 @Component({
   selector: 'app-constructor-companies',
@@ -15,10 +15,11 @@ export class ConstructorCompaniesComponent {
   
   constructorCompanyAdministrator: ConstructorCompanyAdministrator = new ConstructorCompanyAdministrator('', '', '', '', '', '');
   constructorCompany: ConstructorCompany = new ConstructorCompany('', '');
+  constructorCompanyName: boolean = false;
 
   constructor(
-    private constructorCompanyService: ConstructorCompanyService,
-    private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService
+    private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService,
+    private constructorCompanyService: ConstructorCompanyService
   ) {}
 
   
@@ -27,8 +28,13 @@ export class ConstructorCompaniesComponent {
     this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
       .subscribe(
         constructorCompanyAdministrator => {
-
           this.constructorCompanyAdministrator = constructorCompanyAdministrator;
+          
+          if(this.constructorCompanyAdministrator.constructorCompanyName !== '') {
+            this.constructorCompanyName = true;
+            this.constructorCompany = new ConstructorCompany(this.constructorCompanyAdministrator.constructorCompanyId, this.constructorCompanyAdministrator.constructorCompanyName);
+          }
+          this.isLoading = false;
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."
@@ -41,5 +47,28 @@ export class ConstructorCompaniesComponent {
       );
 
   }
+
+  onEditConstructorCompany(): void {
+    console.log(this.constructorCompany.name)
+
+    this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
+    .subscribe(
+      response => {
+        console.log(response);
+        this.constructorCompany.name = response.name;
+        this.constructorCompany.id = response.id;
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
+
+  }
+
 }
 
