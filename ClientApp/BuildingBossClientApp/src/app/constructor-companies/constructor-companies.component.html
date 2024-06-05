@@ -3,12 +3,11 @@
         <div class="alert alert-danger" *ngIf="error !== ''">
             <p>{{ error }}</p>
         </div>
-        <div *ngIf="isLoading" class="text-center">
-            <app-loading-spinner></app-loading-spinner>
+        <div *ngIf="!this.constructorCompanyAdministrator.constructorCompanyName"> <!-- FIXME: when it doesnt have a constructor company assigned, problem is that we need to create a new model and check -->
+          <app-constructor-company-new></app-constructor-company-new>
         </div>
-        <div *ngIf=""> <!-- FIXME: when it doesnt have a constructor company assigned, problem is that we need to create a new model and check -->
-        </div>
-        <div *ngIf=""> <!-- FIXME: when it does have a constructor company assigned -->
+        <div *ngIf="this.constructorCompanyAdministrator.constructorCompanyName"> <!-- FIXME: when it does have a constructor company assigned -->
+          <p>prueba</p>
         </div>
     </div>    
 </div>

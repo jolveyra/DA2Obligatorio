@@ -5,7 +5,11 @@ import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
 import { BuildingService } from '../../services/building.service';
+import { ManagerService } from '../../services/manager.service';
+import { ConstructorCompanyAdministratorService } from '../../services/constructor-company-administrator.service';
 import { Building } from '../../shared/building.model';
+import { User } from '../../shared/user.model';
+import { ConstructorCompanyAdministrator } from '../../shared/constructor-company-administrator.model';
 
 @Component({
   selector: 'app-building-list',
@@ -17,33 +21,94 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   userRole: string = '';
   error: string = '';
   noBuildings: boolean = false;
+  constructorCompanyName: boolean = true;
   buildings: Building[] = [];
-
+  managers: User[] = [];
+  constructorCompanyAdministrator: ConstructorCompanyAdministrator = new ConstructorCompanyAdministrator('', '', '', '', '', '');
+  
   constructor(
     private authService: AuthService,
     private buildingService: BuildingService,
+    private managerService: ManagerService,
+    private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
-    this.buildingService.fetchManagerBuildings().subscribe(
-      response => {
-        this.buildings = response;
-        if (this.buildings.length === 0) {
-          this.noBuildings = true;
+    if (this.userRole === 'Manager') {
+      this.buildingService.fetchManagerBuildings().subscribe(
+        response => {
+          this.buildings = response;
+          if (this.buildings.length === 0) {
+            this.noBuildings = true;
+          }
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
         }
-      },
-      error => {
-        let errorMessage = "An unexpected error has occured, please retry later."
-        if (error.error && error.error.errorMessage) {
-          this.error = error.error.errorMessage;
-        } else {
-          this.error = errorMessage;
+      );
+    }
+    if (this.userRole === 'ConstructorCompanyAdmin') {
+      
+      this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
+      .subscribe(
+        constructorCompanyAdministrator => {
+          console.log(constructorCompanyAdministrator);
+          this.constructorCompanyAdministrator = constructorCompanyAdministrator;
+          console.log(this.constructorCompanyAdministrator.constructorCompanyName);
+          if(this.constructorCompanyAdministrator.constructorCompanyName !== '') {
+
+            this.buildingService.fetchConstructorCompanyBuildings().subscribe(
+              buildingsResponse => {
+                this.managerService.fetchManagers().subscribe(
+                  managersResponse => {
+                    this.managers = managersResponse;
+                    this.buildings = buildingsResponse;
+                    if (this.buildings.length === 0) {
+                      this.noBuildings = true;
+                    }
+                  },
+                  error => {
+                    let errorMessage = "An unexpected error has occured, please retry later."
+                    if (error.error && error.error.errorMessage) {
+                      this.error = error.error.errorMessage;
+                    } else {
+                      this.error = errorMessage;
+                    }
+                  }
+                );
+              },
+              error => {
+                let errorMessage = "An unexpected error has occured, please retry later."
+                if (error.error && error.error.errorMessage) {
+                  this.error = error.error.errorMessage;
+                } else {
+                  this.error = errorMessage;
+                }
+              }
+            );
+          }else{
+            this.constructorCompanyName = false;
+          }
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
         }
-      }
-    );
+      );
+
+    }
   }
 
   ngOnDestroy(): void {

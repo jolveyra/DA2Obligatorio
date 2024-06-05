@@ -55,7 +55,9 @@ const routes: Routes = [
     { path: '', component: ManagerListComponent },
   ] },
   // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
-  { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  { path: 'constructorCompanies', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
+    { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  ] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
