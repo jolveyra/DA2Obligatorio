@@ -22,6 +22,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   error: string = '';
   noBuildings: boolean = false;
   constructorCompanyName: boolean = true;
+  finishedLoadingAdmin: boolean = false;
   buildings: Building[] = [];
   managers: User[] = [];
   constructorCompanyAdministrator: ConstructorCompanyAdministrator = new ConstructorCompanyAdministrator('', '', '', '', '', '');
@@ -74,6 +75,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
                     if (this.buildings.length === 0) {
                       this.noBuildings = true;
                     }
+                    this.finishedLoadingAdmin = true;
                   },
                   error => {
                     let errorMessage = "An unexpected error has occured, please retry later."
@@ -96,6 +98,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
             );
           }else{
             this.constructorCompanyName = false;
+            this.finishedLoadingAdmin = true;
           }
         },
         error => {

@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngIf="constructorCompanyName || userRole === 'Manager'">
+    <div *ngIf="constructorCompanyName && finishedLoadingAdmin || userRole === 'Manager'">
       <div class="d-flex justify-content-end mb-3">
         <button
             class="btn btn-success"
@@ -18,10 +18,9 @@
           </div>
       </div>
     </div>
-    
-    <div *ngIf="!constructorCompanyName">
-      <h2 class="text-primary-emphasis">Your don't have a constructor company assigned yet</h2>
-
-      <h2 class="text-primary-emphasis">Your company didn't create any buildings yet</h2>
+    <div *ngIf="!constructorCompanyName && finishedLoadingAdmin">
+      <div class="d-flex justify-content-center mt-5" *ngIf="!constructorCompanyName && finishedLoadingAdmin">
+          <h2 class="text-primary-emphasis">Your don't have a constructor company assigned yet</h2>
+      </div>
     </div>
 </div>

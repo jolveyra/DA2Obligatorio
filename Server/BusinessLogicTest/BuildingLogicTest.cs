@@ -1990,4 +1990,41 @@ public class BuildingLogicTest
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Building's constructor company does not match user's constructor company");
     }
+
+    [TestMethod]
+    public void CreateBuildingWithEmptyConstructorCompanyOfAdministratorTest()
+    {
+        Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
+            ConstructorCompanyId = Guid.NewGuid(),
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street", 
+                DoorNumber = 12, 
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+
+        buildingRepositoryMock.Setup(b => b.GetAllBuildings()).Returns(new List<Building>());
+        constructorCompanyAdministratorRepositoryMock
+            .Setup(ca => ca.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(new ConstructorCompanyAdministrator() { ConstructorCompanyId = building.ConstructorCompanyId });
+        Exception exception = null;
+
+        try
+        {
+            buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+        constructorCompanyAdministratorRepositoryMock.VerifyAll();
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual(exception.Message, "Constructor company administrator doesn't have a constructor company assigned.");
+    }
 }

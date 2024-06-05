@@ -43,10 +43,15 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         }
 
         ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
-
+        
         if (constructorCompanyAdministrator.ConstructorCompanyId != constructorCompanyId)
         {
             throw new BuildingException("Building's constructor company does not match user's constructor company");
+        }
+
+        if (string.IsNullOrEmpty(constructorCompanyAdministrator.ConstructorCompany.Name))
+        {
+            throw new BuildingException("Constructor company administrator doesn't have a constructor company assigned.");
         }
     }
 
