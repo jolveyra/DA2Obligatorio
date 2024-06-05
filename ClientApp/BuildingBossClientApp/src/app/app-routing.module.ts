@@ -39,6 +39,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CategoryListComponent } from './categories/category-list/category-list.component';
 import { CategoryNewComponent } from './categories/category-new/category-new.component';
 import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
+import { TeapotComponent } from './teapot/teapot.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -82,6 +83,7 @@ const routes: Routes = [
     { path: 'new', component: CategoryNewComponent }
   ] },
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
+  { path: 'teapot', component: TeapotComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
 

@@ -51,6 +51,7 @@ import { CategoryNewComponent } from './categories/category-new/category-new.com
 import { ConstructorCompanyNewComponent } from './constructor-companies/constructor-company-new/constructor-company-new.component';
 import { ConstructorCompanyListComponent } from './constructor-companies/constructor-company-list/constructor-company-list.component';
 import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
+import { TeapotComponent } from './teapot/teapot.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { ConstructorCompanyEditComponent } from './constructor-companies/constru
     CategoryNewComponent,
     ConstructorCompanyNewComponent,
     ConstructorCompanyListComponent,
-    ConstructorCompanyEditComponent
+    ConstructorCompanyEditComponent,
+    TeapotComponent
   ],
   imports: [
     BrowserModule,

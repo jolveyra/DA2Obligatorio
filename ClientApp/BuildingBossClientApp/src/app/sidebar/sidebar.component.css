@@ -1,3 +1,7 @@
 .active {
     background-color: #052C65;
 }
+
+.active svg {
+    fill: white;
+}
