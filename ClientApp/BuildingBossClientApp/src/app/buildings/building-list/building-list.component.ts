@@ -10,6 +10,7 @@ import { ConstructorCompanyAdministratorService } from '../../services/construct
 import { Building } from '../../shared/building.model';
 import { User } from '../../shared/user.model';
 import { ConstructorCompanyAdministrator } from '../../shared/constructor-company-administrator.model';
+import { BuildingFlats } from '../../shared/buildingFlats.model';
 
 @Component({
   selector: 'app-building-list',
@@ -23,7 +24,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   noBuildings: boolean = false;
   constructorCompanyName: boolean = true;
   finishedLoadingAdmin: boolean = false;
-  buildings: Building[] = [];
+  buildings: Building[] | BuildingFlats[] = [];
   managers: User[] = [];
   constructorCompanyAdministrator: ConstructorCompanyAdministrator = new ConstructorCompanyAdministrator('', '', '', '', '', '');
   
@@ -57,16 +58,14 @@ export class BuildingListComponent implements OnInit, OnDestroy {
       );
     }
     if (this.userRole === 'ConstructorCompanyAdmin') {
-      
       this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
       .subscribe(
+        
         constructorCompanyAdministrator => {
-          console.log(constructorCompanyAdministrator);
           this.constructorCompanyAdministrator = constructorCompanyAdministrator;
-          console.log(this.constructorCompanyAdministrator.constructorCompanyName);
           if(this.constructorCompanyAdministrator.constructorCompanyName !== '') {
-
             this.buildingService.fetchConstructorCompanyBuildings().subscribe(
+              
               buildingsResponse => {
                 this.managerService.fetchManagers().subscribe(
                   managersResponse => {

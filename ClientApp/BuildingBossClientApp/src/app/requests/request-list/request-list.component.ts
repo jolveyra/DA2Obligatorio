@@ -19,6 +19,7 @@ import { User } from '../../shared/user.model';
 export class RequestListComponent implements OnInit, OnDestroy {
   error: string = '';
   noRequests: boolean = false;
+  endLoading: boolean = false;
   requests: ManagerRequest[] = [];
   userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
@@ -55,14 +56,13 @@ export class RequestListComponent implements OnInit, OnDestroy {
                 request.building.id,
                 request.building.name,
                 request.building.sharedExpenses,
-                request.building.amountOfFlats,
                 request.building.street,
                 request.building.doorNumber,
                 request.building.cornerStreet,
                 request.building.constructorCompanyId,
                 request.building.managerId,
                 request.building.latitude,
-                request.building.longitude,
+                request.building.longitude
               ),
               request.categoryName,
               new User(
@@ -77,6 +77,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
           if (this.requests.length === 0) {
             this.noRequests = true;
           }
+          this.endLoading = true;
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

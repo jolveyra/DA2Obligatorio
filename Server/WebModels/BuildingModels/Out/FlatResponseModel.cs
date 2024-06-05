@@ -11,6 +11,7 @@ namespace WebModels.BuildingModels
     {
         public Guid Id { get; set; }
         public int Number { get; set; }
+        public Guid BuildingId { get; set; }
         public int Floor { get; set; }
         public string OwnerName { get; set; }
         public string OwnerSurname { get; set; }
@@ -23,6 +24,7 @@ namespace WebModels.BuildingModels
         {
             Id = flat.Id;
             Number = flat.Number;
+            BuildingId = flat.Building.Id;
             Floor = flat.Floor;
             OwnerName = flat.Owner.Name;
             OwnerSurname = flat.Owner.Surname;

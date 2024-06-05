@@ -27,7 +27,7 @@ export class BuildingFlatsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.buildingService.fetchBuildingFlats(this.route.snapshot.params['buildingId']).subscribe(
+    this.buildingService.fetchManagerBuilding(this.route.snapshot.params['buildingId']).subscribe(
       response => {
         this.building = response;
         this.employeeService.fetchMaintenanceEmployees().subscribe(

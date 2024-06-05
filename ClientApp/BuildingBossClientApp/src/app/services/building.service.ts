@@ -9,7 +9,6 @@ export interface BuildingResponseData {
   id: string;
   name: string,
   sharedExpenses: number,
-  amountOfFlats: number,
   street: string,
   doorNumber: number,
   cornerStreet: string,
@@ -63,7 +62,6 @@ export class BuildingService {
             building.id,
             building.name,
             building.sharedExpenses,
-            building.amountOfFlats,
             building.street,
             building.doorNumber,
             building.cornerStreet,
@@ -75,26 +73,39 @@ export class BuildingService {
       );
   }
 
-  fetchManagerBuildings(): Observable<BuildingResponseData[]> {
-    return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v2/buildings')
+  fetchManagerBuildings(): Observable<BuildingFlatsResponseData[]> {
+    return this.httpClient.get<BuildingFlatsResponseData[]>('https://localhost:7122/api/v2/buildings')
       .pipe(
-        map((response: BuildingResponseData[]) => response.map(building => new Building(
+        map((response: BuildingFlatsResponseData[]) => { 
+          return response.map(building => new BuildingFlats(
             building.id,
             building.name,
             building.sharedExpenses,
-            building.amountOfFlats,
+            building.flats.map(flat => new Flat(
+              flat.id,
+              flat.buildingId,
+              flat.number,
+              flat.floor,
+              flat.ownerName,
+              flat.ownerSurname,
+              flat.ownerEmail,
+              flat.rooms,
+              flat.bathrooms,
+              flat.hasBalcony)),
             building.street,
             building.doorNumber,
             building.cornerStreet,
             building.constructorCompanyId,
             building.managerId,
             building.latitude,
-            building.longitude
-          )))
+            building.longitude,
+            building.maintenanceEmployeeIds
+          ))
+        })
       );
   }
 
-  fetchBuildingFlats(id: string): Observable<BuildingFlatsResponseData> {
+  fetchManagerBuilding(id: string): Observable<BuildingFlatsResponseData> {
     return this.httpClient.get<BuildingFlats>(`https://localhost:7122/api/v2/buildings/${id}`)
       .pipe(
         map((response: BuildingFlatsResponseData) => {
@@ -125,6 +136,24 @@ export class BuildingService {
         buildingWithFlats.flats.sort(flat => flat.number);
         return buildingWithFlats;
       })
+      );
+  }
+
+  fetchConstructorCompanyBuilding(id: string): Observable<BuildingResponseData> {
+    return this.httpClient.get<BuildingResponseData>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${id}`)
+      .pipe(
+        map((response: BuildingResponseData) => new Building(
+            response.id,
+            response.name,
+            response.sharedExpenses,
+            response.street,
+            response.doorNumber,
+            response.cornerStreet,
+            response.constructorCompanyId,
+            response.managerId,
+            response.latitude,
+            response.longitude
+        ))
       );
   }
 
