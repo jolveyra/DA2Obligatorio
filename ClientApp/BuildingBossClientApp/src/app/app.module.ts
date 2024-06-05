@@ -48,6 +48,9 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CategoryListComponent } from './categories/category-list/category-list.component';
 import { CategoryItemComponent } from './categories/category-list/category-item/category-item.component';
 import { CategoryNewComponent } from './categories/category-new/category-new.component';
+import { ConstructorCompanyNewComponent } from './constructor-companies/constructor-company-new/constructor-company-new.component';
+import { ConstructorCompanyListComponent } from './constructor-companies/constructor-company-list/constructor-company-list.component';
+import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +96,10 @@ import { CategoryNewComponent } from './categories/category-new/category-new.com
     CategoriesComponent,
     CategoryListComponent,
     CategoryItemComponent,
-    CategoryNewComponent
+    CategoryNewComponent,
+    ConstructorCompanyNewComponent,
+    ConstructorCompanyListComponent,
+    ConstructorCompanyEditComponent
   ],
   imports: [
     BrowserModule,

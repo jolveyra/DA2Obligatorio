@@ -18,7 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(["Administrator"])]
+        [AuthenticationFilter(["Administrator", "ConstructorCompanyAdmin"])]
         public IActionResult GetAllManagers()
         {
             return Ok(_managerLogic.GetAllManagers().Select(m => new UserResponseModel(m)).ToList());

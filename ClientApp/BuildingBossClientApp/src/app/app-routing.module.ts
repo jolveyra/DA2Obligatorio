@@ -38,6 +38,7 @@ import { ManagerListComponent } from './managers/manager-list/manager-list.compo
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryListComponent } from './categories/category-list/category-list.component';
 import { CategoryNewComponent } from './categories/category-new/category-new.component';
+import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -55,7 +56,10 @@ const routes: Routes = [
     { path: '', component: ManagerListComponent },
   ] },
   // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
-  { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  { path: 'constructorCompanies', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
+    { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+    { path: ':id', component: ConstructorCompanyEditComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  ] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
