@@ -49,9 +49,9 @@ const routes: Routes = [
   ] },
   { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: InvitationListComponent },
-    { path: 'new', component: InvitationNewComponent },
-    { path: ':id', component: InvitationEditComponent } // FIXME: not implemented, should be the one that anyone can accept or reject, but I think it should be in a different module maybe
+    { path: 'new', component: InvitationNewComponent }
   ] },
+  { path: 'invitations/:id', component: InvitationEditComponent },
   { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: ManagerListComponent },
   ] },
