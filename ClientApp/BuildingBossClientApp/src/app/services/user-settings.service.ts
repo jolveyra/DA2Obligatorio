@@ -31,7 +31,7 @@ export class UserSettingsService {
       );
   }
 
-  updateUser(name: string, surname: string, password: string): Observable<User> { // FIXME: check if user is constructor admin
+  updateUser(name: string, surname: string, password: string): Observable<User> {
     return this.httpClient.put<UserResponseData>('https://localhost:7122/api/v2/userSettings', {
       name,
       surname,

@@ -32,7 +32,6 @@ export class ReportsComponent {
     });
     this.reportsService.fetchReports(filter).subscribe(
       reports => {
-        console.log(reports); // FIXME: fix why pending to complete arent showing, just undefined, remove line when fixed
         this.reports = reports;
         
         if (this.reports.length === 0) {
