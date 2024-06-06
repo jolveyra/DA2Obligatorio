@@ -31,9 +31,9 @@ namespace BusinessLogicTest
             User manager = new User() { Id = Guid.NewGuid() };
             IEnumerable<Request> requests = new List<Request>()
             {
-                new Request() { Id = Guid.NewGuid(), Description = "Request 1", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { Manager = manager } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 2", ManagerId = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { Manager = new User() { Id = Guid.NewGuid() } } } },
-                new Request() { Id = Guid.NewGuid(), Description = "Request 3", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { Manager = manager } } }
+                new Request() { Id = Guid.NewGuid(), Description = "Request 1", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { ManagerId = manager.Id } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 2", ManagerId = Guid.NewGuid(), Flat = new Flat() { Building = new Building() { ManagerId = Guid.NewGuid() } } },
+                new Request() { Id = Guid.NewGuid(), Description = "Request 3", ManagerId = manager.Id, Flat = new Flat() { Building = new Building() { ManagerId = manager.Id } } }
             };
 
             requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);

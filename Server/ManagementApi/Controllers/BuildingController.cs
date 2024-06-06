@@ -18,7 +18,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(["ManagerId"])]
         public IActionResult GetAllBuildings()
         {
             List<BuildingResponseModel> response = _iBuildingLogic.GetAllBuildings(Guid.Parse(HttpContext.Items["UserId"] as string)).ToList().
@@ -31,7 +31,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{buildingId}")]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(["ManagerId"])]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             
@@ -43,7 +43,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(["ManagerId"])]
         public IActionResult UpdateBuildingById([FromRoute] Guid id, [FromBody] UpdateBuildingRequestModel updateBuildingRequest)
         {
             return Ok(new BuildingResponseModel(_iBuildingLogic.UpdateBuilding(id, updateBuildingRequest.ToEntity()))
@@ -54,14 +54,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{buildingId}/flats/{flatId}")]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(["ManagerId"])]
         public IActionResult UpdateFlatByFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId, [FromBody] UpdateFlatRequestModel updateFlatRequest)
         {
             return Ok(new FlatResponseModel(_iBuildingLogic.UpdateFlat(buildingId, flatId, updateFlatRequest.ToEntity(), updateFlatRequest.ChangeOwner)));
         }
 
         [HttpGet("{buildingId}/flats/{flatId}")]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(["ManagerId"])]
         public IActionResult GetFlatByBuildingAndFlatId([FromRoute] Guid buildingId, [FromRoute] Guid flatId)
         {
             return Ok(new FlatResponseModel(_iBuildingLogic.GetFlatByBuildingAndFlatId(buildingId, flatId)));

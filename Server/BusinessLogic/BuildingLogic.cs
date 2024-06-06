@@ -182,7 +182,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
-        return _iBuildingRepository.GetAllBuildings().Where(x => x.Manager.Id.Equals(managerId));
+        return _iBuildingRepository.GetAllBuildings().Where(x => x.ManagerId.Equals(managerId));
     }
 
     public Building GetBuildingById(Guid id)
@@ -467,11 +467,11 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         CheckUniqueBuildingName(building);
         CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, existingBuilding);
 
-        User existingManager = _iUserRepository.GetUserById(building.Manager.Id);
+        User existingManager = _iUserRepository.GetUserById(building.ManagerId);
 
         CheckNewManagerIsAManager(existingManager);
 
-        existingBuilding.Manager = existingManager;
+        existingBuilding.ManagerId = existingManager.Id;
         existingBuilding.Name = building.Name;
 
         return _iBuildingRepository.UpdateBuilding(existingBuilding);

@@ -24,7 +24,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetAllManagerRequestsTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             User assignedEmployee = new User() { Email = "sth", Id = Guid.NewGuid(), Name = "sth" , Role = Role.MaintenanceEmployee, Password = "sth", Surname = "sth" };
 
@@ -64,7 +64,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetAllManagerRequestsByCategoryTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             User assignedEmployee = new User() { Email = "sth", Id = Guid.NewGuid(), Name = "sth" , Role = Role.MaintenanceEmployee, Password = "sth", Surname = "sth" };
             Guid managerId = Guid.NewGuid();
@@ -103,7 +103,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void GetRequestByIdTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             User assignedEmployee = new User() { Email = "sth", Id = Guid.NewGuid(), Name = "sth" , Role = Role.MaintenanceEmployee, Password = "sth", Surname = "sth" };
             IEnumerable<Request> requests = new List<Request>
@@ -127,7 +127,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void CreateRequestTestCreated()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             User assignedEmployee = new User() { Email = "sth", Id = Guid.NewGuid(), Name = "sth" , Role = Role.MaintenanceEmployee, Password = "sth", Surname = "sth" };
 
@@ -171,7 +171,7 @@ namespace ManagementApiTest
         [TestMethod]
         public void UpdateRequestByIdTestOk()
         {
-            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), Manager = new User() { Id = Guid.NewGuid() }, Name = "Sth", SharedExpenses = 10 };
+            Building building = new Building() { Id = Guid.NewGuid(), Address = new Address() { CornerStreet = "Sth", DoorNumber = 65, Id = Guid.NewGuid(), Latitude = 0.01, Longitude = 0.10, Street = "Sth"}, ConstructorCompanyId = Guid.NewGuid(), MaintenanceEmployees = new List<Guid>(), ManagerId = Guid.NewGuid(), Name = "Sth", SharedExpenses = 10 };
             Flat flat = new Flat() { Id = Guid.NewGuid(), Bathrooms = 5, Building = building, Floor = 4, HasBalcony = true, Number = 403, Owner = new Person() { Email = "email", Id = Guid.NewGuid(), Name = "Sth", Surname = "sth" }, OwnerId = Guid.NewGuid(), Rooms = 4};
             User assignedEmployee = new User() { Email = "sth", Id = Guid.NewGuid(), Name = "sth" , Role = Role.MaintenanceEmployee, Password = "sth", Surname = "sth" };
             RequestUpdateModel requestUpdateModel = new RequestUpdateModel

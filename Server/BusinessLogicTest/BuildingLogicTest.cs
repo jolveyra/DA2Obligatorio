@@ -458,7 +458,7 @@ public class BuildingLogicTest
     public void GetAllBuildingsTestOk()
     {
         User user = new User() { Id = Guid.NewGuid(), Role = Role.Manager };
-        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", Manager = user } };
+        IEnumerable<Building> buildings = new List<Building> { new Building() { Name = "Mirador", ManagerId = user.Id } };
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(buildings);
 
@@ -1546,7 +1546,7 @@ public class BuildingLogicTest
                 Latitude = 80,
                 Longitude = -80,
             },
-            Manager = newManager
+            ManagerId = newManager.Id
         };
 
         Building toUpdateBuilding = new Building()
@@ -1556,7 +1556,7 @@ public class BuildingLogicTest
             ConstructorCompanyId = constructorCompany.Id,
             Address = building.Address,
             SharedExpenses = 100,
-            Manager = new User() { Id = Guid.NewGuid() }
+            ManagerId = Guid.NewGuid()
         };
 
         Building expected = new Building()
@@ -1566,7 +1566,7 @@ public class BuildingLogicTest
             ConstructorCompanyId = constructorCompanyId,
             Address = building.Address,
             SharedExpenses = building.SharedExpenses,
-            Manager = newManager
+            ManagerId = newManager.Id
         };
 
         constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
@@ -1690,7 +1690,7 @@ public class BuildingLogicTest
                 Latitude = 80,
                 Longitude = -80,
             },
-            Manager = newManager
+            ManagerId = newManager.Id
         };
 
         Building toUpdateBuilding = new Building()
@@ -1700,7 +1700,7 @@ public class BuildingLogicTest
             ConstructorCompanyId = constructorCompany.Id,
             Address = building.Address,
             SharedExpenses = 100,
-            Manager = new User() { Id = Guid.NewGuid() }
+            ManagerId = Guid.NewGuid()
         };
 
         Building expected = new Building()
@@ -1710,7 +1710,7 @@ public class BuildingLogicTest
             ConstructorCompanyId = constructorCompany.Id,
             Address = building.Address,
             SharedExpenses = building.SharedExpenses,
-            Manager = newManager
+            ManagerId = newManager.Id
         };
 
         constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);

@@ -20,8 +20,7 @@ namespace DataAccess.Repositories
         public IEnumerable<Building> GetAllBuildings()
         {
             return _context.Buildings
-                .Include(b => b.Address)
-                .Include(b => b.Manager);
+                .Include(b => b.Address);
         }
 
         public Building CreateBuilding(Building building)
@@ -58,7 +57,6 @@ namespace DataAccess.Repositories
 
             Building? building = _context.Buildings
                 .Include(b => b.Address)
-                .Include(b => b.Manager)
                 .FirstOrDefault(b => b.Id.Equals(guid));
 
             if (building is null)
