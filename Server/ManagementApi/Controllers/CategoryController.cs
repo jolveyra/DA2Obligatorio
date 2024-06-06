@@ -30,7 +30,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(["Administrator", "ManagerId"])]
+        [AuthenticationFilter(["Administrator", "Manager"])]
         public IActionResult GetAllCategories()
         {
             return Ok(_iCategoryLogic.GetAllCategories().Select(category => new CategoryResponseModel(category)).ToList());

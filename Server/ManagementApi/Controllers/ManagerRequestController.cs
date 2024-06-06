@@ -19,7 +19,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllManagerRequests([FromQuery] string? category)
         {
             var requests = _managerRequestLogic.GetAllManagerRequests(Guid.Parse(HttpContext.Items["UserId"] as string));
@@ -33,14 +33,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetRequestById([FromRoute] Guid id)
         {
             return Ok(new RequestResponseModel(_managerRequestLogic.GetRequestById(id)));
         }
 
         [HttpPost]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult CreateRequest([FromBody] RequestCreateModel requestCreateModel)
         {
             var request = _managerRequestLogic.CreateRequest(requestCreateModel.ToEntity(), Guid.Parse(HttpContext.Items["UserId"] as string));
@@ -48,7 +48,7 @@ namespace ManagementApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult UpdateRequestById([FromRoute] Guid id, [FromBody] RequestUpdateModel requestUpdateModel)
         {
             var request = _managerRequestLogic.UpdateRequest(requestUpdateModel.ToEntity(id));

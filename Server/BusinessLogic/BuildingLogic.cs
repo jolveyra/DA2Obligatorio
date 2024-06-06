@@ -461,8 +461,8 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         CheckUniqueBuildingName(building);
         CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, existingBuilding);
 
-        User existingManager = _iUserRepository.GetUserById(building.ManagerId);
-
+        User existingManager = _iUserRepository.GetUserById(building.ManagerId ?? Guid.Empty);
+    
         CheckNewManagerIsAManager(existingManager);
 
         existingBuilding.ManagerId = existingManager.Id;

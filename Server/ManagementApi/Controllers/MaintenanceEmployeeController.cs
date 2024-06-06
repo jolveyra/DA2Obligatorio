@@ -18,14 +18,14 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult GetAllMaintenanceEmployees()
         {
             return Ok(_maintenanceEmployeeLogic.GetAllMaintenanceEmployees().Select(employee => new UserResponseModel(employee)).ToList());
         }
 
         [HttpPost]
-        [AuthenticationFilter(["ManagerId"])]
+        [AuthenticationFilter(["Manager"])]
         public IActionResult CreateMaintenanceEmployee([FromBody] CreateUserRequestModel createMaintenanceEmployeeRequestModel)
         {
             UserResponseModel response = new UserResponseModel(_maintenanceEmployeeLogic.CreateMaintenanceEmployee(createMaintenanceEmployeeRequestModel.ToEntity()));
