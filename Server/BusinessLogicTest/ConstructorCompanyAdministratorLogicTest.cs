@@ -27,6 +27,29 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void GetAllConstructorCompanyAdministratorsTestOk()
+        {
+            IEnumerable<ConstructorCompanyAdministrator> admins = new List<ConstructorCompanyAdministrator>()
+            {
+                new ConstructorCompanyAdministrator()
+                {
+                    Id = Guid.NewGuid()
+                },
+                new ConstructorCompanyAdministrator()
+                {
+                    Id = Guid.NewGuid()
+                }
+            };
+
+            constructorCompanyAdministratorRepositoryMock.Setup(c => c.GetAllConstructorCompanyAdministrators()).Returns(admins);
+
+            IEnumerable<ConstructorCompanyAdministrator> result = constructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators();
+
+            constructorCompanyAdministratorRepositoryMock.VerifyAll();
+            Assert.IsTrue(admins.First().Equals(result.First()) && admins.Last().Equals(result.Last()));
+        }
+
+        [TestMethod]
         public void UpdateConstructorCompanyAdministratorTestOk()
         {
             Guid userId = Guid.NewGuid();

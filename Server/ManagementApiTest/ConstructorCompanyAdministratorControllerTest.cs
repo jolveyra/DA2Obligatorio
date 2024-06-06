@@ -69,7 +69,7 @@ namespace ManagementApiTest
                 new ConstructorCompanyAdministratorResponseModel(admins.Last())
             };
 
-            constructorCompanyAdministratorLogicMock.Setup(c => c.GetAllConstructorCompanyAdministrators(It.IsAny<Guid>())).Returns(admins);
+            constructorCompanyAdministratorLogicMock.Setup(c => c.GetAllConstructorCompanyAdministrators()).Returns(admins);
 
             OkObjectResult expected = new OkObjectResult(expectedObject);
 

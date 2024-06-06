@@ -16,9 +16,9 @@ namespace BusinessLogic
             _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministrator;
         }
 
-        IEnumerable<ConstructorCompanyAdministrator> IConstructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators(Guid userId)
+        public IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators()
         {
-            throw new NotImplementedException();
+            return _iConstructorCompanyAdministratorRepository.GetAllConstructorCompanyAdministrators();
         }
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministrator(Guid userId)

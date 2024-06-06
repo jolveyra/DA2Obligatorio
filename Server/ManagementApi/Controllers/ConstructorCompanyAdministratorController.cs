@@ -21,7 +21,7 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["Administrator", "ConstructorCompanyAdmin"])]
         public IActionResult GetAllConstructorCompanyAdministrators()
         {
-            return Ok(_iConstructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators(Guid.Parse(HttpContext.Items["UserId"] as string))
+            return Ok(_iConstructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators()
                 .Select(admin => new ConstructorCompanyAdministratorResponseModel(admin)).ToList());
         }
 
