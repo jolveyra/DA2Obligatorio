@@ -11,7 +11,7 @@
         <button
             class="btn btn-success" 
             [routerLink]="[request.id]" 
-            *ngIf="request.status === 'Pending'">Edit</button>
+            *ngIf="request.status !== 'Completed'">Edit</button>
     </div>
     <div *ngIf="userRole === 'MaintenanceEmployee'">
         <label for="status">Status</label>

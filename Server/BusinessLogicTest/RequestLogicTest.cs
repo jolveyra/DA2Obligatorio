@@ -324,7 +324,7 @@ namespace BusinessLogicTest
 
             requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
-            Assert.IsTrue(exception.Message.Equals("Cannot update a started request"));
+            Assert.IsTrue(exception.Message.Equals("Cannot update a completed request"));
         }
     }
 }

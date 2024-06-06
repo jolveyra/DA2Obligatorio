@@ -52,8 +52,8 @@ namespace BusinessLogic
         {
             Request existingRequest = GetRequestById(request.Id);
 
-            if (existingRequest.Status != RequestStatus.Pending)
-                throw new RequestException("Cannot update a started request");
+            if (existingRequest.Status == RequestStatus.Completed)
+                throw new RequestException("Cannot update a completed request");
             
             ValidateRequest(existingRequest);
             ValidateCategory(request);
