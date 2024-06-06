@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ManagerRequest } from '../../request.model';
+import { Request } from '../../request.model';
 import { Flat } from '../../../shared/flat.model';
 import { Building } from '../../../shared/building.model';
 import { User } from '../../../shared/user.model';
@@ -11,7 +11,7 @@ import { RequestService } from '../../../services/request.service';
   styleUrl: './request-item.component.css'
 })
 export class RequestItemComponent implements OnInit {
-  @Input() request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
+  @Input() request: Request = new Request('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   @Input() userRole: string = '';
   @Output() requestUpdated = new EventEmitter<{id: string, status: string}>();
   statusList: string[] = ['Pending', 'InProgress', 'Completed'];

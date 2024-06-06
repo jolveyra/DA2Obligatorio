@@ -68,7 +68,6 @@ namespace BusinessLogicTest
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
             categoryRepositoryMock.Setup(c => c.GetAllCategories()).Returns(new List<Category> { new Category() { Id = Guid.NewGuid(), Name = "Plumbing" } });
             userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(request.AssignedEmployee);
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
 
             Request result = _requestLogic.UpdateRequest(request);
 
@@ -179,7 +178,6 @@ namespace BusinessLogicTest
             Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(),  Building = building, AssignedEmployee = new User() { Id = Guid.NewGuid() } };
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
             Exception exception = null;
 
             try
@@ -192,7 +190,6 @@ namespace BusinessLogicTest
             }
 
             requestRepositoryMock.VerifyAll();
-            buildingRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Category cannot be null"));
         }
@@ -204,7 +201,6 @@ namespace BusinessLogicTest
             Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat(),  Building = building, AssignedEmployee = new User() { Id = Guid.NewGuid() }, Category = new Category() { Name = "Plumbing" } };
 
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
             categoryRepositoryMock.Setup(c => c.GetAllCategories()).Returns(new List<Category> { new Category() { Id = Guid.NewGuid(), Name = "Electricity" } });
             Exception exception = null;
 
@@ -218,7 +214,6 @@ namespace BusinessLogicTest
             }
 
             requestRepositoryMock.VerifyAll();
-            buildingRepositoryMock.VerifyAll();
             categoryRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Category does not exist"));
@@ -231,12 +226,14 @@ namespace BusinessLogicTest
             Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", Flat = new Flat() { Building = building }, Building = building, AssignedEmployee = new User() { Id = Guid.NewGuid() }, Category = new Category() { Name = "Plumbing"} };
 
             requestRepositoryMock.Setup(r => r.CreateRequest(It.IsAny<Request>())).Returns(request);
+            userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<Guid>())).Returns(request.AssignedEmployee);
             categoryRepositoryMock.Setup(c => c.GetAllCategories()).Returns(new List<Category> { new Category() { Id = Guid.NewGuid(), Name = "Plumbing" } });
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
+            buildingRepositoryMock.Setup(b => b.GetFlatByFlatId(It.IsAny<Guid>())).Returns(request.Flat);
 
             Request result = _requestLogic.CreateRequest(request, It.IsAny<Guid>());
 
             requestRepositoryMock.VerifyAll();
+            userRepositoryMock.VerifyAll();
             categoryRepositoryMock.VerifyAll();
             buildingRepositoryMock.VerifyAll();
             Assert.AreEqual(request, result);
@@ -277,14 +274,10 @@ namespace BusinessLogicTest
             
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
-            categoryRepositoryMock.Setup(c => c.GetAllCategories()).Returns(new List<Category> { new Category() { Id = Guid.NewGuid(), Name = "Plumbing" } });
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
 
             Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
 
             requestRepositoryMock.VerifyAll();
-            buildingRepositoryMock.VerifyAll();
-            categoryRepositoryMock.VerifyAll();
             Assert.IsTrue(expected.Equals(result) && (result.StartingDate - DateTime.Now).Hours == 0);
         }
 
@@ -299,8 +292,6 @@ namespace BusinessLogicTest
             
             requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
             requestRepositoryMock.Setup(r => r.UpdateRequest(It.IsAny<Request>())).Returns(expected);
-            categoryRepositoryMock.Setup(c => c.GetAllCategories()).Returns(new List<Category> { new Category() { Id = Guid.NewGuid(), Name = "Plumbing" } });
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>() { request.Flat });
 
             Request result = _requestLogic.UpdateRequestStatusById(requestId, requestStatus);
 
@@ -334,29 +325,6 @@ namespace BusinessLogicTest
             requestRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(RequestException));
             Assert.IsTrue(exception.Message.Equals("Cannot update a started request"));
-        }
-
-        [TestMethod]
-        public void CreateRequestWithFlatInDifferentBuildingTest()
-        {
-            Building building = new Building() { Id = Guid.NewGuid() };
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Hola", Flat = new Flat(), Building = building, AssignedEmployee = new User() { Id = Guid.NewGuid() } };
-
-            buildingRepositoryMock.Setup(b => b.GetAllBuildingFlats(It.IsAny<Guid>())).Returns(new List<Flat>());
-            Exception exception = null;
-
-            try
-            {
-                _requestLogic.CreateRequest(request, Guid.NewGuid());
-            }
-            catch (Exception e)
-            {
-                exception = e;
-            }
-
-            requestRepositoryMock.VerifyAll();
-            Assert.IsInstanceOfType(exception, typeof(RequestException));
-            Assert.IsTrue(exception.Message.Equals("Flat does not belong to building"));
         }
     }
 }

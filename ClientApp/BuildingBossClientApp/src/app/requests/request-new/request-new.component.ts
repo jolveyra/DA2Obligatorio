@@ -7,6 +7,8 @@ import { EmployeeService } from '../../services/employee.service';
 import { BuildingFlats } from '../../shared/buildingFlats.model';
 import { User } from '../../shared/user.model';
 import { Flat } from '../../shared/flat.model';
+import { RequestService } from '../../services/request.service';
+import { Request } from '../request.model';
 
 @Component({
   selector: 'app-request-new',
@@ -26,13 +28,15 @@ export class RequestNewComponent implements OnInit {
   allEmployees: User[] = [];
   employeesToShow: User[] = [];
   selectedEmployee: string = '';
+  formFlat: Flat = new Flat('', '', 0, 0, '', '', '', 0, 0, true);
+  formEmployee: User = new User('', '', '', '');
 
   constructor(
     private buildingService: BuildingService,
     private categoryService: CategoryService,
     private employeeService: EmployeeService,
-    private router: Router,
-    private route: ActivatedRoute
+    private requestService: RequestService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -108,6 +112,21 @@ export class RequestNewComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
-    // FIXME: Implement this method
+    if (!form.valid) {
+      return;
+    }
+
+    let request = new Request(
+      '',
+      form.value.description,
+      this.formFlat,
+      this.buildings.find(building => building.id === this.formFlat.buildingId)!,
+      this.selectedCategory,
+      this.formEmployee,
+      ''
+    );
+    this.isLoading = true;
+
+    this.requestService.createRequest(request).subscribe();
   }
 }

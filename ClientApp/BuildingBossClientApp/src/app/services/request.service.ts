@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { AuthService } from './auth.service';
 import { BuildingResponseData, FlatResponseData } from './building.service';
 import { UserResponseData } from './userResponseData.model';
+import { Request } from '../requests/request.model';
 
 interface ManagerRequestResponseData {
   id: string;
@@ -30,7 +30,6 @@ interface EmployeeRequestResponseData {
 export class RequestService {
 
   constructor(
-    private authService: AuthService,
     private httpClient: HttpClient
   ) { }
 
@@ -96,6 +95,29 @@ export class RequestService {
             categoryName: response.categoryName,
             status: response.status
           }
+        })
+      );
+  }
+
+  createRequest(request: Request): Observable<ManagerRequestResponseData> {
+    return this.httpClient.post<ManagerRequestResponseData>('https://localhost:7122/api/v2/requests',
+      {
+        description: request.description,
+        flat: request.flat.id,
+        categoryName: request.categoryName,
+        assignedEmployee: request.assignedEmployee
+      }
+    ).pipe(
+        map((response: ManagerRequestResponseData) => {
+          return {
+            id: response.id,
+            description: response.description,
+            flat: response.flat,
+            building: response.building,
+            categoryName: response.categoryName,
+            assignedEmployee: response.assignedEmployee,
+            status: response.status
+          };
         })
       );
   }

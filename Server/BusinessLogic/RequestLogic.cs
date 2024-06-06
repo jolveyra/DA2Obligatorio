@@ -22,8 +22,13 @@ namespace BusinessLogic
 
         public Request CreateRequest(Request request, Guid userId)
         {
-            request.ManagerId = userId;
             ValidateRequest(request);
+            ValidateCategory(request);
+            request.ManagerId = userId;
+            request.Flat = _buildingRepository.GetFlatByFlatId(request.Flat.Id);
+            request.Building = request.Flat.Building;
+            request.AssignedEmployee = _userRepository.GetUserById(request.AssignedEmployee.Id);
+            request.Status = RequestStatus.Pending;
 
             return _requestRepository.CreateRequest(request);
         }
@@ -51,6 +56,7 @@ namespace BusinessLogic
                 throw new RequestException("Cannot update a started request");
             
             ValidateRequest(existingRequest);
+            ValidateCategory(request);
 
             User maintenanceEmployee = _userRepository.GetUserById(request.AssignedEmployee.Id);
 
@@ -95,11 +101,6 @@ namespace BusinessLogic
             {
                 throw new RequestException("BuildingId cannot be empty or null");
             }
-
-            if (!FlatBelongsToBuilding(request.Building.Id, request.Flat))
-            {
-                throw new RequestException("Flat does not belong to building");
-            }
             if (request.AssignedEmployee == null)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");
@@ -108,20 +109,16 @@ namespace BusinessLogic
             {
                 throw new RequestException("Category cannot be null");
             }
+        }
 
+        private void ValidateCategory(Request request)
+        {
             Category? category = _categoryRepository.GetAllCategories().FirstOrDefault(c => c.Name == request.Category.Name);
             if (category is null)
             {
                 throw new RequestException("Category does not exist");
             }
-            else
-            {
-                request.Category = category;
-            }
-        }
-        private bool FlatBelongsToBuilding(Guid buildingId, Flat flat)
-        {
-            return _buildingRepository.GetAllBuildingFlats(buildingId).Any(f => f.Id == flat.Id);
+            request.Category = category;
         }
     }
 }

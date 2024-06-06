@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ManagerRequest } from '../request.model';
+import { Request } from '../request.model';
 import { AuthService } from '../../services/auth.service';
 import { RequestService } from '../../services/request.service';
 import { Building } from '../../shared/building.model';
@@ -21,7 +21,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
   error: string = '';
   noRequests: boolean = false;
   endLoading: boolean = false;
-  requests: ManagerRequest[] = [];
+  requests: Request[] = [];
   userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
 
@@ -39,7 +39,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
       this.requestService.fetchManagerRequests().subscribe(
         requestsResponse => {
           this.requests = requestsResponse.map(request => {
-            return new ManagerRequest(
+            return new Request(
               request.id,
               request.description,
               new Flat(
@@ -95,7 +95,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
       this.requestService.fetchMaintenanceEmployeeRequests().subscribe(
         requestsResponse => {
           this.requests = requestsResponse.map(request => {
-            return new ManagerRequest(
+            return new Request(
               request.id,
               request.description,
               new Flat(

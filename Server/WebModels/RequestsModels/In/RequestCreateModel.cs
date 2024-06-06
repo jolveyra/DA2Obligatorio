@@ -6,7 +6,6 @@ namespace WebModels.RequestsModels
     {
         public string Description { get; set; }
         public Guid FlatId { get; set; }
-        public Guid BuildingId { get; set; }
         public string CategoryName { get; set; }
         public Guid AssignedEmployeeId { get; set; }
 
@@ -16,7 +15,6 @@ namespace WebModels.RequestsModels
             {
                 Description = Description,
                 Flat = new Flat() { Id = FlatId },
-                Building = new Building() { Id = BuildingId },
                 Category = new Category { Name = CategoryName },
                 AssignedEmployee = new User() { Id = AssignedEmployeeId }
             };

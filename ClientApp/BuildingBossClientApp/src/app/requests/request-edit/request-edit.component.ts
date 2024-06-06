@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { ManagerRequest } from '../request.model';
+import { Request } from '../request.model';
 import { RequestService } from '../../services/request.service';
 import { Flat } from '../../shared/flat.model';
 import { Building } from '../../shared/building.model';
@@ -17,7 +17,7 @@ import { BuildingService } from '../../services/building.service';
   styleUrl: './request-edit.component.css'
 })
 export class RequestEditComponent implements OnInit {
-  request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
+  request: Request = new Request('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   isLoading: boolean = false;
   error: string = '';
   categories: string[] = [];
@@ -41,7 +41,7 @@ export class RequestEditComponent implements OnInit {
           this.categoryService.fetchCategories().subscribe(
             categoriesResponse => {
               this.categories = categoriesResponse.map(category => category.name);
-              this.request = new ManagerRequest(
+              this.request = new Request(
                 requestResponse.id,
                 requestResponse.description,
                 new Flat(

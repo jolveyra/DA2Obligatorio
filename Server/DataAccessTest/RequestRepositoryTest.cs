@@ -36,38 +36,16 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateRequestTest()
         {
-            Request request = new Request() { Id = Guid.NewGuid(), Flat = new Flat() { Id = Guid.NewGuid() } };
+            Request request = new Request() { Id = Guid.NewGuid() };
 
             _contextMock.Setup(context => context.Requests.Add(request));
-            _contextMock.Setup(context => context.Flats.Find(It.IsAny<Guid>())).Returns(new Flat() { Id = request.Flat.Id });
             _contextMock.Setup(context => context.SaveChanges()).Returns(1);
 
             Request result = _requestRepository.CreateRequest(request);
 
-            _contextMock.Verify(context => context.Flats.Find(It.IsAny<Guid>()));
             _contextMock.Verify(context => context.Requests.Add(request));
             _contextMock.Verify(context => context.SaveChanges());
             Assert.AreEqual(request, result);
-        }
-
-
-        [TestMethod]
-        public void CreateRequestTestFlatNotFound()
-        {
-            Request request = new Request() { Id = Guid.NewGuid(), Flat = new Flat() { Id = Guid.NewGuid() } };
-
-            _contextMock.Setup(context => context.Flats.Find(It.IsAny<Guid>()));
-
-            try
-            {
-                Request result = _requestRepository.CreateRequest(request);
-            }
-            catch(Exception e)
-            {
-                _contextMock.Verify(context => context.Flats.Find(It.IsAny<Guid>()));
-                Assert.IsInstanceOfType(e, typeof(ArgumentException));
-                Assert.AreEqual("Flat not found", e.Message);
-            }
         }
 
         [TestMethod]

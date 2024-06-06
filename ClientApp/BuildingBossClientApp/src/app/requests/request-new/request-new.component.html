@@ -14,7 +14,7 @@
         <app-loading-spinner></app-loading-spinner>
     </div>
     <div class="d-flex justify-content-center" *ngIf="!noCategories || !noBuildings || !noEmployees">
-        <form class="w-50" (ngSubmit)="onSubmit(newRequestForm)" #newRequestForm="ngForm" *ngIf="!isLoading">
+        <div class="w-50" *ngIf="!isLoading">
             <div class="form-group mb-3">
                 <label for="category">Category</label>
                 <div class="dropdown">
@@ -32,19 +32,6 @@
                     </ul>
                 </div>
                 <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="3"
-                    class="form-control"
-                    ngModel
-                    required
-                    minlength="5"
-                    #description="ngModel"></textarea>
-                <span class="text-danger" *ngIf="!description.valid && description.touched">Description cannot be empty</span>
             </div>
             <div class="form-group mb-3">
                 <label for="category">Flat</label>
@@ -89,13 +76,32 @@
                 </div>
                 <span *ngIf="employeesToShow.length === 0" class="text-danger">There are no maintenance employees assigned to this building. Please add maintenance employees before going forward</span>
             </div>
-            <div class="text-center">
-                <button
-                    class="btn btn-primary"
-                    type="submit"
-                    [disabled]="!newRequestForm.valid">Create request</button>
-            </div>
-        </form>
+            <form (ngSubmit)="onSubmit(newRequestForm)" #newRequestForm="ngForm" *ngIf="!isLoading">
+                <div class="form-group mb-3">
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="3"
+                        class="form-control"
+                        ngModel
+                        required
+                        minlength="5"
+                        #description="ngModel"></textarea>
+                    <span class="text-danger" *ngIf="!description.valid && description.touched">Description cannot be empty</span>
+                </div>
+                <div class="text-center">
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                        [disabled]="
+                            !newRequestForm.valid ||
+                            selectedCategory === '' ||
+                            selectedEmployee === '' ||
+                            selectedFlat === ''">Create request</button>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="d-flex justify-content-center mt-5" *ngIf="noCategories">
         <h3 class="text-primary-emphasis">There are no categories available to create a new request</h3>
