@@ -241,6 +241,10 @@ export class BuildingService {
     );
   }
 
+  deleteBuilding(buildingId: string): Observable<void> {
+    return this.httpClient.delete<void>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${buildingId}`);
+  }
+
   updateFlat(flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {
     return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${flat.buildingId}/flats/${flat.id}`,
       {

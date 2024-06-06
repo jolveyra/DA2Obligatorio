@@ -56,7 +56,6 @@ export class BuildingNewComponent {
     
     this.isLoading = true;
 
-    console.log("entre");
     const building: Building = new Building(
       '',
       form.value.name,

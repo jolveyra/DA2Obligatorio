@@ -39,7 +39,6 @@ export class ConstructorCompanyAdministratorService {
   fetchConstructorCompanyAdministrator(id: string): Observable<ConstructorCompanyAdministratorResponseData> {
     return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${id}`)
       .pipe(
-        tap( response => console.log(response)),
         map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
           response.id,
           response.name,
@@ -57,7 +56,6 @@ export class ConstructorCompanyAdministratorService {
           constructorCompanyId: constructorCompanyAdministrator.constructorCompanyId
         })
         .pipe(
-          tap( response => console.log(response)),
           map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
             response.id,
             response.name,

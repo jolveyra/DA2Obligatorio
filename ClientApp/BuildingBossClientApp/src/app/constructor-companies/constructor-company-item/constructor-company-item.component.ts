@@ -14,4 +14,5 @@ export class ConstructorCompanyItemComponent {
   onSelect(id: string): void {
     this.constructorCompanyToAssign.emit(id);
   }
+
 }

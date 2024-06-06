@@ -138,5 +138,19 @@ export class BuildingListComponent implements OnInit, OnDestroy {
 
   deleteBuilding(id: string) {
     // TODO: hacer llamada y si response entonces eliminar el edificio de la lista y mostrar mensaje de éxito en successMsg y si error mostrarlo en error
+    this.buildingService.deleteBuilding(id)
+      .subscribe(
+        () => {
+          this.buildings = this.buildings.filter(building => building.id !== id);
+        },
+        error => {
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+        }
+      );
   }
 }
