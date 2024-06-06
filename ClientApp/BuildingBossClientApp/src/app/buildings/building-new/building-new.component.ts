@@ -74,7 +74,7 @@ export class BuildingNewComponent {
     .subscribe(
       response => {
         this.isLoading = false;
-        this.router.navigate([''], { relativeTo: this.route });
+        this.router.navigate(['/buildings'], { relativeTo: this.route });
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."
