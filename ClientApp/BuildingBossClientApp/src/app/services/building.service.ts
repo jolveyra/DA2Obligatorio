@@ -157,6 +157,36 @@ export class BuildingService {
       );
   }
 
+  createConstructorCompanyBuilding(building: Building, amountOfFlats: number): Observable<BuildingResponseData> {
+    return this.httpClient.post<BuildingResponseData>('https://localhost:7122/api/v2/constructorCompanyBuildings',
+      {
+        name: building.name,
+        sharedExpenses: building.sharedExpenses,
+        street: building.street,
+        doorNumber: building.doorNumber,
+        cornerStreet: building.cornerStreet,
+        constructorCompanyId: building.constructorCompanyId,
+        amountOfFlats: amountOfFlats,
+        latitude: building.latitude,
+        longitude: building.longitude
+      }
+    )
+      .pipe(
+        map((response: BuildingResponseData) => new Building(
+            response.id,
+            response.name,
+            response.sharedExpenses,
+            response.street,
+            response.doorNumber,
+            response.cornerStreet,
+            response.constructorCompanyId,
+            response.managerId,
+            response.latitude,
+            response.longitude
+        ))
+      );
+  }
+
   fetchFlat(buildingId: string, flatId: string): Observable<FlatResponseData> {
     return this.httpClient.get<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}/flats/${flatId}`)
       .pipe(

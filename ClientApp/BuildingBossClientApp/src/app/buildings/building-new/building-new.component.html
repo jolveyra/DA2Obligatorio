@@ -24,7 +24,7 @@
                     required
                     minlength="2">
             </div>
-            <div class="form-group row d-flex mb-2"> <!-- FIXME: fix column height -->
+            <div class="form-group d-flex mb-2"> <!-- FIXME: fix column height -->
                 <div class="col">
                     <label for="sharedExpenses">Shared Expenses</label>
                     <input
@@ -37,19 +37,19 @@
                         min="1">
                 </div>
                 <div class="col">
-                    <label for="amountFlats">Amount of flats</label>
+                    <label for="amountOfFlats">Amount of flats</label>
                     <input
                         type="number"
-                        id="amountFlats"
+                        id="amountOfFlats"
                         class="form-control"
                         ngModel
-                        name="amountFlats"
+                        name="amountOfFlats"
                         required
                         min="1"
                         max="100">
                 </div>
             </div>
-            <div class="form-group row py-0 mb-0"> <!-- FIXME: fix column height -->
+            <div class="form-group d-flex mb-2"> <!-- FIXME: fix column height -->
                 <div class="col-8">
                     <label for="street">Street</label>
                     <input
@@ -82,7 +82,7 @@
                     name="cornerStreet"
                     required>
             </div>
-            <div class="form-group row mb-2"> <!-- FIXME: fix column height -->
+            <div class="form-group d-flex mb-2"> <!-- FIXME: fix column height -->
                 <div class="col">
                     <label for="latitude">Latitude</label>
                     <input
@@ -109,10 +109,13 @@
                 </div>
             </div>
             <div class="text-center mt-4">
-                <button
-                    class="btn btn-primary"
-                    type="submit"
-                    [disabled]="!newBuildingForm.valid">Create building</button>
+              <button
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="!newBuildingForm.valid"                                  
+                >
+                Create building
+              </button>
             </div>
         </form>
     </div>
