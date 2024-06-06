@@ -9,7 +9,7 @@ export class ManagerRequest {
         public flat: Flat,
         public building: Building,
         public categoryName: string,
-        public assignedEmployee: User,
+        public assignedEmployee: User | undefined,
         public status: string,
     ) {}
 }

@@ -51,7 +51,21 @@ export class RequestService {
       );
   }
 
-  // return this.httpClient.get<RequestResponseData[]>('https://localhost:7122/api/v2/employeeRequests');
+  fetchMaintenanceEmployeeRequests(): Observable<EmployeeRequestResponseData[]> {
+    return this.httpClient.get<EmployeeRequestResponseData[]>('https://localhost:7122/api/v2/employeeRequests')
+      .pipe(
+        map((response: EmployeeRequestResponseData[]) => response.map(request => {
+          return {
+            id: request.id,
+            description: request.description,
+            flat: request.flat,
+            building: request.building,
+            categoryName: request.categoryName,
+            status: request.status
+          };
+        }))
+      );
+  }
 
   fetchManagerRequest(id: string): Observable<ManagerRequestResponseData> {
     return this.httpClient.get<ManagerRequestResponseData>(`https://localhost:7122/api/v2/requests/${id}`)
@@ -66,6 +80,22 @@ export class RequestService {
             assignedEmployee: response.assignedEmployee,
             status: response.status
           };
+        })
+      );
+  }
+
+  updateRequestStatus(id: string, status: string): Observable<EmployeeRequestResponseData> {
+    return this.httpClient.put<EmployeeRequestResponseData>(`https://localhost:7122/api/v2/employeeRequests/${id}`, { status })
+      .pipe(
+        map((response: EmployeeRequestResponseData) => {
+          return {
+            id: response.id,
+            description: response.description,
+            flat: response.flat,
+            building: response.building,
+            categoryName: response.categoryName,
+            status: response.status
+          }
         })
       );
   }

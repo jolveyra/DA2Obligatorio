@@ -3,11 +3,11 @@
     <div>
         <h4 class="list-group-item-heading">{{ request.categoryName }}</h4>
         <p class="list-group-item-text mb-0">Flat: {{ request.flat.number + ' - ' + request.building.name }}</p>
-        <p class="list-group-item-text mb-0">Employee assigned: {{ request.assignedEmployee.name + ' ' + request.assignedEmployee.surname + ' - ' + request.assignedEmployee.email }}</p>
+        <p class="list-group-item-text mb-0" *ngIf="request.assignedEmployee" >Employee assigned: {{ request.assignedEmployee.name + ' ' + request.assignedEmployee.surname + ' - ' + request.assignedEmployee.email }}</p>
         <p class="list-group-item-text mb-0">Description: {{ request.description }}</p>
     </div>
     <div class="d-flex flex-column align-items-end" *ngIf="userRole === 'Manager'">
-        <p class="mb-0">Status: {{ request.status }}</p>
+        <p class="mb-1">Status: {{ request.status }}</p>
         <button
             class="btn btn-success" 
             [routerLink]="[request.id]" 
@@ -16,19 +16,18 @@
     <div *ngIf="userRole === 'MaintenanceEmployee'">
         <label for="status">Status</label>
         <div class="dropdown">
-            <!-- FIXME: doesnt work dropdown, tried with an a tag also but didnt work -->
             <button
-                class="btn btn-secondary dropdown-toggle bg-light text-dark"
+                [ngClass]="getStatusColor()"
                 role="button"
                 id="status" 
                 data-bs-toggle="dropdown" 
                 aria-expanded="false">
-                {{ status }}
-        </button>
+                {{ selectedStatus }}
+            </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item">Pending</a></li>
-                <li><a class="dropdown-item">In progress</a></li>
-                <li><a class="dropdown-item">Completed</a></li>
+                <li *ngFor="let status of statusList">
+                    <a class="dropdown-item" (click)="updateStatus(status)">{{ status === 'InProgress' ? 'In Progress' : status }}</a>
+                </li>
             </ul>
         </div>
     </div>

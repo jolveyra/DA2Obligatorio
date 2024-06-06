@@ -5,3 +5,7 @@
 .btn-group .btn {
     width: 100%;
 }
+
+a {
+    cursor: pointer;
+}

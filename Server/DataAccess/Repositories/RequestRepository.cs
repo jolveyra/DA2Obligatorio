@@ -35,6 +35,8 @@ namespace DataAccess.Repositories
                 .Include(r => r.Category)
                 .Include(r => r.Flat)
                 .Include(r => r.Building)
+                .Include(r => r.Building.Address)
+                .Include(r => r.Building.Manager)
                 .Include(r => r.AssignedEmployee);
 
         }
@@ -45,6 +47,8 @@ namespace DataAccess.Repositories
                 .Include(r => r.Category)
                 .Include(r => r.Flat)
                 .Include(r => r.Building)
+                .Include(r => r.Building.Address)
+                .Include(r => r.Building.Manager)
                 .Include(r => r.AssignedEmployee)
                 .FirstOrDefault(r => r.Id == id);
 

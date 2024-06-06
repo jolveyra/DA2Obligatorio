@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ManagerRequest } from '../../request.model';
 import { Flat } from '../../../shared/flat.model';
 import { Building } from '../../../shared/building.model';
 import { User } from '../../../shared/user.model';
+import { RequestService } from '../../../services/request.service';
 
 @Component({
   selector: 'app-request-item',
@@ -12,11 +13,27 @@ import { User } from '../../../shared/user.model';
 export class RequestItemComponent implements OnInit {
   @Input() request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   @Input() userRole: string = '';
-  status: string = '';
+  @Output() requestUpdated = new EventEmitter<{id: string, status: string}>();
+  statusList: string[] = ['Pending', 'InProgress', 'Completed'];
+  selectedStatus: string = '';
 
   ngOnInit(): void {
-    this.status = this.request.status;
+    this.selectedStatus = this.request.status;
   }
 
-  updateStatus(status: string): void {}
+  getStatusColor(): string {
+    switch (this.selectedStatus) {
+      case 'InProgress':
+        return 'btn btn-warning dropdown-toggle border-dark-subtle';
+      case 'Completed':
+        return 'btn btn-success dropdown-toggle border-dark-subtle';
+      default:
+        return 'btn btn-primary dropdown-toggle border-dark-subtle';
+    }
+  }
+
+  updateStatus(status: string): void {
+    this.selectedStatus = this.request.status = status;
+    this.requestUpdated.emit({ id: this.request.id, status: this.request.status });
+  }
 }
