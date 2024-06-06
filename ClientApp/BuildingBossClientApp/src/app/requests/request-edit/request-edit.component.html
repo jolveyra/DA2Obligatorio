@@ -16,10 +16,10 @@
     <div class="d-flex justify-content-center">
         <form class="w-50" (ngSubmit)="onSubmit(editRequestForm)" #editRequestForm="ngForm" *ngIf="!isLoading">
             <div class="form-group mb-3">
-                <label for="category">Category</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <label for="category">Category</label>
                 <div class="dropdown">
                     <button
-                        class="btn btn-secondary dropdown-toggle"
+                        class="btn btn-light dropdown-toggle border-dark-subtle"
                         type="button" id="categoryDropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -45,22 +45,22 @@
                     minlength="5"></textarea>
             </div>
             <div class="form-group mb-3">
-                <label for="category">Maintenance employee</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <label for="employee">Maintenance employee</label>
                 <div class="dropdown">
                     <button
-                        class="btn btn-secondary dropdown-toggle"
-                        type="button" id="categoryDropdown"
+                        class="btn btn-light dropdown-toggle border-dark-subtle"
+                        type="button" id="employeeDropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
                         {{ selectedEmployee }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                    <ul class="dropdown-menu" aria-labelledby="employeeDropdown">
                         <li *ngFor="let employee of employees">
-                            <a class="dropdown-item" (click)="selectEmployee(employee)">{{ employee }}</a>
+                            <a class="dropdown-item" (click)="selectEmployee(employee)">{{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}</a>
                         </li>
                     </ul>
                 </div>
-                <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
+                <input type="hidden" ngModel name="employee" [value]="selectedEmployee" required>
             </div>
             <div class="text-center">
                 <button

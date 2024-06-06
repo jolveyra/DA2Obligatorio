@@ -7,6 +7,9 @@ import { RequestService } from '../../services/request.service';
 import { Flat } from '../../shared/flat.model';
 import { Building } from '../../shared/building.model';
 import { User } from '../../shared/user.model';
+import { CategoryService } from '../../services/category.service';
+import { EmployeeService } from '../../services/employee.service';
+import { BuildingService } from '../../services/building.service';
 
 @Component({
   selector: 'app-request-edit',
@@ -17,56 +20,100 @@ export class RequestEditComponent implements OnInit {
   request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   isLoading: boolean = false;
   error: string = '';
-  categories = ['Category 1', 'Category 2', 'Category 3'];
+  categories: string[] = [];
   selectedCategory: string = '';
-  employees = ['Employee 1', 'Employee 2', 'Employee 3'];
+  employees: User[] = [];
   selectedEmployee: string = '';
   description: string = '';
 
   constructor(
     private requestService: RequestService,
+    private categoryService: CategoryService,
+    private buildingService: BuildingService,
+    private employeeService: EmployeeService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.requestService.fetchManagerRequest(this.route.snapshot.params['id'])
       .subscribe(
-        response => {
-          this.request = new ManagerRequest(
-            response.id,
-            response.description,
-            new Flat(
-              response.flat.id,
-              response.flat.buildingId,
-              response.flat.number,
-              response.flat.floor,
-              response.flat.ownerName,
-              response.flat.ownerSurname,
-              response.flat.ownerEmail,
-              response.flat.rooms,
-              response.flat.bathrooms,
-              response.flat.hasBalcony,
-            ),
-            new Building(
-              response.building.id,
-              response.building.name,
-              response.building.sharedExpenses,
-              response.building.street,
-              response.building.doorNumber,
-              response.building.cornerStreet,
-              response.building.constructorCompanyId,
-              response.building.managerId,
-              response.building.latitude,
-              response.building.longitude,
-            ),
-            response.categoryName,
-            new User(
-              response.assignedEmployee.id,
-              response.assignedEmployee.name,
-              response.assignedEmployee.surname,
-              response.assignedEmployee.email,
-            ),
-            response.status,
+        requestResponse => {
+          this.categoryService.fetchCategories().subscribe(
+            categoriesResponse => {
+              this.categories = categoriesResponse.map(category => category.name);
+              this.request = new ManagerRequest(
+                requestResponse.id,
+                requestResponse.description,
+                new Flat(
+                  requestResponse.flat.id,
+                  requestResponse.flat.buildingId,
+                  requestResponse.flat.number,
+                  requestResponse.flat.floor,
+                  requestResponse.flat.ownerName,
+                  requestResponse.flat.ownerSurname,
+                  requestResponse.flat.ownerEmail,
+                  requestResponse.flat.rooms,
+                  requestResponse.flat.bathrooms,
+                  requestResponse.flat.hasBalcony,
+                ),
+                new Building(
+                  requestResponse.building.id,
+                  requestResponse.building.name,
+                  requestResponse.building.sharedExpenses,
+                  requestResponse.building.street,
+                  requestResponse.building.doorNumber,
+                  requestResponse.building.cornerStreet,
+                  requestResponse.building.constructorCompanyId,
+                  requestResponse.building.managerId,
+                  requestResponse.building.latitude,
+                  requestResponse.building.longitude,
+                ),
+                requestResponse.categoryName,
+                new User(
+                  requestResponse.assignedEmployee.id,
+                  requestResponse.assignedEmployee.name,
+                  requestResponse.assignedEmployee.surname,
+                  requestResponse.assignedEmployee.email,
+                ),
+                requestResponse.status,
+              );
+              this.buildingService.fetchManagerBuilding(this.request.building.id).subscribe(
+                buildingResponse => {
+                  this.employeeService.fetchMaintenanceEmployees().subscribe(
+                    employeesResponse => {
+                      this.employees = employeesResponse.filter(employee => buildingResponse.maintenanceEmployeeIds.includes(employee.id));
+                      this.selectedCategory = this.request.categoryName;
+                      this.description = this.request.description;
+                      this.selectedEmployee = this.request.assignedEmployee.name + ' ' + this.request.assignedEmployee.surname + ' - ' + this.request.assignedEmployee.email;
+                    },
+                    error => {
+                      let errorMessage = "An unexpected error has occured, please retry later."
+                      if (error.error && error.error.errorMessage) {
+                        this.error = error.error.errorMessage;
+                      } else {
+                        this.error = errorMessage;
+                      }
+                    }
+                  );
+                },
+                error => {
+                  let errorMessage = "An unexpected error has occured, please retry later."
+                  if (error.error && error.error.errorMessage) {
+                    this.error = error.error.errorMessage;
+                  } else {
+                    this.error = errorMessage;
+                  }
+                }
+              );
+            },
+            error => {
+              let errorMessage = "An unexpected error has occured, please retry later."
+              if (error.error && error.error.errorMessage) {
+                this.error = error.error.errorMessage;
+              } else {
+                this.error = errorMessage;
+              }
+            }
           );
         },
         error => {
@@ -84,8 +131,8 @@ export class RequestEditComponent implements OnInit {
       this.selectedCategory = category;
   }
 
-  selectEmployee(employee: string) {
-      this.selectedCategory = employee;
+  selectEmployee(employee: User) {
+      this.selectedEmployee = employee.name + ' ' + employee.surname + ' - ' + employee.email;
   }
 
   onSubmit(form: NgForm): void {
