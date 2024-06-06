@@ -2,27 +2,35 @@
     <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-success" (click)="onNewRequest()" *ngIf="userRole === 'Manager'">New request</button>
     </div>
-    <div class="d-flex justify-content-center">
-        <div class="alert alert-danger" *ngIf="error !== ''">
-            <p>{{ error }}</p>
-        </div>
-    </div>
-    <!-- TODO: users should be able to filter requests by category -->
-    <div *ngIf="!noRequests && endLoading">
-        <!-- <input
-            type="text"
-            > -->
-        <div class="d-flex justify-content-center mb-5">
-            <div class="list-group w-75">
-                <app-request-item
-                    *ngFor="let requestElem of requests"
-                    [request]="requestElem"
-                    [userRole]="userRole"></app-request-item>
+    <div *ngIf="!isLoading">
+        <div class="d-flex justify-content-center" *ngIf="error !== ''">
+            <div class="alert alert-danger">
+                <p>{{ error }}</p>
             </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-center mt-5" *ngIf="noRequests">
-        <h2 class="text-primary-emphasis">{{userRole === 'Manager' ? "You haven't created any requests yet" : "You haven't been assigned to any requests yet"}}</h2>
+        <div class="d-flex justify-content-center" *ngIf="userRole === 'MaintenanceEmployee' && successMessage !== ''">
+            <div class="alert alert-success">
+                <p>{{ successMessage }}</p>
+            </div>
+        </div>
+        <!-- TODO: users should be able to filter requests by category -->
+        <div *ngIf="!noRequests && endLoading">
+            <!-- <input
+                type="text"
+                > -->
+            <div class="d-flex justify-content-center mb-5">
+                <div class="list-group w-75">
+                    <app-request-item
+                        *ngFor="let requestElem of requests"
+                        [request]="requestElem"
+                        [userRole]="userRole"
+                        (requestUpdated)="updateStatus($event)"></app-request-item>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5" *ngIf="noRequests">
+            <h2 class="text-primary-emphasis">{{userRole === 'Manager' ? "You haven't created any requests yet" : "You haven't been assigned to any requests yet"}}</h2>
+        </div>
     </div>
 </div>
     

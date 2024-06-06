@@ -84,7 +84,9 @@ export class RequestEditComponent implements OnInit {
                       this.employees = employeesResponse.filter(employee => buildingResponse.maintenanceEmployeeIds.includes(employee.id));
                       this.selectedCategory = this.request.categoryName;
                       this.description = this.request.description;
-                      this.selectedEmployee = this.request.assignedEmployee.name + ' ' + this.request.assignedEmployee.surname + ' - ' + this.request.assignedEmployee.email;
+                      if (this.request.assignedEmployee) {
+                        this.selectedEmployee = this.request.assignedEmployee.name + ' ' + this.request.assignedEmployee.surname + ' - ' + this.request.assignedEmployee.email;
+                      }
                     },
                     error => {
                       let errorMessage = "An unexpected error has occured, please retry later."
