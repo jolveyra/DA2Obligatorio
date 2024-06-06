@@ -16,6 +16,11 @@ namespace BusinessLogic
             _iConstructorCompanyAdministratorRepository = iConstructorCompanyAdministrator;
         }
 
+        IEnumerable<ConstructorCompanyAdministrator> IConstructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministrator(Guid userId)
         {
             ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
@@ -68,6 +73,5 @@ namespace BusinessLogic
         {
             return _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId).ConstructorCompanyId;
         }
-
     }
 }

@@ -18,13 +18,21 @@ namespace ManagementApi.Controllers
         }
 
         [HttpGet]
+        [AuthenticationFilter(["Administrator", "ConstructorCompanyAdmin"])]
+        public IActionResult GetAllConstructorCompanyAdministrators()
+        {
+            return Ok(_iConstructorCompanyAdministratorLogic.GetAllConstructorCompanyAdministrators(Guid.Parse(HttpContext.Items["UserId"] as string))
+                .Select(admin => new ConstructorCompanyAdministratorResponseModel(admin)).ToList());
+        }
+
+        [HttpGet("{id}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public OkObjectResult GetConstructorCompanyAdministrator()
         {
             return Ok(new ConstructorCompanyAdministratorResponseModel(_iConstructorCompanyAdministratorLogic.GetConstructorCompanyAdministrator(Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult UpdateConstructorCompanyAdministrator([FromBody] UpdateConstructorCompanyAdministratorRequestModel updateConstructorCompanyAdministratorRequestModel)
         {

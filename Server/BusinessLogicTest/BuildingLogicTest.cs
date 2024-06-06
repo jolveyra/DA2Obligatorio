@@ -30,9 +30,10 @@ public class BuildingLogicTest
     [TestMethod]
     public void CreateBuildingTestOk()
     {
-        ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = Guid.NewGuid() };
+        ConstructorCompany comp = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Saciim" };
+        ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = comp.Id, ConstructorCompany = comp };
         Building building = new Building() { Id = Guid.NewGuid(), Name = "Mirador",
-            ConstructorCompanyId = administrator.ConstructorCompanyId,
+            ConstructorCompanyId = comp.Id,
             SharedExpenses = 100,
             Address = new Address()
             {
@@ -1495,7 +1496,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
         userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Role = Role.Manager });
 
-        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id };
+        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id, ConstructorCompany = constructorCompany };
         buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(building);
 
         constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);

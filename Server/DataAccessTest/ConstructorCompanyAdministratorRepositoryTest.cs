@@ -26,11 +26,11 @@ namespace DataAccessTest
 
             ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator { Id = userId };
 
-            _contextMock.Setup(context => context.Users).ReturnsDbSet(new List<ConstructorCompanyAdministrator>() { administrator });
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(new List<ConstructorCompanyAdministrator>() { administrator });
 
             ConstructorCompanyAdministrator result = _constructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
 
-            _contextMock.Verify(context => context.Users, Times.Once());
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators, Times.Once());
 
             Assert.AreEqual(administrator, result);
         }
@@ -40,7 +40,7 @@ namespace DataAccessTest
         {
             Guid userId = Guid.NewGuid();
 
-            _contextMock.Setup(context => context.Users).ReturnsDbSet(new List<ConstructorCompanyAdministrator>());
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(new List<ConstructorCompanyAdministrator>());
 
             Exception exception = null;
 
@@ -62,12 +62,12 @@ namespace DataAccessTest
         {
             ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator { Id = Guid.NewGuid(), ConstructorCompanyId = Guid.NewGuid() };
 
-            _contextMock.Setup(context => context.Users.Update(administrator));
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators.Update(administrator));
             _contextMock.Setup(context => context.SaveChanges());
 
             ConstructorCompanyAdministrator result = _constructorCompanyAdministratorRepository.UpdateConstructorCompanyAdministrator(administrator);
 
-            _contextMock.Verify(context => context.Users.Update(administrator), Times.Once());
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators.Update(administrator), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.AreEqual(administrator, result);
         }
@@ -77,12 +77,12 @@ namespace DataAccessTest
         {
             ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" };
 
-            _contextMock.Setup(context => context.Users.Add(administrator));
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators.Add(administrator));
             _contextMock.Setup(context => context.SaveChanges()).Returns(1);
 
             ConstructorCompanyAdministrator result = _constructorCompanyAdministratorRepository.CreateConstructorCompanyAdministrator(administrator);
 
-            _contextMock.Verify(context => context.Users.Add(administrator), Times.Once());
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators.Add(administrator), Times.Once());
             _contextMock.Verify(context => context.SaveChanges(), Times.Once());
             Assert.IsTrue(administrator.Equals(result) && administrator.ConstructorCompanyId.Equals(result.ConstructorCompanyId));
         }
@@ -90,17 +90,17 @@ namespace DataAccessTest
         [TestMethod]
         public void GetAllUsersConstructorCompanyAdministratorsTest()
         {
-            List<ConstructorCompanyAdministrator> users = new List<ConstructorCompanyAdministrator>
+            List<ConstructorCompanyAdministrator> ConstructorCompanyAdministrators = new List<ConstructorCompanyAdministrator>
             {
                 new ConstructorCompanyAdministrator { Id = Guid.NewGuid(), Email = "juan@gmail.com", Name = "Juan" }
             };
 
-            _contextMock.Setup(context => context.Users).ReturnsDbSet(users);
+            _contextMock.Setup(context => context.ConstructorCompanyAdministrators).ReturnsDbSet(ConstructorCompanyAdministrators);
 
             IEnumerable<ConstructorCompanyAdministrator> result = _constructorCompanyAdministratorRepository.GetAllConstructorCompanyAdministrators();
 
-            _contextMock.Verify(context => context.Users, Times.Once());
-            Assert.IsTrue(result.SequenceEqual(users));
+            _contextMock.Verify(context => context.ConstructorCompanyAdministrators, Times.Once());
+            Assert.IsTrue(result.SequenceEqual(ConstructorCompanyAdministrators));
         }
     }
 }
