@@ -50,4 +50,22 @@ export class ConstructorCompanyAdministratorService {
         ))
       );
     }
+
+    updateConstructorCompanyAdministrator(constructorCompanyAdministrator: ConstructorCompanyAdministrator): Observable<ConstructorCompanyAdministratorResponseData> {
+      return this.httpClient.put<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${constructorCompanyAdministrator.id}`, 
+        {
+          constructorCompanyId: constructorCompanyAdministrator.constructorCompanyId
+        })
+        .pipe(
+          tap( response => console.log(response)),
+          map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
+            response.id,
+            response.name,
+            response.surname,
+            response.email,
+            response.constructorCompanyId,
+            response.constructorCompanyName
+          ))
+        );
+    }
 }

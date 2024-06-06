@@ -4,6 +4,8 @@ import { ConstructorCompany } from '../../shared/constructor-company.model';
 import { ConstructorCompanyAdministratorService } from '../../services/constructor-company-administrator.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { ConstructorCompanyAdministrator } from '../../shared/constructor-company-administrator.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-constructor-company-list',
@@ -22,7 +24,8 @@ export class ConstructorCompanyListComponent {
   constructor(
     private constructorCompanyService: ConstructorCompanyService,
     private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,8 @@ export class ConstructorCompanyListComponent {
   }
 
   onSelectConstructorCompany(id: string): void {
+    console.log('selected constructor company', id);
+    // FIXME: Show another color on the list when an item is selected
     this.constructorCompanyService.fetchConstructorCompany(id)
     .subscribe(
       response => {
@@ -70,9 +75,30 @@ export class ConstructorCompanyListComponent {
     );
   }
 
-  onAssingConstructorCompany(): void {
+  onAssignConstructorCompany(): void {
+    console.log('assigning constructor company', this.constructorCompanyToAssign.id, this.constructorCompanyToAssign.name);
+    this.constructorCompanyAdministratorService.updateConstructorCompanyAdministrator(new ConstructorCompanyAdministrator(
+      this.userId,
+      '',
+      '',
+      '',
+      this.constructorCompanyToAssign.id,
+      this.constructorCompanyToAssign.name
+    ))
+    .subscribe(
+      response => {
+        this.router.navigate(['/constructorCompanies']);
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
 
-    //this.constructorCompanyAdministratorService.assignConstructorCompany(this.constructorCompanyToAssign)
   }
 
   
