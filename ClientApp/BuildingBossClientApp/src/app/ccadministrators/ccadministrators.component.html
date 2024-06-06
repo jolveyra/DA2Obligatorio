@@ -1,0 +1,19 @@
+<div class="my-5">
+    <div class="container">
+        <div class="d-flex justify-content-center mt-5" *ngIf="noAdmins">
+            <h2 class="text-primary-emphasis">There are no managers logged yet</h2>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-danger" *ngIf="error !== ''">
+                <p>{{ error }}</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="list-group w-50">
+                <app-ccadministrator-item
+                    *ngFor="let admin of constructorCompanyAdministrators"
+                    [ccAdministrator]="admin"></app-ccadministrator-item>
+            </div>
+        </div>
+    </div>
+</div>

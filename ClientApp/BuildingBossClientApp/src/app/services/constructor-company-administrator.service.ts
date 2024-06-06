@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ConstructorCompanyAdministrator } from '../shared/constructor-company-administrator.model';
 
 interface ConstructorCompanyAdministratorResponseData {
@@ -22,10 +22,23 @@ export class ConstructorCompanyAdministratorService {
   ) 
   { }
 
-  fetchConstructorCompanyAdministrator(): Observable<ConstructorCompanyAdministratorResponseData> {
-    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`)
+  fetchConstructorCompanyAdministrators(): Observable<ConstructorCompanyAdministratorResponseData[]> {
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData[]>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`)
       .pipe(
-        tap( response => console.log(response)),
+        map((response: ConstructorCompanyAdministratorResponseData[]) => response.map(admin => new ConstructorCompanyAdministrator(
+          admin.id,
+          admin.name,
+          admin.surname,
+          admin.email,
+          admin.constructorCompanyId,
+          admin.constructorCompanyName
+        )))
+      );
+  }
+
+  fetchConstructorCompanyAdministrator(): Observable<ConstructorCompanyAdministratorResponseData> {
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`) // FIXME: agregar id
+      .pipe(
         map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
           response.id,
           response.name,
