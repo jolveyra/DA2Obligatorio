@@ -14,7 +14,7 @@
         <app-loading-spinner></app-loading-spinner>
     </div>
     <div class="d-flex justify-content-center">
-        <form class="w-50" (ngSubmit)="onSubmit(editRequestForm)" #editRequestForm="ngForm" *ngIf="!isLoading">
+        <div class="w-50" *ngIf="!isLoading">
             <div class="form-group mb-3">
                 <label for="category">Category</label>
                 <div class="dropdown">
@@ -32,17 +32,6 @@
                     </ul>
                 </div>
                 <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="3"
-                    class="form-control"
-                    [(ngModel)]="description"
-                    required
-                    minlength="5"></textarea>
             </div>
             <div class="form-group mb-3">
                 <label for="employee">Maintenance employee</label>
@@ -62,12 +51,32 @@
                 </div>
                 <input type="hidden" ngModel name="employee" [value]="selectedEmployee" required>
             </div>
-            <div class="text-center">
-                <button
-                    class="btn btn-primary"
-                    type="submit"
-                    [disabled]="!editRequestForm.valid">Edit request</button>
-            </div>
-        </form>
+            <form (ngSubmit)="onSubmit(editRequestForm)" #editRequestForm="ngForm">
+                <div class="form-group mb-3">
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="3"
+                        class="form-control"
+                        [(ngModel)]="description"
+                        #descriptionInput="ngModel"
+                        required
+                        minlength="5"></textarea>
+                    <span class="text-danger" *ngIf="descriptionInput.invalid && descriptionInput.touched">Description </span>
+                </div>
+                <div class="text-center">
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                        [disabled]="
+                            !editRequestForm.valid || 
+                            (editRequestForm.pristine &&
+                            selectedCategory === request.categoryName &&
+                            formEmployee === request.assignedEmployee)">Edit request</button>
+
+                </div>
+            </form>
+        </div>
     </div>
 </div>

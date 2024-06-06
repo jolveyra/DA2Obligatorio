@@ -97,10 +97,6 @@ namespace BusinessLogic
             {
                 throw new RequestException("Flat cannot be empty or null");
             }
-            if (request.Building == null)
-            {
-                throw new RequestException("BuildingId cannot be empty or null");
-            }
             if (request.AssignedEmployee == null)
             {
                 throw new RequestException("AssignedEmployee cannot be empty or null");

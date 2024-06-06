@@ -99,13 +99,35 @@ export class RequestService {
       );
   }
 
+  updateRequestManager(id: string, description: string, categoryName: string, assignedEmployeeId: string): Observable<ManagerRequestResponseData> {
+    return this.httpClient.put<ManagerRequestResponseData>(`https://localhost:7122/api/v2/requests/${id}`,
+      {
+        description,
+        categoryName,
+        assignedEmployeeId
+      }
+    ).pipe(
+      map((response: ManagerRequestResponseData) => {
+        return {
+          id: response.id,
+          description: response.description,
+          flat: response.flat,
+          building: response.building,
+          categoryName: response.categoryName,
+          assignedEmployee: response.assignedEmployee,
+          status: response.status
+        };
+      })
+    );
+  }
+
   createRequest(request: Request): Observable<ManagerRequestResponseData> {
     return this.httpClient.post<ManagerRequestResponseData>('https://localhost:7122/api/v2/requests',
       {
         description: request.description,
-        flat: request.flat.id,
+        flatId: request.flat.id,
         categoryName: request.categoryName,
-        assignedEmployee: request.assignedEmployee
+        assignedEmployeeId: request.assignedEmployee?.id
       }
     ).pipe(
         map((response: ManagerRequestResponseData) => {

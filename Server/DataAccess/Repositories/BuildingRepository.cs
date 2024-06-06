@@ -72,6 +72,7 @@ namespace DataAccess.Repositories
         {
             Flat? flat = _context.Flats
                 .Include(f => f.Building)
+                .Include(f => f.Building.Address)
                 .Include(f => f.Owner)
                 .FirstOrDefault(f => f.Id.Equals(flatId));
 
