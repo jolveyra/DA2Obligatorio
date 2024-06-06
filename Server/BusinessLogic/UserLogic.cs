@@ -132,7 +132,7 @@ namespace BusinessLogic
 
             Session session = _sessionRepository.GetSessionByUserId(existingUser.Id);
 
-            return new UserLogged() { Token = session.Id, Name = existingUser.Name, Role = existingUser.Role };
+            return new UserLogged() { Token = session.Id, Name = existingUser.Name, Role = existingUser.Role, Id = existingUser.Id };
         }
 
         public IEnumerable<User> GetAllManagers()
