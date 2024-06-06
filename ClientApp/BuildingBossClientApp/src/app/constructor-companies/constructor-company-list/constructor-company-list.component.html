@@ -1,4 +1,7 @@
 <div class="container">
+  <div class="d-flex justify-content-left mb-4 mt-4">
+    <button (click)="onNewConstructorCompany()" class="btn btn-success">New Constructor Company</button>
+  </div>
   <div class="d-flex justify-content-center mt-5" *ngIf="noConstructorCompanies">
       <h2 class="text-primary-emphasis">There hasn't been sent any constructor companies yet</h2>
   </div>

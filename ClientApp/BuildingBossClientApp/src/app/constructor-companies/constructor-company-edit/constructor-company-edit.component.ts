@@ -12,10 +12,11 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ConstructorCompanyEditComponent {
 
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   error: string = '';
   userId: string = '';
   userLoggedSub: Subscription = new Subscription();
+  success: boolean = false;
   
   constructorCompany: ConstructorCompany = new ConstructorCompany('', '');
   constructorCompanyName: boolean = false;
@@ -51,14 +52,20 @@ export class ConstructorCompanyEditComponent {
   
   onEditConstructorCompany(): void {
 
+    this.isLoading = true;
+    this.success = false;
+    this.error = '';
     this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
     .subscribe(
       response => {
         this.constructorCompany.name = response.name;
         this.constructorCompany.id = response.id;
+        this.isLoading = false;
+        this.success = true;
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."
+        this.isLoading = false;
         if (error.error && error.error.errorMessage) {
           this.error = error.error.errorMessage;
         } else {

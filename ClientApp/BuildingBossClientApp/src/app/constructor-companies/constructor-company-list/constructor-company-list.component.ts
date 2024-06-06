@@ -99,5 +99,9 @@ export class ConstructorCompanyListComponent {
 
   }
 
+  onNewConstructorCompany(): void {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
   
 }

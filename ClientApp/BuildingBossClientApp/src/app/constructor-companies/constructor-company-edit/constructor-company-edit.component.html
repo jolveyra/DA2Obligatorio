@@ -4,7 +4,20 @@
       <label for="editableText"> Name </label>
       <input type="text" class="form-control" id="editableText" [(ngModel)]="this.constructorCompany.name">
       <button
-      class="btn btn-primary"
+      class="btn btn-primary mt-3"
       (click)="onEditConstructorCompany()">Edit name</button>
   </div>
+  <div class="text-center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div *ngIf="this.success">
+      <div class="alert alert-success mt-3">
+          <p>Constructor company edited succesfully!</p>
+      </div>
+  </div>
+  <div *ngIf="this.error !== ''">
+    <div class="alert alert-danger mt-3">
+        <p>{{ this.error }}</p>
+    </div>
+</div>
 </div>
