@@ -20,6 +20,7 @@ import { BuildingFlats } from '../../shared/buildingFlats.model';
 export class BuildingListComponent implements OnInit, OnDestroy {
   userLoggedSub: Subscription = new Subscription();
   userRole: string = '';
+  userId: string = '';
   error: string = '';
   noBuildings: boolean = false;
   constructorCompanyName: boolean = true;
@@ -38,7 +39,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.userLoggedSub = this.authService.userLogged.subscribe(user => this.userRole = user.role);
+    this.userLoggedSub = this.authService.userLogged.subscribe(user => {this.userRole = user.role; this.userId = user.id;});
     if (this.userRole === 'Manager') {
       this.buildingService.fetchManagerBuildings().subscribe(
         response => {
@@ -58,7 +59,7 @@ export class BuildingListComponent implements OnInit, OnDestroy {
       );
     }
     if (this.userRole === 'ConstructorCompanyAdmin') {
-      this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
+      this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator(this.userId)
       .subscribe(
         
         constructorCompanyAdministrator => {

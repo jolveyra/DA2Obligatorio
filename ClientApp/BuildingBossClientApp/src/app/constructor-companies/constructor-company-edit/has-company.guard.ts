@@ -13,7 +13,7 @@ export const hasCompanyGuard: CanActivateFn = (route, state) => {
     take(1),
     switchMap(user => {
       if (user.role === 'ConstructorCompanyAdmin') {
-        return constCompAdminService.fetchConstructorCompanyAdministrator().pipe(
+        return constCompAdminService.fetchConstructorCompanyAdministrator(user.id).pipe(
           map(constCompAdmin => {
             if (constCompAdmin.constructorCompanyName !== '') {
               const constCompAdminId = constCompAdmin.constructorCompanyId;

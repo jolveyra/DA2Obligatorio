@@ -25,50 +25,50 @@ export class ConstructorCompaniesComponent {
   
   ngOnInit(): void {
 
-    this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
-      .subscribe(
-        constructorCompanyAdministrator => {
-          this.constructorCompanyAdministrator = constructorCompanyAdministrator;
+    // this.constructorCompanyAdministratorService.fetchConstructorCompanyAdministrator()
+    //   .subscribe(
+    //     constructorCompanyAdministrator => {
+    //       this.constructorCompanyAdministrator = constructorCompanyAdministrator;
           
-          if(this.constructorCompanyAdministrator.constructorCompanyName !== '') {
-            this.constructorCompanyName = true;
-            this.constructorCompany = new ConstructorCompany(this.constructorCompanyAdministrator.constructorCompanyId, this.constructorCompanyAdministrator.constructorCompanyName);
-          }
-          this.isLoading = false;
-        },
-        error => {
-          let errorMessage = "An unexpected error has occured, please retry later."
-          if (error.error && error.error.errorMessage) {
-            this.error = error.error.errorMessage;
-          } else {
-            this.error = errorMessage;
-          }
-        }
-      );
+    //       if(this.constructorCompanyAdministrator.constructorCompanyName !== '') {
+    //         this.constructorCompanyName = true;
+    //         this.constructorCompany = new ConstructorCompany(this.constructorCompanyAdministrator.constructorCompanyId, this.constructorCompanyAdministrator.constructorCompanyName);
+    //       }
+    //       this.isLoading = false;
+    //     },
+    //     error => {
+    //       let errorMessage = "An unexpected error has occured, please retry later."
+    //       if (error.error && error.error.errorMessage) {
+    //         this.error = error.error.errorMessage;
+    //       } else {
+    //         this.error = errorMessage;
+    //       }
+    //     }
+    //   );
 
   }
 
-  onEditConstructorCompany(): void {
-    console.log(this.constructorCompany.name)
+  // onEditConstructorCompany(): void {
+  //   console.log(this.constructorCompany.name)
 
-    this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
-    .subscribe(
-      response => {
-        console.log(response);
-        this.constructorCompany.name = response.name;
-        this.constructorCompany.id = response.id;
-      },
-      error => {
-        let errorMessage = "An unexpected error has occured, please retry later."
-        if (error.error && error.error.errorMessage) {
-          this.error = error.error.errorMessage;
-        } else {
-          this.error = errorMessage;
-        }
-      }
-    );
+  //   this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
+  //   .subscribe(
+  //     response => {
+  //       console.log(response);
+  //       this.constructorCompany.name = response.name;
+  //       this.constructorCompany.id = response.id;
+  //     },
+  //     error => {
+  //       let errorMessage = "An unexpected error has occured, please retry later."
+  //       if (error.error && error.error.errorMessage) {
+  //         this.error = error.error.errorMessage;
+  //       } else {
+  //         this.error = errorMessage;
+  //       }
+  //     }
+  //   );
 
-  }
+  // }
 
 }
 

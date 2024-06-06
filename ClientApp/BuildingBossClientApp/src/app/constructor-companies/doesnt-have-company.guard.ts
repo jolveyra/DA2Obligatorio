@@ -60,12 +60,15 @@ export const doesntHaveCompanyGuard: CanActivateFn = (route, state) => {
       take(1),
       switchMap(user => {
         if (user.role === 'ConstructorCompanyAdmin') {
-          return constCompAdminService.fetchConstructorCompanyAdministrator().pipe(
+          return constCompAdminService.fetchConstructorCompanyAdministrator(user.id).pipe(
             map(constCompAdmin => {
               if (constCompAdmin.constructorCompanyName !== '') {
                 const constCompAdminId = constCompAdmin.constructorCompanyId;
+                console.log('tiene');
                 return router.createUrlTree([`/constructorCompanies/${constCompAdminId}`]);
+                
               } else {
+                console.log('no tiene');
                 return true;
               }
             }), catchError(() => {
