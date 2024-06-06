@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger" *ngIf="error !== ''">
+            <p>{{ error }}</p>
+        </div>
+    </div>
+    <img
+        class="img-fluid mt-4 rounded mx-auto d-block"
+        src="https://images.unsplash.com/photo-1621478753807-39b3fddfc9f1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHRlYXBvdHxlbnwwfHwwfHx8MA%3D%3D"
+        alt="R2D2 teapot">
+    <h3 class="text-center text-primary-emphasis fw-semibold my-5">{{ teapotMessage }}</h3>
+</div>

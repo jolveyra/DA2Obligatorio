@@ -10,7 +10,7 @@ import { User } from '../../../shared/user.model';
   styleUrl: './request-item.component.css'
 })
 export class RequestItemComponent implements OnInit {
-  @Input() request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
+  @Input() request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   @Input() userRole: string = '';
   status: string = '';
 

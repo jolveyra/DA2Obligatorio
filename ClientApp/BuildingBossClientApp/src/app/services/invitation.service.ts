@@ -39,7 +39,22 @@ export class InvitationService {
       );
   }
 
-  createInvitation(invitation: Invitation, expDays: number) {
+  fetchInvitation(id: string): Observable<InvitationResponseData> {
+    return this.httpClient.get<InvitationResponseData>(`https://localhost:7122/api/v2/invitations/${id}`)
+      .pipe(
+        map((invitation: InvitationResponseData) => new Invitation(
+          invitation.id,
+          invitation.name,
+          invitation.email,
+          new Date(invitation.expirationDate),
+          invitation.role,
+          invitation.isAccepted,
+          invitation.isAnswered
+        ))
+      );
+  }
+
+  createInvitation(invitation: Invitation, expDays: number): Observable<InvitationResponseData> {
     return this.httpClient.post<InvitationResponseData>('https://localhost:7122/api/v2/invitations',
       {
         name: invitation.name,
@@ -50,9 +65,15 @@ export class InvitationService {
     )
   }
 
-  // TODO: implement updateInvitation method
+  updateInvitationStatus(id: string, answer: boolean): Observable<InvitationResponseData> {
+    return this.httpClient.put<InvitationResponseData>(`https://localhost:7122/api/v2/invitations/${id}`,
+      {
+        isAccepted: answer
+      }
+    );
+  }
   
-  deleteInvitation(id: string) {
-    return this.httpClient.delete(`https://localhost:7122/api/v2/invitations/${id}`);
+  deleteInvitation(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`https://localhost:7122/api/v2/invitations/${id}`);
   }
 }

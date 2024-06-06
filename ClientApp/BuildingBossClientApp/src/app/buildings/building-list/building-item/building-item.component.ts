@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Building } from '../../../shared/building.model';
+import { BuildingFlats } from '../../../shared/buildingFlats.model';
 
 @Component({
   selector: 'app-building-item',
@@ -7,6 +8,6 @@ import { Building } from '../../../shared/building.model';
   styleUrl: './building-item.component.css'
 })
 export class BuildingItemComponent {
-  @Input() building: Building = new Building('', '', 0, 0, '', 0, '', '', '', 0, 0);
+  @Input() building: Building | BuildingFlats = new BuildingFlats('', '', 0, [], '', 0, '', '', '', 0, 0, []);
   @Input() role: string = '';
 }

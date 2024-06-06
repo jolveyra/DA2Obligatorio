@@ -14,7 +14,7 @@ import { User } from '../../shared/user.model';
   styleUrl: './request-edit.component.css'
 })
 export class RequestEditComponent implements OnInit {
-  request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
+  request: ManagerRequest = new ManagerRequest('', '', new Flat('', '', 0, 0, '', '', '', 0, 0, false), new Building('', '', 0, '', 0, '', '', '', 0, 0), '', new User('', '', '', ''), '');
   isLoading: boolean = false;
   error: string = '';
   categories = ['Category 1', 'Category 2', 'Category 3'];
@@ -51,7 +51,6 @@ export class RequestEditComponent implements OnInit {
               response.building.id,
               response.building.name,
               response.building.sharedExpenses,
-              response.building.amountOfFlats,
               response.building.street,
               response.building.doorNumber,
               response.building.cornerStreet,

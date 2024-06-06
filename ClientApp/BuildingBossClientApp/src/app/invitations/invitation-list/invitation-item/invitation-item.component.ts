@@ -14,4 +14,12 @@ export class InvitationItemComponent {
   onDelete(id: string): void {
     this.invitationToDelete.emit(id);
   }
+
+  getStatusClass(): string {
+    if (this.invite.isAnswered) {
+      return this.invite.isAccepted ? 'text-success' : 'text-danger';
+    } else {
+      return this.invite.expirationDate < this.today ? 'text-danger' : 'text-primary';
+    }
+  }
 }

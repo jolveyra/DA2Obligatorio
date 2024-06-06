@@ -22,6 +22,20 @@ export class ConstructorCompanyAdministratorService {
   ) 
   { }
 
+  fetchConstructorCompanyAdministrators(): Observable<ConstructorCompanyAdministratorResponseData[]> {
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData[]>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`)
+      .pipe(
+        map((response: ConstructorCompanyAdministratorResponseData[]) => response.map(admin => new ConstructorCompanyAdministrator(
+          admin.id,
+          admin.name,
+          admin.surname,
+          admin.email,
+          admin.constructorCompanyId,
+          admin.constructorCompanyName
+        )))
+      );
+  }
+
   fetchConstructorCompanyAdministrator(): Observable<ConstructorCompanyAdministratorResponseData> {
     return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`)
       .pipe(

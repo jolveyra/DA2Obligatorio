@@ -13,13 +13,13 @@
     <div *ngIf="isLoading" class="text-center">
         <app-loading-spinner></app-loading-spinner>
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" *ngIf="!noCategories || !noBuildings || !noEmployees">
         <form class="w-50" (ngSubmit)="onSubmit(newRequestForm)" #newRequestForm="ngForm" *ngIf="!isLoading">
             <div class="form-group mb-3">
-                <label for="category">Category</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <label for="category">Category</label>
                 <div class="dropdown">
                     <button
-                        class="btn btn-light dropdown-toggle border-secondary"
+                        class="btn btn-light dropdown-toggle border-dark-subtle"
                         type="button" id="categoryDropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -42,43 +42,52 @@
                     class="form-control"
                     ngModel
                     required
-                    minlength="5"></textarea>
+                    minlength="5"
+                    #description="ngModel"></textarea>
+                <span class="text-danger" *ngIf="!description.valid && description.touched">Description cannot be empty</span>
             </div>
             <div class="form-group mb-3">
-                <label for="category">Flat</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
+                <label for="category">Flat</label>
                 <div class="dropdown">
                     <button
-                        class="btn btn-light dropdown-toggle border-secondary"
+                        class="btn btn-light dropdown-toggle border-dark-subtle"
                         type="button" id="categoryDropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
                         {{ selectedFlat === '' ? 'Select a flat' : selectedFlat }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                        <li *ngFor="let flat of flats">
-                            <a class="dropdown-item" (click)="selectFlat(flat)">{{ flat }}</a>
+                        <li *ngFor="let building of buildings">
+                            <div *ngFor="let flat of building.flats">
+                                <a class="dropdown-item" (click)="selectFlat(flat)">
+                                    {{ flat.number + ' - ' + building.name }}
+                                </a>
+                            </div>
                         </li>
                     </ul>
                 </div>
                 <input type="hidden" ngModel name="category" [value]="selectedFlat" required>
             </div>
             <div class="form-group mb-3" *ngIf="selectedFlat !== ''">
-                <label for="category">Maintenance employee</label> <!-- FIXME: no se muestran las opciones no entiendo por que -->
-                <div class="dropdown">
-                    <button
-                        class="btn btn-secondary dropdown-toggle"
-                        type="button" id="categoryDropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        {{ selectedEmployee === '' ? 'Select a maintenance employee' : selectedEmployee }}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                        <li *ngFor="let employee of employees">
-                            <a class="dropdown-item" (click)="selectEmployee(employee)">{{ employee }}</a>
-                        </li>
-                    </ul>
+                <div *ngIf="employeesToShow.length !== 0">
+                    <label for="category">Maintenance employee</label>
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-light dropdown-toggle border-dark-subtle"
+                            type="button" id="categoryDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ selectedEmployee === '' ? 'Select a maintenance employee' : selectedEmployee }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                            <li *ngFor="let employee of employeesToShow">
+                                <a class="dropdown-item" (click)="selectEmployee(employee)">{{ employee.name + ' ' + employee.surname + ' - ' + employee.email }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="hidden" ngModel name="category" [value]="selectedEmployee" required>
                 </div>
-                <input type="hidden" ngModel name="category" [value]="selectedCategory" required>
+                <span *ngIf="employeesToShow.length === 0" class="text-danger">There are no maintenance employees assigned to this building. Please add maintenance employees before going forward</span>
             </div>
             <div class="text-center">
                 <button
@@ -87,5 +96,14 @@
                     [disabled]="!newRequestForm.valid">Create request</button>
             </div>
         </form>
+    </div>
+    <div class="d-flex justify-content-center mt-5" *ngIf="noCategories">
+        <h3 class="text-primary-emphasis">There are no categories available to create a new request</h3>
+    </div>
+    <div class="d-flex justify-content-center mt-5" *ngIf="noBuildings">
+        <h3 class="text-primary-emphasis">There are no buildings assigned to you</h3>
+    </div>
+    <div class="d-flex justify-content-center mt-5" *ngIf="noEmployees">
+        <h3 class="text-primary-emphasis text-center">There are no maintenance employees available to create a new request. Please create one to go forward</h3>
     </div>
 </div>

@@ -1,1 +1,33 @@
-<p>invitation-edit works!</p>
+<div class="container mt-5 d-flex justify-content-between align-items-center w-50" *ngIf="!invitation.isAnswered">
+    <div>
+        <p class="mb-0 fw-semibold">Name: {{ invitation.name }}</p>
+        <p class="mb-0 fw-semibold">Email: {{ invitation.email }}</p>
+        <p class="mb-0 fw-semibold">Future role: {{ invitation.role }}</p>
+        <p class="mb-0">Available until: {{ invitation.expirationDate.toLocaleDateString('en-GB') }}</p>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+        <div class="dropdown">
+            <button
+                class="btn btn-light dropdown-toggle border-dark-subtle"
+                type="button"
+                id="answerDropdown"
+                data-bs-toggle="dropdown">
+                {{ answer ? 'Accept' : 'Reject' }}
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" (click)="selectAnswer(true)">Accept</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" (click)="selectAnswer(false)">Reject</a>
+                </li>
+            </ul>
+        </div>
+        <button
+            class="btn btn-primary mt-2"
+            (click)="onSubmit()">Save</button>
+    </div>
+</div>
+<div class="d-flex justify-content-center mt-5" *ngIf="invitation.isAnswered">
+    <h2 class="text-primary-emphasis">Invitation has already been answered</h2>
+</div>

@@ -141,6 +141,7 @@ namespace ManagementApiTest
             Flat expected = new Flat()
             {
                 Id = Guid.NewGuid(),
+                Building = new Building() { Id = Guid.NewGuid() },
                 Floor = 2,
                 Number = 201,
                 Owner = new Person()

@@ -3,7 +3,6 @@ export class Building {
         public id: string,
         public name: string,
         public sharedExpenses: number,
-        public amountOfFlats: number,
         public street: string,
         public doorNumber: number,
         public cornerStreet: string,

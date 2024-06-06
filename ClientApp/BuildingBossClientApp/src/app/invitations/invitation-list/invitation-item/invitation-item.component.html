@@ -4,9 +4,17 @@
         <p class="mb-0 fw-semibold">Email: {{ invite.email }}</p>
         <p class="mb-0 fw-semibold">Future role: {{ invite.role }}</p>
         <p class="mb-0">Available until: {{ invite.expirationDate.toLocaleDateString('en-GB') }}</p>
+        <p class="mb-0">
+            Link: <a [routerLink]="invite.id" >https://localhost:4200/{{ invite.id }}</a>
+        </p>
     </div>
     <div class="d-flex flex-column align-items-end">
-        <p class="mb-0">Status: {{ !invite.isAnswered ? (invite.expirationDate < today ? 'Expired' : 'Available') : (invite.isAccepted ? 'Accepted' : 'Rejected') }}</p>
+        <p class="mb-0">
+            Status: 
+            <span [ngClass]="getStatusClass()">
+                {{ !invite.isAnswered ? (invite.expirationDate < today ? 'Expired' : 'Available') : (invite.isAccepted ? 'Accepted' : 'Rejected') }}
+            </span>
+        </p>
         <button
             class="btn btn-danger mt-2"
             (click)="onDelete(invite.id)"

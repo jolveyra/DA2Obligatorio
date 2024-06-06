@@ -38,6 +38,9 @@ import { ManagerListComponent } from './managers/manager-list/manager-list.compo
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryListComponent } from './categories/category-list/category-list.component';
 import { CategoryNewComponent } from './categories/category-new/category-new.component';
+import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
+import { TeapotComponent } from './teapot/teapot.component';
+import { CcadministratorsComponent } from './ccadministrators/ccadministrators.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -48,19 +51,22 @@ const routes: Routes = [
   ] },
   { path: 'invitations', component: InvitationsComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: InvitationListComponent },
-    { path: 'new', component: InvitationNewComponent },
-    { path: ':id', component: InvitationEditComponent } // FIXME: not implemented, should be the one that anyone can accept or reject, but I think it should be in a different module maybe
+    { path: 'new', component: InvitationNewComponent }
   ] },
+  { path: 'invitations/:id', component: InvitationEditComponent },
   { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: ManagerListComponent },
   ] },
-  // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
-  { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  { path: 'constructorCompanyAdministrators', component: CcadministratorsComponent, canActivate: [authGuard, administratorGuard] },
+  { path: 'constructorCompanies', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
+    { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+    { path: ':id', component: ConstructorCompanyEditComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+  ] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
     { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
-    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] }, // FIXME: not finished, have to check whether managers are allowed to edit
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] }, // FIXME: not finished
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [
@@ -78,6 +84,7 @@ const routes: Routes = [
     { path: 'new', component: CategoryNewComponent }
   ] },
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
+  { path: 'teapot', component: TeapotComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
 

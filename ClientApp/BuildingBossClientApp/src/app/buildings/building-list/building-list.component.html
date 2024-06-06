@@ -1,19 +1,26 @@
 <div class="container">
-    <div class="d-flex justify-content-end mb-3">
+    <div *ngIf="constructorCompanyName && finishedLoadingAdmin || userRole === 'Manager'">
+      <div class="d-flex justify-content-end mb-3">
         <button
             class="btn btn-success"
             (click)="onNewBuilding()"
             *ngIf="userRole === 'ConstructorCompanyAdmin'">New building</button>
+      </div>
+      <div class="d-flex justify-content-center" *ngIf="noBuildings">
+          <h2 class="text-primary-emphasis">{{ userRole === 'Manager' ? 'You have no buildings assigned yet' : "Your company didn't create any buildings yet" }}</h2>
+      </div>
+      <div class="d-flex justify-content-center">
+          <div class="list-group w-50">
+              <app-building-item
+                  *ngFor="let buildingElem of buildings"
+                  [building]="buildingElem"
+                  [role]="userRole"></app-building-item>
+          </div>
+      </div>
     </div>
-    <div class="d-flex justify-content-center" *ngIf="noBuildings">
-        <h2 class="text-primary-emphasis">{{ userRole === 'Manager' ? 'You have no buildings assigned yet' : "Your company didn't create any buildings yet" }}</h2>
-    </div>
-    <div class="d-flex justify-content-center">
-        <div class="list-group w-50">
-            <app-building-item
-                *ngFor="let buildingElem of buildings"
-                [building]="buildingElem"
-                [role]="userRole"></app-building-item>
-        </div>
+    <div *ngIf="!constructorCompanyName && finishedLoadingAdmin">
+      <div class="d-flex justify-content-center mt-5" *ngIf="!constructorCompanyName && finishedLoadingAdmin">
+          <h2 class="text-primary-emphasis">Your don't have a constructor company assigned yet</h2>
+      </div>
     </div>
 </div>

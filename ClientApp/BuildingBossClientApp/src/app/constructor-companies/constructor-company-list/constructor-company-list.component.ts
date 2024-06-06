@@ -72,7 +72,7 @@ export class ConstructorCompanyListComponent {
 
   onAssingConstructorCompany(): void {
 
-    //this.constructorCompanyAdministratorService.assignConstructorCompany(this.constructorCompanyToAssign) //FIXME: Implement
+    //this.constructorCompanyAdministratorService.assignConstructorCompany(this.constructorCompanyToAssign)
   }
 
   
