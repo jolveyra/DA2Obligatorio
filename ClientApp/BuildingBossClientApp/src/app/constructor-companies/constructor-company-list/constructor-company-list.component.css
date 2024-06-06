@@ -1,3 +1,4 @@
-.selected {
-  background-color: #a3a3a3; /* Color de fondo que prefieras */
+.list-with-overflow {
+  max-height: 50vh;
+  overflow-y: auto;
 }

@@ -5,7 +5,7 @@ import { ConstructorCompanyAdministratorService } from '../../services/construct
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ConstructorCompanyAdministrator } from '../../shared/constructor-company-administrator.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-constructor-company-list',
@@ -25,7 +25,8 @@ export class ConstructorCompanyListComponent {
     private constructorCompanyService: ConstructorCompanyService,
     private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -57,8 +58,6 @@ export class ConstructorCompanyListComponent {
   }
 
   onSelectConstructorCompany(id: string): void {
-    console.log('selected constructor company', id);
-    // FIXME: Show another color on the list when an item is selected
     this.constructorCompanyService.fetchConstructorCompany(id)
     .subscribe(
       response => {
@@ -76,7 +75,6 @@ export class ConstructorCompanyListComponent {
   }
 
   onAssignConstructorCompany(): void {
-    console.log('assigning constructor company', this.constructorCompanyToAssign.id, this.constructorCompanyToAssign.name);
     this.constructorCompanyAdministratorService.updateConstructorCompanyAdministrator(new ConstructorCompanyAdministrator(
       this.userId,
       '',
@@ -87,7 +85,7 @@ export class ConstructorCompanyListComponent {
     ))
     .subscribe(
       response => {
-        this.router.navigate(['/constructorCompanies']);
+        this.router.navigate(['constructorCompanies/'], { relativeTo: this.route });
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."

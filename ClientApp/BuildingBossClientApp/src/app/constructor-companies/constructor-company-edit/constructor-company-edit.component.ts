@@ -50,12 +50,10 @@ export class ConstructorCompanyEditComponent {
   }
   
   onEditConstructorCompany(): void {
-    console.log(this.constructorCompany.name)
 
     this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
     .subscribe(
       response => {
-        console.log(response);
         this.constructorCompany.name = response.name;
         this.constructorCompany.id = response.id;
       },
