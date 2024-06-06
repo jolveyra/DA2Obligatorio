@@ -6,6 +6,16 @@
             (click)="onNewBuilding()"
             *ngIf="userRole === 'ConstructorCompanyAdmin'">New building</button>
       </div>
+      <div class="d-flex justify-content-center">
+          <div class="alert alert-danger" *ngIf="error !== ''">
+              <p>{{ error }}</p>
+          </div>
+      </div>
+      <div class="d-flex justify-content-center">
+          <div class="alert alert-success" *ngIf="successMsg !== ''">
+              <p>{{ successMsg }}</p>
+          </div>
+      </div>
       <div class="d-flex justify-content-center" *ngIf="noBuildings">
           <h2 class="text-primary-emphasis">{{ userRole === 'Manager' ? 'You have no buildings assigned yet' : "Your company didn't create any buildings yet" }}</h2>
       </div>
@@ -14,7 +24,9 @@
               <app-building-item
                   *ngFor="let buildingElem of buildings"
                   [building]="buildingElem"
-                  [role]="userRole"></app-building-item>
+                  [role]="userRole"
+                  [manager]="getBuildingManagerName(buildingElem.managerId)"
+                  (buildingDeleted)="deleteBuilding($event)"></app-building-item>
           </div>
       </div>
     </div>

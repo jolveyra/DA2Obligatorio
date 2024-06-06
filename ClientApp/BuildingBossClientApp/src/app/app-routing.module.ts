@@ -61,7 +61,7 @@ const routes: Routes = [
   { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: ManagerListComponent },
   ] },
-  // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
+  { path: 'constructorCompanyAdministrators', component: CcadministratorsComponent, canActivate: [authGuard, administratorGuard] },
   { path: 'constructorCompanies', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
     { path: '', component: ConstructorCompanyListComponent, canActivate: [doesntHaveCompanyGuard] },
     { path: 'new', component: ConstructorCompanyNewComponent, canActivate: [doesntHaveCompanyGuard] },
@@ -71,7 +71,7 @@ const routes: Routes = [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
     { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
-    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [managerGuard] }, // FIXME: not finished
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard] }, // FIXME: not finished
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [

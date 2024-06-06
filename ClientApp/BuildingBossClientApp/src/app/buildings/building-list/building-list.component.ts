@@ -22,11 +22,12 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   userRole: string = '';
   userId: string = '';
   error: string = '';
+  successMsg: string = '';
   noBuildings: boolean = false;
   constructorCompanyName: boolean = true;
   finishedLoadingAdmin: boolean = false;
   buildings: Building[] | BuildingFlats[] = [];
-  managers: User[] = [];
+  managers: User[] | never[] = [];
   constructorCompanyAdministrator: ConstructorCompanyAdministrator = new ConstructorCompanyAdministrator('', '', '', '', '', '');
   
   constructor(
@@ -70,8 +71,8 @@ export class BuildingListComponent implements OnInit, OnDestroy {
               buildingsResponse => {
                 this.managerService.fetchManagers().subscribe(
                   managersResponse => {
-                    this.managers = managersResponse;
                     this.buildings = buildingsResponse;
+                    this.managers = managersResponse;
                     if (this.buildings.length === 0) {
                       this.noBuildings = true;
                     }
@@ -120,5 +121,22 @@ export class BuildingListComponent implements OnInit, OnDestroy {
 
   onNewBuilding() {
     this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
+  getBuildingManagerName(managerId: string): string {
+    if (managerId === '00000000-0000-0000-0000-000000000000') {
+      return 'No manager assigned';
+    } else {
+      const manager = this.managers.find(manager => manager.id === managerId);
+      if (manager) {
+        return manager.name + ' ' + manager.surname + ' - ' + manager.email;
+      } else {
+        return 'No manager assigned';
+      }
+    }
+  }
+
+  deleteBuilding(id: string) {
+    // TODO: hacer llamada y si response entonces eliminar el edificio de la lista y mostrar mensaje de éxito en successMsg y si error mostrarlo en error
   }
 }
