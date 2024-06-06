@@ -52,6 +52,8 @@ import { ConstructorCompanyNewComponent } from './constructor-companies/construc
 import { ConstructorCompanyListComponent } from './constructor-companies/constructor-company-list/constructor-company-list.component';
 import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
 import { TeapotComponent } from './teapot/teapot.component';
+import { CcadministratorsComponent } from './ccadministrators/ccadministrators.component';
+import { CcadministratorItemComponent } from './ccadministrators/ccadministrator-item/ccadministrator-item.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,9 @@ import { TeapotComponent } from './teapot/teapot.component';
     ConstructorCompanyNewComponent,
     ConstructorCompanyListComponent,
     ConstructorCompanyEditComponent,
-    TeapotComponent
+    TeapotComponent,
+    CcadministratorsComponent,
+    CcadministratorItemComponent
   ],
   imports: [
     BrowserModule,
