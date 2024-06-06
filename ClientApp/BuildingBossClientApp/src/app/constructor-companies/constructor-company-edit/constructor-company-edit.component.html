@@ -1,1 +1,23 @@
-<p>constructor-company-edit works!</p>
+<h2 class="text-center text-primary-emphasis fw-semibold mb-4">Constructor Company</h2>
+<div class="container mt-5">
+  <div class="form-group">
+      <label for="editableText"> Name </label>
+      <input type="text" class="form-control" id="editableText" [(ngModel)]="this.constructorCompany.name">
+      <button
+      class="btn btn-primary mt-3"
+      (click)="onEditConstructorCompany()">Edit name</button>
+  </div>
+  <div class="text-center" *ngIf="isLoading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <div *ngIf="this.success">
+      <div class="alert alert-success mt-3">
+          <p>Constructor company edited succesfully!</p>
+      </div>
+  </div>
+  <div *ngIf="this.error !== ''">
+    <div class="alert alert-danger mt-3">
+        <p>{{ this.error }}</p>
+    </div>
+</div>
+</div>

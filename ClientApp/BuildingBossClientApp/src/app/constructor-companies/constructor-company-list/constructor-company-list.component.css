@@ -1,0 +1,4 @@
+.list-with-overflow {
+  max-height: 50vh;
+  overflow-y: auto;
+}

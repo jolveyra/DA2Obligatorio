@@ -17,8 +17,8 @@ export class ConstructorCompanyNewComponent {
 
   constructor(
     private constructorCompanyService: ConstructorCompanyService,
-    //private router: Router,
-    //private route: ActivatedRoute
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   
   onSubmit(form: NgForm): void {
@@ -28,10 +28,12 @@ export class ConstructorCompanyNewComponent {
 
     this.toCreateConstructorCompany.name = form.value.name;
 
+    this.isLoading = true;
+
     this.constructorCompanyService.createConstructorCompany(this.toCreateConstructorCompany).subscribe(
       response => {
         this.isLoading = false;
-        //this.router.navigate(['../../'], { relativeTo: this.route });
+        this.router.navigate([''], { relativeTo: this.route });
       },
       error => {
         let errorMessage = "An unexpected error has occured, please retry later."
@@ -45,6 +47,6 @@ export class ConstructorCompanyNewComponent {
   }
   
   onBackIcon(): void {
-    //this.router.navigate(['../../'], { relativeTo: this.route });
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

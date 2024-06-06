@@ -51,6 +51,7 @@ import { CategoryNewComponent } from './categories/category-new/category-new.com
 import { ConstructorCompanyNewComponent } from './constructor-companies/constructor-company-new/constructor-company-new.component';
 import { ConstructorCompanyListComponent } from './constructor-companies/constructor-company-list/constructor-company-list.component';
 import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
+import { ConstructorCompanyItemComponent } from './constructor-companies/constructor-company-item/constructor-company-item.component';
 import { TeapotComponent } from './teapot/teapot.component';
 import { CcadministratorsComponent } from './ccadministrators/ccadministrators.component';
 import { CcadministratorItemComponent } from './ccadministrators/ccadministrator-item/ccadministrator-item.component';
@@ -103,6 +104,7 @@ import { CcadministratorItemComponent } from './ccadministrators/ccadministrator
     ConstructorCompanyNewComponent,
     ConstructorCompanyListComponent,
     ConstructorCompanyEditComponent,
+    ConstructorCompanyItemComponent,
     TeapotComponent,
     CcadministratorsComponent,
     CcadministratorItemComponent

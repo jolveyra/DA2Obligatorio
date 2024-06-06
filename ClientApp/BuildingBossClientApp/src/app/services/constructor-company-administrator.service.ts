@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { ConstructorCompanyAdministrator } from '../shared/constructor-company-administrator.model';
 
 interface ConstructorCompanyAdministratorResponseData {
@@ -36,9 +36,10 @@ export class ConstructorCompanyAdministratorService {
       );
   }
 
-  fetchConstructorCompanyAdministrator(): Observable<ConstructorCompanyAdministratorResponseData> {
-    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`) // FIXME: agregar id
+  fetchConstructorCompanyAdministrator(id: string): Observable<ConstructorCompanyAdministratorResponseData> {
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${id}`)
       .pipe(
+        tap( response => console.log(response)),
         map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
           response.id,
           response.name,
@@ -48,5 +49,23 @@ export class ConstructorCompanyAdministratorService {
           response.constructorCompanyName
         ))
       );
+    }
+
+    updateConstructorCompanyAdministrator(constructorCompanyAdministrator: ConstructorCompanyAdministrator): Observable<ConstructorCompanyAdministratorResponseData> {
+      return this.httpClient.put<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${constructorCompanyAdministrator.id}`, 
+        {
+          constructorCompanyId: constructorCompanyAdministrator.constructorCompanyId
+        })
+        .pipe(
+          tap( response => console.log(response)),
+          map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
+            response.id,
+            response.name,
+            response.surname,
+            response.email,
+            response.constructorCompanyId,
+            response.constructorCompanyName
+          ))
+        );
     }
 }

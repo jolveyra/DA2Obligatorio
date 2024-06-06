@@ -41,6 +41,10 @@ import { CategoryNewComponent } from './categories/category-new/category-new.com
 import { ConstructorCompanyEditComponent } from './constructor-companies/constructor-company-edit/constructor-company-edit.component';
 import { TeapotComponent } from './teapot/teapot.component';
 import { CcadministratorsComponent } from './ccadministrators/ccadministrators.component';
+import { ConstructorCompanyListComponent } from './constructor-companies/constructor-company-list/constructor-company-list.component';
+import { ConstructorCompanyNewComponent } from './constructor-companies/constructor-company-new/constructor-company-new.component';
+import { doesntHaveCompanyGuard } from './constructor-companies/doesnt-have-company.guard';
+import { hasCompanyGuard } from './constructor-companies/constructor-company-edit/has-company.guard';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -57,10 +61,11 @@ const routes: Routes = [
   { path: 'managers', component: ManagersComponent, canActivate: [authGuard, administratorGuard], children: [
     { path: '', component: ManagerListComponent },
   ] },
-  { path: 'constructorCompanyAdministrators', component: CcadministratorsComponent, canActivate: [authGuard, administratorGuard] },
+  // { path: 'constructorCompanyAdministrators', component: ConstructorCompanyAdministratorsComponent, canActivate: [authGuard, administratorGuard] }, // FIXME: not implemented
   { path: 'constructorCompanies', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
-    { path: 'constructorCompanies/:id', component: ConstructorCompaniesComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
-    { path: ':id', component: ConstructorCompanyEditComponent, canActivate: [authGuard, constructorCompanyAdminGuard] },
+    { path: '', component: ConstructorCompanyListComponent, canActivate: [doesntHaveCompanyGuard] },
+    { path: 'new', component: ConstructorCompanyNewComponent, canActivate: [doesntHaveCompanyGuard] },
+    { path: ':id', component: ConstructorCompanyEditComponent, canActivate: [hasCompanyGuard] },
   ] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },

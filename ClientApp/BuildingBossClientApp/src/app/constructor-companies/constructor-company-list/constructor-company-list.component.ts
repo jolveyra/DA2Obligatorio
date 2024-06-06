@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { ConstructorCompanyService } from '../../services/constructor-company.service';
+import { ConstructorCompany } from '../../shared/constructor-company.model';
+import { ConstructorCompanyAdministratorService } from '../../services/constructor-company-administrator.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { ConstructorCompanyAdministrator } from '../../shared/constructor-company-administrator.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-constructor-company-list',
@@ -8,8 +14,94 @@ import { ConstructorCompanyService } from '../../services/constructor-company.se
 })
 export class ConstructorCompanyListComponent {
 
+  constructorCompanies: ConstructorCompany[] = [];
+  error: string = '';
+  noConstructorCompanies: boolean = false;
+  constructorCompanyToAssign: ConstructorCompany = new ConstructorCompany('', '');
+  userId: string = '';
+  userLoggedSub: Subscription = new Subscription();
   
   constructor(
-    private constructorCompanyService: ConstructorCompanyService
+    private constructorCompanyService: ConstructorCompanyService,
+    private constructorCompanyAdministratorService: ConstructorCompanyAdministratorService,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    this.constructorCompanyService.fetchConstructorCompanies()
+    .subscribe(
+      response => {
+        this.constructorCompanies = response;
+        if (this.constructorCompanies.length === 0) {
+          this.noConstructorCompanies = true;
+        }
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
+  
+    this.userLoggedSub = this.authService.userLogged.subscribe(userLogged => {
+      this.userId = userLogged.id;
+    });
+  }
+
+  ngOnDestroy() {
+    this.userLoggedSub.unsubscribe();
+  }
+
+  onSelectConstructorCompany(id: string): void {
+    this.constructorCompanyService.fetchConstructorCompany(id)
+    .subscribe(
+      response => {
+        this.constructorCompanyToAssign = response;
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
+  }
+
+  onAssignConstructorCompany(): void {
+    this.constructorCompanyAdministratorService.updateConstructorCompanyAdministrator(new ConstructorCompanyAdministrator(
+      this.userId,
+      '',
+      '',
+      '',
+      this.constructorCompanyToAssign.id,
+      this.constructorCompanyToAssign.name
+    ))
+    .subscribe(
+      response => {
+        this.router.navigate(['constructorCompanies/'], { relativeTo: this.route });
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+      }
+    );
+
+  }
+
+  onNewConstructorCompany(): void {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
+  
 }
