@@ -27,7 +27,7 @@ export class AuthComponent {
     this.authService.login(form.value.email, form.value.password).subscribe(
       (responseData: AuthResponseData)  => {
         this.isLoading = false;
-        this.authService.userLogged.next(new UserLogged(responseData.name, responseData.token, responseData.role));
+        this.authService.userLogged.next(new UserLogged(responseData.id, responseData.name, responseData.token, responseData.role));
         this.router.navigate(['/home']);
       },
       error => {

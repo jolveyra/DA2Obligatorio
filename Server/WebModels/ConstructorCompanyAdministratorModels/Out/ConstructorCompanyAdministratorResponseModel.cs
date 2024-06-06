@@ -15,6 +15,7 @@ namespace WebModels.ConstructorCompanyAdministratorModels
         public string Surname { get; set; }
         public string Email { get; set; }
         public Guid ConstructorCompanyId { get; set; }
+        public string ConstructorCompanyName { get; set; }
 
         public ConstructorCompanyAdministratorResponseModel(ConstructorCompanyAdministrator admin)
         {
@@ -23,6 +24,7 @@ namespace WebModels.ConstructorCompanyAdministratorModels
             Surname = admin.Surname;
             Email = admin.Email;
             ConstructorCompanyId = admin.ConstructorCompanyId;
+            ConstructorCompanyName = admin.ConstructorCompany.Name;
         }
 
         public override bool Equals(object? obj)

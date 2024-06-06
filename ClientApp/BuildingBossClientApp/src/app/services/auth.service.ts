@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogged } from './userLogged.model';
 
 export interface AuthResponseData {
+  id: string;
   name: string;
   token: string;
   role: string; 
@@ -14,7 +15,7 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  userLogged = new BehaviorSubject<UserLogged>(new UserLogged('', '', ''));
+  userLogged = new BehaviorSubject<UserLogged>(new UserLogged('', '', '', ''));
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -27,7 +28,7 @@ export class AuthService {
       }
     ).pipe(
       tap(user => {
-        this.userLogged.next(new UserLogged(user.name, user.token, user.role));
+        this.userLogged.next(new UserLogged(user.id, user.name, user.token, user.role));
         localStorage.setItem('user', JSON.stringify(user));
       })
     );
@@ -41,12 +42,13 @@ export class AuthService {
     }
 
     const user: {
+      id: string;
       name: string;
       token: string;
       role: string;
     } = JSON.parse(userInStorage);
     
-    this.userLogged.next(new UserLogged(user.name, user.token, user.role));
+    this.userLogged.next(new UserLogged(user.id, user.name, user.token, user.role));
   }
 
   getAuthToken(): string {
@@ -55,7 +57,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('user');
-    this.userLogged.next(new UserLogged('', '', ''));
+    this.userLogged.next(new UserLogged('', '', '', ''));
     this.router.navigate([''])
   }
 }

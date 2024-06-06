@@ -16,7 +16,7 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator CreateConstructorCompanyAdministrator(ConstructorCompanyAdministrator administrator)
         {
-            _context.Users.Add(administrator);
+            _context.ConstructorCompanyAdministrators.Add(administrator);
             _context.SaveChanges();
 
             return administrator;
@@ -24,13 +24,14 @@ namespace DataAccess.Repositories
 
         public IEnumerable<ConstructorCompanyAdministrator> GetAllConstructorCompanyAdministrators()
         {
-            return _context.Users.OfType<ConstructorCompanyAdministrator>();
+            return _context.ConstructorCompanyAdministrators
+                .Include(c => c.ConstructorCompany);
         }
 
         public ConstructorCompanyAdministrator GetConstructorCompanyAdministratorByUserId(Guid userId)
         {
-            ConstructorCompanyAdministrator? administrator = _context.Users
-                .OfType<ConstructorCompanyAdministrator>()
+            ConstructorCompanyAdministrator? administrator = _context.ConstructorCompanyAdministrators
+                .Include(c => c.ConstructorCompany)
                 .FirstOrDefault(u => u.Id == userId);
 
             if (administrator == null)
@@ -43,7 +44,7 @@ namespace DataAccess.Repositories
 
         public ConstructorCompanyAdministrator UpdateConstructorCompanyAdministrator(ConstructorCompanyAdministrator constructorCompanyAdministrator)
         {
-            _context.Users.Update(constructorCompanyAdministrator);
+            _context.ConstructorCompanyAdministrators.Update(constructorCompanyAdministrator);
             _context.SaveChanges();
 
             return constructorCompanyAdministrator;
