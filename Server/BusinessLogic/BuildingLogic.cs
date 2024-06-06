@@ -26,7 +26,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     {
         ValidateFlatAmount(amountOfFlats);
         ValidateBuilding(building);
-        ValidateConstructorCompany(building.ConstructorCompanyId, userId);
+        ValidateAdminConstructorCompany(building, userId);
 
         Building toReturn = _iBuildingRepository.CreateBuilding(building);
 
@@ -35,23 +35,17 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         return toReturn;
     }
 
-    private void ValidateConstructorCompany(Guid constructorCompanyId, Guid userId)
+    private void ValidateAdminConstructorCompany(Building building, Guid userId)
     {
-        if (constructorCompanyId == Guid.Empty)
-        {
-            throw new BuildingException("Building's constructor company cannot be empty");
-        }
-
         ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
-        
-        if (constructorCompanyAdministrator.ConstructorCompanyId != constructorCompanyId)
-        {
-            throw new BuildingException("Building's constructor company does not match user's constructor company");
-        }
 
         if (string.IsNullOrEmpty(constructorCompanyAdministrator.ConstructorCompany.Name))
         {
             throw new BuildingException("Constructor company administrator doesn't have a constructor company assigned.");
+        }
+        else
+        {
+            building.ConstructorCompanyId = constructorCompanyAdministrator.ConstructorCompanyId;
         }
     }
 

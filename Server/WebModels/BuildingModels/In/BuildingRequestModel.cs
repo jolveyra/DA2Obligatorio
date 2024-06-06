@@ -11,7 +11,6 @@ namespace WebModels.BuildingModels
         public int DoorNumber { get; set; }
         public string CornerStreet { get; set; }
         public float SharedExpenses { get; set; }
-        public Guid ConstructorCompanyId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
@@ -29,8 +28,7 @@ namespace WebModels.BuildingModels
                     CornerStreet = CornerStreet,
                     Latitude = Latitude,
                     Longitude = Longitude
-                },
-                ConstructorCompanyId = ConstructorCompanyId
+                }
             };
         }
     }
