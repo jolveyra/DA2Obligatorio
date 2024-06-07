@@ -5,24 +5,32 @@ namespace XMLImporterV1
 {
     public class XMLImporter: IBuildingImporter
     {
+        private readonly IXmlDeserializer _xmlDeserializer;
+
+        public XMLImporter(IXmlDeserializer xmlDeserializer)
+        {
+            _xmlDeserializer = xmlDeserializer;
+        }
+
         public List<DTOBuilding> ImportBuildingsFromFile(string xmlFilePath)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Root));
-            using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.Open))
-            {
-                Root buildingData = (Root)serializer.Deserialize(fileStream);
-                var buildings = new List<DTOBuilding>();
+            //XmlSerializer serializer = new XmlSerializer(typeof(Root));
+            //using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.Open))
+            //{
+                Root buildingData = _xmlDeserializer.Deserialize<Root>(xmlFilePath);
+                //Root buildingData = (Root)serializer.Deserialize(fileStream);
+                List<DTOBuilding> buildings = new List<DTOBuilding>();
                 EdificiosToDTOBuildings(buildingData, buildings);
 
                 return buildings;
-            }
+           // }
         }
 
         private void EdificiosToDTOBuildings(Root buildingData, List<DTOBuilding> buildings)
         {
             foreach (var edificio in buildingData.Edificios)
             {
-                var building = new DTOBuilding
+                DTOBuilding building = new DTOBuilding
                 {
                     Name = edificio.Nombre,
                     SharedExpenses = edificio.GastosComunes,
@@ -44,7 +52,7 @@ namespace XMLImporterV1
         {
             foreach (var departamento in edificio.Departamentos)
             {
-                var flat = new DTOFlat
+                DTOFlat flat = new DTOFlat
                 {
                     Number = departamento.NumeroPuerta,
                     Floor = departamento.Piso,
