@@ -16,7 +16,7 @@ export class ImporterService {
     private httpClient: HttpClient
   ) { }
 
-  fetchimporters(): Observable<ImporterResponseData[]> {
+  fetchImporters(): Observable<ImporterResponseData[]> {
     return this.httpClient.get<ImporterResponseData[]>('https://localhost:7122/api/v2/importers')
       .pipe(
         map((response: ImporterResponseData[]) => response.map(importer => ({
@@ -31,6 +31,11 @@ export class ImporterService {
       {
         name
       }
+    ).pipe(
+      map((response: ImporterResponseData) => ({
+        id: response.id,
+        name: response.name
+      }))
     );
   }
 }

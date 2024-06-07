@@ -46,6 +46,9 @@ import { ConstructorCompanyNewComponent } from './constructor-companies/construc
 import { doesntHaveCompanyGuard } from './constructor-companies/doesnt-have-company.guard';
 import { hasCompanyGuard } from './constructor-companies/constructor-company-edit/has-company.guard';
 import { BuildingImportComponent } from './buildings/building-import/building-import.component';
+import { ImporterComponent } from './importer/importer.component';
+import { ImporterNewComponent } from './importer/importer-new/importer-new.component';
+import { ImporterListComponent } from './importer/importer-list/importer-list.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -90,7 +93,10 @@ const routes: Routes = [
     { path: '', component: CategoryListComponent },
     { path: 'new', component: CategoryNewComponent }
   ] },
-  // { path: 'reflection', component: ReflectionComponent, canActivate: [authGuard, constructorCompanyAdminGuard] }, // FIXME: not implemented
+  { path: 'importers', component: ImporterComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
+    { path: '', component: ImporterListComponent },
+    { path: 'new', component: ImporterNewComponent }
+  ] },
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: 'teapot', component: TeapotComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }

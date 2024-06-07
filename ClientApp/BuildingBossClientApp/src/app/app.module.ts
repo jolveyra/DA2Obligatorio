@@ -56,6 +56,10 @@ import { TeapotComponent } from './teapot/teapot.component';
 import { CcadministratorsComponent } from './ccadministrators/ccadministrators.component';
 import { CcadministratorItemComponent } from './ccadministrators/ccadministrator-item/ccadministrator-item.component';
 import { BuildingImportComponent } from './buildings/building-import/building-import.component';
+import { ImporterComponent } from './importer/importer.component';
+import { ImporterNewComponent } from './importer/importer-new/importer-new.component';
+import { ImporterListComponent } from './importer/importer-list/importer-list.component';
+import { ImportItemComponent } from './importer/importer-list/import-item/import-item.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +113,11 @@ import { BuildingImportComponent } from './buildings/building-import/building-im
     TeapotComponent,
     CcadministratorsComponent,
     CcadministratorItemComponent,
-    BuildingImportComponent
+    BuildingImportComponent,
+    ImporterComponent,
+    ImporterNewComponent,
+    ImporterListComponent,
+    ImportItemComponent
   ],
   imports: [
     BrowserModule,
