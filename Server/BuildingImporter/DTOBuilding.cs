@@ -8,7 +8,6 @@ namespace BuildingImporter
 {
     public class DTOBuilding
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public float SharedExpenses { get; set; }
         public string Street { get; set; }
