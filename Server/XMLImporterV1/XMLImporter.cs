@@ -3,9 +3,9 @@ using System.Xml.Serialization;
 
 namespace XMLImporterV1
 {
-    public class XMLImporter
+    public class XMLImporter: IBuildingImporter
     {
-        public static List<DTOBuilding> ImportBuildings(string xmlFilePath)
+        public List<DTOBuilding> ImportBuildingsFromFile(string xmlFilePath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Root));
             using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.Open))
@@ -18,7 +18,7 @@ namespace XMLImporterV1
             }
         }
 
-        private static void EdificiosToDTOBuildings(Root buildingData, List<DTOBuilding> buildings)
+        private void EdificiosToDTOBuildings(Root buildingData, List<DTOBuilding> buildings)
         {
             foreach (var edificio in buildingData.Edificios)
             {
@@ -40,7 +40,7 @@ namespace XMLImporterV1
             }
         }
 
-        private static void DepartamentosToDTOFlats(Edificio edificio, DTOBuilding building)
+        private void DepartamentosToDTOFlats(Edificio edificio, DTOBuilding building)
         {
             foreach (var departamento in edificio.Departamentos)
             {
