@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessTest", "DataAcces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingImporter", "BuildingImporter\BuildingImporter.csproj", "{7C23F9DC-D036-4230-810D-B119A7AFC112}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONImporterV1", "JSONImporterV1\JSONImporterV1.csproj", "{DF67F525-796A-422C-8505-96D817C3B05D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7C23F9DC-D036-4230-810D-B119A7AFC112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C23F9DC-D036-4230-810D-B119A7AFC112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C23F9DC-D036-4230-810D-B119A7AFC112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF67F525-796A-422C-8505-96D817C3B05D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF67F525-796A-422C-8505-96D817C3B05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF67F525-796A-422C-8505-96D817C3B05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF67F525-796A-422C-8505-96D817C3B05D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
