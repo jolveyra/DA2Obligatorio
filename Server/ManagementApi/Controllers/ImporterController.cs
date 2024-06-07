@@ -20,9 +20,16 @@ namespace ManagementApi.Controllers
             _importerLogic = iImporterLogic;
         }
 
+        [HttpPost]
+        [AuthenticationFilter(["ConstructorCompanyAdmin"])]
+        public IActionResult CreateImporter(CreateImporterRequestModel importerRequestModel)
+        {
+            return Ok(new ImporterResponseModel(_importerLogic.CreateImporter(importerRequestModel.ToEntity())));
+        }
+
         [HttpGet]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetAllImporters()
+        public IActionResult GetAllImporters()
         {
             return Ok(_importerLogic.GetAllImporters()
                 .Select(importer => new ImporterResponseModel(importer))

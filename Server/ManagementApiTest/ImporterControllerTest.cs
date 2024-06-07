@@ -49,5 +49,35 @@ namespace ManagementApiTest
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.First().Equals(objectResult.First()));
 
         }
+
+        [TestMethod]
+        public void CreateImporterTestOk()
+        {
+            CreateImporterRequestModel importerRequestModel = new CreateImporterRequestModel()
+            {
+                Name = "ImportadorJsonsV1",
+                Path = @"../../../ImportadorJsonsV1"
+            };
+
+            Importer importer = new Importer()
+            {
+                Id = Guid.NewGuid(),
+                Name = importerRequestModel.Name,
+                Path = importerRequestModel.Path
+            };
+
+            _importerLogicMock.Setup(x => x.CreateImporter(It.IsAny<Importer>())).Returns(importer);
+
+            OkObjectResult expected = new OkObjectResult(new ImporterResponseModel(importer));
+
+            OkObjectResult result = _importerController.CreateImporter(importerRequestModel) as OkObjectResult;
+
+            ImporterResponseModel expectedObject = expected.Value as ImporterResponseModel;
+            ImporterResponseModel objectResult = result.Value as ImporterResponseModel;
+
+            _importerLogicMock.VerifyAll();
+
+            Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode) && expectedObject.Equals(objectResult));
+        }
     }
 }
