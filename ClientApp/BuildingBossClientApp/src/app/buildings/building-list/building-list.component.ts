@@ -153,4 +153,8 @@ export class BuildingListComponent implements OnInit, OnDestroy {
         }
       );
   }
+
+  onImportBuildings() {
+    this.router.navigate(['import'], { relativeTo: this.route });
+  }
 }

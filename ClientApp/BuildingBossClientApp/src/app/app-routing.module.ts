@@ -45,6 +45,7 @@ import { ConstructorCompanyListComponent } from './constructor-companies/constru
 import { ConstructorCompanyNewComponent } from './constructor-companies/constructor-company-new/constructor-company-new.component';
 import { doesntHaveCompanyGuard } from './constructor-companies/doesnt-have-company.guard';
 import { hasCompanyGuard } from './constructor-companies/constructor-company-edit/has-company.guard';
+import { BuildingImportComponent } from './buildings/building-import/building-import.component';
 
 const routes: Routes = [
   { path: '', component: AuthComponent, pathMatch: 'full', canActivate: [loggedGuard] },
@@ -72,7 +73,8 @@ const routes: Routes = [
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
     { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
     { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard] },
-    { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
+    { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] },
+    { path: 'import', component: BuildingImportComponent, canActivate: [constructorCompanyAdminGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [
     { path: '', component: RequestListComponent, canActivate: [requestGuard] },
