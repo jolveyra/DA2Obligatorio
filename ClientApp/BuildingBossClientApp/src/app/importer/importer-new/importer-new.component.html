@@ -16,7 +16,7 @@
     <div class="d-flex justify-content-center">
         <form class="w-50" (ngSubmit)="onSubmit(newImporterForm)" #newImporterForm="ngForm" *ngIf="!isLoading">
             <div class="form-group mb-2">
-                <label for="name">Name</label>
+                <label for="name">Name (without file extension)</label>
                 <input
                     type="text"
                     id="name"

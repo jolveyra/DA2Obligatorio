@@ -81,6 +81,30 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void CreateImporterWithEmptyNameTest()
+        {
+            Importer newImporter = new Importer()
+            {
+                Id = Guid.NewGuid(),
+                Name = ""
+            };
+
+            Exception exception = null;
+
+            try
+            {
+                importerLogic.CreateImporter(newImporter);
+            }
+            catch (BusinessLogicException e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ImporterException));
+            Assert.AreEqual(exception.Message, "Importer name cannot be empty");
+        }
+
+        [TestMethod]
         public void GetAllImportersTestOk()
         {
             List<Importer> importers = new List<Importer>
