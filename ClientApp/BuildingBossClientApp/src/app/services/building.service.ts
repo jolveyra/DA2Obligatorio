@@ -18,6 +18,14 @@ export interface BuildingResponseData {
   longitude: number
 }
 
+export interface UpdateBuildingResponseData {
+  id: string,
+  name: string,
+  street: string,
+  doorNumber: number,
+  managerName: string
+}
+
 interface BuildingFlatsResponseData {
   id: string,
   name: string,
@@ -239,6 +247,30 @@ export class BuildingService {
         return buildingWithFlats;
       })
     );
+  }
+
+
+  
+  updateConstructorCompanyBuilding(buildingId: string, managerId: string, name: string): Observable<BuildingResponseData> {
+    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${buildingId}`,
+    {
+      managerId,
+      name
+    })
+      .pipe(
+        map((response: BuildingResponseData) => new Building(
+            response.id,
+            response.name,
+            response.sharedExpenses,
+            response.street,
+            response.doorNumber,
+            response.cornerStreet,
+            response.constructorCompanyId,
+            response.managerId,
+            response.latitude,
+            response.longitude
+        ))
+      );
   }
 
   deleteBuilding(buildingId: string): Observable<void> {
