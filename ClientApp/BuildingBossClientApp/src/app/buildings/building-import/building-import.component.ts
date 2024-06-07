@@ -25,7 +25,6 @@ export class BuildingImportComponent {
   ) { }
 
   ngOnInit(): void {
-    console.log('Entre al onInit de building-import')
     this.importerService.fetchImporters()
       .subscribe(
         response => {

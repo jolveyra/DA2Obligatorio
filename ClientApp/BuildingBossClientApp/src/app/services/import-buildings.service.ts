@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,10 @@ export class ImporterBuildingsService {
     private httpClient: HttpClient
   ) { }
   
-  importBuildings(importerName: string, fileName: string): Observable<string> {
-    return this.httpClient.post<string>('https://localhost:7122/api/v2/importers',
+  importBuildings(dllName: string, fileName: string): Observable<string> {
+    return this.httpClient.post<string>('https://localhost:7122/api/v2/importBuildings',
       {
-        importerName,
+        dllName,
         fileName
       }
     )

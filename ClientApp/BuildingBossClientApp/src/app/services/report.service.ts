@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Report } from '../reports/report.model';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 interface ReportData {
@@ -24,14 +24,12 @@ export class ReportsService {
     return this.httpClient.get<ReportData[]>(`https://localhost:7122/api/v2/reports?filter=${filter}`)
       .pipe(
         map((response: ReportData[]) => response.map(report => {
-          console.log(report);
           const reportElem = new Report( 
           report.filterName,
           report.pendingRequests,
           report.inProgressRequests,
           report.completedRequests,
           report.averageCompletionTime);
-          console.log(reportElem);
           return reportElem;
       }))
       );

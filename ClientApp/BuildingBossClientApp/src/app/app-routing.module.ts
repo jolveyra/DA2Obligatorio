@@ -73,10 +73,10 @@ const routes: Routes = [
   ] },
   { path: 'buildings', component: BuildingsComponent, canActivate: [authGuard], children: [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
-    { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
-    { path: 'import', component: BuildingImportComponent, canActivate: [constructorCompanyAdminGuard] },
+    { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard, hasCompanyGuard]},
+    { path: 'import', component: BuildingImportComponent, canActivate: [constructorCompanyAdminGuard, hasCompanyGuard] },
     { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [managerGuard] },
-    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard] },
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard, hasCompanyGuard] },
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [

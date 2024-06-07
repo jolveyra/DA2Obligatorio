@@ -31,7 +31,6 @@ export class AuthComponent {
         this.router.navigate(['/home']);
       },
       error => {
-        console.log(error);
         let errorMessage = "An error has occured"
         if (error.error && error.error.errorMessage) {
           this.error = error.error.errorMessage;
