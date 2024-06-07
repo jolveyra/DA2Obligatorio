@@ -80,30 +80,24 @@ namespace BusinessLogicTest
 
         }
 
+        [TestMethod]
+        public void GetAllImportersTestOk()
+        {
+            List<Importer> importers = new List<Importer>
+            {
+                new Importer() { Id = Guid.NewGuid(), Name = "Importer 1" },
+                new Importer() { Id = Guid.NewGuid(), Name = "Importer 2" }
+            };
+
+            importerRepositoryMock.Setup(c => c.GetAllImporters()).Returns(importers);
+
+            IEnumerable<Importer> result = importerLogic.GetAllImporters();
+
+            importerRepositoryMock.VerifyAll();
+            CollectionAssert.AreEqual(importers, result.ToList());
+
+        }
 
 
-
-        //[TestMethod]
-        //public void CreateCategoryTestOk()
-        //{
-        //    Category category = new Category()
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        Name = "Category1"
-        //    };
-        //    Category expected = new Category()
-        //    {
-        //        Id = category.Id,
-        //        Name = "Category1"
-        //    };
-        //    categoryRepositoryMock.Setup(x => x.GetAllCategories()).Returns(new List<Category> { });
-        //    categoryRepositoryMock.Setup(x => x.CreateCategory(category)).Returns(expected);
-
-        //    Category result = categoryLogic.CreateCategory(category);
-
-        //    categoryRepositoryMock.VerifyAll();
-
-        //    Assert.AreEqual(expected, result);
-        //}
     }
 }

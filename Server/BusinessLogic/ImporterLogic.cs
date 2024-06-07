@@ -10,7 +10,7 @@ using CustomExceptions;
 
 namespace BusinessLogic
 {
-    public class ImporterLogic
+    public class ImporterLogic: IImporterLogic
     {
         private IImporterRepository _iImporterRepository;
 
@@ -24,6 +24,11 @@ namespace BusinessLogic
             CheckUniqueImporterName(importer);
 
             return _iImporterRepository.CreateImporter(importer);
+        }
+
+        public IEnumerable<Importer> GetAllImporters()
+        {
+            return _iImporterRepository.GetAllImporters();
         }
 
         private void CheckUniqueImporterName(Importer importer)

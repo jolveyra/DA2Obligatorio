@@ -17,7 +17,7 @@ namespace ManagementApiTest
         private ImporterController _importerController;
 
         [TestInitialize]
-        public void Setup()
+        public void TestInitialize()
         {
             _importerLogicMock = new Mock<IImporterLogic>(MockBehavior.Strict);
             _importerController = new ImporterController(_importerLogicMock.Object);
