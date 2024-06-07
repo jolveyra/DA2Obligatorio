@@ -163,7 +163,6 @@ export class RequestEditComponent implements OnInit {
           this.router.navigate(['/requests']);
         },
         error => {
-          console.log(error);
           let errorMessage = "An unexpected error has occured, please retry later."
           if (error.error && error.error.errorMessage) {
             this.error = error.error.errorMessage;

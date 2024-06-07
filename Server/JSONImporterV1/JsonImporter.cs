@@ -5,16 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using JSONImporterV1.Domain;
+using JSONImporterV1.Deserializer;
 
-namespace BuildingImporter
+namespace JSONImporterV1
 {
     public class JsonImporter : IBuildingImporter
     {
+        private readonly IJSONDeserializer _jsonDeserializer;
+
+        public JsonImporter(IJSONDeserializer jsonDeserializer)
+        {
+            _jsonDeserializer = jsonDeserializer;
+        }
+
         public List<DTOBuilding> ImportBuildingsFromFile(string path)
         {
-            string json = File.ReadAllText(path);
-            var buildingData = JsonConvert.DeserializeObject<Root>(json);
-            var buildings = new List<DTOBuilding>();
+            Root buildingData = _jsonDeserializer.Deserialize<Root>(path);
+            List<DTOBuilding> buildings = new List<DTOBuilding>();
             ConvertEdificiosToDTOBuildings(buildingData, buildings);
 
             return buildings;
@@ -24,7 +31,7 @@ namespace BuildingImporter
         {
             foreach (var edificio in buildingData.Edificios)
             {
-                var building = new DTOBuilding
+                DTOBuilding building = new DTOBuilding
                 {
                     Name = edificio.Nombre,
                     SharedExpenses = edificio.GastosComunes,
@@ -46,7 +53,7 @@ namespace BuildingImporter
         {
             foreach (var departamento in edificio.Departamentos)
             {
-                var flat = new DTOFlat
+                DTOFlat flat = new DTOFlat
                 {
                     Number = departamento.NumeroPuerta,
                     Floor = departamento.Piso,
