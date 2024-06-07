@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Report } from '../reports/report.model';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 interface ReportData {
   filterName: string,
-  pending: number,
-  inProgress: number,
-  completed: number,
+  pendingRequests: number,
+  inProgressRequests: number,
+  completedRequests: number,
   averageCompletionTime: number
 }
 
@@ -24,12 +24,14 @@ export class ReportsService {
     return this.httpClient.get<ReportData[]>(`https://localhost:7122/api/v2/reports?filter=${filter}`)
       .pipe(
         map((response: ReportData[]) => response.map(report => {
-          const reportElem = new Report( // FIXME: Al crear los valores pierde los 3 del medio, no entiendo por que, se los trate de asignar despues de la creacion y tambien, tampoco funcionan si los pongo como string
+          console.log(report);
+          const reportElem = new Report( 
           report.filterName,
-          report.pending,
-          report.inProgress,
-          report.completed,
+          report.pendingRequests,
+          report.inProgressRequests,
+          report.completedRequests,
           report.averageCompletionTime);
+          console.log(reportElem);
           return reportElem;
       }))
       );

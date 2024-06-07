@@ -102,12 +102,14 @@ export class RequestNewComponent implements OnInit {
   }
 
   selectFlat(flat: Flat): void {
+    this.formFlat = flat;
     let building = this.buildings.find(building => building.id === flat.buildingId);
     this.selectedFlat = flat.number + ' - ' + building!.name;
     this.employeesToShow = this.allEmployees.filter(employee => building?.maintenanceEmployeeIds.includes(employee.id));
   }
 
   selectEmployee(employee: User): void {
+    this.formEmployee = employee;
     this.selectedEmployee = employee.name + ' ' + employee.surname + ' - ' + employee.email;
   }
 
@@ -125,8 +127,23 @@ export class RequestNewComponent implements OnInit {
       this.formEmployee,
       ''
     );
+
     this.isLoading = true;
 
-    this.requestService.createRequest(request).subscribe();
+    this.requestService.createRequest(request).subscribe(
+      response => {
+        this.isLoading = false;
+        this.router.navigate(['/requests']);
+      },
+      error => {
+        let errorMessage = "An unexpected error has occured, please retry later."
+        if (error.error && error.error.errorMessage) {
+          this.error = error.error.errorMessage;
+        } else {
+          this.error = errorMessage;
+        }
+        this.isLoading = false;
+      }
+    );
   }
 }

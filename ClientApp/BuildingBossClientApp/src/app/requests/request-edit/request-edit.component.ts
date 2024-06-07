@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Request } from '../request.model';
 import { RequestService } from '../../services/request.service';
@@ -25,12 +25,15 @@ export class RequestEditComponent implements OnInit {
   employees: User[] = [];
   selectedEmployee: string = '';
   description: string = '';
+  formEmployee: User = new User('', '', '', '');
+  changed: boolean = false;
 
   constructor(
     private requestService: RequestService,
     private categoryService: CategoryService,
     private buildingService: BuildingService,
     private employeeService: EmployeeService,
+    private router: Router,
     private route: ActivatedRoute
   ) { }
 
@@ -84,6 +87,7 @@ export class RequestEditComponent implements OnInit {
                       this.employees = employeesResponse.filter(employee => buildingResponse.maintenanceEmployeeIds.includes(employee.id));
                       this.selectedCategory = this.request.categoryName;
                       this.description = this.request.description;
+                      this.formEmployee = this.request.assignedEmployee ?? new User('', '', '', '');
                       if (this.request.assignedEmployee) {
                         this.selectedEmployee = this.request.assignedEmployee.name + ' ' + this.request.assignedEmployee.surname + ' - ' + this.request.assignedEmployee.email;
                       }
@@ -130,14 +134,44 @@ export class RequestEditComponent implements OnInit {
   }
 
   selectCategory(category: string) {
-      this.selectedCategory = category;
+    this.selectedCategory = category;
+    this.changed = true;
   }
 
   selectEmployee(employee: User) {
-      this.selectedEmployee = employee.name + ' ' + employee.surname + ' - ' + employee.email;
+    this.formEmployee = employee;
+    this.selectedEmployee = employee.name + ' ' + employee.surname + ' - ' + employee.email;
+    this.changed = true;
+  }
+
+  descriptionChanged(): boolean {
+    this.changed = true;
+    return true;
   }
 
   onSubmit(form: NgForm): void {
-    // FIXME: Implement this method
+    if (!form.valid) {
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.requestService.updateRequestManager(this.request.id, this.description, this.selectedCategory, this.formEmployee.id)
+      .subscribe(
+        response => {
+          this.isLoading = false;
+          this.router.navigate(['/requests']);
+        },
+        error => {
+          console.log(error);
+          let errorMessage = "An unexpected error has occured, please retry later."
+          if (error.error && error.error.errorMessage) {
+            this.error = error.error.errorMessage;
+          } else {
+            this.error = errorMessage;
+          }
+          this.isLoading = false;
+        }
+      );
   }
 }

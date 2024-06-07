@@ -6,8 +6,9 @@
         <p class="list-group-item-text mb-0" *ngIf="role === 'ConstructorCompanyAdmin'">Manager: {{ manager }}</p>
     </div>
     <div class="d-flex flex-column align-items-end">
-        <p class="mb-0">Shared expenses: {{ building.sharedExpenses }}</p>
-        <button class="btn btn-success mb-1" (click)="onEdit()" *ngIf="role === 'ConstructorCompanyAdmin'">Edit</button>
+        <p class="mb-1">Shared expenses: {{ building.sharedExpenses }}</p>
+        <button class="btn btn-success mb-1" (click)="onManagerEdit()" *ngIf="role === 'Manager'">Edit</button>
+        <button class="btn btn-success mb-1" (click)="onAdminEdit()" *ngIf="role === 'ConstructorCompanyAdmin'">Edit</button>
         <button class="btn btn-danger" (click)="onDelete()" *ngIf="role === 'ConstructorCompanyAdmin'">Delete</button>
     </div>
 </a>

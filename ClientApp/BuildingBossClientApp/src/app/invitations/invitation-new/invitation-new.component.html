@@ -54,19 +54,23 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group mb-3"> <!-- FIXME: put it in the same line -->
-                <label for="expDays">Available for (in days)</label>
-                <input
-                    type="number"
-                    id="expDays"
-                    class="form-control days"
-                    ngModel
-                    name="expDays"
-                    required
-                    min="1"
-                    max="100"
-                    #expDays="ngModel">
-                <span class="text-danger" *ngIf="!expDays.valid && expDays.touched">Available days must be between 1 and 100</span>
+            <div class="form-group d-flex align-items-center mb-3"> 
+                <div class="col-xs">
+                    <label for="expDays">Available for (in days)</label>
+                </div>
+                <div class="col-sm">
+                    <input
+                        type="number"
+                        id="expDays"
+                        class="form-control days"
+                        ngModel
+                        name="expDays"
+                        required
+                        min="1"
+                        max="100"
+                        #expDays="ngModel">
+                    <span class="text-danger" *ngIf="!expDays.valid && expDays.touched">Available days must be between 1 and 100</span>
+                </div>
             </div>
             <div class="text-center my-4">
                 <button

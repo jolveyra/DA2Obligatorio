@@ -42,7 +42,7 @@
                 <span class="text-danger" *ngIf="!floor.valid && floor.touched">Floor number must be at least 1 and less than 100</span>
                 </div>
             </div>
-            <div class="form-group row mb-2">
+            <div class="form-group d-flex mb-2">
                 <div class="col">
                     <label for="rooms">Rooms</label>
                     <input
@@ -55,7 +55,7 @@
                         min="1"
                         max="100"
                         #rooms="ngModel">
-                <span class="text-danger" *ngIf="!rooms.valid && rooms.touched">Rooms number must be at least 1 and less than 100</span>
+                    <span class="text-danger" *ngIf="!rooms.valid && rooms.touched">Rooms number must be at least 1 and less than 100</span>
                 </div>
                 <div class="col">
                     <label for="bathrooms">Bathrooms</label>
@@ -101,7 +101,6 @@
             </div>
             <hr>
             <div class="form-group my-3">
-                <!-- FIXME: how do we create new ones without editing old ones, how are we checking in the database, because I get a Person not found error -->
                 <label for="changeOwner">Are you changing this flat's owner or editing? (if you're not performing either or changing it for the first time, select editing)</label>
                 <div class="form-check">
                     <label class="form-check-label">

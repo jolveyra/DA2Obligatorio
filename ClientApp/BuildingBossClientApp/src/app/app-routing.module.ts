@@ -71,7 +71,7 @@ const routes: Routes = [
     { path: '', component: BuildingListComponent, canActivate: [buildingGuard] },
     { path: 'new', component: BuildingNewComponent, canActivate: [constructorCompanyAdminGuard]},
     { path: ':buildingId', component: BuildingFlatsComponent, canActivate: [buildingGuard] },
-    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard] }, // FIXME: not implemented
+    { path: ':buildingId/edit', component: BuildingEditComponent, canActivate: [constructorCompanyAdminGuard] },
     { path: ':buildingId/flats/:flatId', component: BuildingFlatEditComponent, canActivate: [managerGuard] }
   ] },
   { path: 'requests', component: RequestsComponent, canActivate: [authGuard], children: [
@@ -88,6 +88,7 @@ const routes: Routes = [
     { path: '', component: CategoryListComponent },
     { path: 'new', component: CategoryNewComponent }
   ] },
+  // { path: 'reflection', component: ReflectionComponent, canActivate: [authGuard, constructorCompanyAdminGuard] }, // FIXME: not implemented
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: 'teapot', component: TeapotComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }

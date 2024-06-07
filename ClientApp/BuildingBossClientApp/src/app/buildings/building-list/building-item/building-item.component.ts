@@ -22,7 +22,11 @@ export class BuildingItemComponent {
     this.buildingDeleted.emit(this.building.id);
   }
 
-  onEdit() {
+  onAdminEdit() {
     this.router.navigate([`/buildings/${this.building.id}/edit`]);
+  }
+
+  onManagerEdit() {
+    this.router.navigate([`/buildings/${this.building.id}`]);
   }
 }
