@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DataAccess.Context;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ServiceFactory
 {
@@ -27,6 +28,7 @@ namespace ServiceFactory
             services.AddScoped<IConstructorCompanyAdministratorLogic, ConstructorCompanyAdministratorLogic>();
             services.AddScoped<IConstructorCompanyBuildingLogic, BuildingLogic>();
             services.AddScoped<IConstructorCompanyLogic, ConstructorCompanyLogic>();
+            services.AddScoped<IImporterLogic, ImporterLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -37,6 +39,7 @@ namespace ServiceFactory
             services.AddScoped<IPeopleRepository, PeopleRepository>();
             services.AddScoped<IConstructorCompanyAdministratorRepository, ConstructorCompanyAdministratorRepository>();
             services.AddScoped<IConstructorCompanyRepository, ConstructorCompanyRepository>();
+            services.AddScoped<IImporterRepository, ImporterRepository>();
         }
 
         public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

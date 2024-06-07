@@ -14,7 +14,7 @@ namespace ManagementApiTest
         private ImporterController _importerController;
 
         [TestInitialize]
-        public void Setup()
+        public void TestInitialize()
         {
             _importerLogicMock = new Mock<IImporterLogic>(MockBehavior.Strict);
             _importerController = new ImporterController(_importerLogicMock.Object);
@@ -25,7 +25,7 @@ namespace ManagementApiTest
         {
             IEnumerable<Importer> importers = new List<Importer>
             {
-                new Importer() { Id = Guid.NewGuid(), Name = "ImportadorJsonsV1", Path = @"../../../ImportadorJsonsV1"}
+                new Importer() { Id = Guid.NewGuid(), Name = "ImportadorJsonsV1"}
             };
 
             _importerLogicMock.Setup(x => x.GetAllImporters()).Returns(importers);
@@ -52,15 +52,13 @@ namespace ManagementApiTest
         {
             CreateImporterRequestModel importerRequestModel = new CreateImporterRequestModel()
             {
-                Name = "ImportadorJsonsV1",
-                Path = @"../../../ImportadorJsonsV1"
+                Name = "ImportadorJsonsV1"
             };
 
             Importer importer = new Importer()
             {
                 Id = Guid.NewGuid(),
-                Name = importerRequestModel.Name,
-                Path = importerRequestModel.Path
+                Name = importerRequestModel.Name
             };
 
             _importerLogicMock.Setup(x => x.CreateImporter(It.IsAny<Importer>())).Returns(importer);

@@ -10,13 +10,11 @@ namespace WebModels.ImporterModels
     public class CreateImporterRequestModel
     {
         public string Name { get; set; }
-        public string Path { get; set; }
 
         public Importer ToEntity()
         {
             return new Importer { 
-                Name = Name,
-                Path = Path
+                Name = Name
             };
         }
 
