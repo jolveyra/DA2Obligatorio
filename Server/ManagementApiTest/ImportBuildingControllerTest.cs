@@ -1,5 +1,6 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.ImportBuildingModels;
@@ -22,17 +23,27 @@ namespace ManagementApiTest
         [TestMethod]
         public void ImportBuildingTestOk()
         {
+            Guid ccAdminId = Guid.NewGuid();
             ImportBuildingRequestModel importBuildingRequestModel = new ImportBuildingRequestModel()
             {
                 DllName = "ImportadorJsonsV1",
                 FileName = "BuildingsToImportCompany"
             };
 
-            _importBuildingLogicMock.Setup(x => x.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName));
+            HttpContext httpContext = new DefaultHttpContext();
+            httpContext.Items.Add("UserId", ccAdminId.ToString());
+
+            ControllerContext controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+            
+            ImportBuildingController anotherBuildingController= new ImportBuildingController(_importBuildingLogicMock.Object) { ControllerContext = controllerContext };
+            _importBuildingLogicMock.Setup(x => x.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName, ccAdminId));
 
             OkObjectResult expected = new OkObjectResult(null);
 
-            OkObjectResult result = _importBuildingController.ImportBuildings(importBuildingRequestModel) as OkObjectResult;
+            OkObjectResult result = anotherBuildingController.ImportBuildings(importBuildingRequestModel) as OkObjectResult;
 
             _importBuildingLogicMock.VerifyAll();
 
