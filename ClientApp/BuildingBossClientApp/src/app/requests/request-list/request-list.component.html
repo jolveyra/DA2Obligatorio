@@ -13,11 +13,10 @@
                 <p>{{ successMessage }}</p>
             </div>
         </div>
-        <!-- TODO: users should be able to filter requests by category -->
         <div *ngIf="!noRequests && endLoading">
-            <!-- <input
+            <input
                 type="text"
-                > -->
+                >
             <div class="d-flex justify-content-center mb-5">
                 <div class="list-group w-75">
                     <app-request-item

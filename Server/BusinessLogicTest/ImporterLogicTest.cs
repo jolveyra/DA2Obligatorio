@@ -119,9 +119,6 @@ namespace BusinessLogicTest
 
             importerRepositoryMock.VerifyAll();
             CollectionAssert.AreEqual(importers, result.ToList());
-
         }
-
-
     }
 }

@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessTest", "DataAccessTest\DataAccessTest.csproj", "{65894262-BC2B-4170-95DF-108ED8F6E215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONImporterV1", "JSONImporterV1\JSONImporterV1.csproj", "{DF67F525-796A-422C-8505-96D817C3B05D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONImporterV1", "JSONImporterV1\JSONImporterV1.csproj", "{DF67F525-796A-422C-8505-96D817C3B05D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingImporter", "BuildingImporter\BuildingImporter.csproj", "{7C23F9DC-D036-4230-810D-B119A7AFC112}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingImporter", "BuildingImporter\BuildingImporter.csproj", "{7C23F9DC-D036-4230-810D-B119A7AFC112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLImporterV1", "XMLImporterV1\XMLImporterV1.csproj", "{85E92181-147D-47E3-B39C-45B31486ADF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMLImporterV1", "XMLImporterV1\XMLImporterV1.csproj", "{85E92181-147D-47E3-B39C-45B31486ADF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,5 +105,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0BC0A3E7-420A-47D0-A144-6764A26E6214}
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\BuildingBoss.ndproj"
 	EndGlobalSection
 EndGlobal

@@ -93,7 +93,7 @@ const routes: Routes = [
     { path: '', component: CategoryListComponent },
     { path: 'new', component: CategoryNewComponent }
   ] },
-  { path: 'importers', component: ImporterComponent, canActivate: [authGuard, constructorCompanyAdminGuard], children: [
+  { path: 'importers', component: ImporterComponent, canActivate: [authGuard, constructorCompanyAdminGuard, ], children: [
     { path: '', component: ImporterListComponent },
     { path: 'new', component: ImporterNewComponent }
   ] },

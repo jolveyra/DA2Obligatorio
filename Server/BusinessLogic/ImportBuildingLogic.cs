@@ -12,19 +12,17 @@ namespace BusinessLogic
         private IImporterRepository _importerRepository;
         private IUserRepository _userRepository;
         private ISessionRepository _sessionRepository;
-        private IBuildingRepository _buildingRepository;
         private IBuildingLogic _buildingLogic;
         private IPeopleRepository _peopleRepository;
         private string _importerPath = @"..\..\Importers";
         private string _buildingFilesPath = @"..\..\BuildingFiles";
 
         public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository,
-            ISessionRepository sessionRepository, IBuildingRepository buildingRepository, IBuildingLogic buildingLogic)
+            ISessionRepository sessionRepository, IBuildingLogic buildingLogic)
         {
             _importerRepository = importerRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
-            _buildingRepository = buildingRepository;
             _buildingLogic = buildingLogic;
         }
 

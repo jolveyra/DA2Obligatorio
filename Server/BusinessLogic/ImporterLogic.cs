@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
@@ -9,13 +10,14 @@ using RepositoryInterfaces;
 using LogicInterfaces;
 using CustomExceptions;
 using System.Xml.Linq;
+using BuildingImporter;
 
 namespace BusinessLogic
 {
     public class ImporterLogic: IImporterLogic
     {
         private IImporterRepository _iImporterRepository;
-        private string importersPath = @"..\..\Importers";
+        private string _importersPath = @".\Importers";
 
         public ImporterLogic(IImporterRepository iImporterRepository)
         {
@@ -25,16 +27,8 @@ namespace BusinessLogic
         public Importer CreateImporter(Importer importer)
         {
             CheckUniqueImporterName(importer);
-            ValidateFile(importer.Name);
 
             return _iImporterRepository.CreateImporter(importer);
-        }
-        public void ValidateFile(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ImporterException("Name cannot be empty");
-            }
         }
 
         public IEnumerable<Importer> GetAllImporters()
