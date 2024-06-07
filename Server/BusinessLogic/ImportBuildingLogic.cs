@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using BuildingImporter;
 using CustomExceptions;
 using Domain;
@@ -18,19 +13,22 @@ namespace BusinessLogic
         private IUserRepository _userRepository;
         private ISessionRepository _sessionRepository;
         private IBuildingRepository _buildingRepository;
+        private IBuildingLogic _buildingLogic;
         private IPeopleRepository _peopleRepository;
         private string _importerPath = @"..\..\Importers";
         private string _buildingFilesPath = @"..\..\BuildingFiles";
 
-        public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository, ISessionRepository sessionRepository, IBuildingRepository buildingRepository)
+        public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository,
+            ISessionRepository sessionRepository, IBuildingRepository buildingRepository, IBuildingLogic buildingLogic)
         {
             _importerRepository = importerRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
             _buildingRepository = buildingRepository;
+            _buildingLogic = buildingLogic;
         }
 
-        public void ImportBuildings(string dllName, string fileName)
+        public void ImportBuildings(string dllName, string fileName, Guid userId)
         {
             Importer? importer = _importerRepository.GetAllImporters().FirstOrDefault(i => i.Name.Equals(dllName));
 
@@ -41,32 +39,16 @@ namespace BusinessLogic
             
             Type implementedType = GetInterfaceImplementedType($"{_importerPath}\\{dllName}.dll");
             List<DTOBuilding> buildingsToImport = GetBuildingsToImport(fileName, implementedType);
-            CreateBuildings(buildingsToImport);
+            CreateBuildings(buildingsToImport, userId);
         }
 
-        private void CreateBuildings(List<DTOBuilding> buildingsToImport)
+        private void CreateBuildings(List<DTOBuilding> buildingsToImport, Guid userId)
         {
             IEnumerable<User> users = _userRepository.GetAllUsers();
-            List<Building> buildingsToCreate = new List<Building>();
-            List<Flat> flatsToCreate = new List<Flat>();
 
             foreach (DTOBuilding dtoBuilding in buildingsToImport)
             {
-                Guid? managerId = null;
-                if (dtoBuilding.ManagerEmail is not null)
-                {
-                    User? manager = users.FirstOrDefault(u => u.Email.Equals(dtoBuilding.ManagerEmail) && u.Role == Role.Manager);
-                    if (manager is not null)
-                    {
-                        managerId = manager.Id;
-                    }
-                    else
-                    {
-                        Guid addedManagerId = _userRepository.CreateUser(new User() { Name = "", Surname = "", Email = dtoBuilding.ManagerEmail, Password = "DefaultManager1234", Role = Role.Manager }).Id;
-                        _sessionRepository.CreateSession(new Session() { UserId = addedManagerId });
-                        managerId = addedManagerId;
-                    }
-                }
+                Guid? managerId = GetManagerId(dtoBuilding, users);
                 Building building = new Building()
                 {
                     Name = dtoBuilding.Name,
@@ -81,62 +63,79 @@ namespace BusinessLogic
                     },
                     ManagerId = managerId,
                 };
-                List<Flat> flats = ArrangeBuildingFlats(dtoBuilding.Flats, building);
-                flatsToCreate.AddRange(flats);
-                buildingsToCreate.Add(building);
+                Building createdBuilding = _buildingLogic.CreateBuilding(building, dtoBuilding.Flats.Count, userId);
+                CreateBuildingFlats(dtoBuilding.Flats, createdBuilding);
             }
 
-            if (buildingsToCreate.Any())
-            {
-                if (flatsToCreate.Any())
-                {
-                    //_buildingRepository.CreateFlats(flatsToCreate);
-                }
-                //_buildingRepository.CreateBuildings(buildingsToCreate);
-            }
         }
 
-        private List<Flat> ArrangeBuildingFlats(List<DTOFlat> flats, Building building)
+        private Guid? GetManagerId(DTOBuilding dtoBuilding, IEnumerable<User> users)
         {
-            IEnumerable<Person> people = _peopleRepository.GetPeople();
-            List<Flat> flatsToCreate = new List<Flat>();
-
-            foreach (DTOFlat dtoFlat in flats)
+            Guid? managerId = null;
+            if (dtoBuilding.ManagerEmail is not null)
             {
-                Person ownerToAdd = new Person() { Email = "", Name = "", Surname = "" };
-
-                if (dtoFlat.OwnerEmail is not null)
+                User? manager = users.FirstOrDefault(u => u.Email.Equals(dtoBuilding.ManagerEmail) && u.Role == Role.Manager);
+                if (manager is not null)
                 {
-                    Person? owner = people.FirstOrDefault(u => u.Email.Equals(dtoFlat.OwnerEmail));
-                    if (owner is not null)
-                    {
-                        ownerToAdd = owner;
-                    }
-                    else
-                    {
-                        ownerToAdd.Email = dtoFlat.OwnerEmail;
-                        ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
-                    }
+                    managerId = manager.Id;
                 }
                 else
                 {
-                    ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
+                    Guid addedManagerId = _userRepository.CreateUser(new User() { Name = "", Surname = "", Email = dtoBuilding.ManagerEmail, Password = "DefaultManager1234", Role = Role.Manager }).Id;
+                    _sessionRepository.CreateSession(new Session() { UserId = addedManagerId });
+                    managerId = addedManagerId;
                 }
+            }
+
+            return managerId;
+        }
+
+        private void CreateBuildingFlats(List<DTOFlat> flats, Building building)
+        {
+            List<Flat> flatsToUpdate = _buildingLogic.GetAllBuildingFlats(building.Id).ToList();
+            IEnumerable<Person> people = _peopleRepository.GetPeople();
+
+            for (int i=0; i<flats.Count; i++)
+            {
+                Person ownerToAdd = GetFlatOwner(flats[i], people);
                 Flat flat = new Flat()
                 {
-                    Number = dtoFlat.Number ?? 0,
-                    Floor = dtoFlat.Floor ?? 0,
-                    Bathrooms = dtoFlat.Bathrooms ?? 0,
+                    Number = flats[i].Number,
+                    Floor = flats[i].Floor,
+                    Bathrooms = flats[i].Bathrooms,
                     Building = building,
-                    HasBalcony = dtoFlat.HasBalcony ?? false,
-                    Rooms = dtoFlat.Rooms ?? 0,
+                    HasBalcony = flats[i].HasBalcony,
+                    Rooms = flats[i].Rooms,
                     Owner = ownerToAdd,
                     OwnerId = ownerToAdd.Id
                 };
-                flatsToCreate.Add(flat);
+                _buildingLogic.UpdateFlat(building.Id, flatsToUpdate[i].Id, flat, false);
+            }
+        }
+
+        private Person GetFlatOwner(DTOFlat dtoFlat, IEnumerable<Person> people)
+        {
+            Person ownerToAdd = new Person() { Email = "", Name = "", Surname = "" };
+
+            if (dtoFlat.OwnerEmail is not null)
+            {
+                Person? owner = people.FirstOrDefault(u => u.Email.Equals(dtoFlat.OwnerEmail));
+                if (owner is not null)
+                {
+                    ownerToAdd = owner;
+                }
+                else
+                {
+                    ownerToAdd.Email = dtoFlat.OwnerEmail;
+                    ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
+                }
+            }
+            else
+            {
+                ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
             }
 
-            return flatsToCreate;
+            return ownerToAdd;
         }
 
         private List<DTOBuilding> GetBuildingsToImport(string fileName, Type implementedType)

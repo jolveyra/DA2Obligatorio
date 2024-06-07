@@ -21,8 +21,8 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult ImportBuildings(ImportBuildingRequestModel importBuildingRequestModel)
         {
-            _importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName);
-            return Ok("Import buildings successfully");
+            _importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName,  Guid.Parse(HttpContext.Items["UserId"] as string));
+            return Ok("Imported successfully");
         }
     }
 }
