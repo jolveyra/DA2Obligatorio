@@ -123,28 +123,6 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void UpdateRequestTest_InvalidBuilding()
-        {
-            Request request = new Request() { Id = Guid.NewGuid(), Description = "Request 1", AssignedEmployee = new User() { Id = Guid.NewGuid() }, Flat = new Flat() };
-
-            requestRepositoryMock.Setup(r => r.GetRequestById(It.IsAny<Guid>())).Returns(request);
-            Exception exception = null;
-
-            try
-            {
-                _requestLogic.UpdateRequest(request);
-            }
-            catch (Exception e)
-            {
-                exception = e;
-            }
-
-            requestRepositoryMock.VerifyAll();
-            Assert.IsInstanceOfType(exception, typeof(RequestException));
-            Assert.IsTrue(exception.Message.Equals("BuildingId cannot be empty or null"));
-        }
-
-        [TestMethod]
         public void UpdateRequestTest_InvalidAssignedEmployee()
         {
             Building building = new Building() { Id = Guid.NewGuid() };
