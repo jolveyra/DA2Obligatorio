@@ -88,6 +88,7 @@ const routes: Routes = [
     { path: '', component: CategoryListComponent },
     { path: 'new', component: CategoryNewComponent }
   ] },
+  // { path: 'reflection', component: ReflectionComponent, canActivate: [authGuard, constructorCompanyAdminGuard] }, // FIXME: not implemented
   { path: 'userSettings', component: UserSettingsComponent, canActivate: [authGuard] },
   { path: 'teapot', component: TeapotComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
