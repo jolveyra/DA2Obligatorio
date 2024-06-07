@@ -11,13 +11,6 @@ import { ManagerService } from '../../services/manager.service';
   styleUrl: './building-edit.component.css'
 })
 export class BuildingEditComponent {
-
-  // Tengo que obtener el manager del building y los managers del sistema.
-  // Para eso primero tengo que obtener el building
-  // En el html tengo que mostrar el nombre del building como título, y los datos del manager actual o un mensaje de que no tiene manager asignado.
-  // Si tiene manager asignado, tengo que mostrar un desplegable con los managers del sistema para que pueda cambiarlo.
-  // Al cambiarlo, tengo que actualizar el building con el nuevo manager y volver a la lista de buildings.
-
   error: string = '';
   isLoading: boolean = false;
   building: Building = new Building('', '', 0, '', 0, '', '', '', 0, 0);

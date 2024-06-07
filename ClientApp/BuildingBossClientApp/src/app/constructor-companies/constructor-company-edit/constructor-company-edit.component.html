@@ -1,11 +1,13 @@
-<h2 class="text-center text-primary-emphasis fw-semibold mb-4">Constructor Company</h2>
-<div class="container mt-5">
+<h2 class="text-center text-primary-emphasis fw-semibold mb-4 mt-5">Edit Constructor Company</h2>
+<div class="container mt-5 w-50">
   <div class="form-group">
-      <label for="editableText"> Name </label>
+      <label class="fw-semibold" for="editableText"> Name </label>
       <input type="text" class="form-control" id="editableText" [(ngModel)]="this.constructorCompany.name">
-      <button
-      class="btn btn-primary mt-3"
-      (click)="onEditConstructorCompany()">Edit name</button>
+      <div class="d-flex justify-content-center">
+        <button
+        class="btn btn-primary mt-3"
+        (click)="onEditConstructorCompany()">Edit name</button>
+      </div>
   </div>
   <div class="text-center" *ngIf="isLoading">
     <app-loading-spinner></app-loading-spinner>

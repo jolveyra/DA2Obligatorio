@@ -1,15 +1,20 @@
 <div class="container">
     <div *ngIf="constructorCompanyName && finishedLoadingAdmin || userRole === 'Manager'">
       <div class="d-flex justify-content-end mb-3">
-        <button
+        <div class="d-flex justify-content-end mb-3 mx-3">
+          <button
             class="btn btn-success"
             (click)="onNewBuilding()"
-            *ngIf="userRole === 'ConstructorCompanyAdmin'">New building</button>
-            <div class="d-flex justify-content-end mb-3">
-              <button
-                  class="btn btn-success"
-                  (click)="onImportBuildings()"
-                  *ngIf="userRole === 'ConstructorCompanyAdmin'">Import buildings</button>
+            *ngIf="userRole === 'ConstructorCompanyAdmin'">New building
+          </button>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+          <button
+            class="btn btn-success"
+            (click)="onImportBuildings()"
+            *ngIf="userRole === 'ConstructorCompanyAdmin'">Import buildings
+          </button>
+        </div>
       </div>
       <div class="d-flex justify-content-center">
           <div class="alert alert-danger" *ngIf="error !== ''">

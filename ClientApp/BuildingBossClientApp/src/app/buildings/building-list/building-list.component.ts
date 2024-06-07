@@ -137,7 +137,6 @@ export class BuildingListComponent implements OnInit, OnDestroy {
   }
 
   deleteBuilding(id: string) {
-    // TODO: hacer llamada y si response entonces eliminar el edificio de la lista y mostrar mensaje de éxito en successMsg y si error mostrarlo en error
     this.buildingService.deleteBuilding(id)
       .subscribe(
         () => {

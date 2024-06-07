@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { Importer } from '../shared/importer.model';
 
 interface ImporterResponseData {
   id: string;
@@ -16,7 +17,7 @@ export class ImporterService {
     private httpClient: HttpClient
   ) { }
 
-  fetchimporters(): Observable<ImporterResponseData[]> {
+  fetchImporters(): Observable<ImporterResponseData[]> {
     return this.httpClient.get<ImporterResponseData[]>('https://localhost:7122/api/v2/importers')
       .pipe(
         map((response: ImporterResponseData[]) => response.map(importer => ({
@@ -31,6 +32,11 @@ export class ImporterService {
       {
         name
       }
+    )
+    .pipe(
+      map((response: ImporterResponseData) => new Importer(
+        response.id,
+        response.name))
     );
   }
 }
