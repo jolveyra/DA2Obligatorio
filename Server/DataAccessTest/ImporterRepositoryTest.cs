@@ -56,5 +56,22 @@ namespace DataAccessTest
 
             Assert.AreEqual(importer, result);
         }
+
+        [TestMethod]
+        public void GetImporterByNameTest()
+        {
+            Importer importer = new Importer()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Importer1"
+            };
+
+            mockContext.Setup(x => x.Importers).ReturnsDbSet(new List<Importer>() { importer });
+
+            Importer result = importerRepository.GetImporterByName(importer.Name);
+
+            mockContext.Verify(x => x.Importers, Times.Once);
+            Assert.AreEqual(importer, result);
+        }
     }
 }

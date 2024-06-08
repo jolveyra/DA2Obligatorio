@@ -6,5 +6,6 @@ namespace RepositoryInterfaces
     {
         Importer CreateImporter(Importer importer);
         IEnumerable<Importer> GetAllImporters();
+        Importer GetImporterByName(string name);
     }
 }

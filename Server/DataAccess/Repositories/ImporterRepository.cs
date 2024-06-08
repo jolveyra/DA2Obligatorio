@@ -26,5 +26,17 @@ namespace DataAccess.Repositories
         {
             return _context.Importers;
         }
+
+        public Importer GetImporterByName(string name)
+        {
+            Importer? importer = _context.Importers.FirstOrDefault(i => i.Name == name);
+
+            if (importer == null)
+            {
+                throw new ArgumentException("Importer not found");
+            }
+
+            return importer;
+        }
     }
 }
