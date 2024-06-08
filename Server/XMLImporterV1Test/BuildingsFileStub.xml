@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<edificios>
+		<nombre>Las torres</nombre>
+		<direccion>
+			<calle_principal>Av. 6 de Diciembre</calle_principal>
+			<numero_puerta>3030</numero_puerta>
+			<calle_secundaria>Av. Eloy Alfaro</calle_secundaria>
+		</direccion>
+		<encargado />
+		<gps>
+			<latitud>-0.176</latitud>
+			<longitud>-78.48</longitud>
+		</gps>
+		<gastos_comunes>5000</gastos_comunes>
+		<departamentos>
+			<piso>1</piso>
+			<numero_puerta>101</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>juan.perez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>2</piso>
+			<numero_puerta>201</numero_puerta>
+			<habitaciones>2</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>pedro.gonzalez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>3</piso>
+			<numero_puerta>301</numero_puerta>
+			<habitaciones>1</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<encargado />
+			<propietarioEmail>maria.gonzalez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>4</piso>
+			<numero_puerta>401</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>juan.perez@gmail.com</propietarioEmail>
+		</departamentos>
+	</edificios>
+</root>

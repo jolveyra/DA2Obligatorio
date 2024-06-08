@@ -1,0 +1,53 @@
+{
+  "edificios": [
+    {
+      "nombre": "Las torres",
+      "direccion": {
+        "calle_principal": "Av. 6 de Diciembre",
+        "numero_puerta": 3030,
+        "calle_secundaria": "Av. Eloy Alfaro"
+      },
+      "encargado": null,
+      "gps": {
+        "latitud": -0.176,
+        "longitud": -78.48
+      },
+      "gastos_comunes": 5000,
+      "departamentos": [
+        {
+          "piso": 1,
+          "numero_puerta": 101,
+          "habitaciones": 3,
+          "conTerraza": false,
+          "baños": 2,
+          "propietarioEmail": "juan.perez@gmail.com"
+        },
+        {
+          "piso": 2,
+          "numero_puerta": 201,
+          "habitaciones": 2,
+          "conTerraza": true,
+          "baños": 1,
+          "propietarioEmail": "pedro.gonzalez@gmail.com"
+        },
+        {
+          "piso": 3,
+          "numero_puerta": 301,
+          "habitaciones": 1,
+          "conTerraza": false,
+          "baños": 1,
+          "encargado": null,
+          "propietarioEmail": "maria.gonzalez@gmail.com"
+        },
+        {
+          "piso": 4,
+          "numero_puerta": 401,
+          "habitaciones": 3,
+          "conTerraza": true,
+          "baños": 2,
+          "propietarioEmail": "juan.perez@gmail.com"
+        }
+      ]
+    }
+  ]
+}

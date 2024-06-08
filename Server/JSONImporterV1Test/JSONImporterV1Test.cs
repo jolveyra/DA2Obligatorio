@@ -16,7 +16,7 @@ namespace JSONImporterV1Test
         [TestInitialize]
         public void Initialize()
         {
-            path = @"..\..\BuildingsJsonStub.json";
+            path = @"..\..\..\BuildingsJsonStub.json";
             importer = new JsonImporter();
         }
 

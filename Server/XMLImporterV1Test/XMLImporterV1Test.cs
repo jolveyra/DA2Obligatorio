@@ -16,7 +16,7 @@ namespace XMLImporterV1Test
         public void Initialize()
         {
             importer = new XMLImporter();
-            path = @"..\..\BuildingsFileStub.xml";
+            path = @"..\..\..\BuildingsFileStub.xml";
 
         }
 
