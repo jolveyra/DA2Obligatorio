@@ -294,13 +294,15 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
     {
         Person? newOwner = null;
 
-        if (string.IsNullOrEmpty(existingFlat.Owner.Email))
-        {
-            _iPeopleRepository.DeletePerson(existingFlat.Id);
-        }
+        Person oldOwner = existingFlat.Owner;
         newOwner = _iPeopleRepository.GetPeople().FirstOrDefault(p => p.Email.Equals(flat.Owner.Email));
 
         existingFlat.Owner = newOwner ?? _iPeopleRepository.CreatePerson(flat.Owner);
+
+        if (string.IsNullOrEmpty(oldOwner.Email))
+        {
+            _iPeopleRepository.DeletePerson(oldOwner.Id);
+        }
     }
 
     private void OverrideFlatInfo(Flat flat, Flat existingFlat)
@@ -321,9 +323,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
 
     private void ValidateOwner(Person owner)
     {
-        CheckNotEmptyFLatOwnerName(owner.Name);
         CheckFlatOwnerEmail(owner.Email);
-        CheckNotEmptyFLatOwnerSurname(owner.Surname);
     }
 
     private void CheckNotNegativeRooms(int rooms)
@@ -339,14 +339,6 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         if (bathrooms <= 0)
         {
             throw new BuildingException("Number of bathrooms cannot be negative or zero");
-        }
-    }
-
-    private void CheckNotEmptyFLatOwnerSurname(string surname)
-    {
-        if (string.IsNullOrEmpty(surname))
-        {
-            throw new BuildingException("Owner surname cannot be empty");
         }
     }
 
@@ -378,14 +370,6 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         if (string.IsNullOrEmpty(email))
         {
             throw new BuildingException("Owner email cannot be empty");
-        }
-    }
-
-    private static void CheckNotEmptyFLatOwnerName(string name)
-    {
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new BuildingException("Owner name cannot be empty");
         }
     }
 

@@ -820,82 +820,6 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Invalid flat number, first digit must be same as in floor number");
     }
 
-
-    [TestMethod]
-    public void UpdateFlatByFlatIdTestFlatFromAnotherBuilding()
-    {
-        Flat flat = new Flat()
-        {
-            Number = 303,
-            Floor = 3,
-            Bathrooms = 3,
-            Rooms = 1,
-            HasBalcony = true,
-            Owner = new Person()
-            {
-                Email = "pedro@mail.com",
-                Name = "",
-                Surname = "De Los Naranjos",
-            },
-            Building = new Building() { Id = Guid.NewGuid() }
-        };
-
-        Flat toChangeFlat = new Flat();
-
-        Exception exception = null;
-
-        try
-        {
-            Flat result = buildingLogic.UpdateFlat(Guid.NewGuid(), toChangeFlat.Id, flat, false);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Owner name cannot be empty");
-    }
-
-
-    [TestMethod]
-    public void UpdateFlatByFlatIdTestFlatWithEmptyOwnerName()
-    {
-        Flat flat = new Flat() { Number = 303, 
-            Floor = 3, 
-            Bathrooms = 3,
-            Rooms = 1,
-            HasBalcony = true,
-            Owner = new Person()
-            {
-                Email = "pedro@mail.com", 
-                Name = "", 
-                Surname = "De Los Naranjos",
-            },
-            Building = new Building() { Id = Guid.NewGuid() }
-        };
-
-        Flat toChangeFlat = new Flat();
-
-        Exception exception = null;
-
-        try
-        {
-            Flat result = buildingLogic.UpdateFlat(flat.Building.Id, toChangeFlat.Id, flat, false);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Owner name cannot be empty");
-    }
-
     [TestMethod]
     public void UpdateFlatByFlatIdTestFlatWithEmptyEmail()
     {
@@ -949,44 +873,6 @@ public class BuildingLogicTest
         Assert.AreEqual(exception.Message, "Owner email cannot be empty");
     }
 
-
-    [TestMethod]
-    public void UpdateFlatByFlatIdTestFlatWithEmptyOwnerSurname()
-    {
-        Flat flat = new Flat()
-        {
-            Number = 303,
-            Floor = 3,
-            Bathrooms = 3,
-            Rooms = 1,
-            HasBalcony = true,
-            Owner = new Person()
-            {
-                Email = "pedro@mail.com", 
-                Name = "Pedro", 
-                Surname = "",
-            },
-            Building = new Building() { Id = Guid.NewGuid() }
-        };
-
-        Flat toChangeFlat = new Flat();
-
-        Exception exception = null;
-
-        try
-        {
-            Flat result = buildingLogic.UpdateFlat(flat.Building.Id, toChangeFlat.Id, flat, false);
-        }
-        catch (Exception e)
-        {
-            exception = e;
-        }
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Owner surname cannot be empty");
-    }
 
     [TestMethod]
     public void UpdateFlatByFlatIdTestFlatWithNegativeNumberOfBathrooms()

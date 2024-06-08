@@ -15,17 +15,19 @@ namespace BusinessLogic
         private IBuildingRepository _buildingRepository;
         private IBuildingLogic _buildingLogic;
         private IPeopleRepository _peopleRepository;
-        private string _importerPath = @"..\..\Importers";
-        private string _buildingFilesPath = @"..\..\BuildingFiles";
+        private string _importerPath = @".\Importers";
+        private string _buildingFilesPath = @".\BuildingFiles";
 
         public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository,
-            ISessionRepository sessionRepository, IBuildingRepository buildingRepository, IBuildingLogic buildingLogic)
+            ISessionRepository sessionRepository, IBuildingRepository buildingRepository, IBuildingLogic buildingLogic,
+            IPeopleRepository peopleRepository)
         {
             _importerRepository = importerRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
             _buildingRepository = buildingRepository;
             _buildingLogic = buildingLogic;
+            _peopleRepository = peopleRepository;
         }
 
         public void ImportBuildings(string dllName, string fileName, Guid userId)
@@ -97,7 +99,13 @@ namespace BusinessLogic
 
             for (int i=0; i<flats.Count; i++)
             {
-                Person ownerToAdd = GetFlatOwner(flats[i], people);
+                Person ownerToAdd = new Person()
+                {
+                    Name = "",
+                    Surname = "",
+                    Email = flats[i].OwnerEmail
+                };
+
                 Flat flat = new Flat()
                 {
                     Number = flats[i].Number,
@@ -109,7 +117,7 @@ namespace BusinessLogic
                     Owner = ownerToAdd,
                     OwnerId = ownerToAdd.Id
                 };
-                _buildingLogic.UpdateFlat(building.Id, flatsToUpdate[i].Id, flat, false);
+                _buildingLogic.UpdateFlat(building.Id, flatsToUpdate[i].Id, flat, true);
             }
         }
 
@@ -153,7 +161,8 @@ namespace BusinessLogic
 
             foreach (Type t in assembly.GetTypes())
             {
-                if (typeof(IBuildingImporter).IsAssignableFrom(t) && t is { IsAbstract: false, IsInterface: false })
+                //typeof(IBuildingImporter).IsAssignableFrom(t)
+                if (t.GetInterface("IBuildingImporter") is not null && t is { IsAbstract: false, IsInterface: false })
                 {
                     type = t;
                 }

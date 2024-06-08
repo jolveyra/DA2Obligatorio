@@ -9,10 +9,10 @@ namespace JSONImporterV1.Domain
     public class Departamento
     {
         public int Piso { get; set; }
-        public int NumeroPuerta { get; set; }
+        public int Numero_puerta { get; set; }
         public int Habitaciones { get; set; }
         public bool ConTerraza { get; set; }
-        public int Banos { get; set; }
+        public int Baños { get; set; }
         public string PropietarioEmail { get; set; }
     }
 }
