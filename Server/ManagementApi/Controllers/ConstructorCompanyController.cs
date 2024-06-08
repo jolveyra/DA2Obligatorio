@@ -44,7 +44,7 @@ namespace ManagementApi.Controllers
 
         [HttpPut("{constructorCompanyId}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult UpdateConstructorCompany([FromBody] UpdateConstructorCompanyRequestModel request, [FromRoute] Guid constructorCompanyId)
+        public IActionResult UpdateConstructorCompany([FromBody] UpdateConstructorCompanyRequestModel request, [FromRoute] Guid constructorCompanyId)
         {
             return Ok(new ConstructorCompanyResponseModel(_iConstructorCompanyLogic.
                 UpdateConstructorCompany(request.Name,
