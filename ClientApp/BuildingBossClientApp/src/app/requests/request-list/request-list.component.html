@@ -14,17 +14,23 @@
             </div>
         </div>
         <div *ngIf="!noRequests && endLoading">
-            <input
-                type="text"
-                >
+            <div class="d-flex justify-content-center">
+                <input
+                    type="text"
+                    placeholder="Type to search by category"
+                    [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearch()"
+                    class="form-control w-50 mb-4">
+            </div>            
             <div class="d-flex justify-content-center mb-5">
-                <div class="list-group w-75">
+                <div class="list-group w-75" *ngIf="requestsToShow.length !== 0">
                     <app-request-item
-                        *ngFor="let requestElem of requests"
+                        *ngFor="let requestElem of requestsToShow"
                         [request]="requestElem"
                         [userRole]="userRole"
                         (requestUpdated)="updateStatus($event)"></app-request-item>
                 </div>
+                <h2 class="text-primary-emphasis" *ngIf="requestsToShow.length === 0">There are no request with that category name</h2>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-5" *ngIf="noRequests">

@@ -24,6 +24,8 @@ export class RequestListComponent implements OnInit, OnDestroy {
   requests: Request[] = [];
   userRole: string = '';
   userLoggedSub: Subscription = new Subscription();
+  searchTerm: string = '';
+  requestsToShow: Request[] = [];
 
 
   constructor(
@@ -76,6 +78,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
               request.status,
             );
           });
+          this.requestsToShow = this.requests;
           if (this.requests.length === 0) {
             this.noRequests = true;
           }
@@ -127,6 +130,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
               request.status
             );
           });
+          this.requestsToShow = this.requests;
           if (this.requests.length === 0) {
             this.noRequests = true;
           }
@@ -172,5 +176,9 @@ export class RequestListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+  }
+
+  onSearch(): void {
+    this.requestsToShow = this.requests.filter(req => req.categoryName.toLowerCase().includes(this.searchTerm.toLowerCase()));
   }
 }
