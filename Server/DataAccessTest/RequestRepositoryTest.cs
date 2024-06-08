@@ -107,7 +107,7 @@ namespace DataAccessTest
 
             _contextMock.Setup(context => context.Requests).ReturnsDbSet(new List<Request> { request });
 
-            IEnumerable<Request> result = _requestRepository.GetAllRequestsWithBuilding();
+            IEnumerable<Request> result = _requestRepository.GetAllRequests();
 
             _contextMock.Verify(context => context.Requests);
             Assert.IsTrue(result.SequenceEqual(new List<Request> { request }));

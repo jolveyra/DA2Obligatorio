@@ -30,14 +30,9 @@ namespace BusinessLogic
 
         public void ImportBuildings(string dllName, string fileName, Guid userId)
         {
-            Importer? importer = _importerRepository.GetAllImporters().FirstOrDefault(i => i.Name.Equals(dllName));
-
-            if (importer == null)
-            {
-                throw new Exception("Importer not found");
-            }
+            Importer importer = _importerRepository.GetImporterByName(dllName);
             
-            Type implementedType = GetInterfaceImplementedType($"{_importerPath}\\{dllName}.dll");
+            Type implementedType = GetInterfaceImplementedType($"{_importerPath}\\{importer.Name}.dll");
             List<DTOBuilding> buildingsToImport = GetBuildingsToImport(fileName, implementedType);
             CreateBuildings(buildingsToImport, userId);
         }
