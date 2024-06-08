@@ -38,9 +38,9 @@ namespace DataAccess.Repositories
 
         }
 
-        public ConstructorCompany GetConstructorCompanyById(Guid guid)
+        public ConstructorCompany GetConstructorCompanyById(Guid id)
         {
-            return _context.ConstructorCompanies.FirstOrDefault(c => c.Id == guid);
+            return _context.ConstructorCompanies.FirstOrDefault(c => c.Id == id);
         }
 
         public ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany)

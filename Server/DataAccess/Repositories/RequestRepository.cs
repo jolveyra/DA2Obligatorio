@@ -56,10 +56,5 @@ namespace DataAccess.Repositories
             _context.SaveChanges();
             return existingRequest;
         }
-
-        public IEnumerable<Request> GetAllRequestsWithBuilding()
-        {
-            return _context.Requests.Include(r => r.Flat.Building);
-        }
     }
 }

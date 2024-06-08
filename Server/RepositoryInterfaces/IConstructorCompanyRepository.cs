@@ -12,7 +12,7 @@ namespace RepositoryInterfaces
         ConstructorCompany CreateConstructorCompany(ConstructorCompany constructorCompany);
         void DeleteConstructorCompany(ConstructorCompany constructorCompany);
         IEnumerable<ConstructorCompany> GetAllConstructorCompanies();
-        ConstructorCompany GetConstructorCompanyById(Guid guid);
+        ConstructorCompany GetConstructorCompanyById(Guid id);
         ConstructorCompany UpdateConstructorCompany(ConstructorCompany constructorCompany);
     }
 }

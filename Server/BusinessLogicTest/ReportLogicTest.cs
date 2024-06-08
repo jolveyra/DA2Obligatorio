@@ -10,15 +10,13 @@ namespace BusinessLogicTest
     public class ReportLogicTest
     {
         private Mock<IRequestRepository> requestRepositoryMock;
-        private Mock<IUserRepository> userRepositoryMock;
         private ReportLogic reportLogic;
 
         [TestInitialize]
         public void TestInitialize()
         {
             requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-            reportLogic = new ReportLogic(requestRepositoryMock.Object, userRepositoryMock.Object);
+            reportLogic = new ReportLogic(requestRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -39,7 +37,6 @@ namespace BusinessLogicTest
             }
 
             requestRepositoryMock.VerifyAll();
-            userRepositoryMock.VerifyAll();
             Assert.IsInstanceOfType(exception, typeof(ReportException));
             Assert.AreEqual("Invalid filter", exception.Message);
         }
@@ -54,49 +51,38 @@ namespace BusinessLogicTest
             {
                 new Request
                 {
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building1",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
-                    Flat = new Flat
+                    
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building2",
-                            ManagerId = manager.Id  
-                        }
+                        Name = "Building2",
+                        ManagerId = manager.Id  
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building1",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building2",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building2",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id,
                     Status = RequestStatus.Completed,
@@ -105,13 +91,10 @@ namespace BusinessLogicTest
                 },
                 new Request
                 {
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building1",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id,
                     Status = RequestStatus.InProgress,
@@ -119,7 +102,7 @@ namespace BusinessLogicTest
                 }
             };
 
-            requestRepositoryMock.Setup(r => r.GetAllRequestsWithBuilding()).Returns(requests);
+            requestRepositoryMock.Setup(r => r.GetAllRequests()).Returns(requests);
 
             List<Report> expectedReport = new List<Report>
             {
@@ -130,7 +113,6 @@ namespace BusinessLogicTest
             IEnumerable<Report> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
-            userRepositoryMock.VerifyAll();
             Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
 
@@ -147,52 +129,40 @@ namespace BusinessLogicTest
                 new Request
                 {
                     AssignedEmployee = employee1,
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building1",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
                     AssignedEmployee = employee2,
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building2",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building2",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
                     AssignedEmployee = employee1,
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building2",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building2",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id
                 },
                 new Request
                 {
                     AssignedEmployee = employee2,
-                    Flat = new Flat
+                    Building = new Building
                     {
-                        Building = new Building
-                        {
-                            Name = "Building1",
-                            ManagerId = manager.Id
-                        }
+                        Name = "Building1",
+                        ManagerId = manager.Id
                     },
                     ManagerId = manager.Id,
                     Status = RequestStatus.Completed,
@@ -227,7 +197,6 @@ namespace BusinessLogicTest
             IEnumerable<Report> actualReport = reportLogic.GetReport(manager.Id, filter);
 
             requestRepositoryMock.VerifyAll();
-            userRepositoryMock.VerifyAll();
             Assert.IsTrue(expectedReport.SequenceEqual(actualReport));
         }
     }
