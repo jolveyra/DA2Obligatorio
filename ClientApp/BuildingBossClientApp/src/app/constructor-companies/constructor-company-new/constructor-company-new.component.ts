@@ -29,6 +29,7 @@ export class ConstructorCompanyNewComponent {
     this.toCreateConstructorCompany.name = form.value.name;
 
     this.isLoading = true;
+    this.error = '';
 
     this.constructorCompanyService.createConstructorCompany(this.toCreateConstructorCompany).subscribe(
       response => {

@@ -3,6 +3,7 @@ using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModels.BuildingModels;
 using WebModels.ImportBuildingModels;
 
 namespace ManagementApiTest
@@ -42,12 +43,16 @@ namespace ManagementApiTest
             _importBuildingLogicMock.Setup(x => x.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName, ccAdminId));
 
             OkObjectResult expected = new OkObjectResult(null);
+            ImportBuildingResponseModel expectedObjectResult = new ImportBuildingResponseModel("Imported successfully");
+
 
             OkObjectResult result = anotherBuildingController.ImportBuildings(importBuildingRequestModel) as OkObjectResult;
+            ImportBuildingResponseModel objectResult = result.Value as ImportBuildingResponseModel;
 
             _importBuildingLogicMock.VerifyAll();
 
             Assert.IsTrue(expected.StatusCode.Equals(result.StatusCode));
+            Assert.IsTrue(objectResult.Equals(expectedObjectResult));
         }
     }
 }

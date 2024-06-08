@@ -1,5 +1,6 @@
 using XMLImporterV1;
 using XMLImporterV1.Domain;
+using BuildingImporter;
 using System.Xml.Serialization;
 using Moq;
 
@@ -8,17 +9,14 @@ namespace XMLImporterV1Test
     [TestClass]
     public class XMLImporterV1Test
     {
-
-        private Mock<IXmlDeserializer> serializerMock;
-        private XMLImporter importer;
+        XMLImporter importer;
         string path;
 
         [TestInitialize]
         public void Initialize()
         {
-            serializerMock = new Mock<IXmlDeserializer>(MockBehavior.Strict);
-            path = @"..\..\buildings.xml";
-            importer = new XMLImporter(serializerMock.Object);
+            importer = new XMLImporter();
+            path = @"..\..\BuildingsFileStub.xml";
 
         }
 
@@ -27,8 +25,8 @@ namespace XMLImporterV1Test
         {
 
             List<DTOBuilding> buildings = new List<DTOBuilding>();
-            List<Edificio> edificios = new List<Edificio>() {  
-                new Edificio() 
+            List<Edificio> edificios = new List<Edificio>() {
+                new Edificio()
                 {
                     Nombre = "Las torres",
                     Direccion = new Direccion
@@ -56,11 +54,10 @@ namespace XMLImporterV1Test
                             PropietarioEmail = "juan.perez@gmail.com"
                         }
                     }
-                } 
+                }
             };
 
             Root rootBuildingData = new Root() { Edificios = edificios };
-            serializerMock.Setup(s => s.Deserialize<Root>(It.IsAny<string>())).Returns(rootBuildingData);
 
             buildings = importer.ImportBuildingsFromFile(path);
 

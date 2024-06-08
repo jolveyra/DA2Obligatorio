@@ -135,9 +135,7 @@
                     class="form-control"
                     [(ngModel)]="flat.ownerName"
                     name="ownerName"
-                    required
                     #ownerName="ngModel">
-                <span class="text-danger" *ngIf="!ownerName.valid && ownerName.touched">Owner's name must not be empty</span>
             </div>
             <div class="form-group mb-2">
                 <label for="ownerSurname">Owner's surname</label>
@@ -147,9 +145,7 @@
                     class="form-control"
                     [(ngModel)]="flat.ownerSurname"
                     name="ownerSurname"
-                    required
                     #ownerSurname="ngModel">
-                <span class="text-danger" *ngIf="!ownerSurname.valid && ownerSurname.touched">Owner's surname must not be empty</span>
             </div>
             <div class="form-group mb-2">
                 <label for="ownerEmail">Owner's email</label>

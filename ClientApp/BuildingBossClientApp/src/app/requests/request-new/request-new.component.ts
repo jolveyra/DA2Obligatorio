@@ -129,6 +129,7 @@ export class RequestNewComponent implements OnInit {
     );
 
     this.isLoading = true;
+    this.error = '';
 
     this.requestService.createRequest(request).subscribe(
       response => {

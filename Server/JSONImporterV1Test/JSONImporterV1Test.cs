@@ -3,23 +3,21 @@ using JSONImporterV1.Domain;
 using System.Xml.Serialization;
 using Moq;
 using JSONImporterV1.Deserializer;
+using BuildingImporter;
 
 namespace JSONImporterV1Test
 {
     [TestClass]
     public class JSONImporterV1Test
     {
-
-        private Mock<IJSONDeserializer> deserializerMock;
         private JsonImporter importer;
         string path;
 
         [TestInitialize]
         public void Initialize()
         {
-            deserializerMock = new Mock<IJSONDeserializer>(MockBehavior.Strict);
-            path = @"..\..\buildings.json";
-            importer = new JsonImporter(deserializerMock.Object);
+            path = @"..\..\BuildingsJsonStub.json";
+            importer = new JsonImporter();
         }
 
         [TestMethod]
@@ -33,9 +31,9 @@ namespace JSONImporterV1Test
                     Nombre = "Las torres",
                     Direccion = new Direccion
                     {
-                        CallePrincipal = "Av. 6 de Diciembre",
-                        NumeroPuerta = 3030,
-                        CalleSecundaria = "Av. Eloy Alfaro"
+                        Calle_principal = "Av. 6 de Diciembre",
+                        Numero_puerta = 3030,
+                        Calle_secundaria = "Av. Eloy Alfaro"
                     },
                     Encargado = "unjuan.perez@gmail.com",
                     Gps = new Gps
@@ -49,10 +47,10 @@ namespace JSONImporterV1Test
                         new Departamento
                         {
                             Piso = 1,
-                            NumeroPuerta = 101,
+                            Numero_puerta = 101,
                             Habitaciones = 3,
                             ConTerraza = false,
-                            Banos = 2,
+                            Baños = 2,
                             PropietarioEmail = "juan.perez@gmail.com"
                         }
                     }
@@ -60,7 +58,6 @@ namespace JSONImporterV1Test
             };
 
             Root rootBuildingData = new Root() { Edificios = edificios };
-            deserializerMock.Setup(s => s.Deserialize<Root>(It.IsAny<string>())).Returns(rootBuildingData);
 
             buildings = importer.ImportBuildingsFromFile(path);
 

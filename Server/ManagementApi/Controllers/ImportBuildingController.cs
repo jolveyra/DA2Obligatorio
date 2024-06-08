@@ -22,7 +22,7 @@ namespace ManagementApi.Controllers
         public IActionResult ImportBuildings(ImportBuildingRequestModel importBuildingRequestModel)
         {
             _importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName,  Guid.Parse(HttpContext.Items["UserId"] as string));
-            return Ok("Imported successfully");
+            return Ok(new ImportBuildingResponseModel("Imported successfully"));
         }
     }
 }

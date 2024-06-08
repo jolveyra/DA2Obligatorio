@@ -24,6 +24,7 @@ export class ImporterNewComponent {
     }
 
     this.isLoading = true;
+    this.error = '';
 
     this.importerService.createImporter(form.value.name)
       .subscribe(

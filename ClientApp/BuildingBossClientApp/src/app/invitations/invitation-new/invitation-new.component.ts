@@ -25,6 +25,7 @@ export class InvitationNewComponent {
     }
 
     this.isLoading = true;
+    this.error = '';
 
     const newInvitation = new Invitation(
       '',

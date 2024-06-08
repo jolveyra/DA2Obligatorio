@@ -76,6 +76,7 @@ export class BuildingEditComponent {
 
   onSubmit(): void{
     this.isLoading = true;
+    this.error = '';
     this.buildingService.updateConstructorCompanyBuilding(this.building.id, this.selectedManagerId, this.newName)
       .subscribe(
         () => {

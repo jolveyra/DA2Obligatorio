@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuildingImporter\BuildingImporter.csproj" />
     <ProjectReference Include="..\JSONImporterV1\JSONImporterV1.csproj" />
   </ItemGroup>
 

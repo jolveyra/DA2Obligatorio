@@ -31,6 +31,7 @@ export class EmployeeNewComponent {
     );
 
     this.isLoading = true;
+    this.error = '';
     this.employeeService.createMaintenanceEmployee(newEmployee, form.value.password)
       .subscribe(
         response => {

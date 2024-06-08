@@ -40,6 +40,7 @@ export class InvitationEditComponent implements OnInit {
   }
 
   onSubmit() {
+    this.error = '';
     this.invitationService.updateInvitationStatus(this.route.snapshot.params['id'], this.answer)
       .subscribe(
         response => {

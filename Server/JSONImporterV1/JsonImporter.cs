@@ -3,23 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using JSONImporterV1.Domain;
+using BuildingImporter;
 using JSONImporterV1.Deserializer;
 
 namespace JSONImporterV1
 {
     public class JsonImporter : IBuildingImporter
     {
-        private readonly IJSONDeserializer _jsonDeserializer;
-
-        public JsonImporter(IJSONDeserializer jsonDeserializer)
-        {
-            _jsonDeserializer = jsonDeserializer;
-        }
-
         public List<DTOBuilding> ImportBuildingsFromFile(string path)
         {
+            IJSONDeserializer _jsonDeserializer = new JSONDeserializer();
             Root buildingData = _jsonDeserializer.Deserialize<Root>(path);
             List<DTOBuilding> buildings = new List<DTOBuilding>();
             ConvertEdificiosToDTOBuildings(buildingData, buildings);
@@ -35,9 +29,9 @@ namespace JSONImporterV1
                 {
                     Name = edificio.Nombre,
                     SharedExpenses = edificio.GastosComunes,
-                    Street = edificio.Direccion.CallePrincipal,
-                    Number = edificio.Direccion.NumeroPuerta,
-                    CornerStreet = edificio.Direccion.CalleSecundaria,
+                    Street = edificio.Direccion.Calle_principal,
+                    Number = edificio.Direccion.Numero_puerta,
+                    CornerStreet = edificio.Direccion.Calle_secundaria,
                     Latitude = edificio.Gps.Latitud,
                     Longitude = edificio.Gps.Longitud,
                     ManagerEmail = edificio.Encargado,
@@ -55,11 +49,11 @@ namespace JSONImporterV1
             {
                 DTOFlat flat = new DTOFlat
                 {
-                    Number = departamento.NumeroPuerta,
+                    Number = departamento.Numero_puerta,
                     Floor = departamento.Piso,
                     OwnerEmail = departamento.PropietarioEmail,
                     Rooms = departamento.Habitaciones,
-                    Bathrooms = departamento.Banos,
+                    Bathrooms = departamento.Baños,
                     HasBalcony = departamento.ConTerraza
                 };
 

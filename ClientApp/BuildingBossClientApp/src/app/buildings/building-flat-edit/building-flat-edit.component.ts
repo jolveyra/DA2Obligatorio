@@ -58,6 +58,7 @@ export class BuildingFlatEditComponent implements OnInit {
     );
 
     this.isLoading = true;
+    this.error = '';
     this.buildingService.updateFlat(
       updatedFlat,
       form.value.changeOwner).subscribe(
