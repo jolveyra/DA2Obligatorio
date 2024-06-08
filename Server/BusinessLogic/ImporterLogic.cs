@@ -17,7 +17,6 @@ namespace BusinessLogic
     public class ImporterLogic: IImporterLogic
     {
         private IImporterRepository _iImporterRepository;
-        private string _importersPath = @".\Importers";
 
         public ImporterLogic(IImporterRepository iImporterRepository)
         {
