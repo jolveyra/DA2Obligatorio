@@ -42,6 +42,7 @@ export class BuildingImportComponent {
   }
 
   onSubmit(){
+    this.error = '';
     this.isLoading = true;
     this.importBuildingService.importBuildings(this.selectedImporterName, this.fileName)
       .subscribe(

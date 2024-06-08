@@ -155,6 +155,7 @@ export class RequestEditComponent implements OnInit {
     }
 
     this.isLoading = true;
+    this.error = '';
 
     this.requestService.updateRequestManager(this.request.id, this.description, this.selectedCategory, this.formEmployee.id)
       .subscribe(

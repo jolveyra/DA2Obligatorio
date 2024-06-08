@@ -21,8 +21,9 @@ export class CategoryNewComponent {
     if (!form.valid) {
       return;
     }
-
+    
     this.isLoading = true;
+    this.error = '';
     this.categoryService.createCategory(form.value.name)
       .subscribe(
         () => {

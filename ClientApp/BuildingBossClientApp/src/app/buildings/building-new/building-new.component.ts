@@ -55,6 +55,7 @@ export class BuildingNewComponent {
   onSubmit(form: NgForm): void {
     
     this.isLoading = true;
+    this.error = '';
 
     const building: Building = new Building(
       '',
