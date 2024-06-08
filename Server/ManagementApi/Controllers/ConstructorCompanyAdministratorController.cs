@@ -27,7 +27,7 @@ namespace ManagementApi.Controllers
 
         [HttpGet("{id}")]
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
-        public OkObjectResult GetConstructorCompanyAdministrator()
+        public IActionResult GetConstructorCompanyAdministrator()
         {
             return Ok(new ConstructorCompanyAdministratorResponseModel(_iConstructorCompanyAdministratorLogic.GetConstructorCompanyAdministrator(Guid.Parse(HttpContext.Items["UserId"] as string))));
         }
