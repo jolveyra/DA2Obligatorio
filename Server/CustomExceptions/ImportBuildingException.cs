@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomExceptions
 {
-    public class ImportBuildingException(string msg) : Exception(msg)
+    public class ImportBuildingException(string msg) : BusinessLogicException(msg)
     {
     }
 }
