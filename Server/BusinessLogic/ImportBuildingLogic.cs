@@ -161,7 +161,6 @@ namespace BusinessLogic
 
             foreach (Type t in assembly.GetTypes())
             {
-                //typeof(IBuildingImporter).IsAssignableFrom(t)
                 if (t.GetInterface("IBuildingImporter") is not null && t is { IsAbstract: false, IsInterface: false })
                 {
                     type = t;

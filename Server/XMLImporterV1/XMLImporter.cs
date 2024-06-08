@@ -1,29 +1,22 @@
 ﻿using XMLImporterV1.Domain;
 using System.Xml.Serialization;
+using BuildingImporter;
 
 namespace XMLImporterV1
 {
     public class XMLImporter: IBuildingImporter
     {
-        private readonly IXmlDeserializer _xmlDeserializer;
-
-        public XMLImporter(IXmlDeserializer xmlDeserializer)
-        {
-            _xmlDeserializer = xmlDeserializer;
-        }
-
         public List<DTOBuilding> ImportBuildingsFromFile(string xmlFilePath)
         {
-            //XmlSerializer serializer = new XmlSerializer(typeof(Root));
-            //using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.Open))
-            //{
-                Root buildingData = _xmlDeserializer.Deserialize<Root>(xmlFilePath);
-                //Root buildingData = (Root)serializer.Deserialize(fileStream);
+            XmlSerializer serializer = new XmlSerializer(typeof(Root));
+            using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.Open))
+            {
+                Root buildingData = (Root)serializer.Deserialize(fileStream);
                 List<DTOBuilding> buildings = new List<DTOBuilding>();
                 EdificiosToDTOBuildings(buildingData, buildings);
 
                 return buildings;
-           // }
+            }
         }
 
         private void EdificiosToDTOBuildings(Root buildingData, List<DTOBuilding> buildings)
