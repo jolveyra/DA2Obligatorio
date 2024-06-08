@@ -73,5 +73,24 @@ namespace DataAccessTest
             mockContext.Verify(x => x.Importers, Times.Once);
             Assert.AreEqual(importer, result);
         }
+
+        [TestMethod]
+        public void GetNonExistingImporterByNameTest()
+        {
+            mockContext.Setup(x => x.Importers).ReturnsDbSet(new List<Importer>() { });
+            Exception exception = null;
+
+            try
+            {
+                importerRepository.GetImporterByName("Importer1");
+            } catch (Exception e)
+            {
+                exception = e;
+            }
+
+            mockContext.Verify(x => x.Importers, Times.Once);
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.AreEqual("Importer not found", exception.Message);
+        }
     }
 }
