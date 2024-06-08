@@ -119,31 +119,6 @@ namespace BusinessLogic
             }
         }
 
-        private Person GetFlatOwner(DTOFlat dtoFlat, IEnumerable<Person> people)
-        {
-            Person ownerToAdd = new Person() { Email = "", Name = "", Surname = "" };
-
-            if (dtoFlat.OwnerEmail is not null)
-            {
-                Person? owner = people.FirstOrDefault(u => u.Email.Equals(dtoFlat.OwnerEmail));
-                if (owner is not null)
-                {
-                    ownerToAdd = owner;
-                }
-                else
-                {
-                    ownerToAdd.Email = dtoFlat.OwnerEmail;
-                    ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
-                }
-            }
-            else
-            {
-                ownerToAdd = _peopleRepository.CreatePerson(ownerToAdd);
-            }
-
-            return ownerToAdd;
-        }
-
         private List<DTOBuilding> GetBuildingsToImport(string fileName, Type implementedType)
         {
             IBuildingImporter buildingImporter = (IBuildingImporter)Activator.CreateInstance(implementedType);
