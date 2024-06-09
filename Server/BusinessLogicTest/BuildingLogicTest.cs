@@ -28,7 +28,7 @@ public class BuildingLogicTest
     }
 
     [TestMethod]
-    public void CreateBuildingTestOk()
+    public void CreateConstructorCompanyBuildingTestOk()
     {
         ConstructorCompany comp = new ConstructorCompany() { Id = Guid.NewGuid(), Name = "Saciim" };
         ConstructorCompanyAdministrator administrator = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = comp.Id, ConstructorCompany = comp };
@@ -53,7 +53,7 @@ public class BuildingLogicTest
 
         buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
         buildingRepositoryMock.Setup(x => x.CreateBuilding(building)).Returns(expected);
-        buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
+        buildingRepositoryMock.Setup(x => x.CreateFlats(It.IsAny<List<Flat>>())).Returns(new List<Flat>() { new Flat() { Building = building } });
         constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(administrator);
 
         Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
@@ -1345,53 +1345,6 @@ public class BuildingLogicTest
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
         Assert.AreEqual(exception.Message, "Building does not belong to user's constructor company");
 
-    }
-
-    [TestMethod]
-    public void CreateConstructorCompanyBuildingTestOk()
-    {
-        Guid constructorCompanyId = Guid.NewGuid();
-        ConstructorCompany constructorCompany = new ConstructorCompany() { Id = constructorCompanyId, Name = "A Constructor Company" };
-
-        Building building = new Building()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Mirador",
-            ConstructorCompanyId = constructorCompany.Id,
-            SharedExpenses = 100,
-            Address = new Address()
-            {
-                Street = "Street",
-                DoorNumber = 12,
-                CornerStreet = "Another Street",
-                Latitude = 80,
-                Longitude = -80,
-            }
-        };
-        Building expected = new Building()
-        {
-            Id = building.Id,
-            Name = "Mirador",
-            ConstructorCompanyId = constructorCompany.Id,
-            Address = building.Address,
-            SharedExpenses = 100
-        };
-
-        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building>());
-        buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(expected);
-        buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
-        userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<Guid>())).Returns(new User() { Role = Role.Manager });
-
-        ConstructorCompanyAdministrator user = new ConstructorCompanyAdministrator() { Id = Guid.NewGuid(), ConstructorCompanyId = constructorCompany.Id, ConstructorCompany = constructorCompany };
-        buildingRepositoryMock.Setup(x => x.CreateBuilding(It.IsAny<Building>())).Returns(building);
-
-        constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(user);
-
-        Building result = buildingLogic.CreateConstructorCompanyBuilding(building, 1, user.Id);
-
-        buildingRepositoryMock.VerifyAll();
-
-        Assert.AreEqual(building, result);
     }
 
     [TestMethod]

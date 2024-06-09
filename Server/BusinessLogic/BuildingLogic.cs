@@ -78,14 +78,13 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         List<Flat> flats = new List<Flat>();
         for (int i = 0; i < amountOfFlats; i++)
         {
-            Flat flat = new Flat
+            flats.Add(new Flat
             {
                 Building = building,
                 Id = Guid.NewGuid()
-            };
-
-            _iBuildingRepository.CreateFlat(flat);
+            });
         }
+        _iBuildingRepository.CreateFlats(flats);
     }
 
     private void ValidateBuilding(Building building)
