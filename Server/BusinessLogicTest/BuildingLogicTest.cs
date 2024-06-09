@@ -174,6 +174,55 @@ public class BuildingLogicTest
         Assert.AreEqual("Building with same name already exists", exception.Message);
     }
 
+
+    [TestMethod]
+    public void CreateBuildingTestBuildingWithAlreadyExistingNameEmptyGuid()
+    {
+        Building building = new Building()
+        {
+            Name = "Mirador",
+            ConstructorCompanyId = Guid.NewGuid(),
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 12,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        };
+        buildingRepositoryMock.Setup(x => x.GetAllBuildings()).Returns(new List<Building> { new Building() { Id = Guid.NewGuid(), Name = "Mirador",
+            ConstructorCompanyId = Guid.NewGuid(),
+            SharedExpenses = 100,
+            Address = new Address()
+            {
+                Street = "Street",
+                DoorNumber = 13,
+                CornerStreet = "Another Street",
+                Latitude = 80,
+                Longitude = -80,
+            }
+        } });
+
+        Exception exception = null;
+
+        try
+        {
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        buildingRepositoryMock.VerifyAll();
+
+        Assert.IsInstanceOfType(exception, typeof(BuildingException));
+        Assert.AreEqual("Building with same name already exists", exception.Message);
+    }
+
+
     [TestMethod]
     public void CreateBuildingTestBuildingWithEmptyStreetName()
     {
