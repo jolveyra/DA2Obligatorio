@@ -1,4 +1,5 @@
-﻿using LogicInterfaces;
+﻿using Azure;
+using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
 using WebModels.BuildingModels;
@@ -22,8 +23,9 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult ImportBuildings(ImportBuildingRequestModel importBuildingRequestModel)
         {
-            return Ok(_importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName,  Guid.Parse(HttpContext.Items["UserId"] as string))
-                .Select(b => new BuildingWithoutFlatsResponseModel(b)).ToList());
+            List<BuildingWithoutFlatsResponseModel> response = _importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName, Guid.Parse(HttpContext.Items["UserId"] as string))
+                .Select(b => new BuildingWithoutFlatsResponseModel(b)).ToList();
+            return CreatedAtAction("ImportBuildings", new { Id = "", route = "buildings" }, response);
         }
     }
 }

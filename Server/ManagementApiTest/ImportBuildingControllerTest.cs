@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Azure;
+using Domain;
 using LogicInterfaces;
 using ManagementApi.Controllers;
 using Microsoft.AspNetCore.Http;
@@ -62,10 +63,9 @@ namespace ManagementApiTest
             {
                 new BuildingWithoutFlatsResponseModel(building)
             };
-            OkObjectResult expected = new OkObjectResult(expectedObjectResult);
+            CreatedAtActionResult expected = new CreatedAtActionResult("ImportBuildings", "ImportBuildingsController", new { Id = "", route = "buildings" }, expectedObjectResult);
 
-
-            OkObjectResult result = anotherBuildingController.ImportBuildings(importBuildingRequestModel) as OkObjectResult;
+            CreatedAtActionResult result = anotherBuildingController.ImportBuildings(importBuildingRequestModel) as CreatedAtActionResult;
             List<BuildingWithoutFlatsResponseModel> objectResult = result.Value as List<BuildingWithoutFlatsResponseModel>;
 
             _importBuildingLogicMock.VerifyAll();
