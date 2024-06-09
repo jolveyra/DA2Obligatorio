@@ -1,6 +1,7 @@
 ﻿using LogicInterfaces;
 using ManagementApi.Filters;
 using Microsoft.AspNetCore.Mvc;
+using WebModels.BuildingModels;
 using WebModels.ImportBuildingModels;
 
 namespace ManagementApi.Controllers
@@ -21,8 +22,8 @@ namespace ManagementApi.Controllers
         [AuthenticationFilter(["ConstructorCompanyAdmin"])]
         public IActionResult ImportBuildings(ImportBuildingRequestModel importBuildingRequestModel)
         {
-            _importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName,  Guid.Parse(HttpContext.Items["UserId"] as string));
-            return Ok(new ImportBuildingResponseModel("Imported successfully"));
+            return Ok(_importBuildingLogic.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName,  Guid.Parse(HttpContext.Items["UserId"] as string))
+                .Select(b => new BuildingWithoutFlatsResponseModel(b)).ToList());
         }
     }
 }

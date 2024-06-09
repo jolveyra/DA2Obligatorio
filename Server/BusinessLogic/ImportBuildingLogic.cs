@@ -30,18 +30,19 @@ namespace BusinessLogic
             _constructorCompanyBuildingLogic = constructorCompanyBuildingLogic;
         }
 
-        public void ImportBuildings(string dllName, string fileName, Guid userId)
+        public List<Building> ImportBuildings(string dllName, string fileName, Guid userId)
         {
             Importer importer = _importerRepository.GetImporterByName(dllName);
             
             Type implementedType = GetInterfaceImplementedType($"{_importerPath}\\{importer.Name}.dll");
             List<DTOBuilding> buildingsToImport = GetBuildingsToImport(fileName, implementedType);
-            CreateBuildings(buildingsToImport, userId);
+            return CreateBuildings(buildingsToImport, userId);
         }
 
-        private void CreateBuildings(List<DTOBuilding> buildingsToImport, Guid userId)
+        private List<Building> CreateBuildings(List<DTOBuilding> buildingsToImport, Guid userId)
         {
             IEnumerable<User> users = _userRepository.GetAllUsers();
+            List<Building> buildings = new List<Building>();
 
             foreach (DTOBuilding dtoBuilding in buildingsToImport)
             {
@@ -62,8 +63,10 @@ namespace BusinessLogic
                 };
                 Building createdBuilding = _constructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(building, dtoBuilding.Flats.Count, userId);
                 CreateBuildingFlats(dtoBuilding.Flats, createdBuilding);
+                buildings.Add(createdBuilding);
             }
-
+            
+            return buildings;
         }
 
         private Guid? GetManagerId(DTOBuilding dtoBuilding, IEnumerable<User> users)
