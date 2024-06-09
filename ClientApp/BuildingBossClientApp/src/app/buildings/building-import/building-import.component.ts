@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Importer } from '../../shared/importer.model';
 import { Router } from '@angular/router';
 import { ImporterService } from '../../services/importer.service';
-import { ImporterBuildingsService } from '../../services/import-buildings.service';
+import { BuildingImportService } from '../../services/building-imports.service';
 
 @Component({
   selector: 'app-building-import',
@@ -21,7 +21,7 @@ export class BuildingImportComponent {
   constructor(
     private router: Router,
     private importerService: ImporterService,
-    private importBuildingService: ImporterBuildingsService
+    private buildingImportService: BuildingImportService
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class BuildingImportComponent {
   onSubmit(){
     this.error = '';
     this.isLoading = true;
-    this.importBuildingService.importBuildings(this.selectedImporterName, this.fileName)
+    this.buildingImportService.importBuildings(this.selectedImporterName, this.fileName)
       .subscribe(
         () => {
           this.isLoading = false;

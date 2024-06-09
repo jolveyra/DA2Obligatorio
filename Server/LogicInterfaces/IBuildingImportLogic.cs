@@ -2,7 +2,7 @@
 
 namespace LogicInterfaces
 {
-    public interface IImportBuildingLogic
+    public interface IBuildingImportLogic
     {
         List<Building> ImportBuildings(string dllName, string fileName, Guid userId);
     }

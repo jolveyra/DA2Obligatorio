@@ -7,7 +7,7 @@ using RepositoryInterfaces;
 
 namespace BusinessLogic
 {
-    public class ImportBuildingLogic : IImportBuildingLogic
+    public class BuildingImportLogic : IBuildingImportLogic
     {
         private IImporterRepository _importerRepository;
         private IUserRepository _userRepository;
@@ -18,7 +18,7 @@ namespace BusinessLogic
         private string _importerPath = @".\Importers";
         private string _buildingFilesPath = @".\BuildingFiles";
 
-        public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository,
+        public BuildingImportLogic(IImporterRepository importerRepository, IUserRepository userRepository,
             ISessionRepository sessionRepository, IBuildingLogic buildingLogic, IPeopleRepository peopleRepository
             , IConstructorCompanyBuildingLogic constructorCompanyBuildingLogic)
         {

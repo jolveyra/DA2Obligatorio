@@ -6,28 +6,28 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.BuildingModels;
-using WebModels.ImportBuildingModels;
+using WebModels.BuildingImportModels;
 
 namespace ManagementApiTest
 {
     [TestClass]
-    public class ImportBuildingControllerTest
+    public class BuildingImportControllerTest
     {
-        private Mock<IImportBuildingLogic> _importBuildingLogicMock;
-        private ImportBuildingController _importBuildingController;
+        private Mock<IBuildingImportLogic> _importBuildingLogicMock;
+        private BuildingImportController buildingImportController;
 
         [TestInitialize]
         public void Initialize()
         {
-            _importBuildingLogicMock = new Mock<IImportBuildingLogic>(MockBehavior.Strict);
-            _importBuildingController = new ImportBuildingController(_importBuildingLogicMock.Object);
+            _importBuildingLogicMock = new Mock<IBuildingImportLogic>(MockBehavior.Strict);
+            buildingImportController = new BuildingImportController(_importBuildingLogicMock.Object);
         }
 
         [TestMethod]
         public void ImportBuildingTestOk()
         {
             Guid ccAdminId = Guid.NewGuid();
-            ImportBuildingRequestModel importBuildingRequestModel = new ImportBuildingRequestModel()
+            BuildingImportRequestModel buildingImportRequestModel = new BuildingImportRequestModel()
             {
                 DllName = "ImportadorJsonsV1",
                 FileName = "BuildingsToImportCompany"
@@ -56,8 +56,8 @@ namespace ManagementApiTest
                 HttpContext = httpContext
             };
             
-            ImportBuildingController anotherBuildingController= new ImportBuildingController(_importBuildingLogicMock.Object) { ControllerContext = controllerContext };
-            _importBuildingLogicMock.Setup(x => x.ImportBuildings(importBuildingRequestModel.DllName, importBuildingRequestModel.FileName, ccAdminId)).Returns(new List<Building>() { building });
+            BuildingImportController anotherController= new BuildingImportController(_importBuildingLogicMock.Object) { ControllerContext = controllerContext };
+            _importBuildingLogicMock.Setup(x => x.ImportBuildings(buildingImportRequestModel.DllName, buildingImportRequestModel.FileName, ccAdminId)).Returns(new List<Building>() { building });
 
             List<BuildingWithoutFlatsResponseModel> expectedObjectResult = new List<BuildingWithoutFlatsResponseModel>()
             {
@@ -65,7 +65,7 @@ namespace ManagementApiTest
             };
             CreatedAtActionResult expected = new CreatedAtActionResult("ImportBuildings", "ImportBuildingsController", new { Id = "", route = "buildings" }, expectedObjectResult);
 
-            CreatedAtActionResult result = anotherBuildingController.ImportBuildings(importBuildingRequestModel) as CreatedAtActionResult;
+            CreatedAtActionResult result = anotherController.ImportBuildings(buildingImportRequestModel) as CreatedAtActionResult;
             List<BuildingWithoutFlatsResponseModel> objectResult = result.Value as List<BuildingWithoutFlatsResponseModel>;
 
             _importBuildingLogicMock.VerifyAll();

@@ -29,7 +29,7 @@ namespace ServiceFactory
             services.AddScoped<IConstructorCompanyBuildingLogic, BuildingLogic>();
             services.AddScoped<IConstructorCompanyLogic, ConstructorCompanyLogic>();
             services.AddScoped<IImporterLogic, ImporterLogic>();
-            services.AddScoped<IImportBuildingLogic, ImportBuildingLogic>();
+            services.AddScoped<IBuildingImportLogic, BuildingImportLogic>();
 
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

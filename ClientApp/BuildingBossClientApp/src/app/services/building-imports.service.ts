@@ -7,14 +7,14 @@ import { Building } from '../shared/building.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ImporterBuildingsService {
+export class BuildingImportService {
 
   constructor(
     private httpClient: HttpClient
   ) { }
   
   importBuildings(dllName: string, fileName: string): Observable<BuildingResponseData[]> {
-    return this.httpClient.post<BuildingResponseData[]>('https://localhost:7122/api/v2/importBuildings',
+    return this.httpClient.post<BuildingResponseData[]>('https://localhost:7122/api/v2/buildingImports',
       {
         dllName,
         fileName
