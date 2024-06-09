@@ -56,7 +56,7 @@ public class BuildingLogicTest
         buildingRepositoryMock.Setup(x => x.CreateFlat(It.IsAny<Flat>())).Returns(new Flat() { Building = building });
         constructorCompanyAdministratorRepositoryMock.Setup(ca => ca.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(administrator);
 
-        Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+        Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
 
         buildingRepositoryMock.VerifyAll();
         constructorCompanyAdministratorRepositoryMock.VerifyAll();
@@ -83,7 +83,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -116,7 +116,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -161,7 +161,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -187,7 +187,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -210,7 +210,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 0, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 0, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -254,7 +254,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -301,7 +301,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -337,7 +337,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -372,7 +372,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -407,7 +407,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -442,7 +442,7 @@ public class BuildingLogicTest
 
         try
         {
-            Building result = buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            Building result = buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
         }
         catch (Exception e)
         {
@@ -1790,6 +1790,7 @@ public class BuildingLogicTest
         };
 
         constructorCompanyAdministratorRepositoryMock.Setup(x => x.GetConstructorCompanyAdministratorByUserId(It.IsAny<Guid>())).Returns(constructorCompanyAdministrator);
+        buildingRepositoryMock.Setup(b => b.GetAllBuildings()).Returns(new List<Building>());
 
         Exception exception = null;
 
@@ -1802,10 +1803,10 @@ public class BuildingLogicTest
             exception = e;
         }
 
+        constructorCompanyAdministratorRepositoryMock.VerifyAll();
         buildingRepositoryMock.VerifyAll();
-
         Assert.IsInstanceOfType(exception, typeof(BuildingException));
-        Assert.AreEqual(exception.Message, "Administrator doesn't have a company assigned yet");
+        Assert.AreEqual(exception.Message, "Constructor company administrator doesn't have a constructor company assigned.");
     }
 
     [TestMethod]
@@ -1831,7 +1832,7 @@ public class BuildingLogicTest
 
         try
         {
-            buildingLogic.CreateBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
+            buildingLogic.CreateConstructorCompanyBuilding(building, amountOfFlats: 1, It.IsAny<Guid>());
 
         }
         catch (Exception e)

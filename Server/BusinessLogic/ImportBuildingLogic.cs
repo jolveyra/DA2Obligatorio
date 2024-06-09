@@ -14,18 +14,20 @@ namespace BusinessLogic
         private ISessionRepository _sessionRepository;
         private IBuildingLogic _buildingLogic;
         private IPeopleRepository _peopleRepository;
+        private IConstructorCompanyBuildingLogic _constructorCompanyBuildingLogic;
         private string _importerPath = @".\Importers";
         private string _buildingFilesPath = @".\BuildingFiles";
 
         public ImportBuildingLogic(IImporterRepository importerRepository, IUserRepository userRepository,
-            ISessionRepository sessionRepository, IBuildingRepository buildingRepository, IBuildingLogic buildingLogic,
-            IPeopleRepository peopleRepository)
+            ISessionRepository sessionRepository, IBuildingLogic buildingLogic, IPeopleRepository peopleRepository
+            , IConstructorCompanyBuildingLogic constructorCompanyBuildingLogic)
         {
             _importerRepository = importerRepository;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
             _buildingLogic = buildingLogic;
             _peopleRepository = peopleRepository;
+            _constructorCompanyBuildingLogic = constructorCompanyBuildingLogic;
         }
 
         public void ImportBuildings(string dllName, string fileName, Guid userId)
@@ -58,7 +60,7 @@ namespace BusinessLogic
                     },
                     ManagerId = managerId,
                 };
-                Building createdBuilding = _buildingLogic.CreateBuilding(building, dtoBuilding.Flats.Count, userId);
+                Building createdBuilding = _constructorCompanyBuildingLogic.CreateConstructorCompanyBuilding(building, dtoBuilding.Flats.Count, userId);
                 CreateBuildingFlats(dtoBuilding.Flats, createdBuilding);
             }
 

@@ -22,7 +22,7 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         _iPeopleRepository = iPeopleRepository;
     }
 
-    public Building CreateBuilding(Building building, int amountOfFlats, Guid userId)
+    public Building CreateConstructorCompanyBuilding(Building building, int amountOfFlats, Guid userId)
     {
         ValidateFlatAmount(amountOfFlats);
         ValidateBuilding(building);
@@ -49,17 +49,17 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         }
     }
 
-    private void CheckUniqueBuildingCoordinates(Building building)
+    private void CheckUniqueBuildingCoordinates(List<Building> buildings, Building building)
     {
-        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Latitude == building.Address.Latitude && x.Address.Longitude == building.Address.Longitude))
+        if (buildings.Exists(x => x.Address.Latitude == building.Address.Latitude && x.Address.Longitude == building.Address.Longitude))
         {
             throw new BuildingException("Building with same coordinates already exists");
         }
     }
 
-    private void CheckUniqueBuildingAddress(Building building)
+    private void CheckUniqueBuildingAddress(List<Building> buildings, Building building)
     {
-        if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Address.Equals(building.Address)))
+        if (buildings.Exists(x => x.Address.Equals(building.Address)))
         {
             throw new BuildingException("Building with same address already exists");
         }
@@ -94,9 +94,12 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         CheckNotNegativeSharedExpenses(building.SharedExpenses);
         CheckNotEmptyBuildingDirection(building);
         CheckValidCoordinates(building);
-        CheckUniqueBuildingName(building);
-        CheckUniqueBuildingAddress(building);
-        CheckUniqueBuildingCoordinates(building);
+
+        List<Building> allBuildings = _iBuildingRepository.GetAllBuildings().ToList();
+        
+        CheckUniqueBuildingName(allBuildings, building);
+        CheckUniqueBuildingAddress(allBuildings, building);
+        CheckUniqueBuildingCoordinates(allBuildings, building);
     }
 
     private void CheckValidCoordinates(Building building)
@@ -136,18 +139,18 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         }
     }
 
-    private void CheckUniqueBuildingName(Building building)
+    private void CheckUniqueBuildingName(List<Building> buildings, Building building)
     {
         if (building.Id == Guid.Empty)
         {
-            if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower()))
+            if (buildings.Exists(x => x.Name.ToLower() == building.Name.ToLower()))
             {
                 throw new BuildingException("Building with same name already exists");
             }
         }
         else
         {
-            if (_iBuildingRepository.GetAllBuildings().ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower() && x.Id != building.Id))
+            if (buildings.ToList().Exists(x => x.Name.ToLower() == building.Name.ToLower() && x.Id != building.Id))
             {
                 throw new BuildingException("Building with same name already exists");
             }
@@ -394,19 +397,6 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         return _iBuildingRepository.GetAllBuildingFlats(buildingId);
     }
 
-    public Building CreateConstructorCompanyBuilding(Building building, int amountOfFlats, Guid userId)
-    {
-        ConstructorCompanyAdministrator constructorCompanyAdministrator = _iConstructorCompanyAdministratorRepository.GetConstructorCompanyAdministratorByUserId(userId);
-
-        if (constructorCompanyAdministrator.ConstructorCompanyId == Guid.Empty)
-        {
-            throw new BuildingException("Administrator doesn't have a company assigned yet");
-        }
-
-        building.ConstructorCompanyId = constructorCompanyAdministrator.ConstructorCompanyId;
-
-        return CreateBuilding(building, amountOfFlats, userId);
-    }
 
     public IEnumerable<Building> GetAllConstructorCompanyBuildings(Guid userId)
     {
@@ -442,7 +432,9 @@ public class BuildingLogic : IBuildingLogic, IConstructorCompanyBuildingLogic
         building.Id = buildingId;
 
         CheckNotEmptyBuildingName(building);
-        CheckUniqueBuildingName(building);
+
+        List<Building> allBuildings = _iBuildingRepository.GetAllBuildings().ToList();
+        CheckUniqueBuildingName(allBuildings, building);
         CheckBuildingIsFromUsersConstructorCompany(constructorCompanyAdministrator.ConstructorCompanyId, existingBuilding);
 
         User existingManager = _iUserRepository.GetUserById(building.ManagerId ?? Guid.Empty);

@@ -424,5 +424,21 @@ namespace DataAccessTest
             mockContext.Verify(x => x.Flats.RemoveRange(flats), Times.Once());
             mockContext.Verify(x => x.SaveChanges(), Times.Once());
         }
+
+        [TestMethod]
+        public void CreateFlatsTest()
+        {
+            List<Flat> flats = new List<Flat> { new Flat() { Id = Guid.NewGuid() }, new Flat() { Id = Guid.NewGuid() } };
+
+            mockContext.Setup(x => x.Flats).ReturnsDbSet(new List<Flat>() { });
+            mockContext.Setup(x => x.SaveChanges());
+
+            List<Flat> result = buildingRepository.CreateFlats(flats);
+
+            mockContext.Verify(x => x.Flats, Times.Once());
+            mockContext.Verify(x => x.Flats.AddRange(flats), Times.Once());
+            mockContext.Verify(x => x.SaveChanges(), Times.Once());
+            Assert.IsTrue(result.Equals(flats) && result.First().Equals(flats.First()));
+        }
     }
 }

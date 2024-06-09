@@ -97,6 +97,13 @@ namespace DataAccess.Repositories
                 Include(f => f.Owner).Where(f => f.Building.Id.Equals(buildingId));
         }
 
+        public List<Flat> CreateFlats(List<Flat> flats)
+        {
+            _context.Flats.AddRange(flats);
+            _context.SaveChanges();
+            return flats;
+        }
+
         public Flat CreateFlat(Flat flat)
         {
             _context.Flats.Add(flat);
