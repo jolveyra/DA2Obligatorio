@@ -1,9 +1,10 @@
 ﻿using XMLImporterV1.Domain;
 using System.Xml.Serialization;
+using BuildingImporter;
 
 namespace XMLImporterV1
 {
-    public class XMLImporter: IBuildingImporter
+    public class XMLImporter : IBuildingImporter
     {
         public List<DTOBuilding> ImportBuildingsFromFile(string xmlFilePath)
         {

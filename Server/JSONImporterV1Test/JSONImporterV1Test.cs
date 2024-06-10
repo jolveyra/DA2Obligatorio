@@ -1,5 +1,6 @@
 using JSONImporterV1;
 using JSONImporterV1.Domain;
+using BuildingImporter;
 
 namespace JSONImporterV1Test
 {

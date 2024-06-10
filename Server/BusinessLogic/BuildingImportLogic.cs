@@ -121,10 +121,9 @@ namespace BusinessLogic
 
         private List<DTOBuilding> GetBuildingsToImport(string fileName, Type implementedType)
         {
-            object instance = Activator.CreateInstance(implementedType);
-            MethodInfo method = implementedType.GetMethod("ImportBuildingsFromFile");
-            string param = $"{_buildingFilesPath}\\{fileName}";
-            return method.Invoke(instance, new object[] { param }) as List<DTOBuilding>;
+            IBuildingImporter buildingImporter = (IBuildingImporter)Activator.CreateInstance(implementedType);
+
+            return buildingImporter.ImportBuildingsFromFile($"{_buildingFilesPath}\\{fileName}");
         }
 
         private Type GetInterfaceImplementedType(string assemblyPath)
@@ -138,11 +137,6 @@ namespace BusinessLogic
                 if (t.GetInterface("IBuildingImporter") is not null && t is { IsAbstract: false, IsInterface: false })
                 {
                     type = t;
-
-                    if (t.GetMethod("ImportBuildingsFromFile") is null)
-                    {
-                        type = null;
-                    }
                 }
             }
 

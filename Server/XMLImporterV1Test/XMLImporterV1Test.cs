@@ -1,5 +1,6 @@
 using XMLImporterV1;
 using XMLImporterV1.Domain;
+using BuildingImporter;
 
 namespace XMLImporterV1Test
 {
