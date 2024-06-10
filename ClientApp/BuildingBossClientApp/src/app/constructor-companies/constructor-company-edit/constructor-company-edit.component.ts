@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ConstructorCompany } from '../../shared/constructor-company.model';
 import { ConstructorCompanyService } from '../../services/constructor-company.service';
 import { ConstructorCompanyAdministratorService } from '../../services/constructor-company-administrator.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-constructor-company-edit',
@@ -20,6 +21,7 @@ export class ConstructorCompanyEditComponent {
   
   constructorCompany: ConstructorCompany = new ConstructorCompany('', '');
   constructorCompanyName: boolean = false;
+  inputConstructorCompanyName: string = '';
 
   constructor(
     private constructorCompanyService: ConstructorCompanyService,
@@ -36,6 +38,7 @@ export class ConstructorCompanyEditComponent {
         constructorCompanyAdministrator => {
           this.constructorCompany.name = constructorCompanyAdministrator.constructorCompanyName;
           this.constructorCompany.id = constructorCompanyAdministrator.constructorCompanyId;
+          this.inputConstructorCompanyName = constructorCompanyAdministrator.constructorCompanyName;
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."
@@ -50,11 +53,15 @@ export class ConstructorCompanyEditComponent {
     
   }
   
-  onEditConstructorCompany(): void {
+  onSubmit(form: NgForm): void {
+    if (!form.valid) {
+      return;
+    }
 
     this.isLoading = true;
     this.success = false;
     this.error = '';
+    this.constructorCompany.name = this.inputConstructorCompanyName;
     this.constructorCompanyService.updateConstructorCompany(this.constructorCompany)
     .subscribe(
       response => {
