@@ -1,9 +1,5 @@
 using JSONImporterV1;
 using JSONImporterV1.Domain;
-using System.Xml.Serialization;
-using Moq;
-using JSONImporterV1.Deserializer;
-using BuildingImporter;
 
 namespace JSONImporterV1Test
 {

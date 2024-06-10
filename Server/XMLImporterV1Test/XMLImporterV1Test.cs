@@ -1,8 +1,5 @@
 using XMLImporterV1;
 using XMLImporterV1.Domain;
-using BuildingImporter;
-using System.Xml.Serialization;
-using Moq;
 
 namespace XMLImporterV1Test
 {
