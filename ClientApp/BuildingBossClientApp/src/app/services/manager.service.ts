@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../shared/user.model';
 import { Observable, map } from 'rxjs';
 import { UserResponseData } from './userResponseData.model';
+import { environment } from './environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ManagerService {
   ) { }
 
   fetchManagers(): Observable<User[]> {
-    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v2/managers')
+    return this.httpClient.get<UserResponseData[]>(`${environment.api}/api/v2/managers`)
       .pipe(
         map((response: UserResponseData[]) => response.map(manager => new User(
           manager.id,

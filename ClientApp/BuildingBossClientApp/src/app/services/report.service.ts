@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Report } from '../reports/report.model';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from './environment';
 
 interface ReportData {
   filterName: string,
@@ -21,7 +22,7 @@ export class ReportsService {
   ) { }
 
   fetchReports(filter: string): Observable<Report[]> {
-    return this.httpClient.get<ReportData[]>(`https://localhost:7122/api/v2/reports?filter=${filter}`)
+    return this.httpClient.get<ReportData[]>(`${environment.api}/api/v2/reports?filter=${filter}`)
       .pipe(
         map((response: ReportData[]) => response.map(report => {
           const reportElem = new Report( 

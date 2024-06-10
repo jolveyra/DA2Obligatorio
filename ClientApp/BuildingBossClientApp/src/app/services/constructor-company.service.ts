@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { ConstructorCompany } from '../shared/constructor-company.model';
+import { environment } from './environment';
 
 interface ConstructorCompanyResponseData {
   id: string;
@@ -18,7 +19,7 @@ export class ConstructorCompanyService {
   ) { }
 
   createConstructorCompany(constructorCompany: ConstructorCompany): Observable<ConstructorCompanyResponseData> {
-    return this.httpClient.post<ConstructorCompanyResponseData>(`https://localhost:7122/api/v2/constructorCompanies`,
+    return this.httpClient.post<ConstructorCompanyResponseData>(`${environment.api}/api/v2/constructorCompanies`,
       {
         id: constructorCompany.id,
         name: constructorCompany.name
@@ -32,7 +33,7 @@ export class ConstructorCompanyService {
   }
 
   fetchConstructorCompany(id: string): Observable<ConstructorCompany> {
-    return this.httpClient.get<ConstructorCompanyResponseData>(`https://localhost:7122/api/v2/constructorCompanies/${id}`)
+    return this.httpClient.get<ConstructorCompanyResponseData>(`${environment.api}/api/v2/constructorCompanies/${id}`)
       .pipe(
         map((response: ConstructorCompanyResponseData) => new ConstructorCompany(
           response.id,
@@ -41,7 +42,7 @@ export class ConstructorCompanyService {
   }
 
   fetchConstructorCompanies(): Observable<ConstructorCompany[]> {
-    return this.httpClient.get<ConstructorCompanyResponseData[]>(`https://localhost:7122/api/v2/constructorCompanies`)
+    return this.httpClient.get<ConstructorCompanyResponseData[]>(`${environment.api}/api/v2/constructorCompanies`)
       .pipe(
         map((response: ConstructorCompanyResponseData[]) => response.map(constructorCompany => new ConstructorCompany(
           constructorCompany.id,
@@ -50,7 +51,7 @@ export class ConstructorCompanyService {
   }
 
   updateConstructorCompany(constructorCompany: ConstructorCompany): Observable<ConstructorCompanyResponseData> {
-    return this.httpClient.put<ConstructorCompanyResponseData>(`https://localhost:7122/api/v2/constructorCompanies/${constructorCompany.id}`,
+    return this.httpClient.put<ConstructorCompanyResponseData>(`${environment.api}/api/v2/constructorCompanies/${constructorCompany.id}`,
       {
         name: constructorCompany.name
       }

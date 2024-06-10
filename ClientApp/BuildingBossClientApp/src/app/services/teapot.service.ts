@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { environment } from './environment';
 
 interface TeapotResponseData {
   message: string;
@@ -16,7 +17,7 @@ export class TeapotService {
   ) { }
 
   getTeapot(): Observable<TeapotResponseData> {
-    return this.httpClient.get<TeapotResponseData>('https://localhost:7122/api/v2/teapot')
+    return this.httpClient.get<TeapotResponseData>(`${environment.api}/api/v2/teapot`)
       .pipe(
         map((response: TeapotResponseData) => {
           return {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 import { Invitation } from '../invitations/invitation.model';
+import { environment } from './environment';
 
 interface InvitationResponseData {
   id: string,
@@ -25,7 +26,7 @@ export class InvitationService {
   ) { }
 
   fetchInvitations(): Observable<InvitationResponseData[]> {
-    return this.httpClient.get<InvitationResponseData[]>('https://localhost:7122/api/v2/invitations')
+    return this.httpClient.get<InvitationResponseData[]>(`${environment.api}/api/v2/invitations`)
       .pipe(
         map((response: InvitationResponseData[]) => response.map(invitation => new Invitation(
           invitation.id,
@@ -40,7 +41,7 @@ export class InvitationService {
   }
 
   fetchInvitation(id: string): Observable<InvitationResponseData> {
-    return this.httpClient.get<InvitationResponseData>(`https://localhost:7122/api/v2/invitations/${id}`)
+    return this.httpClient.get<InvitationResponseData>(`${environment.api}/api/v2/invitations/${id}`)
       .pipe(
         map((invitation: InvitationResponseData) => new Invitation(
           invitation.id,
@@ -55,7 +56,7 @@ export class InvitationService {
   }
 
   createInvitation(invitation: Invitation, expDays: number): Observable<InvitationResponseData> {
-    return this.httpClient.post<InvitationResponseData>('https://localhost:7122/api/v2/invitations',
+    return this.httpClient.post<InvitationResponseData>(`${environment.api}/api/v2/invitations`,
       {
         name: invitation.name,
         email: invitation.email,
@@ -66,7 +67,7 @@ export class InvitationService {
   }
 
   updateInvitationStatus(id: string, answer: boolean): Observable<InvitationResponseData> {
-    return this.httpClient.put<InvitationResponseData>(`https://localhost:7122/api/v2/invitations/${id}`,
+    return this.httpClient.put<InvitationResponseData>(`${environment.api}/api/v2/invitations/${id}`,
       {
         isAccepted: answer
       }
@@ -74,6 +75,6 @@ export class InvitationService {
   }
   
   deleteInvitation(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`https://localhost:7122/api/v2/invitations/${id}`);
+    return this.httpClient.delete<void>(`${environment.api}/api/v2/invitations/${id}`);
   }
 }

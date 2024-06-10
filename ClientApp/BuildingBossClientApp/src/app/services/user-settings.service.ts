@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../shared/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from './environment';
 
 interface UserResponseData {
   id: string;
@@ -20,7 +21,7 @@ export class UserSettingsService {
   ) { }
 
   fetchUser(): Observable<User> {
-    return this.httpClient.get<UserResponseData>('https://localhost:7122/api/v2/userSettings')
+    return this.httpClient.get<UserResponseData>(`${environment.api}/api/v2/userSettings`)
       .pipe(
         map((response: UserResponseData) => new User(
           response.id,

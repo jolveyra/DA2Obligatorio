@@ -3,6 +3,7 @@ import { User } from '../shared/user.model';
 import { Observable, map } from 'rxjs';
 import { UserResponseData } from './userResponseData.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from './environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class EmployeeService {
   ) { }
 
   fetchMaintenanceEmployees(): Observable<User[]> {
-    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v2/maintenanceEmployees')
+    return this.httpClient.get<UserResponseData[]>(`${environment.api}/api/v2/maintenanceEmployees`)
       .pipe(
         map((response: UserResponseData[]) => response.map(employee => new User(
             employee.id,
@@ -26,7 +27,7 @@ export class EmployeeService {
   }
 
   createMaintenanceEmployee(employee: User, password: string): Observable<User> {
-    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v2/maintenanceEmployees',
+    return this.httpClient.post<UserResponseData>(`${environment.api}/api/v2/maintenanceEmployees`,
     {
       name: employee.name,
       surname: employee.surname,

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map, tap } from 'rxjs';
 import { BuildingResponseData } from './building.service';
 import { Building } from '../shared/building.model';
+import { environment } from './environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class BuildingImportService {
   ) { }
   
   importBuildings(dllName: string, fileName: string): Observable<BuildingResponseData[]> {
-    return this.httpClient.post<BuildingResponseData[]>('https://localhost:7122/api/v2/buildingImports',
+    return this.httpClient.post<BuildingResponseData[]>(`${environment.api}/api/v2/buildingImports`,
       {
         dllName,
         fileName

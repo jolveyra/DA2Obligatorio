@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { environment } from './environment';
 
 interface ImporterResponseData {
   id: string;
@@ -17,7 +18,7 @@ export class ImporterService {
   ) { }
 
   fetchImporters(): Observable<ImporterResponseData[]> {
-    return this.httpClient.get<ImporterResponseData[]>('https://localhost:7122/api/v2/importers')
+    return this.httpClient.get<ImporterResponseData[]>(`${environment.api}/api/v2/importers`)
       .pipe(
         map((response: ImporterResponseData[]) => response.map(importer => ({
           id: importer.id,
@@ -27,7 +28,7 @@ export class ImporterService {
   }
 
   createImporter(name: string): Observable<ImporterResponseData> {
-    return this.httpClient.post<ImporterResponseData>('https://localhost:7122/api/v2/importers',
+    return this.httpClient.post<ImporterResponseData>(`${environment.api}/api/v2/importers`,
       {
         name
       }

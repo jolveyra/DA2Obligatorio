@@ -141,6 +141,9 @@ export class BuildingListComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.buildings = this.buildings.filter(building => building.id !== id);
+          if (this.buildings.length === 0) {
+            this.noBuildings = true;
+          }
         },
         error => {
           let errorMessage = "An unexpected error has occured, please retry later."

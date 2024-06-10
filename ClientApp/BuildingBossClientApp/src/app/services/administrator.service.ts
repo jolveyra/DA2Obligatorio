@@ -3,6 +3,7 @@ import { User } from '../shared/user.model';
 import { Observable, map } from 'rxjs';
 import { UserResponseData } from './userResponseData.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from './environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AdministratorService {
   ) { }
 
   fetchAdministrators(): Observable<User[]> {
-    return this.httpClient.get<UserResponseData[]>('https://localhost:7122/api/v2/administrators')
+    return this.httpClient.get<UserResponseData[]>(`${environment.api}/api/v2/administrators`)
       .pipe(
         map((response: UserResponseData[]) => response.map(administrator => new User(
           administrator.id,
@@ -26,7 +27,7 @@ export class AdministratorService {
   }
 
   createAdministrator(administrator: User, password: string) {
-    return this.httpClient.post<UserResponseData>('https://localhost:7122/api/v2/administrators',
+    return this.httpClient.post<UserResponseData>(`${environment}/api/v2/administrators`,
       {
         name: administrator.name,
         surname: administrator.surname,

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, tap } from 'rxjs';
 import { ConstructorCompanyAdministrator } from '../shared/constructor-company-administrator.model';
+import { environment } from './environment';
 
 interface ConstructorCompanyAdministratorResponseData {
   "id": string,
@@ -23,7 +24,7 @@ export class ConstructorCompanyAdministratorService {
   { }
 
   fetchConstructorCompanyAdministrators(): Observable<ConstructorCompanyAdministratorResponseData[]> {
-    return this.httpClient.get<ConstructorCompanyAdministratorResponseData[]>(`https://localhost:7122/api/v2/constructorCompanyAdministrators`)
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData[]>(`${environment.api}/api/v2/constructorCompanyAdministrators`)
       .pipe(
         map((response: ConstructorCompanyAdministratorResponseData[]) => response.map(admin => new ConstructorCompanyAdministrator(
           admin.id,
@@ -37,7 +38,7 @@ export class ConstructorCompanyAdministratorService {
   }
 
   fetchConstructorCompanyAdministrator(id: string): Observable<ConstructorCompanyAdministratorResponseData> {
-    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${id}`)
+    return this.httpClient.get<ConstructorCompanyAdministratorResponseData>(`${environment.api}/api/v2/constructorCompanyAdministrators/${id}`)
       .pipe(
         map((response: ConstructorCompanyAdministratorResponseData) => new ConstructorCompanyAdministrator(
           response.id,
@@ -51,7 +52,7 @@ export class ConstructorCompanyAdministratorService {
     }
 
     updateConstructorCompanyAdministrator(constructorCompanyAdministrator: ConstructorCompanyAdministrator): Observable<ConstructorCompanyAdministratorResponseData> {
-      return this.httpClient.put<ConstructorCompanyAdministratorResponseData>(`https://localhost:7122/api/v2/constructorCompanyAdministrators/${constructorCompanyAdministrator.id}`, 
+      return this.httpClient.put<ConstructorCompanyAdministratorResponseData>(`${environment.api}/api/v2/constructorCompanyAdministrators/${constructorCompanyAdministrator.id}`, 
         {
           constructorCompanyId: constructorCompanyAdministrator.constructorCompanyId
         })

@@ -4,6 +4,7 @@ import { Flat } from '../shared/flat.model';
 import { BuildingFlats } from '../shared/buildingFlats.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from './environment';
 
 export interface BuildingResponseData {
   id: string;
@@ -64,7 +65,7 @@ export class BuildingService {
   ) { }
 
   fetchConstructorCompanyBuildings(): Observable<BuildingResponseData[]> {
-    return this.httpClient.get<BuildingResponseData[]>('https://localhost:7122/api/v2/constructorCompanyBuildings')
+    return this.httpClient.get<BuildingResponseData[]>(`${environment.api}/api/v2/constructorCompanyBuildings`)
       .pipe(
         map((response: BuildingResponseData[]) => response.map(building => new Building(
             building.id,
@@ -82,7 +83,7 @@ export class BuildingService {
   }
 
   fetchManagerBuildings(): Observable<BuildingFlatsResponseData[]> {
-    return this.httpClient.get<BuildingFlatsResponseData[]>('https://localhost:7122/api/v2/buildings')
+    return this.httpClient.get<BuildingFlatsResponseData[]>(`${environment.api}/api/v2/buildings`)
       .pipe(
         map((response: BuildingFlatsResponseData[]) => { 
           return response.map(building => new BuildingFlats(
@@ -114,7 +115,7 @@ export class BuildingService {
   }
 
   fetchManagerBuilding(id: string): Observable<BuildingFlatsResponseData> {
-    return this.httpClient.get<BuildingFlats>(`https://localhost:7122/api/v2/buildings/${id}`)
+    return this.httpClient.get<BuildingFlats>(`${environment.api}/api/v2/buildings/${id}`)
       .pipe(
         map((response: BuildingFlatsResponseData) => {
           const buildingWithFlats = new BuildingFlats(
@@ -148,7 +149,7 @@ export class BuildingService {
   }
 
   fetchConstructorCompanyBuilding(id: string): Observable<BuildingResponseData> {
-    return this.httpClient.get<BuildingResponseData>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${id}`)
+    return this.httpClient.get<BuildingResponseData>(`${environment.api}/api/v2/constructorCompanyBuildings/${id}`)
       .pipe(
         map((response: BuildingResponseData) => new Building(
             response.id,
@@ -166,7 +167,7 @@ export class BuildingService {
   }
 
   createConstructorCompanyBuilding(building: Building, amountOfFlats: number): Observable<BuildingResponseData> {
-    return this.httpClient.post<BuildingResponseData>('https://localhost:7122/api/v2/constructorCompanyBuildings',
+    return this.httpClient.post<BuildingResponseData>(`${environment.api}/api/v2/constructorCompanyBuildings`,
       {
         name: building.name,
         sharedExpenses: building.sharedExpenses,
@@ -196,7 +197,7 @@ export class BuildingService {
   }
 
   fetchFlat(buildingId: string, flatId: string): Observable<FlatResponseData> {
-    return this.httpClient.get<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}/flats/${flatId}`)
+    return this.httpClient.get<FlatResponseData>(`${environment.api}/api/v2/buildings/${buildingId}/flats/${flatId}`)
       .pipe(
         map((response: FlatResponseData) => new Flat(
           response.id,
@@ -213,7 +214,7 @@ export class BuildingService {
   }
 
   updateBuilding(buildingId: string, sharedExpenses: number, maintenanceEmployees: string[]): Observable<BuildingFlatsResponseData> {
-    return this.httpClient.put<BuildingFlatsResponseData>(`https://localhost:7122/api/v2/buildings/${buildingId}`, // 
+    return this.httpClient.put<BuildingFlatsResponseData>(`${environment.api}/api/v2/buildings/${buildingId}`, // 
       {
         sharedExpenses,
         maintenanceEmployees
@@ -252,7 +253,7 @@ export class BuildingService {
 
   
   updateConstructorCompanyBuilding(buildingId: string, managerId: string, name: string): Observable<BuildingResponseData> {
-    return this.httpClient.put<BuildingResponseData>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${buildingId}`,
+    return this.httpClient.put<BuildingResponseData>(`${environment.api}/api/v2/constructorCompanyBuildings/${buildingId}`,
     {
       managerId,
       name
@@ -274,11 +275,11 @@ export class BuildingService {
   }
 
   deleteBuilding(buildingId: string): Observable<void> {
-    return this.httpClient.delete<void>(`https://localhost:7122/api/v2/constructorCompanyBuildings/${buildingId}`);
+    return this.httpClient.delete<void>(`${environment.api}/api/v2/constructorCompanyBuildings/${buildingId}`);
   }
 
   updateFlat(flat: Flat, changeOwner: boolean): Observable<FlatResponseData> {
-    return this.httpClient.put<FlatResponseData>(`https://localhost:7122/api/v2/buildings/${flat.buildingId}/flats/${flat.id}`,
+    return this.httpClient.put<FlatResponseData>(`${environment.api}/api/v2/buildings/${flat.buildingId}/flats/${flat.id}`,
       {
         floor: flat.floor,
         number: flat.number,

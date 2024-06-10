@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { environment } from './environment';
 
 interface CategoryResponseData {
   id: string;
@@ -17,7 +18,7 @@ export class CategoryService {
   ) { }
 
   fetchCategories(): Observable<CategoryResponseData[]> {
-    return this.httpClient.get<CategoryResponseData[]>('https://localhost:7122/api/v2/categories')
+    return this.httpClient.get<CategoryResponseData[]>(`${environment.api}/api/v2/categories`)
       .pipe(
         map((response: CategoryResponseData[]) => response.map(category => ({
           id: category.id,
@@ -27,7 +28,7 @@ export class CategoryService {
   }
 
   createCategory(name: string): Observable<CategoryResponseData> {
-    return this.httpClient.post<CategoryResponseData>('https://localhost:7122/api/v2/categories',
+    return this.httpClient.post<CategoryResponseData>(`${environment.api}/api/v2/categories`,
       {
         name
       }

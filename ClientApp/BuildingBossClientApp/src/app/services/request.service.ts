@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { BuildingResponseData, FlatResponseData } from './building.service';
 import { UserResponseData } from './userResponseData.model';
 import { Request } from '../requests/request.model';
+import { environment } from './environment';
 
 interface ManagerRequestResponseData {
   id: string;
@@ -34,7 +35,7 @@ export class RequestService {
   ) { }
 
   fetchManagerRequests(): Observable<ManagerRequestResponseData[]> {
-    return this.httpClient.get<ManagerRequestResponseData[]>('https://localhost:7122/api/v2/requests')
+    return this.httpClient.get<ManagerRequestResponseData[]>(`${environment.api}/api/v2/requests`)
       .pipe(
         map((response: ManagerRequestResponseData[]) => response.map(request => {
           return {
@@ -51,7 +52,7 @@ export class RequestService {
   }
 
   fetchMaintenanceEmployeeRequests(): Observable<EmployeeRequestResponseData[]> {
-    return this.httpClient.get<EmployeeRequestResponseData[]>('https://localhost:7122/api/v2/employeeRequests')
+    return this.httpClient.get<EmployeeRequestResponseData[]>(`${environment.api}/api/v2/employeeRequests`)
       .pipe(
         map((response: EmployeeRequestResponseData[]) => response.map(request => {
           return {
@@ -67,7 +68,7 @@ export class RequestService {
   }
 
   fetchManagerRequest(id: string): Observable<ManagerRequestResponseData> {
-    return this.httpClient.get<ManagerRequestResponseData>(`https://localhost:7122/api/v2/requests/${id}`)
+    return this.httpClient.get<ManagerRequestResponseData>(`${environment.api}/api/v2/requests/${id}`)
       .pipe(
         map((response: ManagerRequestResponseData) => {
           return {
@@ -84,7 +85,7 @@ export class RequestService {
   }
 
   updateRequestStatus(id: string, status: string): Observable<EmployeeRequestResponseData> {
-    return this.httpClient.put<EmployeeRequestResponseData>(`https://localhost:7122/api/v2/employeeRequests/${id}`, { status })
+    return this.httpClient.put<EmployeeRequestResponseData>(`${environment.api}/api/v2/employeeRequests/${id}`, { status })
       .pipe(
         map((response: EmployeeRequestResponseData) => {
           return {
@@ -100,7 +101,7 @@ export class RequestService {
   }
 
   updateRequestManager(id: string, description: string, categoryName: string, assignedEmployeeId: string): Observable<ManagerRequestResponseData> {
-    return this.httpClient.put<ManagerRequestResponseData>(`https://localhost:7122/api/v2/requests/${id}`,
+    return this.httpClient.put<ManagerRequestResponseData>(`${environment.api}/api/v2/requests/${id}`,
       {
         description,
         categoryName,
@@ -122,7 +123,7 @@ export class RequestService {
   }
 
   createRequest(request: Request): Observable<ManagerRequestResponseData> {
-    return this.httpClient.post<ManagerRequestResponseData>('https://localhost:7122/api/v2/requests',
+    return this.httpClient.post<ManagerRequestResponseData>(`${environment.api}/api/v2/requests`,
       {
         description: request.description,
         flatId: request.flat.id,

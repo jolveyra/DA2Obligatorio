@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogged } from './userLogged.model';
+import { environment } from './environment';
 
 export interface AuthResponseData {
   id: string;
@@ -21,7 +22,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
-      'https://localhost:7122/api/v2/login',
+      `${environment.api}/api/v2/login`,
       {
         email,
         password
