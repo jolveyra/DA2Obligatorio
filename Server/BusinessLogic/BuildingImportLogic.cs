@@ -122,7 +122,7 @@ namespace BusinessLogic
         private List<DTOBuilding> GetBuildingsToImport(string fileName, Type implementedType)
         {
             object instance = Activator.CreateInstance(implementedType);
-            MethodInfo method = implementedType.GetMethod("NombreDelMetodo");
+            MethodInfo method = implementedType.GetMethod("ImportBuildingsFromFile");
             string param = $"{_buildingFilesPath}\\{fileName}";
             return method.Invoke(instance, new object[] { param }) as List<DTOBuilding>;
         }
