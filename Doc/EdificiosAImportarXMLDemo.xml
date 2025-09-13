@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<edificios>
+		<nombre>El Mirador</nombre>
+		<direccion>
+			<calle_principal>Av. de los Volcanes</calle_principal>
+			<numero_puerta>180</numero_puerta>
+			<calle_secundaria>Calle Libertad</calle_secundaria>
+		</direccion>
+		<encargado>ana.rosales@gmail.com</encargado>
+		<gps>
+			<latitud>-0.19</latitud>
+			<longitud>-78.46</longitud>
+		</gps>
+		<gastos_comunes>4800</gastos_comunes>
+		<departamentos>
+			<piso>1</piso>
+			<numero_puerta>101</numero_puerta>
+			<habitaciones>2</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>jorge.ramirez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>2</piso>
+			<numero_puerta>202</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>laura.rodriguez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>3</piso>
+			<numero_puerta>303</numero_puerta>
+			<habitaciones>1</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>carlos.suarez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>4</piso>
+			<numero_puerta>404</numero_puerta>
+			<habitaciones>4</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>3</baños>
+			<propietarioEmail>patricia.gonzalez@gmail.com</propietarioEmail>
+		</departamentos>
+	</edificios>
+	<edificios>
+		<nombre>La Colina</nombre>
+		<direccion>
+			<calle_principal>Av. Quito</calle_principal>
+			<numero_puerta>250</numero_puerta>
+			<calle_secundaria>Calle Manabí</calle_secundaria>
+		</direccion>
+		<encargado />
+		<gps>
+			<latitud>-0.21</latitud>
+			<longitud>-78.55</longitud>
+		</gps>
+		<gastos_comunes>3200</gastos_comunes>
+		<departamentos>
+			<piso>1</piso>
+			<numero_puerta>101</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>andrea.velez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>2</piso>
+			<numero_puerta>202</numero_puerta>
+			<habitaciones>2</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>luis.gomez@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>3</piso>
+			<numero_puerta>303</numero_puerta>
+			<habitaciones>1</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>mario.soto@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>4</piso>
+			<numero_puerta>404</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>natalia.jimenez@gmail.com</propietarioEmail>
+		</departamentos>
+	</edificios>
+	<edificios>
+		<nombre>Altos del Valle</nombre>
+		<direccion>
+			<calle_principal>Calle del Sol</calle_principal>
+			<numero_puerta>900</numero_puerta>
+			<calle_secundaria>Calle de los Olivos</calle_secundaria>
+		</direccion>
+		<encargado>juan.torres@gmail.com</encargado>
+		<gps>
+			<latitud>-0.18</latitud>
+			<longitud>-78.48</longitud>
+		</gps>
+		<gastos_comunes>3900</gastos_comunes>
+		<departamentos>
+			<piso>1</piso>
+			<numero_puerta>101</numero_puerta>
+			<habitaciones>2</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>clara.herrera@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>2</piso>
+			<numero_puerta>202</numero_puerta>
+			<habitaciones>3</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>2</baños>
+			<propietarioEmail>sergio.ortega@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>3</piso>
+			<numero_puerta>303</numero_puerta>
+			<habitaciones>1</habitaciones>
+			<conTerraza>false</conTerraza>
+			<baños>1</baños>
+			<propietarioEmail>ana.mendoza@gmail.com</propietarioEmail>
+		</departamentos>
+		<departamentos>
+			<piso>4</piso>
+			<numero_puerta>404</numero_puerta>
+			<habitaciones>4</habitaciones>
+			<conTerraza>true</conTerraza>
+			<baños>3</baños>
+			<propietarioEmail>carlos.vega@gmail.com</propietarioEmail>
+		</departamentos>
+	</edificios>
+</root>
